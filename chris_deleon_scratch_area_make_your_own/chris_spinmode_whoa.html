@@ -21,9 +21,10 @@ var paddle2Y = 250;
 const PADDLE_THICKNESS = 10;
 const PADDLE_HEIGHT = 100;
 
-var gameSpin = 0; // how much spin has accumulated
-var gameSpinRate = 0.01; // speed of spin
-var gameScale = 0.6; // to keep it always in view when spinning
+//// these next 3 lines are new for the spin mode trick:
+var gameSpin = 0; //// how much spin has accumulated
+var gameSpinRate = 0.01; //// speed of spin
+var gameScale = 0.6; //// to keep it always in view when spinning
 
 function calculateMousePos(evt) {
 	var rect = canvas.getBoundingClientRect();
@@ -52,15 +53,16 @@ window.onload = function() {
 	setInterval(function() {
 			moveEverything();
 			
-			gameSpin +=gameSpinRate;
-			colorRect(0,0,canvas.width,canvas.height,'white');
-			canvasContext.save();
-			canvasContext.translate(canvas.width/2,canvas.height/2);
-			canvasContext.rotate(gameSpin);
-			canvasContext.scale(gameScale, gameScale);
-			canvasContext.translate(-canvas.width/2,-canvas.height/2);
+			//// these next 7-8 lines were added for the spin mode trick
+			gameSpin +=gameSpinRate; ////
+			colorRect(0,0,canvas.width,canvas.height,'white'); ////
+			canvasContext.save(); ////
+			canvasContext.translate(canvas.width/2,canvas.height/2); ////
+			canvasContext.rotate(gameSpin); ////
+			canvasContext.scale(gameScale, gameScale); ////
+			canvasContext.translate(-canvas.width/2,-canvas.height/2); ////
 			drawEverything();	
-			canvasContext.restore();
+			canvasContext.restore(); ////
 		}, 1000/framesPerSecond);
 
 	canvas.addEventListener('mousedown', handleMouseClick);
