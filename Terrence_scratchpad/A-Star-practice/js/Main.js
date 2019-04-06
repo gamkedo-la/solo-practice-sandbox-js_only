@@ -1,3 +1,7 @@
+// A-Star implementation based on http://buildnewgames.com/astar/ 
+// by Gamkedo's own Christer "McFunkpants" Kaitila! ツ
+// --> www.mcfunkypants.com <--
+
 var canvas, canvasContext;
 
 window.onload = function() {
@@ -12,6 +16,7 @@ window.onload = function() {
 		updateGame();
 	}, 1000/framesPerSecond);
 
+	createWorld();
 	sliderReset();
 	enemyReset();
 }
