@@ -31,13 +31,8 @@ function createWorld()
 		}
 	} // end of for x < BRICK_COLS
 
-	noBricksOnPlayerObjects();
-
-} // end of createWorld()
-
-function noBricksOnPlayerObjects() {
-	var enetityPositions = [[sliderX,sliderY],[enemyX,enemyY]];
-	for (pos of enetityPositions) {
+	var entityPositions = [[sliderX,sliderY],[enemyX,enemyY]];
+	for (pos of entityPositions) {
 		if (isBrickAtPixelCoord(pos[0],pos[1])) {
 			var x = pos[0] / BRICK_W;
 			var y = pos[1] / BRICK_H;
@@ -46,8 +41,8 @@ function noBricksOnPlayerObjects() {
 			world[x][y] = GROUND;
 			console.log("BRICK was placed on player object, made to GROUND");
 		}
-	}
-}
+	} // end of for pos of entityPositions
+} // end of createWorld()
   
 function isBrickAtPixelCoord(hitPixelX, hitPixelY) {
 	var tileCol = hitPixelX / BRICK_W;

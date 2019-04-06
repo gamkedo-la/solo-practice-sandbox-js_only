@@ -11,9 +11,16 @@ var holdRight = false;
 var holdUp = false;
 var holdDown = false;
 
+var mousePos = {};
+
 function initInput() {
 	document.addEventListener("keydown", keyPressed);
 	document.addEventListener("keyup", keyReleased);
+	document.addEventListener("mousedown", mouseClick);
+	document.addEventListener("mousemove", 
+		function(evt) {
+		mousePos = calculateMousePos(evt);
+		});
 }
 
 function keyPressed(evt) {
@@ -23,6 +30,26 @@ function keyPressed(evt) {
 
 function keyReleased(evt) {
 	setKeyHoldState(evt.keyCode, false);
+}
+
+function calculateMousePos(evt) {
+	var rect = canvas.getBoundingClientRect();
+	var root = document.documentElement;
+	var mouseX = evt.clientX - rect.left - root.scrollLeft;
+	var mouseY = evt.clientY - rect.top - root.scrollTop;
+	return {
+		x:mouseX,
+		y:mouseY
+	};
+}
+
+function mouseClick(evt) {
+	if (!isBrickAtPixelCoord(mousePos.x,mousePos.y)) {
+		sliderX = mousePos.x;
+		sliderY = mousePos.y;
+	} else {
+		console.log("player not moved, BRICK in way")
+	}	
 }
 
 function setKeyHoldState(thisKey, setTo) {
