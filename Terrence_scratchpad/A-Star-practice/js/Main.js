@@ -16,9 +16,9 @@ window.onload = function() {
 		updateGame();
 	}, 1000/framesPerSecond);
 
-	createWorld();
 	sliderReset();
 	enemyReset();
+	createWorld();
 }
 
 function updateGame() {

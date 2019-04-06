@@ -10,27 +10,43 @@ const BRICK_ROWS = 15;
 
 const GROUND = 0;
 const BRICK = 1;
-const ENEMY = 2;
 
 var world = [[]];
+var rollForBrick = 0.80;
 var pathStart = [BRICK_COLS, BRICK_ROWS];
 var pathEnd = [0,0];
 var currentPath = [];
 
 function createWorld()
 { 
-	// create emptiness
 	for (var x = 0; x < BRICK_COLS; x++) {
 		world[x] = [];
 
 		for (var y=0; y < BRICK_ROWS; y++) {
-			world[x][y] = 0;
+			if (Math.random() > rollForBrick) {
+				world[x][y] = BRICK;
+			} else {
+				world[x][y] = GROUND;
+			}
+		}
+	} // end of for x < BRICK_COLS
+
+	noBricksOnPlayerObjects();
+
+} // end of createWorld()
+
+function noBricksOnPlayerObjects() {
+	var enetityPositions = [[sliderX,sliderY],[enemyX,enemyY]];
+	for (pos of enetityPositions) {
+		if (isBrickAtPixelCoord(pos[0],pos[1])) {
+			var x = pos[0] / BRICK_W;
+			var y = pos[1] / BRICK_H;
+			x = Math.floor(x);
+			y = Math.floor(y);
+			world[x][y] = GROUND;
+			console.log("BRICK was placed on player object, made to GROUND");
 		}
 	}
-}
-  
-function brickTileToIndex(tileCol, tileRow) {
-	return (tileCol + BRICK_COLS*tileRow);
 }
   
 function isBrickAtPixelCoord(hitPixelX, hitPixelY) {
@@ -47,7 +63,6 @@ function isBrickAtPixelCoord(hitPixelX, hitPixelY) {
 		return false;
 	}
 
-	var brickIndex = brickTileToIndex(tileCol, tileRow);
 	return (world[tileCol][tileRow] == BRICK);
 }
 
@@ -65,6 +80,5 @@ function drawBricks() {
 } // end of drawBricks()
 
 function isBrickAtTileCoord(brickTileCol, brickTileRow) {
-	//var brickIndex = brickTileToIndex(brickTileCol, brickTileRow);
 	return (world[brickTileCol][brickTileRow] == BRICK);
 }

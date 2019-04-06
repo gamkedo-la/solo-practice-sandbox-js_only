@@ -32,6 +32,6 @@ function sliderDraw() {
 
 function sliderReset() {
 	// center slider on screen
-	sliderX = canvas.width/2;
+	sliderX = canvas.width/2 + BRICK_W/2;
 	sliderY = canvas.height/2;
 }

@@ -44,6 +44,6 @@ function setKeyHoldState(thisKey, setTo) {
 		holdDown = setTo;
 		break;
 	default:
-		console.log("Key not assigned found");
+		//console.log("Keycode is: " + thisKey);
 	}
 }
