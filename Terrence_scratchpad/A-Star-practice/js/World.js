@@ -3,6 +3,11 @@ const BRICK_H = 40;
 const BRICK_GAP = 1;
 const BRICK_COLS = 20;
 const BRICK_ROWS = 15;
+
+const GROUND = 0;
+const BRICK = 1;
+const ENEMY = 2;
+
 var brickGrid =
   [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
@@ -23,11 +28,6 @@ var brickGrid =
 function brickTileToIndex(tileCol, tileRow) {
 	return (tileCol + BRICK_COLS*tileRow);
 }
-
-function isBrickAtTileCoord(brickTileCol, brickTileRow) {
-	var brickIndex = brickTileToIndex(brickTileCol, brickTileRow);
-	return (brickGrid[brickIndex] == 1);
-}
   
 function isBrickAtPixelCoord(hitPixelX, hitPixelY) {
 	var tileCol = hitPixelX / BRICK_W;
@@ -44,7 +44,7 @@ function isBrickAtPixelCoord(hitPixelX, hitPixelY) {
 	}
 
 	var brickIndex = brickTileToIndex(tileCol, tileRow);
-	return (brickGrid[brickIndex] == 1);
+	return (brickGrid[brickIndex] == BRICK);
 }
 
 function drawBricks() {
@@ -59,3 +59,8 @@ function drawBricks() {
   		} // end of for eachRow
 	} // end of for eachCol
 } // end of drawBricks()
+
+function isBrickAtTileCoord(brickTileCol, brickTileRow) {
+	var brickIndex = brickTileToIndex(brickTileCol, brickTileRow);
+	return (brickGrid[brickIndex] == BRICK);
+}
