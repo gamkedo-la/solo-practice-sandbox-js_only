@@ -13,6 +13,10 @@
   const KEY_UP_ARROW = 38;
   const KEY_RIGHT_ARROW = 39;
   const KEY_DOWN_ARROW = 40;
+  const KEY_A = 65;
+  const KEY_D = 68;
+  const KEY_S = 83;
+  const KEY_W = 87;
   var holdLeft = false;
   var holdRight = false;
   var holdUp = false;
@@ -24,17 +28,25 @@
   }
   
   function setKeyHoldState(thisKey, setTo) {
-    if(thisKey == KEY_LEFT_ARROW) {
-      holdLeft = setTo;
-    }
-    if(thisKey == KEY_RIGHT_ARROW) {
-      holdRight = setTo;
-    }
-    if(thisKey == KEY_UP_ARROW) {
-      holdUp = setTo;
-    }
-    if(thisKey == KEY_DOWN_ARROW) {
-      holdDown = setTo;
+  	switch (thisKey) {
+  		case KEY_LEFT_ARROW:
+  		case KEY_A: 
+			holdLeft = setTo;
+  			break;
+		case KEY_RIGHT_ARROW:
+		case KEY_D: 
+			holdRight = setTo;
+		break;
+		case KEY_UP_ARROW:
+		case KEY_W: 
+			holdUp = setTo;
+		break;
+		case KEY_DOWN_ARROW:
+		case KEY_S: 
+			holdDown = setTo;
+		break;
+		default:
+			console.log("Key not assigned found");
     }
   }
   
