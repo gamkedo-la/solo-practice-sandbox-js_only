@@ -1,3 +1,7 @@
+var pathStart = [BRICK_COLS, BRICK_ROWS];
+var pathEnd = [0,0];
+var currentPath = [];
+
 function findPath (world, pathStart, pathEnd) {
 
 	// the world data are integers:
@@ -46,19 +50,19 @@ function findPath (world, pathStart, pathEnd) {
 
 	function ManhattanDistance(Point, Goal)
 	{	// linear movement - no diagonals - just cardinal directions (NSEW)
-		return abs(Point.x - Goal.x) + abs(Point.y - Goal.y);
+		return Math.abs(Point.x - Goal.x) + Math.abs(Point.y - Goal.y);
 	}
 
 	function DiagonalDistance(Point, Goal)
 	{	// diagonal movement - assumes diag dist is 1, same as cardinals
-		return max(abs(Point.x - Goal.x), abs(Point.y - Goal.y));
+		return Math.max(Math.abs(Point.x - Goal.x), Math.abs(Point.y - Goal.y));
 	}
 
 	function EuclideanDistance(Point, Goal)
 	{	// diagonals are considered a little farther than cardinal directions
 		// diagonal movement using Euclide (AC = sqrt(AB^2 + BC^2))
 		// where AB = x2 - x1 and BC = y2 - y1 and AC will be [x3, y3]
-		return sqrt(pow(Point.x - Goal.x, 2) + pow(Point.y - Goal.y, 2));
+		return Math.sqrt(Math.pow(Point.x - Goal.x, 2) + Math.pow(Point.y - Goal.y, 2));
 	}
 
 	// Neighbours functions, used by findNeighbours function
@@ -161,18 +165,18 @@ function findPath (world, pathStart, pathEnd) {
 	function Node(Parent, Point) {
 		var newNode = {
 			// pointer to another Node object
-			Parent:Parent,
+			Parent: Parent,
 			// array index of this Node in the world linear array
-			value:Point.x + (Point.y * worldWidth),
+			value: Point.x + (Point.y * worldWidth),
 			// the location coordinates of this Node
-			x:Point.x,
-			y:Point.y,
+			x: Point.x,
+			y: Point.y,
 			// the distanceFunction cost to get
 			// TO this Node from the START
-			f:0,
+			f: 0,
 			// the distanceFunction cost to get
 			// from this Node to the GOAL
-			g:0
+			g: 0
 		};
 		return newNode;
 	};
