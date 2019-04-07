@@ -2,6 +2,8 @@ const PLAYER_RUN_SPEED = 5.5;
 
 var sliderX;
 var sliderY;
+var distTravelled = 0;
+var distTravelledCheck = 60;
 
 function sliderMove() {
 	var nextX = sliderX;
@@ -21,8 +23,16 @@ function sliderMove() {
 	}
 
 	if(isBrickAtPixelCoord(nextX,nextY) == false) {
+		distTravelled += (nextX - sliderX) + (nextY - sliderY);
 		sliderX = nextX;
 		sliderY = nextY;
+		//console.log("distTravelled is:" + distTravelled);
+	}
+
+	if (distTravelled >= distTravelledCheck || distTravelled <= -distTravelledCheck) {
+		distTravelled = 0;
+		currentPath = [];
+		console.log("player has moved significalty, currentPath reset");
 	}
 }
 

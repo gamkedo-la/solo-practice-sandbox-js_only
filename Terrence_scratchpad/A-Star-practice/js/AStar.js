@@ -14,8 +14,8 @@ function findPath (world, pathStart, pathEnd) {
 	// Note that this A-star implementation expects the world array to be square: 
 	// it must have equal height and width. If your game world is rectangular, 
 	// just fill the array with dummy values to pad the empty space.
-	var worldWidth = world[0].length;
-	var worldHeight = world.length;
+	var worldWidth = world.length; 
+	var worldHeight = world[0].length;
 	var worldSize =	worldWidth * worldHeight;
 
 	// which heuristic should we use?

@@ -35,8 +35,9 @@ function drawEverything() {
     enemyDraw();
 
     canvasContext.fillStyle = 'white';
-    canvasContext.fillText("Arrow keys to slide, scrolling demo",8,14);
-    canvasContext.fillText("Console log has nifty info in it!",8,28);
+    canvasContext.fillText("Arrow/WASD keys to move",8,14);
+    canvasContext.fillText("Click to instance teleport player",8,28);
+    canvasContext.fillText("Console log has nifty info in it!",8,42);
 }
 
 function moveEverything() {

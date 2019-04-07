@@ -1,4 +1,4 @@
-const ENEMY_RUN_SPEED = 2;
+const ENEMY_RUN_SPEED = 4;
 var enemyX;
 var enemyY;
 
@@ -33,7 +33,7 @@ function enemyMove() {
 
 		if (enemyY < destinationY - ENEMY_RUN_SPEED) {
 			enemyY += ENEMY_RUN_SPEED;
-		} else if (enemyX > destinationX + ENEMY_RUN_SPEED) {
+		} else if (enemyY > destinationY + ENEMY_RUN_SPEED) {
 			enemyY += -ENEMY_RUN_SPEED;
 		}
 	}

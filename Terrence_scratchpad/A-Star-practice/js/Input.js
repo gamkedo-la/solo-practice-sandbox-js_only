@@ -11,7 +11,7 @@ var holdRight = false;
 var holdUp = false;
 var holdDown = false;
 
-var mousePos = {};
+var mousePos;
 
 function initInput() {
 	document.addEventListener("keydown", keyPressed);
@@ -44,11 +44,19 @@ function calculateMousePos(evt) {
 }
 
 function mouseClick(evt) {
+	if (!(mousePos.x > 0 && mousePos.x < canvas.width) ||
+		!(mousePos.y > 0 && mousePos.y < canvas.height)) {
+		console.log("mouse off canvas, player not moved");
+		return;
+	}
+
 	if (!isBrickAtPixelCoord(mousePos.x,mousePos.y)) {
 		sliderX = mousePos.x;
 		sliderY = mousePos.y;
+		currentPath = [];
+		console.log("player teleported, currentPath reset");
 	} else {
-		console.log("player not moved, BRICK in way")
+		console.log("BRICK in way, player not moved");
 	}	
 }
 
