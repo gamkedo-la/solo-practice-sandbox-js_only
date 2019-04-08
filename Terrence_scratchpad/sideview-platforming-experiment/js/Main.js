@@ -1,6 +1,15 @@
 var canvas, canvasContext;
 
-const FRAMES_PER_SECOND = 30;
+const SET_FRAMES_PER_SECOND = 30;
+
+var frameCount = 0;
+var timeAtGameStart = Date.now();
+var timeAtFPSCalc = 0;
+var FPS = 0;
+
+var previousTime = 0, currentTime = 0;
+var timerFull = timeInSeconds(2);
+var timer = timerFull;
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -11,7 +20,7 @@ window.onload = function() {
 	// these next few lines set up our game logic and render to happen 30 times per second
 	setInterval(function() {
 	    update();
-	  }, 1000/FRAMES_PER_SECOND);
+	  }, 1000/SET_FRAMES_PER_SECOND);
 	  
 	jumperReset();
 }
@@ -23,12 +32,8 @@ function update() {
 }
 
 function timeInSeconds(desiredSeconds) {
-	return seconds = desiredSeconds * FRAMES_PER_SECOND;
+	return seconds = desiredSeconds * SET_FRAMES_PER_SECOND;
 }
-
-var previousTime = 0, currentTime = 0;
-var timerFull = timeInSeconds(2);
-var timer = timerFull;
 
 function getDeltaTime() {
 	frameCount++;
@@ -45,11 +50,6 @@ function getDeltaTime() {
 		timer--;
 	}
 }
-
-var frameCount = 0;
-var timeAtGameStart = Date.now();
-var timeAtFPSCalc = 0;
-var FPS = 0;
 
 function drawEverything() {
 	colorRect(0, 0, canvas.width, canvas.height, 'black');

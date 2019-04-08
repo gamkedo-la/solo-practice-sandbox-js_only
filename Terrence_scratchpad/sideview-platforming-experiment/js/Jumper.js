@@ -11,6 +11,9 @@ var jumperRadius = 10;
 
 function jumperMove() {
 	if(jumperOnGround) {
+		if (holdJump) {
+			jumperSpeedY = -JUMP_POWER;
+		}
 		jumperSpeedX *= GROUND_FRICTION;
 	} else {
 		jumperSpeedY += GRAVITY;
@@ -52,6 +55,6 @@ function jumperMove() {
 
 function jumperReset() {
 	// center jumper on screen
-	jumperX = canvas.width/2;
+	jumperX = canvas.width/2 + BRICK_W/2;
 	jumperY = canvas.height/2;
 }

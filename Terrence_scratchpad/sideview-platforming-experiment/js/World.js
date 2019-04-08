@@ -40,7 +40,7 @@ function isBrickAtPixelCoord(hitPixelX, hitPixelY) {
 
 	// first check whether the jumper is within any part of the brick wall
 	if(tileCol < 0 || tileCol >= BRICK_COLS ||
-   		tileRow < 0 || tileRow >= BRICK_ROWS) {
+   	   tileRow < 0 || tileRow >= BRICK_ROWS) {
    		return false;
 	}
 
