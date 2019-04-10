@@ -50,46 +50,6 @@ function brickToTileIndex(tileCol, tileRow) {
 	return tileCol + BRICK_COLS * tileRow;
 }
 
-function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY) {
-	var tileCol = Math.floor(pixelX / BRICK_W);
-	var tileRow = Math.floor(pixelY / BRICK_H);
-
-	if (tileCol < 0 || tileCol >= BRICK_COLS ||
-		tileRow < 0 || tileRow >= BRICK_ROWS) {
-		return;
-	}
-
-	var brickIndex = brickToTileIndex(tileCol, tileRow);
-
-
-	if (brickGrid[brickIndex] == 1) {
-		var prevBallX = ballX - ballSpeedX;
-		var prevBallY = ballY - ballSpeedY;
-		var prevTileCol = Math.floor(prevBallX / BRICK_W);
-		var prevTileRow = Math.floor(prevBallY / BRICK_H);
-
-		var bothTestsFailed = true;
-
-		if (prevTileCol != tileCol) { // must have come in horizontally
-		    var adjacentBrickIndex = brickToTileIndex(prevTileCol, tileRow);
-		    if (brickGrid[adjacentBrickIndex] != 1) {
-				ballSpeedX *= -1;
-				bothTestsFailed = false;
-		    }
-		}
-		if (prevTileRow != tileRow) { // must have come in vertically
-		    var adjacentBrickIndex = brickToTileIndex(tileCol, prevTileRow);
-		    if (brickGrid[adjacentBrickIndex] != 1) {
-				ballSpeedY *= -1;
-				bothTestsFailed = false;
-		    }
-		}
-
-		if (bothTestsFailed) {
-		    ballSpeedX *= -1;
-		    ballSpeedY *= -1;
-		}
-
-		brickGrid[brickIndex] = 0; // remove the brick that got hit
-	}
+function removeBrickOnHit(evt) {
+	brickGrid[evt.detail.index] = 0;
 }

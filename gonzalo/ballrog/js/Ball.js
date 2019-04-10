@@ -1,33 +1,73 @@
 var ballX;
 var ballY;
-var ballSpeedX = 6;
-var ballSpeedY = -4;
+var ballVelX = 6;
+var ballVelY = -4;
 const BALL_RADIUS = 10;
+const BASE_BALL_SPEED = 6;
+const MAX_SPEED = 40;
+var minSpeed = BASE_BALL_SPEED;
 var ballMissEvent = new CustomEvent('ballMiss');
 var ballResetEvent = new CustomEvent('ballReset');
-var brickHitEvent = new CustomEvent('brickHit');
+
+
 
 function ballReset() {
+	minSpeed = BASE_BALL_SPEED;
 	ballX = paddleX + PADDLE_WIDTH/2;
 	ballY = PADDLE_Y - BALL_RADIUS/2;
-	ballSpeedY = ballSpeedY > 0 ? -ballSpeedY : ballSpeedY;
+	updateVelocity(ballVelX, ballVelY > 0 ? -ballVelY : ballVelY);
+	updateSpeed(minSpeed);
 	var ballResetEvent = new CustomEvent('ballReset');
 	canvas.dispatchEvent(ballResetEvent);
 }
 
+function updateVelocity(velX, velY) {
+	ballVelX = velX;
+	ballVelY = velY;
+	console.log('CURRENT BALL SPEED', ballSpeed);
+}
+
+function updateSpeed(speed) {
+	if (speed > MAX_SPEED) {
+		speed = MAX_SPEED;
+	}
+	var dir = getVelocityDir(ballVelX, ballVelY);
+	updateVelocity(speed*dir.x, speed*dir.y);
+}
+
+function increaseSpeed(evt) {
+	minSpeed += (BRICK_ROWS - evt.detail.row)*0.44;
+	console.log('NEW SPEED', minSpeed);
+	if (minSpeed > getSpeedFromVelocity(ballVelX, ballVelY)) {
+		updateSpeed(minSpeed);
+	}
+}
+
+function getSpeedFromVelocity(velX, velY) {
+	return Math.sqrt(Math.pow(velX, 2) + Math.pow(velY, 2));
+}
+
+function getVelocityDir(velX, velY) {
+	var speed = getSpeedFromVelocity(velX, velY);
+	return {x: velX/speed, y: velY/speed};
+}
+
 function ballMove() {
 	if (!ballHeld) {
-		ballX += ballSpeedX;
-		ballY += ballSpeedY;
-		if ((ballX > canvas.width && ballSpeedX > 0) || (ballX < 0 && ballSpeedX < 0)){
-			ballSpeedX *= -1;
+		ballX += ballVelX;
+		ballY += ballVelY;
+		if ((ballX > canvas.width && ballVelX > 0) || (ballX < 0 && ballVelX < 0)){
+			updateVelocity(-1*ballVelX, ballVelY);
 			// TODO: dispatch ballHitWall event
 		}
-		if (ballY > PADDLE_Y && ballY < PADDLE_Y + PADDLE_THICKNESS && ballSpeedY > 0) {
+		if (ballY > PADDLE_Y && ballY < PADDLE_Y + PADDLE_THICKNESS && ballVelY > 0) {
 			if (ballX > paddleX && ballX < paddleX + PADDLE_WIDTH) {
-				ballSpeedY *= -1;
-				var deltaX = ballX - (paddleX + PADDLE_WIDTH/2);
-				ballSpeedX = deltaX * 0.55;
+				let deltaX = ballX - (paddleX + PADDLE_WIDTH/2);
+				updateVelocity(deltaX*0.44, -1*ballVelY);
+				let currentSpeed = getSpeedFromVelocity(ballVelX, ballVelY);
+				if (currentSpeed < minSpeed) {
+					updateSpeed(minSpeed);
+				}
 				if (resetBricksOnNextPaddleHit) {
 					resetBricks();
 					resetBricksOnNextPaddleHit = false;
@@ -39,7 +79,7 @@ function ballMove() {
 			canvas.dispatchEvent(ballMissEvent);
 		}
 		if (ballY < 0) {
-			ballSpeedY *= -1;
+			updateVelocity(ballVelX, -1*ballVelY);
 		}
 		breakAndBounceOffBrickAtPixelCoord(ballX, ballY);
 	}
@@ -58,8 +98,8 @@ function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY) {
 
 
 	if (brickGrid[brickIndex] == 1) {
-		var prevBallX = ballX - ballSpeedX;
-		var prevBallY = ballY - ballSpeedY;
+		var prevBallX = ballX - ballVelX;
+		var prevBallY = ballY - ballVelY;
 		var prevTileCol = Math.floor(prevBallX / BRICK_W);
 		var prevTileRow = Math.floor(prevBallY / BRICK_H);
 
@@ -68,24 +108,27 @@ function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY) {
 		if (prevTileCol != tileCol) { // must have come in horizontally
 		    var adjacentBrickIndex = brickToTileIndex(prevTileCol, tileRow);
 		    if (brickGrid[adjacentBrickIndex] != 1) {
-				ballSpeedX *= -1;
+				updateVelocity(-1*ballVelX, ballVelY);
 				bothTestsFailed = false;
 		    }
 		}
 		if (prevTileRow != tileRow) { // must have come in vertically
 		    var adjacentBrickIndex = brickToTileIndex(tileCol, prevTileRow);
 		    if (brickGrid[adjacentBrickIndex] != 1) {
-				ballSpeedY *= -1;
+				updateVelocity(ballVelX, -1*ballVelY);
 				bothTestsFailed = false;
 		    }
 		}
 
 		if (bothTestsFailed) {
-		    ballSpeedX *= -1;
-		    ballSpeedY *= -1;
+			updateVelocity(-1*ballVelX, -1*ballVelY);
 		}
 
-		brickGrid[brickIndex] = 0; // remove the brick that got hit
+		var brickHitEvent = new CustomEvent('brickHit', {detail: {
+			index: brickIndex,
+			col: tileCol,
+			row: tileRow
+		}});
 		canvas.dispatchEvent(brickHitEvent);
 	}
 }

@@ -23,7 +23,9 @@ window.onload = function() {
 		}, 1000/framesPerSecond);
 		canvas.addEventListener('mousemove', movePaddleOnMouseMove);
 		canvas.addEventListener('ballMiss', dropLife);
+		canvas.addEventListener('brickHit', removeBrickOnHit);
 		canvas.addEventListener('brickHit', increaseScore);
+		canvas.addEventListener('brickHit', increaseSpeed);
 		canvas.addEventListener('outaLives', resetGame);
 		canvas.addEventListener('mousedown', function(evt) {
 			if (showTitle) {
