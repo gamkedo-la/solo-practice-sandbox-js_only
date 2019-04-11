@@ -39,9 +39,12 @@ window.onload = function() {
 
 function resetGame() {
 	lastScore = score;
+	baseSpeed = INITIAL_SPEED;
+	maxSpeed = INITIAL_MAX_SPEED;
 	resetBricks();
 	resetScore();
 	ballHeld = true;
+	ballReset();
 	lives = INITIAL_LIVES;
 	showTitle = true;
 }

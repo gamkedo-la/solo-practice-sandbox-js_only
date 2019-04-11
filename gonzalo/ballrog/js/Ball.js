@@ -1,22 +1,25 @@
+const BALL_RADIUS = 10;
+const INITIAL_SPEED = 8;
+const INITIAL_MAX_SPEED = 40;
 var ballX;
 var ballY;
 var ballVelX = 6;
 var ballVelY = -4;
-const BALL_RADIUS = 10;
-const BASE_BALL_SPEED = 6;
-const MAX_SPEED = 40;
-var minSpeed = BASE_BALL_SPEED;
+var maxSpeed = INITIAL_MAX_SPEED;
+var baseSpeed = INITIAL_SPEED;
+var minSpeed = baseSpeed;
 var ballMissEvent = new CustomEvent('ballMiss');
 var ballResetEvent = new CustomEvent('ballReset');
-
+var highestHitRow = BRICK_ROWS;
 
 
 function ballReset() {
-	minSpeed = BASE_BALL_SPEED;
+	minSpeed = baseSpeed;
 	ballX = paddleX + PADDLE_WIDTH/2;
 	ballY = PADDLE_Y - BALL_RADIUS/2;
 	updateVelocity(ballVelX, ballVelY > 0 ? -ballVelY : ballVelY);
 	updateSpeed(minSpeed);
+	highestHitRow = BRICK_ROWS;
 	var ballResetEvent = new CustomEvent('ballReset');
 	canvas.dispatchEvent(ballResetEvent);
 }
@@ -24,22 +27,23 @@ function ballReset() {
 function updateVelocity(velX, velY) {
 	ballVelX = velX;
 	ballVelY = velY;
-	console.log('CURRENT BALL SPEED', ballSpeed);
 }
 
 function updateSpeed(speed) {
-	if (speed > MAX_SPEED) {
-		speed = MAX_SPEED;
+	if (speed > maxSpeed) {
+		speed = maxSpeed;
 	}
 	var dir = getVelocityDir(ballVelX, ballVelY);
 	updateVelocity(speed*dir.x, speed*dir.y);
 }
 
 function increaseSpeed(evt) {
-	minSpeed += (BRICK_ROWS - evt.detail.row)*0.44;
-	console.log('NEW SPEED', minSpeed);
-	if (minSpeed > getSpeedFromVelocity(ballVelX, ballVelY)) {
-		updateSpeed(minSpeed);
+	if (evt.detail.row < highestHitRow) {
+		highestHitRow = evt.detail.row;
+		minSpeed += (BRICK_ROWS - highestHitRow)*0.44;
+		if (minSpeed > getSpeedFromVelocity(ballVelX, ballVelY)) {
+			updateSpeed(minSpeed);
+		}
 	}
 }
 
@@ -70,6 +74,8 @@ function ballMove() {
 				}
 				if (resetBricksOnNextPaddleHit) {
 					resetBricks();
+					baseSpeed += 10;
+					maxSpeed += 10;
 					resetBricksOnNextPaddleHit = false;
 				}
 			}
