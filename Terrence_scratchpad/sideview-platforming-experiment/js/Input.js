@@ -2,9 +2,14 @@ const KEY_LEFT_ARROW = 37;
 const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
 const KEY_SPACE = 32;
+const KEY_A = 65;
+const KEY_D = 68;
+//const KEY_S = 83;
+const KEY_W = 87;
 
 var holdLeft = false;
 var holdRight = false;
+var holdJump = false;
   
 function initInput() {
 	document.addEventListener("keydown", keyPressed);
@@ -12,18 +17,22 @@ function initInput() {
 }
 
 function setKeyHoldState(thisKey, setTo) {
-	if(thisKey == KEY_LEFT_ARROW) {
+	switch (thisKey) {
+	case KEY_LEFT_ARROW:
+	case KEY_A: 
 		holdLeft = setTo;
-	}
-
-	if(thisKey == KEY_RIGHT_ARROW) {
+		break;
+	case KEY_RIGHT_ARROW:
+	case KEY_D: 
 		holdRight = setTo;
-	}
-
-	if(thisKey == KEY_UP_ARROW || thisKey == KEY_SPACE) {
-		if(jumperOnGround) {
-			jumperSpeedY = -JUMP_POWER;
-		}
+		break;
+	case KEY_UP_ARROW:
+	case KEY_SPACE:
+	case KEY_W:
+		holdJump = setTo;
+		break;
+	default:
+		//console.log("Keycode is: " + thisKey);
 	}
 }
 
