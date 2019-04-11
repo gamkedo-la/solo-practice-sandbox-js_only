@@ -1,4 +1,6 @@
 const INITIAL_LIVES = 3;
+const BRICK_HIT_POINTS = 100;
+const NEW_LIFE_SCORE_MILESTONE = 3000;
 var canvas;
 var canvasContext;
 var framesPerSecond = 30;
@@ -27,6 +29,7 @@ window.onload = function() {
 		canvas.addEventListener('brickHit', increaseScore);
 		canvas.addEventListener('brickHit', increaseSpeed);
 		canvas.addEventListener('outaLives', resetGame);
+		canvas.addEventListener('scoreIncrease', checkAndRewardPlayer);
 		canvas.addEventListener('mousedown', function(evt) {
 			if (showTitle) {
 				showTitle = false;
@@ -61,17 +64,29 @@ function resetScore() {
 }
 
 function increaseScore() {
-	score += 100;
+	score += BRICK_HIT_POINTS;
+	var scoreIncreaseEvent = new CustomEvent('scoreIncrease');
+	canvas.dispatchEvent(scoreIncreaseEvent);
+}
+
+function checkAndRewardPlayer() {
+	var prevScore = score - BRICK_HIT_POINTS;
+	if (score > 0 && score % NEW_LIFE_SCORE_MILESTONE == 0) {
+		lives++;
+	}
 }
 
 function drawTitleScreen() {
+	var line = 120;
 	colorRect(0, 0, canvas.width, canvas.height, 'black');
 	drawBitMap(titlePic, 0, 0);
+	canvasContext.fillStyle = 'white';
+	canvasContext.textAlign = 'center';
 	if (lastScore > 0) {
-		canvasContext.fillStyle = 'white';
-		canvasContext.textAlign = 'center';
-		canvasContext.fillText("LAST SCORE " + lastScore.toString(), canvas.width/2, 120);
+		canvasContext.fillText("LAST SCORE " + lastScore.toString(), canvas.width/2, line);
+		line += 20;
 	}
+	canvasContext.fillText("GET A NEW LIFE ON EVERY " + NEW_LIFE_SCORE_MILESTONE + " POINTS!", canvas.width/2, line);
 }
 
 function drawEverything() {
