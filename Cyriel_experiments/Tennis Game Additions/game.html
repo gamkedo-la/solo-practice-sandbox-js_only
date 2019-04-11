@@ -2,6 +2,7 @@
 
 <canvas id="gameCanvas" width="800" height="600"></canvas>
 
+<script src="SoundAndMusic.js"></script>s
 <script>
 var canvas;
 var canvasContext;
@@ -21,6 +22,7 @@ const WINNING_SCORE = 5;
 
 var showingWinScreen = false;
 
+var soundBloop = new SoundOverlapsClass("gameAudio-effects/bloop");
 
 function calculateMousePos(evt) {
 	var rect = canvas.getBoundingClientRect();
@@ -102,6 +104,7 @@ function moveEveryting() {
 	if(ballX <= 0) {
 		if(ballY > paddle1Y && ballY < paddle1Y + PADDLE_HEIGHT)
 		{
+			soundBloop.play();
 			ballSpeedX = -ballSpeedX;
 
 			var deltaY = ballY - (paddle1Y + PADDLE_HEIGHT / 2);
@@ -115,7 +118,7 @@ function moveEveryting() {
 	if(ballX >= canvas.width) {
 		if(ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT)
 		{
-
+			soundBloop.play();
 			ballSpeedX = -ballSpeedX;
 
 			var deltaY = ballY - (paddle2Y + PADDLE_HEIGHT / 2);
