@@ -62,7 +62,8 @@ function ballMove() {
 		ballY += ballVelY;
 		if ((ballX > canvas.width && ballVelX > 0) || (ballX < 0 && ballVelX < 0)){
 			updateVelocity(-1*ballVelX, ballVelY);
-			// TODO: dispatch ballHitWall event
+			let wallHitEvent = new CustomEvent('wallHit');
+			canvas.dispatchEvent(wallHitEvent);
 		}
 		if (ballY > PADDLE_Y && ballY < PADDLE_Y + PADDLE_THICKNESS && ballVelY > 0) {
 			if (ballX > paddleX && ballX < paddleX + PADDLE_WIDTH) {
@@ -72,8 +73,12 @@ function ballMove() {
 				if (currentSpeed < minSpeed) {
 					updateSpeed(minSpeed);
 				}
+				let paddleHitEvent = new CustomEvent('paddleHit');
+				canvas.dispatchEvent(paddleHitEvent);
 				if (resetBricksOnNextPaddleHit) {
 					resetBricks();
+					let newLevelEvent = new CustomEvent('newLevel');
+					canvas.dispatchEvent(newLevelEvent);
 					baseSpeed += 10;
 					maxSpeed += 10;
 					resetBricksOnNextPaddleHit = false;

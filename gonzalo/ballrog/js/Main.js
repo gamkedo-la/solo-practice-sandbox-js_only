@@ -10,7 +10,16 @@ var outaLivesEvent = new CustomEvent('outaLives');
 var ballHeld = true;
 var showTitle = true;
 var lastScore = score;
-
+var sounds = {
+	paddleHit: new SoundOverlapsClass("audio/paddleHit"),
+	brickHit: new SoundOverlapsClass("audio/brickHit"),
+	wallHit: new SoundOverlapsClass("audio/wallHit"),
+	gameStart: new SoundOverlapsClass("audio/gameStart"),
+	newLevel: new SoundOverlapsClass("audio/newLevel"),
+	lifeGet: new SoundOverlapsClass("audio/lifeGet"),
+	lifeLost: new SoundOverlapsClass("audio/lifeLost"),
+	gameOver: new SoundOverlapsClass("audio/gameOver")
+};
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -25,16 +34,24 @@ window.onload = function() {
 		}, 1000/framesPerSecond);
 		canvas.addEventListener('mousemove', movePaddleOnMouseMove);
 		canvas.addEventListener('ballMiss', dropLife);
+		canvas.addEventListener('ballMiss', sounds.lifeLost.play);
 		canvas.addEventListener('brickHit', removeBrickOnHit);
 		canvas.addEventListener('brickHit', increaseScore);
 		canvas.addEventListener('brickHit', increaseSpeed);
+		canvas.addEventListener('brickHit', sounds.brickHit.play);
+		canvas.addEventListener('paddleHit', sounds.paddleHit.play);
+		canvas.addEventListener('wallHit', sounds.wallHit.play);
 		canvas.addEventListener('outaLives', resetGame);
+		canvas.addEventListener('outaLives', sounds.gameOver.play);
 		canvas.addEventListener('scoreIncrease', checkAndRewardPlayer);
+		canvas.addEventListener('newLevel', sounds.newLevel.play);
 		canvas.addEventListener('mousedown', function(evt) {
 			if (showTitle) {
 				showTitle = false;
+				sounds.gameStart.play();
+			} else {
+				ballHeld = false;
 			}
-			ballHeld = false;
 		});
 		ballReset();
 	});
@@ -73,6 +90,7 @@ function checkAndRewardPlayer() {
 	var prevScore = score - BRICK_HIT_POINTS;
 	if (score > 0 && score % NEW_LIFE_SCORE_MILESTONE == 0) {
 		lives++;
+		sounds.lifeGet.play();
 	}
 }
 
