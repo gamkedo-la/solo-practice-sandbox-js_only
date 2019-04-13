@@ -17,7 +17,7 @@ var rallyCount = 0;
 const MAX_RALLY = 2;
 const RALLY_INCREASE = 0.6;
 
-const BALL_RESET_PAUSE = 3000;
+const BALL_RESET_PAUSE = 1500;
 
 var player1Score = 0;
 var player2Score = 0;
@@ -66,6 +66,8 @@ function handleMouseClick(evt) {
 		player1Score = 0;
 		player2Score = 0;
 		showingWinScreen = false;
+		isOutOfPlay = true;
+		ballReset();
 	}
 }
 
@@ -267,7 +269,8 @@ function drawEverything() {
 			canvasContext.fillText("CPU Wins", (canvas.width / 2) - (canvas.width / 8), (canvas.height * 0.33));
 		}
 
-		canvasContext.fillText("Click to Continue", (canvas.width / 2) - (canvas.width / 8) - 75, (canvas.height * 0.70));
+		canvasContext.fillText("Click to Continue", (canvas.width / 2) - (canvas.width / 8) - 75, (canvas.height * 0.70));		
+
 		return;
 	}
 
