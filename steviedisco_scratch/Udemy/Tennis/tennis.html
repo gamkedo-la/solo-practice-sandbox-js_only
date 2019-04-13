@@ -75,6 +75,9 @@ window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
 
+	canvas.height = document.body.clientHeight - 20;
+	canvas.width = document.body.clientWidth - 20;
+
 	CPU_DEADZONE = CPU_DEADZONE * (canvas.height / 600.0);
 	PADDLE_HEIGHT = PADDLE_HEIGHT * (canvas.height / 600.0);
 	PADDLE_THICKNESS = canvas.width * 0.02;
