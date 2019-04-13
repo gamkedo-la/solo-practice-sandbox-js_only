@@ -33,9 +33,9 @@ const HITMOVE_DEADZONE = 5;
 const ANGLE_MODIFIER = 0.1275;
 const NET_LENGTH = 40;
 var CPU_DEADZONE = 30;
-const CPU_SPEED_DEFAULT = 8;
+const CPU_SPEED_DEFAULT = 7.275;
 var currentCpuSpeed = CPU_SPEED_DEFAULT;
-const CPU_SPEED_DEBUFF = 0.1;
+const CPU_SPEED_DEBUFF = 0.14;
 var CPU_DEBUFF_FLAG = 0;
 
 var paddle1Pos = {x:2 * PADDLE_THICKNESS, y:250};
@@ -131,8 +131,8 @@ function computerMovement() {
 
 	currentCpuSpeed = ((CPU_SPEED_DEFAULT - (CPU_DEBUFF_FLAG * CPU_SPEED_DEFAULT * CPU_SPEED_DEBUFF)));
 
-	if (ballX < canvas.width / 3) 
-		currentCpuSpeed /= 4;
+	if (ballX < canvas.width / 3.5) 
+		currentCpuSpeed /= 3;
 	
 	let paddle2YCenter = paddle2Pos.y + (PADDLE_HEIGHT / 2);
 
