@@ -15,7 +15,9 @@ var ballRadius = 10;
 
 var rallyCount = 0;
 const MAX_RALLY = 2;
-const RALLY_INCREASE = 0.5;
+const RALLY_INCREASE = 0.6;
+
+const BALL_RESET_PAUSE = 3000;
 
 var player1Score = 0;
 var player2Score = 0;
@@ -26,20 +28,22 @@ var showingWinScreen = false;
 var PADDLE_THICKNESS = 15;
 var PADDLE_HEIGHT = 130;
 
-var RETURN_DEADZONE = 10;
+var RETURN_DEADZONE = 7;
 const HITMOVE_DEADZONE = 5;
-const ANGLE_MODIFIER = 0.12;
+const ANGLE_MODIFIER = 0.1275;
 const NET_LENGTH = 40;
-var CPU_DEADZONE = 35;
-const CPU_SPEED_DEFAULT = 7.5;
+var CPU_DEADZONE = 30;
+const CPU_SPEED_DEFAULT = 8;
 var currentCpuSpeed = CPU_SPEED_DEFAULT;
-const CPU_SPEED_DEBUFF = 0.15;
+const CPU_SPEED_DEBUFF = 0.1;
 var CPU_DEBUFF_FLAG = 0;
 
 var paddle1Pos = {x:2 * PADDLE_THICKNESS, y:250};
 var paddle2Pos = {x:0, y:250};
 var paddle1PrevPos = {x:paddle1Pos.x, y:paddle1Pos.y};
 var paddle2PrevPos = {x:paddle2Pos.x, y:paddle2Pos.y};
+
+var isOutOfPlay = true;
 
 var sign = Math.sign;
 var abs = Math.abs;
@@ -93,14 +97,14 @@ window.onload = function() {
 	ballReset();
 }
 
-function ballReset() {
-	if(player1Score >= WINNING_SCORE ||
+function doBallReset() {
+	if (player1Score >= WINNING_SCORE ||
 		player2Score >= WINNING_SCORE) {
 		showingWinScreen = true;
 	}
 
 	let signX = random() < 0.5 ? -1 : 1;
-	ballSpeedX = signX * ((random() * 2) + 2.5);
+	ballSpeedX = signX * (6.0 + (1.0 * (player1Score + player2Score)));
 
 	let signY = random() < 0.5 ? -1 : 1;
 	ballSpeedY = signY * ((random() * 2) + 2.5);
@@ -112,6 +116,12 @@ function ballReset() {
 	ballY = canvas.height / 2;
 
 	rallyCount = 0;
+	isOutOfPlay = false;
+}
+
+function ballReset() {	
+	isOutOfPlay = true;
+	window.setTimeout(doBallReset, BALL_RESET_PAUSE);
 }
 
 function computerMovement() {
@@ -167,11 +177,16 @@ function getPaddleDirection(ballY, paddleY, paddlePrevY, deltaY) {
 }
 
 function moveEverything() {
-	if(showingWinScreen) {
+	if(showingWinScreen) return;
+	
+	computerMovement();	
+
+	if (isOutOfPlay) 
+	{
+		ballX = canvas.width / 2;
+		ballY = canvas.height / 2;
 		return;
 	}
-
-	computerMovement();
 
 	ballPrevX = ballX;
 	ballPrevY = ballY;
@@ -201,7 +216,7 @@ function moveEverything() {
 
 	if (ballX > canvas.width) {
 		player1Score++; // must be BEFORE ballReset()
-		ballReset();	
+		ballReset();
 	}
 	else if(((ballX > paddle2Pos.x) && (ballX < paddle2Pos.x + PADDLE_THICKNESS) || (paddle2Pos.x < ballX && paddle2Pos.x > ballPrevX))
 		&& sign(ballSpeedX) > 0) {
@@ -265,7 +280,8 @@ function drawEverything() {
 	colorRect(paddle2Pos.x,paddle2Pos.y,PADDLE_THICKNESS,PADDLE_HEIGHT,'#256cdd');
 
 	// next line draws the ball
-	colorCircle(ballX, ballY, ballRadius, '#fff430');
+	if (player1Score < WINNING_SCORE && player2Score < WINNING_SCORE)
+		colorCircle(ballX, ballY, ballRadius, '#fff430');
 
 	canvasContext.fillStyle = 'white';
 	canvasContext.font = "75px Impact";
