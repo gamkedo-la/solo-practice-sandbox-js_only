@@ -7,6 +7,8 @@ var canvas;
 var canvasContext;
 var ballX = 50;
 var ballY = 50;
+var ballPrevX = ballX;
+var ballPrevY = ballY;
 var ballSpeedX = 0;
 var ballSpeedY = 0;
 var ballRadius = 10;
@@ -171,14 +173,18 @@ function moveEverything() {
 
 	computerMovement();
 
+	ballPrevX = ballX;
+	ballPrevY = ballY;
+
 	ballX = ballX + ballSpeedX;
-	ballY = ballY + ballSpeedY;
+	// ballY = ballY + ballSpeedY;
 
 	if (ballX < 0) {
 		player2Score++; // must be BEFORE ballReset()
 		ballReset();
 	}	
-	else if((ballX < paddle1Pos.x + PADDLE_THICKNESS) && (ballX > paddle1Pos.x) && sign(ballSpeedX) < 0) 
+	else if(((ballX < paddle1Pos.x + PADDLE_THICKNESS) && (ballX > paddle1Pos.x) || (paddle1Pos.x > ballX && paddle1Pos.x < ballPrevX))
+		&& sign(ballSpeedX) < 0) 
 	{
 		if (ballY > paddle1Pos.y &&
 		    ballY < paddle1Pos.y + PADDLE_HEIGHT) 
@@ -197,7 +203,8 @@ function moveEverything() {
 		player1Score++; // must be BEFORE ballReset()
 		ballReset();	
 	}
-	else if((ballX > paddle2Pos.x) && (ballX < paddle2Pos.x + PADDLE_THICKNESS) && sign(ballSpeedX) > 0) {
+	else if(((ballX > paddle2Pos.x) && (ballX < paddle2Pos.x + PADDLE_THICKNESS) || (paddle2Pos.x < ballX && paddle2Pos.x > ballPrevX))
+		&& sign(ballSpeedX) > 0) {
 		if(ballY > paddle2Pos.y &&
 			ballY < paddle2Pos.y+PADDLE_HEIGHT) 
 		{
