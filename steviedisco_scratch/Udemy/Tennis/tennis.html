@@ -24,7 +24,7 @@ var showingWinScreen = false;
 var PADDLE_THICKNESS = 15;
 var PADDLE_HEIGHT = 130;
 
-var RETURN_DEADZONE = 5;
+var RETURN_DEADZONE = 10;
 const HITMOVE_DEADZONE = 5;
 const ANGLE_MODIFIER = 0.12;
 const NET_LENGTH = 40;
@@ -32,7 +32,7 @@ var CPU_DEADZONE = 35;
 const CPU_SPEED_DEFAULT = 7.5;
 var currentCpuSpeed = CPU_SPEED_DEFAULT;
 const CPU_SPEED_DEBUFF = 0.15;
-var CPU_SPEED_FLAG = 0;
+var CPU_DEBUFF_FLAG = 0;
 
 var paddle1Pos = {x:2 * PADDLE_THICKNESS, y:250};
 var paddle2Pos = {x:0, y:250};
@@ -115,12 +115,10 @@ function ballReset() {
 function computerMovement() {
 	paddle2PrevPos.y = paddle2Pos.y;
 
-	currentCpuSpeed = ((CPU_SPEED_DEFAULT - (CPU_SPEED_FLAG * CPU_SPEED_DEFAULT * CPU_SPEED_DEBUFF)));
+	currentCpuSpeed = ((CPU_SPEED_DEFAULT - (CPU_DEBUFF_FLAG * CPU_SPEED_DEFAULT * CPU_SPEED_DEBUFF)));
 
 	if (ballX < canvas.width / 3) 
 		currentCpuSpeed /= 4;
-
-	console.log(currentCpuSpeed);
 	
 	let paddle2YCenter = paddle2Pos.y + (PADDLE_HEIGHT / 2);
 
@@ -145,19 +143,24 @@ function hitBall(direction, deltaY, isPlayer) {
 		if (HITMOVE_DEADZONE < abs(deltaY)) {
 			ballSpeedY = sign(ballSpeedY) * abs(deltaY) * ANGLE_MODIFIER * (canvas.height / 600.0);	
 		}		
-		CPU_SPEED_FLAG = 0;
+		CPU_DEBUFF_FLAG = 0;
 	} else {
 		ballSpeedY = -sign(ballSpeedY) * abs(deltaY) * ANGLE_MODIFIER * (canvas.height / 600.0);		
-		CPU_SPEED_FLAG = (isPlayer ? 1 : 0);
+		CPU_DEBUFF_FLAG = (isPlayer ? 1 : 0);
 	}		
 
 	doRally();
 }
 
-function getPaddleDirection(currentY, prevY, deltaY) {
+function getPaddleDirection(ballY, paddleY, paddlePrevY, deltaY) {
+	var dirCheck = (() => 
+		{ 
+			return sign(paddleY - paddlePrevY) != sign(ballSpeedY) ? -sign(ballSpeedY) : sign(ballSpeedY); 
+		})();
+
 	return abs(deltaY) > RETURN_DEADZONE && 
-		   abs(currentY - prevY) > HITMOVE_DEADZONE
-		? (currentY > prevY ? 1 : -1)
+		   abs(paddleY - paddlePrevY) > HITMOVE_DEADZONE
+		? dirCheck
 		: sign(ballSpeedY);
 }
 
@@ -184,7 +187,7 @@ function moveEverything() {
 			ballX = paddle1Pos.x + PADDLE_THICKNESS + ballRadius;
 
 			var deltaY = ballY - (paddle1Pos.y + PADDLE_HEIGHT / 2);
-			var direction = getPaddleDirection(paddle1Pos.y, paddle1PrevPos.y, deltaY);					
+			var direction = getPaddleDirection(ballY, paddle1Pos.y, paddle1PrevPos.y, deltaY);					
 
 			hitBall(direction, deltaY, true);
 		} 
@@ -202,7 +205,7 @@ function moveEverything() {
 			ballX = paddle2Pos.x - ballRadius;
 
 			var deltaY = ballY - (paddle2Pos.y+PADDLE_HEIGHT/2);
-			var direction = getPaddleDirection(paddle2Pos.y, paddle2PrevPos.y, deltaY);			
+			var direction = getPaddleDirection(ballY, paddle2Pos.y, paddle2PrevPos.y, deltaY);			
 
 			hitBall(direction, deltaY, false);		
 		} 
