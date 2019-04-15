@@ -8,8 +8,6 @@ var timeAtFPSCalc = 0;
 var FPS = 0;
 
 var previousTime = 0, currentTime = 0;
-var deltaTime;
-
 var timerFull = timeInSeconds(2);
 var timer = timerFull;
 
@@ -41,7 +39,7 @@ function getDeltaTime() {
 	frameCount++;
 	previousTime = currentTime;
 	currentTime = Date.now();
-	deltaTime = (currentTime - previousTime)/1000;
+	deltaTime = currentTime - previousTime;
 
 	//console.log("deltaTime = " + (deltaTime/1000));
 	if (timer <= 0) {
