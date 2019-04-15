@@ -1,37 +1,56 @@
-const RUN_SPEED = 4.0;
-const JUMP_POWER = 12.0;
-const GROUND_FRICTION = 0.8;
-const AIR_RESISTANCE = 0.95;
-const GRAVITY = 0.6;
+var runSpeed = 5;
+var jumperRadius = 20;
+var jumpPower = jumperRadius;
+var groundFriction = 0.6;
+var airResistance = 0.9;
+var gravity = 0.7;
 
 var jumperX = 75, jumperY = 75;
 var jumperSpeedX = 0, jumperSpeedY = 0;
 var jumperOnGround = false;
-var jumperRadius = 10;
+
+var jumpVariables = [];
+var jumpVariableNames = ["jumperRadius","runSpeed","jumperSpeedX", "jumpPower","jumperSpeedY", "groundFriction", "airResistance", "gravity"];
 
 function jumperMove() {
 	if(jumperOnGround) {
 		if (holdJump) {
-			jumperSpeedY = -JUMP_POWER;
+			if (jumperSpeedX != 0) {
+				jumperSpeedY = -jumpPower - Math.abs(jumperSpeedX)/2;
+			} else {
+				jumperSpeedY = -jumpPower;
+			}
 		}
-		jumperSpeedX *= GROUND_FRICTION;
+		if (jumperSpeedX != 0) {
+			jumperSpeedX *= groundFriction;
+		}
 	} else {
-		jumperSpeedY += GRAVITY;
-		if(jumperSpeedY > jumperRadius) { // cheap test to ensure can't fall through floor
+		jumperSpeedY *= airResistance;
+		jumperSpeedY += gravity;
+		if(jumperSpeedY > jumperRadius) {
 			jumperSpeedY = jumperRadius;
+		}
+
+		if (jumperSpeedY > 0) {
+			gravity = .99;
+			airResistance = 1;
+		} else {
+			gravity = 0.7;
+			airResistance = 0.9;
 		}
 	}
   
 	if(holdLeft) {
-		jumperSpeedX = -RUN_SPEED;
-	}
-	if(holdRight) {
-		jumperSpeedX = RUN_SPEED;
+		jumperSpeedX = -runSpeed;
+	} else if(holdRight) {
+		jumperSpeedX = runSpeed;
+	} else if (!jumperOnGround) {
+		jumperSpeedX = 0;
 	}
 
 	if(jumperSpeedY < 0 && isBrickAtPixelCoord(jumperX,jumperY-jumperRadius) == 1) {
 		jumperY = (Math.floor( jumperY / BRICK_H )) * BRICK_H + jumperRadius;
-		jumperSpeedY = 0.0;
+		jumperSpeedY = 0;
 	}
 
 	if(jumperSpeedY > 0 && isBrickAtPixelCoord(jumperX,jumperY+jumperRadius) == 1) {

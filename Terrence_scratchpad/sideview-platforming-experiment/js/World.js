@@ -48,6 +48,18 @@ function isBrickAtPixelCoord(hitPixelX, hitPixelY) {
 	return (brickGrid[brickIndex] == 1);
 }
 
+function tileIndexAtPixelCoord(hitPixelX, hitPixelY) {
+	var tileCol = hitPixelX / BRICK_W;
+	var tileRow = hitPixelY / BRICK_H;
+
+	// using Math.floor to round down to the nearest whole number
+	tileCol = Math.floor( tileCol );
+	tileRow = Math.floor( tileRow );
+
+	var brickIndex = brickTileToIndex(tileCol, tileRow);
+	return brickIndex;
+}
+
 function drawBricks() {
 	for(var eachCol=0; eachCol<BRICK_COLS; eachCol++) { // in each column...
 		for(var eachRow=0; eachRow<BRICK_ROWS; eachRow++) { // in each row within that col
