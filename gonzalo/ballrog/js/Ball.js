@@ -98,7 +98,7 @@ function ballMove() {
 
 function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY) {
 	var tileCol = Math.floor(pixelX / BRICK_W);
-	var tileRow = Math.floor(pixelY / BRICK_H);
+	var tileRow = Math.floor((pixelY - TOP_MARGIN) / BRICK_H);
 
 	if (tileCol < 0 || tileCol >= BRICK_COLS ||
 		tileRow < 0 || tileRow >= BRICK_ROWS) {

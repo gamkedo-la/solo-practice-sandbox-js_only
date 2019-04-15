@@ -3,6 +3,19 @@ const BRICK_H = 20;
 const BRICK_GAP = 2;
 const BRICK_COLS = 10;
 const BRICK_ROWS = 14;
+const TOP_MARGIN = 2*BRICK_H;
+const masterGrid = [
+	0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
+	0, 0, 0, 1, 1, 1, 1, 0, 0, 0,
+	0, 0, 1, 1, 1, 1, 1, 1, 0, 0,
+	0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 0, 1, 0, 1, 1, 0, 1, 0, 1,
+	0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+	0, 0, 0, 1, 0, 1, 0, 0, 0, 0,
+	0, 0, 0, 0, 1, 0, 0, 0, 0, 0
+];
 var brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
 var resetBricksOnNextPaddleHit = false;
 
@@ -12,7 +25,7 @@ function drawBricks() {
 		for (var eachRow=0; eachRow<BRICK_ROWS; eachRow++) {
 		    if(isBrickAtTileCoord(eachCol, eachRow)) {
 				var brickLeftEdgeX = eachCol * BRICK_W;
-				var brickTopEdgeY = eachRow * BRICK_H;
+				var brickTopEdgeY = eachRow * BRICK_H + TOP_MARGIN;
 				noBricksLeft = false;
 				drawBitMap(brickPic, brickLeftEdgeX, brickTopEdgeY);
 		    }		     
@@ -24,9 +37,7 @@ function drawBricks() {
 }
 
 function resetBricks() {
-	for (var i=0; i<BRICK_COLS * BRICK_ROWS; i++) {
-		brickGrid[i] = i > BRICK_COLS*3 -1 ? 1 : 0;
-	}
+	brickGrid = masterGrid.slice();
 }
 
 function isBrickAtTileCoord(brickTileCol, brickTileRow) {

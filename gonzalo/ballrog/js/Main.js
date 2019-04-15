@@ -123,8 +123,7 @@ function drawEverything() {
 }
 
 function moveEverything() {
-	if (showTitle) {
-	} else {
+	if (!showTitle) {
 		ballMove();
 	}
 }
