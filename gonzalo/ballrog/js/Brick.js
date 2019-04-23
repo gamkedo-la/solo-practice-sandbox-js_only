@@ -4,6 +4,24 @@ const BRICK_GAP = 2;
 const BRICK_COLS = 10;
 const BRICK_ROWS = 14;
 const TOP_MARGIN = 2*BRICK_H;
+const BRICK_TYPES = {
+	empty: 0,
+	onehit: 1,
+	twohit: 2,
+	threehit: 3,
+	unbreakable: 4
+};
+const EMPTY = 0;
+const ONEHIT = 1;
+const TWOHIT = 2;
+const THREEHIT = 3;
+const UNBREAKABLE = 4;
+const BRICK_IMAGES = {
+	[ONEHIT]: brick1Pic,
+	[TWOHIT]: brick2Pic,
+	[THREEHIT]: brick3Pic,
+	[UNBREAKABLE]: brick4Pic
+};
 const masterGrid = [
 	0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
 	0, 0, 0, 1, 1, 1, 1, 0, 0, 0,
@@ -11,38 +29,47 @@ const masterGrid = [
 	0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-	1, 0, 1, 0, 1, 1, 0, 1, 0, 1,
-	0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
-	0, 0, 0, 1, 0, 1, 0, 0, 0, 0,
-	0, 0, 0, 0, 1, 0, 0, 0, 0, 0
+	2, 0, 2, 0, 2, 2, 0, 2, 0, 2,
+	0, 0, 0, 0, 0, 3, 0, 0, 0, 0,
+	0, 0, 0, 4, 0, 3, 0, 0, 0, 0,
+	0, 0, 0, 0, 4, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 ];
 var brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
+var bricksLeft = 0;
 var resetBricksOnNextPaddleHit = false;
 
 function drawBricks() {
-	var noBricksLeft = true;
 	for (var eachCol=0; eachCol<BRICK_COLS; eachCol++) {
 		for (var eachRow=0; eachRow<BRICK_ROWS; eachRow++) {
-		    if(isBrickAtTileCoord(eachCol, eachRow)) {
+			var brick = getBrickAtTileCoord(eachCol, eachRow);
+		    if(typeof(brick) != "undefined" && brick != EMPTY) {
+				// TODO: get brick index here to find brick type
 				var brickLeftEdgeX = eachCol * BRICK_W;
 				var brickTopEdgeY = eachRow * BRICK_H + TOP_MARGIN;
-				noBricksLeft = false;
-				drawBitMap(brickPic, brickLeftEdgeX, brickTopEdgeY);
-		    }		     
+				if (typeof(BRICK_IMAGES[brick]) == "undefined") {
+					console.log("BAD IMAGE FOR", brick);
+				}
+				drawBitMap(BRICK_IMAGES[brick], brickLeftEdgeX, brickTopEdgeY);
+		    }
 		}
-	}
-	if (noBricksLeft) {
-		resetBricksOnNextPaddleHit = true;
 	}
 }
 
 function resetBricks() {
 	brickGrid = masterGrid.slice();
+	bricksLeft = brickGrid.filter(brick => brick != EMPTY && brick != UNBREAKABLE).length;
 }
 
-function isBrickAtTileCoord(brickTileCol, brickTileRow) {
+function getBrickAtTileCoord(brickTileCol, brickTileRow) {
 	var brickIndex = brickTileCol + BRICK_COLS * brickTileRow;
-	return (brickGrid[brickIndex] == 1);
+	if (typeof(brickGrid[brickIndex]) == "undefined") {
+		console.log('BAD BRICK AT', brickIndex);
+	}
+	return brickGrid[brickIndex];
 }
 
 function checkForAndRemoveBrickAtPixelCoord(pixelX, pixelY) {
@@ -61,6 +88,15 @@ function brickToTileIndex(tileCol, tileRow) {
 	return tileCol + BRICK_COLS * tileRow;
 }
 
-function removeBrickOnHit(evt) {
-	brickGrid[evt.detail.index] = 0;
+function handleBrickHit(evt) {
+	var brick = brickGrid[evt.detail.index];
+	if (brick != EMPTY && brick != UNBREAKABLE) {
+		brickGrid[evt.detail.index] -= 1;
+		if (brickGrid[evt.detail.index] == EMPTY) {
+			bricksLeft--;
+			resetBricksOnNextPaddleHit = bricksLeft <= 0;
+			let brickRemovedEvent = new CustomEvent('brickRemoved', {detail: evt.detail});
+			canvas.dispatchEvent(brickRemovedEvent);
+		}
+	}
 }
