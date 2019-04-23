@@ -11,16 +11,11 @@ const BRICK_TYPES = {
 	threehit: 3,
 	unbreakable: 4
 };
-const EMPTY = 0;
-const ONEHIT = 1;
-const TWOHIT = 2;
-const THREEHIT = 3;
-const UNBREAKABLE = 4;
 const BRICK_IMAGES = {
-	[ONEHIT]: brick1Pic,
-	[TWOHIT]: brick2Pic,
-	[THREEHIT]: brick3Pic,
-	[UNBREAKABLE]: brick4Pic
+	[BRICK_TYPES.onehit]: brick1Pic,
+	[BRICK_TYPES.twohit]: brick2Pic,
+	[BRICK_TYPES.threehit]: brick3Pic,
+	[BRICK_TYPES.unbreakable]: brick4Pic
 };
 const masterGrid = [
 	0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
@@ -46,7 +41,7 @@ function drawBricks() {
 	for (var eachCol=0; eachCol<BRICK_COLS; eachCol++) {
 		for (var eachRow=0; eachRow<BRICK_ROWS; eachRow++) {
 			var brick = getBrickAtTileCoord(eachCol, eachRow);
-		    if(typeof(brick) != "undefined" && brick != EMPTY) {
+		    if(typeof(brick) != "undefined" && brick != BRICK_TYPES.empty) {
 				// TODO: get brick index here to find brick type
 				var brickLeftEdgeX = eachCol * BRICK_W;
 				var brickTopEdgeY = eachRow * BRICK_H + TOP_MARGIN;
@@ -61,27 +56,14 @@ function drawBricks() {
 
 function resetBricks() {
 	brickGrid = masterGrid.slice();
-	bricksLeft = brickGrid.filter(brick => brick != EMPTY && brick != UNBREAKABLE).length;
+	bricksLeft = brickGrid.filter(
+		brick => brick != BRICK_TYPES.empty && brick != BRICK_TYPES.unbreakable
+	).length;
 }
 
 function getBrickAtTileCoord(brickTileCol, brickTileRow) {
 	var brickIndex = brickTileCol + BRICK_COLS * brickTileRow;
-	if (typeof(brickGrid[brickIndex]) == "undefined") {
-		console.log('BAD BRICK AT', brickIndex);
-	}
 	return brickGrid[brickIndex];
-}
-
-function checkForAndRemoveBrickAtPixelCoord(pixelX, pixelY) {
-	var tileX = Math.floor(pixelX / BRICK_W);
-	var tileY = Math.floor(pixelY / BRICK_H);
-	var brickIndex = tileX + BRICK_COLS * tileY;
-	var brickPresent = false;
-	if (brickIndex < BRICK_COLS * BRICK_ROWS) {
-		brickPresent = brickGrid[brickIndex] == 1;
-		brickGrid[brickIndex] = 0;
-	}
-	return brickPresent;
 }
 
 function brickToTileIndex(tileCol, tileRow) {
@@ -90,12 +72,14 @@ function brickToTileIndex(tileCol, tileRow) {
 
 function handleBrickHit(evt) {
 	var brick = brickGrid[evt.detail.index];
-	if (brick != EMPTY && brick != UNBREAKABLE) {
+	if (brick != BRICK_TYPES.empty && brick != BRICK_TYPES.unbreakable) {
 		brickGrid[evt.detail.index] -= 1;
-		if (brickGrid[evt.detail.index] == EMPTY) {
+		if (brickGrid[evt.detail.index] == BRICK_TYPES.empty) {
 			bricksLeft--;
 			resetBricksOnNextPaddleHit = bricksLeft <= 0;
-			let brickRemovedEvent = new CustomEvent('brickRemoved', {detail: evt.detail});
+			let brickRemovedEvent = new CustomEvent('brickRemoved', {
+				detail: evt.detail
+			});
 			canvas.dispatchEvent(brickRemovedEvent);
 		}
 	}

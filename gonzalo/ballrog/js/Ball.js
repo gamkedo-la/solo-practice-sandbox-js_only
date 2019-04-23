@@ -107,7 +107,7 @@ function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY) {
 
 	var brickIndex = brickToTileIndex(tileCol, tileRow);
 
-	if (brickGrid[brickIndex] != EMPTY) {
+	if (brickGrid[brickIndex] != BRICK_TYPES.empty) {
 		var prevBallX = ballX - ballVelX;
 		var prevBallY = ballY - ballVelY;
 		var prevTileCol = Math.floor(prevBallX / BRICK_W);
