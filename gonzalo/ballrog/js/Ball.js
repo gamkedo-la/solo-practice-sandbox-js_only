@@ -11,6 +11,7 @@ var minSpeed = baseSpeed;
 var ballMissEvent = new CustomEvent('ballMiss');
 var ballResetEvent = new CustomEvent('ballReset');
 var highestHitRow = BRICK_ROWS;
+var passingThrough = false;
 
 
 function ballReset() {
@@ -20,6 +21,7 @@ function ballReset() {
 	updateVelocity(ballVelX, ballVelY > 0 ? -ballVelY : ballVelY);
 	updateSpeed(minSpeed);
 	highestHitRow = BRICK_ROWS;
+	passingThrough = false;
 	var ballResetEvent = new CustomEvent('ballReset');
 	canvas.dispatchEvent(ballResetEvent);
 }
@@ -73,6 +75,7 @@ function ballMove() {
 				if (currentSpeed < minSpeed) {
 					updateSpeed(minSpeed);
 				}
+				passingThrough = false;
 				let paddleHitEvent = new CustomEvent('paddleHit');
 				canvas.dispatchEvent(paddleHitEvent);
 				if (resetBricksOnNextPaddleHit) {
@@ -91,6 +94,7 @@ function ballMove() {
 		}
 		if (ballY < 0) {
 			updateVelocity(ballVelX, -1*ballVelY);
+			passingThrough = false;
 		}
 		breakAndBounceOffBrickAtPixelCoord(ballX, ballY);
 	}
@@ -101,7 +105,7 @@ function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY) {
 	var tileRow = Math.floor((pixelY - TOP_MARGIN) / BRICK_H);
 
 	if (tileCol < 0 || tileCol >= BRICK_COLS ||
-		tileRow < 0 || tileRow >= BRICK_ROWS) {
+		tileRow < 0 || tileRow >= BRICK_ROWS || (retroMode && passingThrough)) {
 		return;
 	}
 
@@ -111,26 +115,36 @@ function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY) {
 		var prevBallX = ballX - ballVelX;
 		var prevBallY = ballY - ballVelY;
 		var prevTileCol = Math.floor(prevBallX / BRICK_W);
+		if (prevTileCol != tileCol) {
+			tileCol = tileCol + Math.sign(ballVelX);
+		}
 		var prevTileRow = Math.floor(prevBallY / BRICK_H);
+		if (prevTileRow != tileRow) {
+			prevTileRow = tileRow + Math.sign(-ballVelY);
+		}
 
 		var bothTestsFailed = true;
 
-		if (prevTileCol != tileCol) { // must have come in horizontally
+		if (!retroMode && prevTileCol != tileCol) { // must have come in horizontally
 		    var adjacentBrickIndex = brickToTileIndex(prevTileCol, tileRow);
-		    if (brickGrid[adjacentBrickIndex] != 1) {
+		    if (brickGrid[adjacentBrickIndex] == BRICK_TYPES.empty) {
 				updateVelocity(-1*ballVelX, ballVelY);
 				bothTestsFailed = false;
 		    }
 		}
 		if (prevTileRow != tileRow) { // must have come in vertically
 		    var adjacentBrickIndex = brickToTileIndex(tileCol, prevTileRow);
-		    if (brickGrid[adjacentBrickIndex] != 1) {
+		    if (retroMode || brickGrid[adjacentBrickIndex] == BRICK_TYPES.empty) {
 				updateVelocity(ballVelX, -1*ballVelY);
+				passingThrough = true;
 				bothTestsFailed = false;
 		    }
 		}
 
 		if (bothTestsFailed) {
+			if (retroMode) {
+				return;
+			}
 			updateVelocity(-1*ballVelX, -1*ballVelY);
 		}
 

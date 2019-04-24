@@ -1,6 +1,7 @@
 const INITIAL_LIVES = 3;
 const BRICK_HIT_POINTS = 100;
 const NEW_LIFE_SCORE_MILESTONE = 3000;
+var retroMode = false;
 var canvas;
 var canvasContext;
 var framesPerSecond = 30;
