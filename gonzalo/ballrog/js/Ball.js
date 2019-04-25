@@ -12,6 +12,7 @@ var ballMissEvent = new CustomEvent('ballMiss');
 var ballResetEvent = new CustomEvent('ballReset');
 var highestHitRow = BRICK_ROWS;
 var passingThrough = false;
+var wallHitEvent = new CustomEvent('wallHit');
 
 
 function ballReset() {
@@ -64,7 +65,6 @@ function ballMove() {
 		ballY += ballVelY;
 		if ((ballX > canvas.width && ballVelX > 0) || (ballX < 0 && ballVelX < 0)){
 			updateVelocity(-1*ballVelX, ballVelY);
-			let wallHitEvent = new CustomEvent('wallHit');
 			canvas.dispatchEvent(wallHitEvent);
 		}
 		if (ballY > PADDLE_Y && ballY < PADDLE_Y + PADDLE_THICKNESS && ballVelY > 0) {
@@ -94,6 +94,7 @@ function ballMove() {
 		}
 		if (ballY < 0) {
 			updateVelocity(ballVelX, -1*ballVelY);
+			canvas.dispatchEvent(wallHitEvent);
 			passingThrough = false;
 		}
 		breakAndBounceOffBrickAtPixelCoord(ballX, ballY);
