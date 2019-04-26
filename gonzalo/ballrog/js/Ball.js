@@ -63,12 +63,12 @@ function ballMove() {
 	if (!ballHeld) {
 		ballX += ballVelX;
 		ballY += ballVelY;
-		if ((ballX > canvas.width && ballVelX > 0) || (ballX < 0 && ballVelX < 0)){
+		if ((ballX + BALL_RADIUS > canvas.width && ballVelX > 0) || (ballX - BALL_RADIUS < 0 && ballVelX < 0)){
 			updateVelocity(-1*ballVelX, ballVelY);
 			canvas.dispatchEvent(wallHitEvent);
 		}
-		if (ballY > PADDLE_Y && ballY < PADDLE_Y + PADDLE_THICKNESS && ballVelY > 0) {
-			if (ballX > paddleX && ballX < paddleX + PADDLE_WIDTH) {
+		if (ballY + BALL_RADIUS > PADDLE_Y && ballY - BALL_RADIUS < PADDLE_Y + PADDLE_THICKNESS && ballVelY > 0) {
+			if (ballX + BALL_RADIUS > paddleX && ballX - BALL_RADIUS < paddleX + PADDLE_WIDTH) {
 				let deltaX = ballX - (paddleX + PADDLE_WIDTH/2);
 				updateVelocity(deltaX*0.44, -1*ballVelY);
 				let currentSpeed = getSpeedFromVelocity(ballVelX, ballVelY);
@@ -97,7 +97,11 @@ function ballMove() {
 			canvas.dispatchEvent(wallHitEvent);
 			passingThrough = false;
 		}
-		breakAndBounceOffBrickAtPixelCoord(ballX, ballY);
+
+		breakAndBounceOffBrickAtPixelCoord(
+			ballX + Math.sign(ballVelX)*BALL_RADIUS,
+			ballY + Math.sign(ballVelY)*BALL_RADIUS
+		);
 	}
 }
 
@@ -117,11 +121,23 @@ function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY) {
 		var prevBallY = ballY - ballVelY;
 		var prevTileCol = Math.floor(prevBallX / BRICK_W);
 		if (prevTileCol != tileCol) {
-			tileCol = tileCol + Math.sign(ballVelX);
+			prevTileCol = tileCol + Math.sign(ballVelX);
+		}
+		if (prevTileCol < 0) {
+			prevTileCol = 0;
+		}
+		if (prevTileCol > BRICK_COLS) {
+			prevTileCol = BRICK_COLS;
 		}
 		var prevTileRow = Math.floor(prevBallY / BRICK_H);
 		if (prevTileRow != tileRow) {
 			prevTileRow = tileRow + Math.sign(-ballVelY);
+		}
+		if (prevTileRow < 0) {
+			prevTilerow = 0;
+		}
+		if (prevTileRow > BRICK_ROWS) {
+			prevTileRow = BRICK_ROWS;
 		}
 
 		var bothTestsFailed = true;
