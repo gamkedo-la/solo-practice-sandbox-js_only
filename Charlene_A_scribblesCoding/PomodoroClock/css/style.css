@@ -1,0 +1,83 @@
+body {
+  background-color: #FBADD8;
+  color: #DE067C;
+  font-family: 'Exo', sans-serif;
+}
+
+.header {
+  margin: 15px auto 10px auto;
+}
+
+.me {
+  font-size: 14px;
+}
+
+.clock {
+  background-color: white;
+  margin: 0px auto 10px auto;
+  height: 330px;
+  border-radius: 10px;
+}
+
+.session {
+  padding-top: 25px;
+  height: 75px;
+  margin-bottom: 10px;
+}
+
+.break {
+  height: 75px;
+}
+
+.num {
+  color: #4F1A37;
+}
+
+.mins {
+  color: #4F1A37;
+  font-size: 12px;
+}
+
+button {
+  color: #8C0850;
+  margin-left: 3px;
+  margin-right: 3px;
+  width: 30px;
+  height: 30px;
+  border: 0.5px solid #8C0850;
+  border-radius: 5px;
+  background-color: #F579BD;
+}
+
+button:active {
+  outline: none;
+  background-color: #E82D93;
+}
+
+button:focus {
+  outline: none;
+}
+
+#sessionPlus, #breakPlus {
+  margin-left: 15px;
+}
+
+#sessionMinus, #breakMinus {
+  margin-right: 15px;
+}
+
+#reset {
+  width: 60px;
+}
+
+h1 {
+  font-size: 65px;
+}
+
+#countdown {
+  margin-top: 25px;
+}
+
+.footer {
+  font-size: 12px;  
+}
