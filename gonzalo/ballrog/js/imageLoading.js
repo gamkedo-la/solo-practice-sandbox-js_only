@@ -1,12 +1,18 @@
 var ballPic = document.createElement("img");
 var paddlePic = document.createElement("img");
-var brickPic = document.createElement("img");
+var brick1Pic = document.createElement("img");
+var brick2Pic = document.createElement("img");
+var brick3Pic = document.createElement("img");
+var brick4Pic = document.createElement("img");
 var livesPic = document.createElement("img");
 var titlePic = document.createElement("img");
 var imageList = [
 	{varName: ballPic, theFile: "../images/ball.png"},
 	{varName: paddlePic, theFile: "../images/paddle.png"},
-	{varName: brickPic, theFile: "../images/brick.png"},
+	{varName: brick1Pic, theFile: "../images/brick1.png"},
+	{varName: brick2Pic, theFile: "../images/brick2.png"},
+	{varName: brick3Pic, theFile: "../images/brick3.png"},
+	{varName: brick4Pic, theFile: "../images/brick4.png"},
 	{varName: livesPic, theFile: "../images/lifeicon.png"},
 	{varName: titlePic, theFile: "../images/title.png"}
 ];

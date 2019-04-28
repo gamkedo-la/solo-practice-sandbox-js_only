@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <style>      
+            body {
+                background:black;
+                margin:0;
+                padding:0;
+                overflow:hidden;
+            }
+            #gameCanvas {
+                height:100vh;
+                padding:0;
+                outline:0;
+                image-rendering: pixelated;
+                -ms-interpolation-mode: nearest-neighbor;
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: -webkit-crisp-edges;
+                image-rendering: -moz-crisp-edges;
+                image-rendering: -o-crisp-edges;
+                margin: 0 auto;
+                display: block;
+            }
+            #debugText {
+                float: right;
+                position: absolute;
+                left: 90px;
+                top: 0;
+            }
+        </style>
+    </head>
+    <body oncontextmenu="return false;">
+        <script src="Tile.js"></script>
+        <script src="BoardCell.js"></script>
+        <script src="Board.js"></script>
+        <script src="Solver.js"></script>
+        <script src="InputMouse.js"></script>
+        <script src="CanvasPan.js"></script>
+        <script src="Draw.js"></script>
+        <script src="Game.js"></script>
+    </body>
+</html>

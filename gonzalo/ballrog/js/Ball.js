@@ -11,6 +11,8 @@ var minSpeed = baseSpeed;
 var ballMissEvent = new CustomEvent('ballMiss');
 var ballResetEvent = new CustomEvent('ballReset');
 var highestHitRow = BRICK_ROWS;
+var passingThrough = false;
+var wallHitEvent = new CustomEvent('wallHit');
 
 
 function ballReset() {
@@ -20,6 +22,7 @@ function ballReset() {
 	updateVelocity(ballVelX, ballVelY > 0 ? -ballVelY : ballVelY);
 	updateSpeed(minSpeed);
 	highestHitRow = BRICK_ROWS;
+	passingThrough = false;
 	var ballResetEvent = new CustomEvent('ballReset');
 	canvas.dispatchEvent(ballResetEvent);
 }
@@ -60,19 +63,19 @@ function ballMove() {
 	if (!ballHeld) {
 		ballX += ballVelX;
 		ballY += ballVelY;
-		if ((ballX > canvas.width && ballVelX > 0) || (ballX < 0 && ballVelX < 0)){
+		if ((ballX + BALL_RADIUS > canvas.width && ballVelX > 0) || (ballX - BALL_RADIUS < 0 && ballVelX < 0)){
 			updateVelocity(-1*ballVelX, ballVelY);
-			let wallHitEvent = new CustomEvent('wallHit');
 			canvas.dispatchEvent(wallHitEvent);
 		}
-		if (ballY > PADDLE_Y && ballY < PADDLE_Y + PADDLE_THICKNESS && ballVelY > 0) {
-			if (ballX > paddleX && ballX < paddleX + PADDLE_WIDTH) {
+		if (ballY + BALL_RADIUS > PADDLE_Y && ballY - BALL_RADIUS < PADDLE_Y + PADDLE_THICKNESS && ballVelY > 0) {
+			if (ballX + BALL_RADIUS > paddleX && ballX - BALL_RADIUS < paddleX + PADDLE_WIDTH) {
 				let deltaX = ballX - (paddleX + PADDLE_WIDTH/2);
 				updateVelocity(deltaX*0.44, -1*ballVelY);
 				let currentSpeed = getSpeedFromVelocity(ballVelX, ballVelY);
 				if (currentSpeed < minSpeed) {
 					updateSpeed(minSpeed);
 				}
+				passingThrough = false;
 				let paddleHitEvent = new CustomEvent('paddleHit');
 				canvas.dispatchEvent(paddleHitEvent);
 				if (resetBricksOnNextPaddleHit) {
@@ -91,47 +94,74 @@ function ballMove() {
 		}
 		if (ballY < 0) {
 			updateVelocity(ballVelX, -1*ballVelY);
+			canvas.dispatchEvent(wallHitEvent);
+			passingThrough = false;
 		}
-		breakAndBounceOffBrickAtPixelCoord(ballX, ballY);
+
+		breakAndBounceOffBrickAtPixelCoord(
+			ballX + Math.sign(ballVelX)*BALL_RADIUS,
+			ballY + Math.sign(ballVelY)*BALL_RADIUS
+		);
 	}
 }
 
 function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY) {
 	var tileCol = Math.floor(pixelX / BRICK_W);
-	var tileRow = Math.floor(pixelY / BRICK_H);
+	var tileRow = Math.floor((pixelY - TOP_MARGIN) / BRICK_H);
 
 	if (tileCol < 0 || tileCol >= BRICK_COLS ||
-		tileRow < 0 || tileRow >= BRICK_ROWS) {
+		tileRow < 0 || tileRow >= BRICK_ROWS || (retroMode && passingThrough)) {
 		return;
 	}
 
 	var brickIndex = brickToTileIndex(tileCol, tileRow);
 
-
-	if (brickGrid[brickIndex] == 1) {
+	if (brickGrid[brickIndex] != BRICK_TYPES.empty) {
 		var prevBallX = ballX - ballVelX;
 		var prevBallY = ballY - ballVelY;
 		var prevTileCol = Math.floor(prevBallX / BRICK_W);
+		if (prevTileCol != tileCol) {
+			prevTileCol = tileCol + Math.sign(ballVelX);
+		}
+		if (prevTileCol < 0) {
+			prevTileCol = 0;
+		}
+		if (prevTileCol > BRICK_COLS) {
+			prevTileCol = BRICK_COLS;
+		}
 		var prevTileRow = Math.floor(prevBallY / BRICK_H);
+		if (prevTileRow != tileRow) {
+			prevTileRow = tileRow + Math.sign(-ballVelY);
+		}
+		if (prevTileRow < 0) {
+			prevTilerow = 0;
+		}
+		if (prevTileRow > BRICK_ROWS) {
+			prevTileRow = BRICK_ROWS;
+		}
 
 		var bothTestsFailed = true;
 
-		if (prevTileCol != tileCol) { // must have come in horizontally
+		if (!retroMode && prevTileCol != tileCol) { // must have come in horizontally
 		    var adjacentBrickIndex = brickToTileIndex(prevTileCol, tileRow);
-		    if (brickGrid[adjacentBrickIndex] != 1) {
+		    if (brickGrid[adjacentBrickIndex] == BRICK_TYPES.empty) {
 				updateVelocity(-1*ballVelX, ballVelY);
 				bothTestsFailed = false;
 		    }
 		}
 		if (prevTileRow != tileRow) { // must have come in vertically
 		    var adjacentBrickIndex = brickToTileIndex(tileCol, prevTileRow);
-		    if (brickGrid[adjacentBrickIndex] != 1) {
+		    if (retroMode || brickGrid[adjacentBrickIndex] == BRICK_TYPES.empty) {
 				updateVelocity(ballVelX, -1*ballVelY);
+				passingThrough = true;
 				bothTestsFailed = false;
 		    }
 		}
 
 		if (bothTestsFailed) {
+			if (retroMode) {
+				return;
+			}
 			updateVelocity(-1*ballVelX, -1*ballVelY);
 		}
 

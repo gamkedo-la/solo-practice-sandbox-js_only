@@ -1,6 +1,7 @@
 const INITIAL_LIVES = 3;
 const BRICK_HIT_POINTS = 100;
 const NEW_LIFE_SCORE_MILESTONE = 3000;
+var retroMode = false;
 var canvas;
 var canvasContext;
 var framesPerSecond = 30;
@@ -35,10 +36,10 @@ window.onload = function() {
 		canvas.addEventListener('mousemove', movePaddleOnMouseMove);
 		canvas.addEventListener('ballMiss', dropLife);
 		canvas.addEventListener('ballMiss', sounds.lifeLost.play);
-		canvas.addEventListener('brickHit', removeBrickOnHit);
-		canvas.addEventListener('brickHit', increaseScore);
-		canvas.addEventListener('brickHit', increaseSpeed);
+		canvas.addEventListener('brickHit', handleBrickHit);
 		canvas.addEventListener('brickHit', sounds.brickHit.play);
+		canvas.addEventListener('brickRemoved', increaseScore);
+		canvas.addEventListener('brickRemoved', increaseSpeed);
 		canvas.addEventListener('paddleHit', sounds.paddleHit.play);
 		canvas.addEventListener('wallHit', sounds.wallHit.play);
 		canvas.addEventListener('outaLives', resetGame);
@@ -123,8 +124,7 @@ function drawEverything() {
 }
 
 function moveEverything() {
-	if (showTitle) {
-	} else {
+	if (!showTitle) {
 		ballMove();
 	}
 }
