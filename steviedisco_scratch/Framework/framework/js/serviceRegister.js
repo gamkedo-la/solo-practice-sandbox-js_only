@@ -5,27 +5,30 @@ function serviceRegister()
     this.registerService = function(service) 
     {
         this.register[service.constructor.name] = service;
+        console.log(`${service.constructor.name} registered`)
     };
 
     this.getService = function(service) 
     {
-        let dependencies = this.getDependencies(service);       
-
         let serviceInstance = this.register[service.name];
+
         if (serviceInstance == undefined)
         {
-            serviceInstance = new service(dependencies);                    
+            let arguments = this.getArguments(service);
+            let dependencies = this.getDependencies(arguments);  
+
+            serviceInstance = new service(dependencies);
+
             this.registerService(serviceInstance);
         }        
 
         return serviceInstance;
     };
 
-    this.getDependencies = function(service)
+    this.getDependencies = function(arguments)
     {
         let dependencies = new Array();
-        let arguments = this.getArguments(service); 
-
+         
         for (let argument of arguments)
         {
             let constructor = eval(argument);

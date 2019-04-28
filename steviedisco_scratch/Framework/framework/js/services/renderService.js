@@ -1,4 +1,4 @@
-function renderService(testService) 
+function renderService() 
 {
     this.bufferIndex = 0;    
     

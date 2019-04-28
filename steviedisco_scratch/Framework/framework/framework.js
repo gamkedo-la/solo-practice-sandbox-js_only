@@ -16,5 +16,5 @@ var _serviceRegister;
 
 window.onload = function() {
     _serviceRegister = new serviceRegister();
-    _serviceRegister.getService(renderService);
+    _serviceRegister.getService(exampleServiceTwo);
 }
