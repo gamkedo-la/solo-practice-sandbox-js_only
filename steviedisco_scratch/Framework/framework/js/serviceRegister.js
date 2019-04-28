@@ -1,13 +1,15 @@
 var _serviceRegister;
 
-function serviceRegister(loggerService) 
+function serviceRegister() 
 {
     this.register = {};    
+
+    // let logger = eval(_configuration.settings.logger);
+    // this.loggerService = new logger();
     
     this.registerService = function(service) 
     {
         this.register[service.constructor.name] = service;
-        loggerService.log(`${service.constructor.name} registered`);
     };
 
     this.getService = function(service) 
@@ -45,8 +47,6 @@ function serviceRegister(loggerService)
 
     this.getArguments = function(fn) 
     {
-        loggerService.log('getArguments() called');
-
         const FN_ARGS = /^function\s*[^\(]*\(\s*([^\)]*)\)/m;
         const FN_ARG_SPLIT = /,/;
         const FN_ARG = /^\s*(_?)(\S+?)\1\s*$/;
