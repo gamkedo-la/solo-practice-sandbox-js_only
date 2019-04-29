@@ -7,7 +7,5 @@ function configuration()
         RELEASE: 'release'
     };
     
-    this.configuration = this.configurations.DEVELOPMENT;
-        
-    this.settings = eval(`_${this.configuration}Settings`);        
+    this.configuration = this.configurations.DEVELOPMENT;                   
 };

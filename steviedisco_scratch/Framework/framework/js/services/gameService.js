@@ -1,4 +1,4 @@
-function gameloopService(timeService, inputService, updateService, renderService) 
+function gameService(timeService, inputService, updateService, renderService) 
 {
     this.timeService = timeService;
     this.inputService = inputService;
@@ -8,7 +8,7 @@ function gameloopService(timeService, inputService, updateService, renderService
     this.targetFPS = _configuration.settings.targetFPS;
     this.msPerUpdate = 1000 / this.targetFPS;    
 
-    this.doLoop = function() 
+    this.run = function() 
     {
         let previous = this.timeService.getCurrentTime();  
         let lag = 0.0;    

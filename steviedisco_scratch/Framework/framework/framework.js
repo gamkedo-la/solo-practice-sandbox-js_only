@@ -1,32 +1,63 @@
-var _scripts = { 
-    root: './framework/js/', 
-    paths: [
-        "configuration.js",
-        "config/settings.development.js",
-        "config/settings.release.js",
-        "serviceRegister.js",
-        "services/loggerService.js",
-        "services/loggers/consoleLogger.js",
-        "services/loggers/fileLogger.js", 
-        "services/timeService.js",
-        "services/inputService.js",
-        "services/updateService.js",
-        "services/renderService.js",
-        "services/gameloopService.js"
-    ]
-};
+var _loadScripts = function(scriptRoot) 
+{
+    var paths = [
+        'serviceRegister.js',
+        'services/loggerService.js',
+        'services/loggers/consoleLogger.js',
+        'services/loggers/fileLogger.js',
+        'services/timeService.js',
+        'services/inputService.js',
+        'services/updateService.js',
+        'services/renderService.js',
+        'services/gameService.js'
+    ];    
+    
+    for (let path of paths)
+    {
+        let script = _addScript(scriptRoot + path);
 
-for (let path of _scripts.paths)
+        if (path == paths[paths.length - 1])
+            _setScriptLoadedFunction(script, _runGame);    
+    }
+}
+
+var _addScript = function(src)
 {
     let script = document.createElement('script');
-    script.src = _scripts.root + path;
+    script.src = src;
     document.head.appendChild(script);
-}
 
-window.onload = function() {
-    _configuration = new configuration();
+    return script;
+};
 
+var _setScriptLoadedFunction = function(script, func) 
+{
+    script.onreadystatechange= function () {
+        if (this.readyState == 'complete') 
+            func();
+    }
+    script.onload = func;   
+};
+
+var _runGame = function() {
     _serviceRegister = new serviceRegister();
-    // _serviceRegister.getService(eval(_configuration.settings.logger));
-    _serviceRegister.getService(gameloopService).doLoop();
-}
+    _serviceRegister.getService(gameService).run();
+};
+
+window.onload = function()  
+{
+    let scriptRoot = './framework/js/';
+
+    let configScript = _addScript(`${scriptRoot}configuration.js`);
+    _setScriptLoadedFunction(configScript, function() 
+    { 
+        _configuration = new configuration();
+
+        var settingsScript = _addScript(`${scriptRoot}config/settings.${_configuration.configuration}.js`);
+        _setScriptLoadedFunction(settingsScript, function() 
+        { 
+            _configuration.settings = eval(`_${_configuration.configuration}Settings`); 
+            _loadScripts(scriptRoot);
+        });    
+    });  
+};
