@@ -1,4 +1,5 @@
 var _developmentSettings = 
 {
-    "logger" : "fileLogger"
+    "logger": "fileLogger",
+    "targetFPS": 60
 }

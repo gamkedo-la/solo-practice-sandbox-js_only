@@ -5,7 +5,7 @@ function gameloopService(timeService, inputService, updateService, renderService
     this.updateService = updateService;
     this.renderService = renderService;
 
-    this.targetFPS = 60;
+    this.targetFPS = _configuration.settings.targetFPS;
     this.msPerUpdate = 1000 / this.targetFPS;    
 
     this.doLoop = function() 

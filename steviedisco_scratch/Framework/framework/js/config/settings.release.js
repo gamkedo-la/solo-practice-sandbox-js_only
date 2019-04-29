@@ -1,4 +1,5 @@
 var _releaseSettings = 
 {
-    "logger" : "consoleLogger"
+    "logger" : "consoleLogger",
+    "targetFPS": 60
 }
