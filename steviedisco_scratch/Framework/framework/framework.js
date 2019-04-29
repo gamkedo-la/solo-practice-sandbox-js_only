@@ -7,9 +7,12 @@ var _scripts = {
         "serviceRegister.js",
         "services/loggerService.js",
         "services/loggers/consoleLogger.js",
-        "services/loggers/fileLogger.js",
-        "services/testService.js",
-        "services/renderService.js"
+        "services/loggers/fileLogger.js", 
+        "services/timeService.js",
+        "services/inputService.js",
+        "services/updateService.js",
+        "services/renderService.js",
+        "services/gameloopService.js"
     ]
 };
 
@@ -24,5 +27,6 @@ window.onload = function() {
     _configuration = new configuration();
 
     _serviceRegister = new serviceRegister();
-    _serviceRegister.getService(loggerService);
+    // _serviceRegister.getService(eval(_configuration.settings.logger));
+    _serviceRegister.getService(gameloopService).doLoop();
 }

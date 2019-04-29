@@ -4,12 +4,13 @@ function serviceRegister()
 {
     this.register = {};    
 
-    // let logger = eval(_configuration.settings.logger);
-    // this.loggerService = new logger();
+    let logger = eval(_configuration.settings.logger);
+    this.loggerService = new logger();
     
     this.registerService = function(service) 
     {
         this.register[service.constructor.name] = service;
+        this.loggerService.log(`${service.constructor.name} registered`)
     };
 
     this.getService = function(service) 
@@ -20,8 +21,8 @@ function serviceRegister()
         {
             let arguments = this.getArguments(service);
             let dependencies = this.getDependencies(arguments);  
-
-            serviceInstance = new service(dependencies);
+            
+            serviceInstance = new service(...dependencies);
 
             this.registerService(serviceInstance);
         }        
