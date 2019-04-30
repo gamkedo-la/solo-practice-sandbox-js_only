@@ -1,11 +1,12 @@
-function gameService(timeService, inputService, updateService, renderService) 
+function gameService(configService, timeService, inputService, updateService, renderService) 
 {
+    this.configService = configService;
     this.timeService = timeService;
     this.inputService = inputService;
     this.updateService = updateService;
     this.renderService = renderService;
 
-    this.targetFPS = _configuration.settings.targetFPS;
+    this.targetFPS = this.configService.settings.targetFPS;
     this.msPerUpdate = 1000 / this.targetFPS;    
 
     this.run = function() 

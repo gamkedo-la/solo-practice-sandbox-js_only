@@ -1,16 +1,31 @@
-var _serviceRegister;
-
-function serviceRegister() 
+var _serviceRegister = new function() 
 {
-    this.register = {};    
+    this.register = {};            
+    this.configService = {};
+    this.loggingService = {};
+    this.gameService = {};
 
-    let logger = eval(_configuration.settings.logger);
-    this.loggerService = new logger();
+    this.configure = function(gameService)
+    {
+        this.configService = new configService(gameService);
+    };
+
+    this.postConfigure = function(gameService)
+    {
+        let logger = eval(this.configService.settings.logger);
+        this.loggerService = new logger();
+        this.registerService(logger);
+        this.registerService(this.configService)
+        this.gameService = this.getService(gameService);
+
+        return this.gameService;
+    };
     
     this.registerService = function(service) 
     {
-        this.register[service.constructor.name] = service;
-        this.loggerService.log(`${service.constructor.name} registered`)
+        let serviceName = service.constructor.name != 'Function' ? service.constructor.name : service.name; 
+        this.register[serviceName] = service;
+        this.loggerService.log(`${serviceName} registered`)
     };
 
     this.getService = function(service) 

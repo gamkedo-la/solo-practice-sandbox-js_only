@@ -1,5 +1,5 @@
-consoleLogger.prototype = new loggerService();
-function consoleLogger() 
+consoleLogger = function(loggerService) 
 {
+    this.prototype = loggerService;
     this.log = function(message) { console.log(message); };
 };

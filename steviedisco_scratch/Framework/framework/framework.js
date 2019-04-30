@@ -1,7 +1,9 @@
 var _loadScripts = function(scriptRoot) 
 {
-    var paths = [
-        'serviceRegister.js',
+    var paths = [           
+        'enums.js',     
+        'serviceRegister.js',  
+        'services/configService.js',
         'services/loggerService.js',
         'services/loggers/consoleLogger.js',
         'services/loggers/fileLogger.js',
@@ -12,19 +14,24 @@ var _loadScripts = function(scriptRoot)
         'services/gameService.js'
     ];    
     
+    let count = paths.length;
     for (let path of paths)
     {
-        let script = _addScript(scriptRoot + path);
+        let script = _addScript(path);
 
-        if (path == paths[paths.length - 1])
-            _setScriptLoadedFunction(script, _runGame);    
+        _setScriptLoadedFunction(script, function() {                        
+            count--;
+            if (count == 0) 
+                _runGame();    
+        });        
     }
-}
+};
 
 var _addScript = function(src)
 {
+    let root = './framework/js/';
     let script = document.createElement('script');
-    script.src = src;
+    script.src = `${root}${src}`;
     document.head.appendChild(script);
 
     return script;
@@ -35,29 +42,16 @@ var _setScriptLoadedFunction = function(script, func)
     script.onreadystatechange= function () {
         if (this.readyState == 'complete') 
             func();
-    }
+    }    
     script.onload = func;   
 };
 
-var _runGame = function() {
-    _serviceRegister = new serviceRegister();
-    _serviceRegister.getService(gameService).run();
+window.onload = function()  
+{    
+    _loadScripts(); 
 };
 
-window.onload = function()  
+var _runGame = function() 
 {
-    let scriptRoot = './framework/js/';
-
-    let configScript = _addScript(`${scriptRoot}configuration.js`);
-    _setScriptLoadedFunction(configScript, function() 
-    { 
-        _configuration = new configuration();
-
-        var settingsScript = _addScript(`${scriptRoot}config/settings.${_configuration.configuration}.js`);
-        _setScriptLoadedFunction(settingsScript, function() 
-        { 
-            _configuration.settings = eval(`_${_configuration.configuration}Settings`); 
-            _loadScripts(scriptRoot);
-        });    
-    });  
+    _serviceRegister.configure(gameService);    
 };
