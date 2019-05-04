@@ -7,8 +7,6 @@
       "esModuleInterop": true,
       "experimentalDecorators": true,
       "forceConsistentCasingInFileNames": true,
-      "jsx": "react",
-      "lib": ["es6", "es7", "esnext", "dom"],
       "module": "esnext",
       "moduleResolution": "node",
       "noEmitOnError": false,
@@ -16,9 +14,9 @@
       "noImplicitReturns": true,
       "noImplicitThis": true,
       // "noUnusedLocals": true,
-      "outDir": "build/dist",
+      "outDir": "dist",
       "paths": {
-        "*": ["*", "src/*"]
+        "*": ["*", "src/*", "lib/*"]
       },
       "plugins": [
         {
@@ -31,7 +29,7 @@
       "sourceMap": true,
       "strictNullChecks": false,
       "suppressImplicitAnyIndexErrors": true,
-      "target": "es6"
+      "target": "es5"
     },
     "exclude": ["build", "dist", "node_modules"],
     "include": ["src/**/*", "lib/**/*"]

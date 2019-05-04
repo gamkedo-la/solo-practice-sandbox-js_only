@@ -1,4 +1,4 @@
-export class updateService
+export default class updateService
 {
     update(): void
     {        

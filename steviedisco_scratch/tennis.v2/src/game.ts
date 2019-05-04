@@ -1,14 +1,13 @@
 import { JsInject } from "lib/jsInject";
-import { enums } from "./enums";
-import { configService } from "services/configService";
-import { timeService } from "services/timeService";
-import { inputService } from "services/inputService";
-import { updateService } from "services/updateService";
-import { renderService } from "services/renderService";
+import configService from "services/configService";
+import timeService from "services/timeService";
+import inputService from "services/inputService";
+import updateService from "services/updateService";
+import renderService from "services/renderService";
 
 export class game
 {
-    $jsInject: JsInject;
+    $jsInject: JsInject = new JsInject();
 
     $configService: configService;
     $timeService: timeService;
@@ -18,28 +17,23 @@ export class game
 
     run(): void
     { 
-        this.$jsInject = new JsInject();
         this.registerServices();
-        this.getServices();
+        this.initialise();
         this.gameLoop();
     };
 
     registerServices(): void
     {
-        this.$jsInject.register("configService", [enums.configurations.DEVELOPMENT, configService]);
-        this.$jsInject.register("timeService", [Date.now, timeService]);
-        this.$jsInject.register("inputService", [inputService]);
-        this.$jsInject.register("updateService", [updateService]);
-        this.$jsInject.register("renderService", [document, renderService]);
+        this.$configService = this.$jsInject.register("configService", [configService]);
+        this.$timeService = this.$jsInject.register("timeService", [timeService]);
+        this.$inputService = this.$jsInject.register("inputService", [inputService]);
+        this.$updateService = this.$jsInject.register("updateService", [updateService]);
+        this.$renderService = this.$jsInject.register("renderService", [renderService]);
     };
 
-    getServices(): void
+    initialise(): void
     {
-        this.$configService = this.$jsInject.get("configService");
-        this.$timeService = this.$jsInject.get("timeService");
-        this.$inputService = this.$jsInject.get("inputService");
-        this.$updateService = this.$jsInject.get("updateService");        
-        this.$renderService = this.$jsInject.get("renderService");
+        this.$renderService.initialise(document);
     };
 
     gameLoop(): void

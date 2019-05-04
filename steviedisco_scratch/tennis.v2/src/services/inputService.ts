@@ -1,4 +1,4 @@
-export class inputService
+export default class inputService
 {
     process(): void
     {        

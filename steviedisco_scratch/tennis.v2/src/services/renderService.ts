@@ -1,18 +1,18 @@
-export class renderService
+export default class renderService
 {
     bufferIndex: number = 0;
     document: Document;
-    buffers: HTMLElement[];
+    buffers: HTMLElement[]; 
 
-    constructor(document: Document) 
-    {
+    initialise(document: Document)
+    {    
         this.document = document;
 
         this.buffers = [
             this.document.createElement('renderBuffer0'),
             this.document.createElement('renderBuffer1')
-        ];
-    };  
+        ];    
+    };
 
     render(): void
     {

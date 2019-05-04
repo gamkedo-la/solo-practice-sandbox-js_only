@@ -41,7 +41,7 @@ export class JsInject {
 		return fn.apply(instance, args);			
 	}
 	
-	register(name: string, annotatedArray: any[]) {
+	register(name: string, annotatedArray: any[]): any {
 		if (!isArray(annotatedArray)) {
 			throw ERROR_ARRAY;
 		}
@@ -67,5 +67,7 @@ export class JsInject {
 			this.container[name] = () => result;
 			return result;
 		}
+
+		return this.get(name);
 	}
 }

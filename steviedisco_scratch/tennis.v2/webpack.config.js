@@ -6,7 +6,7 @@ const path = require('path');
 
 /**@type {import('webpack').Configuration}*/
 const config = {
-  target: 'node', // vscode extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
+  target: 'web', // vscode extensions run in a Node.js-context 📖 -> https://webpack.js.org/configuration/node/
   entry: './src/game.ts', // the entry point of this extension, 📖 -> https://webpack.js.org/configuration/entry-context/
   output: {
     // the bundle is stored in the 'dist' folder (check package.json), 📖 -> https://webpack.js.org/configuration/output/
@@ -24,6 +24,7 @@ const config = {
     extensions: ['.ts', '.js', '.json'],
     alias: {
       lib: path.resolve(__dirname, 'lib'),
+      model: path.resolve(__dirname, 'src/model'),
       config: path.resolve(__dirname, 'src/config'),
       services: path.resolve(__dirname, 'src/services')
     }
@@ -37,8 +38,8 @@ const config = {
           __dirname, 
           path.resolve(__dirname, 'lib'), 
           path.resolve(__dirname, 'src'), 
-          path.resolve(__dirname, 'src/config'), 
-          path.resolve(__dirname, 'src/services')
+          // path.resolve(__dirname, 'src/config'), 
+          // path.resolve(__dirname, 'src/services')
         ],
         exclude: [path.resolve(__dirname, 'node_modules')]
       }      

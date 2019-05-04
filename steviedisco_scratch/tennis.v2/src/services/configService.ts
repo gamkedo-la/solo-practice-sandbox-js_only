@@ -1,18 +1,24 @@
-import { enums } from "enums"; 
+import * as enums from "model/enums";
 import development_settings from "config/settings.development.json";
 
-export class configService
+interface IconfigService 
 {
     configuration: enums.configurations;
-    targetFPS: number;
+    development_settings: any;
+    targetFPS: number;    
+};
 
-    constructor(configuration: enums.configurations)
+export default class configService implements IconfigService
+{
+    configuration: enums.configurations = enums.configurations.DEVELOPMENT;
+    development_settings: any = development_settings;
+    targetFPS: number;    
+
+    constructor() 
     {
-        this.configuration = configuration;
-
-        let settingsName: string = `${this.configuration}_settings`;
+        let settingsName: string = `this.${this.configuration}_settings`;
         let settings = eval(settingsName);
 
         this.targetFPS = settings.targetFPS;
-    };
-};
+    }
+};    
