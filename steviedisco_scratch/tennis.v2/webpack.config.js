@@ -23,7 +23,9 @@ const config = {
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
     extensions: ['.ts', '.js', '.json'],
     alias: {
-      lib: path.resolve(__dirname, 'lib')
+      lib: path.resolve(__dirname, 'lib'),
+      config: path.resolve(__dirname, 'src/config'),
+      services: path.resolve(__dirname, 'src/services')
     }
   },
   module: {
@@ -31,7 +33,13 @@ const config = {
       {
         test: /\.ts|\.tsx$/,
         use: 'ts-loader',
-        include: [__dirname, path.resolve(__dirname, 'lib')],
+        include: [
+          __dirname, 
+          path.resolve(__dirname, 'lib'), 
+          path.resolve(__dirname, 'src'), 
+          path.resolve(__dirname, 'src/config'), 
+          path.resolve(__dirname, 'src/services')
+        ],
         exclude: [path.resolve(__dirname, 'node_modules')]
       }      
     ]

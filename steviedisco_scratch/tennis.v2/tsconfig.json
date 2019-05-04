@@ -4,6 +4,7 @@
       "allowSyntheticDefaultImports": true,
       "baseUrl": ".",
       "emitDecoratorMetadata": true,
+      "esModuleInterop": true,
       "experimentalDecorators": true,
       "forceConsistentCasingInFileNames": true,
       "jsx": "react",
@@ -14,7 +15,7 @@
       "noImplicitAny": false,
       "noImplicitReturns": true,
       "noImplicitThis": true,
-      "noUnusedLocals": true,
+      // "noUnusedLocals": true,
       "outDir": "build/dist",
       "paths": {
         "*": ["*", "src/*"]
@@ -24,6 +25,7 @@
           "name": "tslint-language-service"
         }
       ],
+      "resolveJsonModule": true,    
       "rootDirs": [".", "src", "lib"],
       "skipLibCheck": false,
       "sourceMap": true,
