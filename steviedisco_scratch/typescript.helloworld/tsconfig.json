@@ -1,11 +1,36 @@
 {
     "compilerOptions": {
-        "target": "es5",
-        "module": "commonjs",
-        "outDir": "build",
-        "sourceMap": true
+      "allowJs": true,
+      "allowSyntheticDefaultImports": true,
+      "baseUrl": ".",
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "forceConsistentCasingInFileNames": true,
+      "jsx": "react",
+      "lib": ["es6", "es7", "esnext", "dom"],
+      "module": "esnext",
+      "moduleResolution": "node",
+      "noEmitOnError": false,
+      "noImplicitAny": false,
+      "noImplicitReturns": true,
+      "noImplicitThis": true,
+      "noUnusedLocals": true,
+      "outDir": "build/dist",
+      "paths": {
+        "*": ["*", "src/*"]
+      },
+      "plugins": [
+        {
+          "name": "tslint-language-service"
+        }
+      ],
+      "rootDirs": [".", "src", "lib"],
+      "skipLibCheck": false,
+      "sourceMap": true,
+      "strictNullChecks": false,
+      "suppressImplicitAnyIndexErrors": true,
+      "target": "es6"
     },
-    "exclude": [
-        "node_modules"
-    ]
-}
+    "exclude": ["build", "dist", "node_modules"],
+    "include": ["src/**/*", "lib/**/*"]
+  }
