@@ -7,22 +7,18 @@ import IupdateService from "services/IupdateService";
 import IrenderService from "services/IrenderService";
 
 import configService from "services/concrete/configService";
-import consoleLogger from "services/concrete/loggers/consoleLogger";
-import fileLogger from "services/concrete/loggers/fileLogger";
 import timeService from "services/concrete/timeService";
 import inputService from "services/concrete/inputService";
 import updateService from "services/concrete/updateService";
 import renderService from "services/concrete/renderService";
+import IloggerService from "./services/IloggerService";
 
 export class game
 {
     $jsInject: JsInject = new JsInject();
 
-    $consoleLogger: consoleLogger;
-    $fileLogger: fileLogger;
-
     $configService: IconfigService;
-    $loggerService: any;
+    $loggerService: IloggerService;
     $timeService: ItimeService;
     $inputService: IinputService;
     $updateService: IupdateService;
@@ -38,13 +34,7 @@ export class game
     registerServices(): void
     {
         this.$configService = this.$jsInject.register("IconfigService", [configService]);
-
-        // todo - minging code, need to get eval() working!!
-        if (this.$configService.settings.logger == "consoleLogger")
-            this.$loggerService = this.$jsInject.register("IloggerService", [consoleLogger]);
-        else if (this.$configService.settings.logger == "fileLogger")
-            this.$loggerService = this.$jsInject.register("IloggerService", [fileLogger]);
-
+        this.$loggerService = this.$jsInject.register("IloggerService", [this.$configService.settings.logger]);
         this.$timeService = this.$jsInject.register("ItimeService", [timeService]);
         this.$inputService = this.$jsInject.register("IinputService", [inputService]);
         this.$updateService = this.$jsInject.register("IupdateService", [updateService]);
