@@ -5,9 +5,9 @@ import development_settings from "config/settings.development.ts";
 
 export default class configService implements IconfigService
 {
-    configuration: enums.configurations = enums.configurations.DEVELOPMENT;
-    development_settings: Isettings = development_settings;
+    private development_settings: Isettings = new development_settings();
 
+    configuration: enums.configurations = enums.configurations.DEVELOPMENT;    
     settings: Isettings;
 
     constructor() 

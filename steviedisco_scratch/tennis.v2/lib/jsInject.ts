@@ -1,3 +1,5 @@
+import IloggerService from "services/IloggerService";
+
 const maxRecursion: number = 20;
 
 function isArray(arr: any): boolean {
@@ -13,6 +15,8 @@ const ERROR_SERVICE: string = "Service does not exist.";
 export class JsInject {
 	
 	public container: {[name: string]: (lvl: number) => any};
+
+	private logger: IloggerService;
 	
 	constructor() {
 		this.container = {};
@@ -25,7 +29,9 @@ export class JsInject {
 		if (wrapper) {
 			return wrapper(lvl);
 		}
-		throw ERROR_SERVICE;
+
+		return null;
+		// throw ERROR_SERVICE;
 	}
 	
 	invoke(fn: Function, deps: string[], instance: any, level: number): any {
@@ -67,6 +73,12 @@ export class JsInject {
 			this.container[name] = () => result;
 			return result;
 		}
+
+		if (this.logger == null)
+			this.logger = this.get("IloggerService");
+
+		if (this.logger != null)
+			this.logger.log(`${name} registered`);
 
 		return this.get(name);
 	}

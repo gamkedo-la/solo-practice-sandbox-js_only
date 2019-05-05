@@ -1,4 +1,5 @@
 export default interface Isettings
 {
-    targetFPS: number
+    targetFPS: number,
+    logger: string
 };

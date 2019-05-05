@@ -1,8 +1,7 @@
 import Isettings from "config/Isettings.ts";
 
-const development_settings: Isettings =
+export default class development_settings implements Isettings
 {
-    "targetFPS": 60
+    targetFPS: number = 60;
+    logger: string = "consoleLogger";
 };
-
-export default development_settings;
