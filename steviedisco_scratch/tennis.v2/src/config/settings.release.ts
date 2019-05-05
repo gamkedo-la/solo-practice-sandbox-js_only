@@ -1,4 +1,4 @@
-import * as framework from "helpers/imports.ts";
+import * as framework from "helpers/exports";
 
 export class release_settings implements framework.Isettings
 {
