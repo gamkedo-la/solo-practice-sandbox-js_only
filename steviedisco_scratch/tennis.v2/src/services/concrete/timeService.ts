@@ -1,4 +1,6 @@
-export default class timeService
+import ItimeService from "src/services/ItimeService";
+
+export default class timeService implements ItimeService
 {
     timeFunction: Function;
 

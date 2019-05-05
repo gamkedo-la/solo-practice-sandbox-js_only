@@ -1,19 +1,26 @@
 import { JsInject } from "lib/jsInject";
-import configService from "services/configService";
-import timeService from "services/timeService";
-import inputService from "services/inputService";
-import updateService from "services/updateService";
-import renderService from "services/renderService";
+
+import IconfigService from "services/IconfigService";
+import ItimeService from "services/ItimeService";
+import IinputService from "services/IinputService";
+import IupdateService from "services/IupdateService";
+import IrenderService from "services/IrenderService";
+
+import configService from "services/concrete/configService";
+import timeService from "services/concrete/timeService";
+import inputService from "services/concrete/inputService";
+import updateService from "services/concrete/updateService";
+import renderService from "services/concrete/renderService";
 
 export class game
 {
     $jsInject: JsInject = new JsInject();
 
-    $configService: configService;
-    $timeService: timeService;
-    $inputService: inputService;
-    $updateService: updateService;
-    $renderService: renderService;
+    $configService: IconfigService;
+    $timeService: ItimeService;
+    $inputService: IinputService;
+    $updateService: IupdateService;
+    $renderService: IrenderService;
 
     run(): void
     { 
@@ -24,11 +31,11 @@ export class game
 
     registerServices(): void
     {
-        this.$configService = this.$jsInject.register("configService", [configService]);
-        this.$timeService = this.$jsInject.register("timeService", [timeService]);
-        this.$inputService = this.$jsInject.register("inputService", [inputService]);
-        this.$updateService = this.$jsInject.register("updateService", [updateService]);
-        this.$renderService = this.$jsInject.register("renderService", [renderService]);
+        this.$configService = this.$jsInject.register("IconfigService", [configService]);
+        this.$timeService = this.$jsInject.register("ItimeService", [timeService]);
+        this.$inputService = this.$jsInject.register("IinputService", [inputService]);
+        this.$updateService = this.$jsInject.register("IupdateService", [updateService]);
+        this.$renderService = this.$jsInject.register("IrenderService", [renderService]);
     };
 
     initialise(): void

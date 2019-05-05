@@ -1,4 +1,6 @@
-export default class renderService
+import IrenderService from "src/services/IrenderService";
+
+export default class renderService implements IrenderService
 {
     bufferIndex: number = 0;
     document: Document;
