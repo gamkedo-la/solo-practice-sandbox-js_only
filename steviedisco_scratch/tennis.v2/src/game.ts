@@ -47,7 +47,7 @@ export class game
     {
         let previous: number = this.$timeService.getCurrentTime();  
         let lag: number = 0.0; 
-        let msPerUpdate = 1000 / this.$configService.targetFPS;
+        let msPerUpdate = 1000 / this.$configService.settings.targetFPS;
 
         while (true)
         {
