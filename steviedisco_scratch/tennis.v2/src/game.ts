@@ -24,11 +24,19 @@ export class game
     $updateService: IupdateService;
     $renderService: IrenderService;
 
+    window: Window;
+
+    constructor(window: Window)
+    {
+        this.window = window;
+    };
+
     run(): void
     { 
         this.registerServices();
         this.initialise();
-        this.gameLoop();
+        
+        this.window.requestAnimationFrame(() => this.gameLoop());
     };
 
     registerServices(): void
@@ -38,7 +46,7 @@ export class game
         this.$timeService = this.$jsInject.register("ItimeService", [timeService]);
         this.$inputService = this.$jsInject.register("IinputService", [inputService]);
         this.$updateService = this.$jsInject.register("IupdateService", [updateService]);
-        this.$renderService = this.$jsInject.register("IrenderService", [renderService]);
+        this.$renderService = this.$jsInject.register("IrenderService", ["IconfigService", renderService]);
     };
 
     initialise(): void
@@ -52,23 +60,22 @@ export class game
         let lag: number = 0.0; 
         let msPerUpdate = 1000 / this.$configService.settings.targetFPS;
 
-        while (true)
+        let current = this.$timeService.getCurrentTime();
+        let elapsed = current - previous;
+
+        previous = current;
+        lag += elapsed;
+
+        this.$inputService.process();
+
+        while (lag >= msPerUpdate)
         {
-            let current = this.$timeService.getCurrentTime();
-            let elapsed = current - previous;
-
-            previous = current;
-            lag += elapsed;
-
-            this.$inputService.process();
-
-            while (lag >= msPerUpdate)
-            {
-                this.$updateService.update();
-                lag -= msPerUpdate;
-            }
-
-            this.$renderService.render();
+            this.$updateService.update();
+            lag -= msPerUpdate;
         }
+
+        this.$renderService.render();
+
+        window.requestAnimationFrame(() => this.gameLoop());
     };
 }

@@ -1,19 +1,32 @@
-import IrenderService from "src/services/IrenderService";
+import IrenderService from "services/IrenderService";
+import IconfigService from "services/IconfigService";
 
 export default class renderService implements IrenderService
 {
+    $configService: IconfigService;
+
     bufferIndex: number = 0;
     document: Document;
-    buffers: HTMLElement[]; 
+    buffers: HTMLCanvasElement[]; 
+
+    canvas: HTMLCanvasElement;
+    context: CanvasRenderingContext2D;
+
+    constructor(IconfigService: IconfigService)
+    {
+        this.$configService = IconfigService;
+    };
 
     initialise(document: Document)
     {    
         this.document = document;
 
         this.buffers = [
-            this.document.createElement('renderBuffer0'),
-            this.document.createElement('renderBuffer1')
+            this.document.createElement('canvas'),
+            this.document.createElement('canvas')
         ];    
+
+        this.initialiseBuffers();
     };
 
     render(): void
@@ -25,6 +38,7 @@ export default class renderService implements IrenderService
 
     clear(): void
     {
+        this.drawRectangle(0, 0, this.canvas.width, this.canvas.height, this.$configService.settings.bgColour);
     };
 
     drawAll(): void
@@ -35,7 +49,32 @@ export default class renderService implements IrenderService
     {
         this.buffers[1 - this.bufferIndex].style.visibility = "hidden";
         this.buffers[this.bufferIndex].style.visibility = "visible";
-
         this.bufferIndex = 1 - this.bufferIndex;
+
+        this.getCanvasContext();
+    };
+
+    private initialiseBuffers(): void
+    {
+        for (let i: number = 0; i < 2; i++)
+        {
+            this.buffers[i].style["z-index"] = i;
+        }        
+
+        this.buffers.forEach((buffer) => {this.document.body.appendChild(buffer);});
+                
+        this.getCanvasContext();
+    };
+
+    private getCanvasContext(): void
+    {
+        this.canvas = this.buffers[this.bufferIndex];
+        this.context = this.canvas.getContext('2d');
+    };
+
+    private drawRectangle(x: number, y: number, width: number, height: number, colour: string): void
+    {
+        this.context.fillStyle = colour;
+        this.context.fillRect(x, y, width, height);
     };
 };

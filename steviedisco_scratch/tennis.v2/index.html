@@ -3,12 +3,13 @@
   <head>
     <meta charset="UTF-8">
     <title>Tennis</title>
+    <link rel="stylesheet" type="text/css" href="./css/main.css" >
     <script src='./dist/tennis.bundle.js'></script>
   </head>
 </html>
 
 <script>
   window.onload = function() {
-      new tennis.game().run();
+      new tennis.game(window).run();
   };
 </script>
