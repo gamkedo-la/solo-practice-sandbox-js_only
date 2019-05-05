@@ -26,7 +26,8 @@ const config = {
       lib: path.resolve(__dirname, 'lib'),
       model: path.resolve(__dirname, 'src/model'),
       config: path.resolve(__dirname, 'src/config'),
-      services: path.resolve(__dirname, 'src/services')
+      services: path.resolve(__dirname, 'src/services'),
+      helpers: path.resolve(__dirname, 'src/helpers')
     }
   },
   module: {
@@ -37,9 +38,7 @@ const config = {
         include: [
           __dirname, 
           path.resolve(__dirname, 'lib'), 
-          path.resolve(__dirname, 'src'), 
-          // path.resolve(__dirname, 'src/config'), 
-          // path.resolve(__dirname, 'src/services')
+          path.resolve(__dirname, 'src')
         ],
         exclude: [path.resolve(__dirname, 'node_modules')]
       }      

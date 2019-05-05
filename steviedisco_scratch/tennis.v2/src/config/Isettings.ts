@@ -1,8 +1,8 @@
-import IloggerService from "src/services/IloggerService";
+import * as framework from "helpers/imports.ts";
 
-export default interface Isettings
+export interface Isettings
 {
     targetFPS: number,
-    logger: IloggerService,
+    logger: framework.IloggerService,
     bgColour: string
 };

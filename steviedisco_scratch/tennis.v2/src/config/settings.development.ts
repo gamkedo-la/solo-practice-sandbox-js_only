@@ -1,9 +1,8 @@
-import Isettings from "config/Isettings.ts";
-import consoleLogger from "services/concrete/loggers/consoleLogger";
+import * as framework from "helpers/imports.ts";
 
-export default class development_settings implements Isettings
+export class development_settings implements framework.Isettings
 {
     targetFPS: number = 60;
-    logger: any = consoleLogger;
+    logger: any = framework.consoleLogger;
     bgColour: string = 'black';
 };

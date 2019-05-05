@@ -1,8 +1,7 @@
-import * as enums from "model/enums";
-import Isettings from "src/config/Isettings";
+import * as framework from "helpers/imports.ts";
 
-export default interface IconfigService
+export interface IconfigService
 {
-    configuration: enums.configurations;
-    settings: Isettings;
+    configuration: framework.enums.configurations;
+    settings: framework.Isettings;
 };

@@ -1,6 +1,6 @@
-import IloggerService from "src/services/IloggerService";
+import * as framework from "helpers/imports.ts";
 
-export default class consoleLogger implements IloggerService
+export class consoleLogger implements framework.IloggerService
 {
     log(message: string): void
     {

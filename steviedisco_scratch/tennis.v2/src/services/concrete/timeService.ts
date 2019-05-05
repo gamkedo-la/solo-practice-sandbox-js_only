@@ -1,6 +1,6 @@
-import ItimeService from "src/services/ItimeService";
+import * as framework from "helpers/imports.ts";
 
-export default class timeService implements ItimeService
+export class timeService implements framework.ItimeService
 {
     timeFunction: Function;
 

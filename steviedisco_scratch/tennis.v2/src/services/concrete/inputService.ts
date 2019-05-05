@@ -1,6 +1,6 @@
-import IinputService from "src/services/IinputService";
+import * as framework from "helpers/imports.ts";
 
-export default class inputService implements IinputService
+export class inputService implements framework.IinputService
 {
     process(): void
     {        

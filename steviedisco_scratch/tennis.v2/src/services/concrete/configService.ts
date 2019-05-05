@@ -1,16 +1,12 @@
-import IconfigService from "src/services/IconfigService";
-import * as enums from "model/enums";
-import Isettings from "config/Isettings.ts";
-import development_settings from "config/settings.development.ts";
-import release_settings from "config/settings.release.ts";
+import * as framework from "helpers/imports.ts";
 
-export default class configService implements IconfigService
+export class configService implements framework.IconfigService
 {
-    private development_settings: Isettings = new development_settings();
-    private release_settings: Isettings = new release_settings();
+    private development_settings: framework.Isettings = new framework.development_settings();
+    private release_settings: framework.Isettings = new framework.release_settings();
 
-    configuration: enums.configurations = enums.configurations.DEVELOPMENT;    
-    settings: Isettings;
+    configuration: framework.enums.configurations = framework.enums.configurations.DEVELOPMENT;    
+    settings: framework.Isettings;
 
     constructor() 
     {

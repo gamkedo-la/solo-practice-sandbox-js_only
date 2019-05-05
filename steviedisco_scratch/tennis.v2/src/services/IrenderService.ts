@@ -1,4 +1,6 @@
-export default interface IrenderService
+import * as framework from "helpers/imports.ts";
+
+export interface IrenderService
 {
     initialise(document: Document);
     render(): void;

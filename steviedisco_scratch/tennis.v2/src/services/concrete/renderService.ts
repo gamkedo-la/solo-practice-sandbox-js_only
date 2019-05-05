@@ -1,9 +1,8 @@
-import IrenderService from "services/IrenderService";
-import IconfigService from "services/IconfigService";
+import * as framework from "helpers/imports.ts";
 
-export default class renderService implements IrenderService
+export class renderService implements framework.IrenderService
 {
-    $configService: IconfigService;
+    $configService: framework.IconfigService;
 
     bufferIndex: number = 0;
     document: Document;
@@ -12,7 +11,7 @@ export default class renderService implements IrenderService
     canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
 
-    constructor(IconfigService: IconfigService)
+    constructor(IconfigService: framework.IconfigService)
     {
         this.$configService = IconfigService;
     };

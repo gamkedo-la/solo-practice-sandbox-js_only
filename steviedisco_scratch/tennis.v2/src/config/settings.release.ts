@@ -1,9 +1,8 @@
-import Isettings from "config/Isettings.ts";
-import fileLogger from "services/concrete/loggers/fileLogger";
+import * as framework from "helpers/imports.ts";
 
-export default class release_settings implements Isettings
+export class release_settings implements framework.Isettings
 {
     targetFPS: number = 60;
-    logger: any = fileLogger;
+    logger: any = framework.fileLogger;
     bgColour: string = 'red';
 };

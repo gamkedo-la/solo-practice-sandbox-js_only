@@ -1,6 +1,6 @@
-import IupdateService from "src/services/IupdateService";
+import * as framework from "helpers/imports.ts";
 
-export default class updateService implements IupdateService
+export class updateService implements framework.IupdateService
 {
     update(): void
     {        
