@@ -1,11 +1,11 @@
 import * as framework from "helpers/exports";
 
-export class renderService implements framework.IrenderService
+export class renderService implements framework.IrenderService, framework.Iinitialisable
 {
     $configService: framework.IconfigService;
 
-    bufferIndex: number = 0;
     document: Document;
+    bufferIndex: number = 0;    
     buffers: HTMLCanvasElement[]; 
 
     canvas: HTMLCanvasElement;
@@ -16,9 +16,9 @@ export class renderService implements framework.IrenderService
         this.$configService = IconfigService;
     };
 
-    initialise(document: Document)
+    initialise(params: any[]) // Document
     {    
-        this.document = document;
+        this.document = params[0] as Document;
 
         this.buffers = [
             this.document.createElement('canvas'),
@@ -35,16 +35,22 @@ export class renderService implements framework.IrenderService
         this.swapBuffers();
     };
 
-    clear(): void
+    drawRectangle(x: number, y: number, width: number, height: number, colour: string): void
+    {
+        this.context.fillStyle = colour;
+        this.context.fillRect(x, y, width, height);
+    };
+
+    private clear(): void
     {
         this.drawRectangle(0, 0, this.canvas.width, this.canvas.height, this.$configService.settings.bgColour);
     };
 
-    drawAll(): void
+    private drawAll(): void
     {
     };
 
-    swapBuffers(): void
+    private swapBuffers(): void
     {
         this.buffers[1 - this.bufferIndex].style.visibility = "hidden";
         this.buffers[this.bufferIndex].style.visibility = "visible";
@@ -69,11 +75,5 @@ export class renderService implements framework.IrenderService
     {
         this.canvas = this.buffers[this.bufferIndex];
         this.context = this.canvas.getContext('2d');
-    };
-
-    private drawRectangle(x: number, y: number, width: number, height: number, colour: string): void
-    {
-        this.context.fillStyle = colour;
-        this.context.fillRect(x, y, width, height);
-    };
+    };    
 };

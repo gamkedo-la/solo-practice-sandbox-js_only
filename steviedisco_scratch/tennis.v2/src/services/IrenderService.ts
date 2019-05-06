@@ -1,10 +1,10 @@
 import * as framework from "helpers/exports";
+import { Iinitialisable, Irenderable } from "helpers/exports";
 
-export interface IrenderService
+export interface IrenderService extends Iinitialisable, Irenderable
 {
-    initialise(document: Document);
-    render(): void;
-    clear(): void;
-    drawAll(): void;
-    swapBuffers(): void;
+    canvas: HTMLCanvasElement;
+    context: CanvasRenderingContext2D;
+
+    drawRectangle(x: number, y: number, width: number, height: number, colour: string): void;
 };

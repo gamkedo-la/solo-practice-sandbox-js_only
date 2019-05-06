@@ -27,7 +27,8 @@ const config = {
       model: path.resolve(__dirname, 'src/model'),
       config: path.resolve(__dirname, 'src/config'),
       services: path.resolve(__dirname, 'src/services'),
-      helpers: path.resolve(__dirname, 'src/helpers')
+      helpers: path.resolve(__dirname, 'src/helpers'),
+      behaviours: path.resolve(__dirname, 'src/behaviours')
     }
   },
   module: {

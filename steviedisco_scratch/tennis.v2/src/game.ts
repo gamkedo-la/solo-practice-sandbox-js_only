@@ -1,10 +1,8 @@
-import { JsInject } from "lib/jsInject";
 import * as framework from "helpers/exports";
+import * as global from "helpers/globals";
 
 export class game
 {
-    $jsInject: JsInject = new JsInject();
-
     $configService: framework.IconfigService;
     $loggerService: framework.IloggerService;
     $timeService: framework.ItimeService;
@@ -29,17 +27,17 @@ export class game
 
     registerServices(): void
     {
-        this.$configService = this.$jsInject.register("IconfigService", [framework.configService]);
-        this.$loggerService = this.$jsInject.register("IloggerService", [this.$configService.settings.logger]);
-        this.$timeService = this.$jsInject.register("ItimeService", [framework.timeService]);
-        this.$inputService = this.$jsInject.register("IinputService", [framework.inputService]);
-        this.$updateService = this.$jsInject.register("IupdateService", [framework.updateService]);
-        this.$renderService = this.$jsInject.register("IrenderService", ["IconfigService", framework.renderService]);
+        this.$configService = global.$jsInject.register("IconfigService", [framework.configService]);
+        this.$loggerService = global.$jsInject.register("IloggerService", [this.$configService.settings.logger]);
+        this.$timeService = global.$jsInject.register("ItimeService", [framework.timeService]);
+        this.$inputService = global.$jsInject.register("IinputService", [framework.inputService]);
+        this.$updateService = global.$jsInject.register("IupdateService", [framework.updateService]);
+        this.$renderService = global.$jsInject.register("IrenderService", ["IconfigService", framework.renderService]);
     };
 
     initialise(): void
     {
-        this.$renderService.initialise(document);
+        this.$renderService.initialise([document]);
     };
 
     gameLoop(): void

@@ -1,4 +1,4 @@
-import * as framework from "helpers/exports";
+import { IloggerService } from "services/IloggerService";
 
 const maxRecursion: number = 20;
 
@@ -16,7 +16,7 @@ export class JsInject {
 	
 	public container: {[name: string]: (lvl: number) => any};
 
-	private logger: framework.IloggerService;
+	private logger: IloggerService;
 	
 	constructor() {
 		this.container = {};
