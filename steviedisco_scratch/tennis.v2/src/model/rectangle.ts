@@ -1,11 +1,17 @@
 import * as framework from "helpers/exports";
+import { IrenderService } from "helpers/exports";
 
-export class rectangle
+export class rectangle implements framework.Irenderable
 {    
-    protected x: number;
-    protected y: number;
-    protected height: number;
-    protected width: number;
+    x: number;
+    y: number;
+    height: number;
+    width: number;
+    colour: string;
+
+    constructor(colour: string) {
+        this.colour = colour;
+    };
 
     setPosition(x: number, y: number): void
     {
@@ -13,15 +19,20 @@ export class rectangle
         this.y = y;
     };
 
-    setSize(height: number, width: number): void
+    setSize(width: number, height: number): void
     {
-        this.height = height;
         this.width = width;
+        this.height = height;        
     };
 
-    set(x: number, y: number, height: number, width: number): void
+    set(x: number, y: number, width: number, height: number): void
     {
         this.setPosition(x, y);
-        this.setSize(height, width);
+        this.setSize(width, height);
+    };
+
+    render(renderService: IrenderService): void
+    {
+        renderService.drawRectangle(this.x, this.y, this.width, this.height, this.colour);
     };
 };

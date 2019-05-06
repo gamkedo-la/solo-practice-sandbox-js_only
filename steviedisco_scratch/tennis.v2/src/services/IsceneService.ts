@@ -1,6 +1,9 @@
 import * as framework from "helpers/exports";
 
-export interface IinputService
-{
-    process(): void;
+export interface IsceneService
+{  
+    addEntity(entity: framework.entity);
+    removeEntity(entity: framework.entity);
+    getNextEntity(): framework.entity;
+    resetEnumerator(): void;
 };

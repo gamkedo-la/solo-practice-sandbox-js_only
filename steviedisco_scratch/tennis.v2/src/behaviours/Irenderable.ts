@@ -2,5 +2,5 @@ import * as framework from "helpers/exports";
 
 export interface Irenderable
 {
-    render(): void;
+    render(renderService: framework.IrenderService): void;
 };

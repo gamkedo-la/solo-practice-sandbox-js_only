@@ -7,14 +7,17 @@ export class game
     $loggerService: framework.IloggerService;
     $timeService: framework.ItimeService;
     $inputService: framework.IinputService;
+    $sceneService: framework.IsceneService;
     $updateService: framework.IupdateService;
     $renderService: framework.IrenderService;
 
     window: Window;
+    document: Document;
 
-    constructor(window: Window)
+    constructor(window: Window, document: Document)
     {
         this.window = window;
+        this.document = document;
     };
 
     run(): void
@@ -31,13 +34,17 @@ export class game
         this.$loggerService = global.$jsInject.register("IloggerService", [this.$configService.settings.logger]);
         this.$timeService = global.$jsInject.register("ItimeService", [framework.timeService]);
         this.$inputService = global.$jsInject.register("IinputService", [framework.inputService]);
+        this.$sceneService = global.$jsInject.register("IsceneService", [framework.sceneService]);
         this.$updateService = global.$jsInject.register("IupdateService", [framework.updateService]);
-        this.$renderService = global.$jsInject.register("IrenderService", ["IconfigService", framework.renderService]);
+        this.$renderService = global.$jsInject.register("IrenderService", ["IconfigService", "IsceneService", framework.renderService]);
     };
 
     initialise(): void
     {
-        this.$renderService.initialise([document]);
+        this.$renderService.initialise([window, document]);
+
+        this.$sceneService.addEntity(new framework.net());
+        this.$sceneService.resetEnumerator();
     };
 
     gameLoop(): void
@@ -60,7 +67,7 @@ export class game
             lag -= msPerUpdate;
         }
 
-        this.$renderService.render();
+        this.$renderService.renderAll();
 
         window.requestAnimationFrame(() => this.gameLoop());
     };

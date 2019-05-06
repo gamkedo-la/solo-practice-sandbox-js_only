@@ -1,9 +1,12 @@
 import * as framework from "helpers/exports";
+import { Irenderable } from "helpers/exports";
 
 export class renderService implements framework.IrenderService, framework.Iinitialisable
 {
     $configService: framework.IconfigService;
+    $sceneService: framework.IsceneService;
 
+    window: Window;
     document: Document;
     bufferIndex: number = 0;    
     buffers: HTMLCanvasElement[]; 
@@ -11,14 +14,19 @@ export class renderService implements framework.IrenderService, framework.Iiniti
     canvas: HTMLCanvasElement;
     context: CanvasRenderingContext2D;
 
-    constructor(IconfigService: framework.IconfigService)
+    constructor(
+        IconfigService: framework.IconfigService,
+        IsceneService: framework.IsceneService
+    )
     {
         this.$configService = IconfigService;
+        this.$sceneService = IsceneService;
     };
 
     initialise(params: any[]) // Document
     {    
-        this.document = params[0] as Document;
+        this.window = params[0] as Window;
+        this.document = params[1] as Document;
 
         this.buffers = [
             this.document.createElement('canvas'),
@@ -28,10 +36,10 @@ export class renderService implements framework.IrenderService, framework.Iiniti
         this.initialiseBuffers();
     };
 
-    render(): void
+    renderAll(): void
     {
         this.clear();
-        this.drawAll();
+        this.renderEntities();
         this.swapBuffers();
     };
 
@@ -46,8 +54,14 @@ export class renderService implements framework.IrenderService, framework.Iiniti
         this.drawRectangle(0, 0, this.canvas.width, this.canvas.height, this.$configService.settings.bgColour);
     };
 
-    private drawAll(): void
+    private renderEntities(): void
     {
+        let entity: framework.entity = null;
+        while((entity = this.$sceneService.getNextEntity()))
+        {
+            if (this.isRenderable(entity))       
+                (entity as Irenderable).render(this);     
+        }
     };
 
     private swapBuffers(): void
@@ -61,13 +75,16 @@ export class renderService implements framework.IrenderService, framework.Iiniti
 
     private initialiseBuffers(): void
     {
-        for (let i: number = 0; i < 2; i++)
-        {
-            this.buffers[i].style["z-index"] = i;
-        }        
+        let zindex: number = 0;
 
-        this.buffers.forEach((buffer) => {this.document.body.appendChild(buffer);});
-                
+        this.buffers.forEach((buffer) => 
+        {            
+            buffer.style["z-index"] = zindex++;
+            buffer.height = this.window.innerHeight - 1;
+	        buffer.width = this.window.innerWidth - 1;
+            this.document.body.appendChild(buffer);
+        });      
+        
         this.getCanvasContext();
     };
 
@@ -76,4 +93,9 @@ export class renderService implements framework.IrenderService, framework.Iiniti
         this.canvas = this.buffers[this.bufferIndex];
         this.context = this.canvas.getContext('2d');
     };    
+
+    private isRenderable(arg: any): arg is Irenderable 
+    {
+        return arg.render !== undefined;
+    };
 };
