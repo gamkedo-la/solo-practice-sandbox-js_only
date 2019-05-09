@@ -17,3 +17,4 @@ function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY, withAngle){
 	canvasContext.drawImage(graphic, -graphic.width/2, -graphic.height/2); //center, draws car
 	canvasContext.restore(); //undoes the translation movement and rotation since save()
 }
+

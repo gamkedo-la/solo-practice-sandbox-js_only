@@ -3,6 +3,7 @@ const REVERSE_POWER = 0.2;
 const TURN_RATE = 0.03;
 const MIN_TURN_SPEED = 0.5;
 const GROUNDSPEED_DECAY_MULT = 0.94;
+const CAR_COLLISION_RADIUS = 15;
 
 function carClass() {
     this.x = 60;
@@ -68,8 +69,6 @@ function carClass() {
             }
         }
 
-
-
         // Motion X and Y of the car
         var nextX = this.x + Math.cos(this.ang) * this.speed;
         var nextY = this.y + Math.sin(this.ang) * this.speed;
@@ -81,13 +80,13 @@ function carClass() {
             case TRACK_ROAD:
                 this.x = nextX;
                 this.y = nextY;
-                this.speed *= 1;
+                //this.speed *= 1;
                 this.turnable = true;
                 break;
             case TRACK_OIL_SLICK:
                 this.x = nextX;
                 this.y = nextY;
-                this.speed *= 1;
+                //this.speed *= 1;
                 this.turnable = false;
                 break;
             case TRACK_GRASS:
@@ -103,12 +102,29 @@ function carClass() {
                 playerTwo.carReset();
                 break;
             default:
-                this.speed = -0.5 * this.speed;
+                this.speed = -.5 * this.speed;
         }
 
     }
+	
+	this.isOverLappingPoint = function(testX, testY){
+		var deltaX = testX - this.x;
+		var deltaY = testY - this.y;
+		var dist = Math.sqrt ((deltaX*deltaX)+(deltaY*deltaY));
+		return(dist <= CAR_COLLISION_RADIUS);
+	}
+	
+	this.checkCarCollisionAgainst = function(thisCar){
+		if(thisCar.isOverLappingPoint(this.x,this.y)){
+			this.speed = -1 * this.speed;
+			document.getElementById("debugText").innerHTML = this.myName + "Crash!";
+			console.log(this.myName + "Crash!");
+		}
+		
+	}
+	
 
     this.drawCar = function() {
         drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, this.ang);
-    }
+	}
 }

@@ -46,7 +46,8 @@ function moveEverything() {
 	
 	playerOne.movement();
 	playerTwo.movement();
-					
+	playerOne.checkCarCollisionAgainst(playerTwo);	
+	playerTwo.checkCarCollisionAgainst(playerOne);				
 }
 			
 function calculateMousePos(evt) {
