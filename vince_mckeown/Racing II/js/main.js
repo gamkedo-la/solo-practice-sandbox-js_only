@@ -3,7 +3,7 @@ var canvasContext;
 
 var playerOne = new carClass();
 var playerTwo = new carClass();
-
+var computerPlayerOn = true;
 	
 window.onload = function(){
 			
@@ -35,8 +35,8 @@ function imageLoadingDoneSoStartGame(){
 		moveEverything();
 		drawEverything();
 	}, 1000/framesPerSecond);
-	playerTwo.carInit(carPic2, "Red Car");
-	playerOne.carInit(carPic, "Green Car");
+	playerTwo.carInit(carPic2, "Red Car", true);
+	playerOne.carInit(carPic, "Green Car", false);
 	
 }
 

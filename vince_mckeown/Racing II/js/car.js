@@ -14,6 +14,7 @@ function carClass() {
     this.keyHeld_TurnLeft = false;
     this.keyHeld_TurnRight = false;
     this.turnable = true;
+	this.computerPlayer = false;
 
     this.carPic = document.createElement("img");
 
@@ -23,6 +24,7 @@ function carClass() {
         this.controlKeyForTurnLeft = leftKey;
         this.controlKeyForTurnRight = rightKey;
     }
+
 
     this.carReset = function() {
         this.speed = 0;
@@ -44,14 +46,37 @@ function carClass() {
         this.y = this.homeY;
     }
 
-    this.carInit = function(whichGraphic, whichName) {
+    this.carInit = function(whichGraphic, whichName, computer) {
         this.myBitmap = whichGraphic;
         this.myName = whichName;
         this.carReset();
+		this.computerPlayer = computer;
     }
 
     this.movement = function() {
-
+		
+		if(this.computerPlayer){
+			var chanceToMoveForward = Math.round(Math.random() * 10);
+			if (chanceToMoveForward > 1){
+				this.keyHeld_Gas = true;
+				this.keyHeld_Reverse = false;
+			} else {
+				this.keyHeld_Reverse = true;
+				this.keyHeld_Gas = false;
+			}
+			var chanceToMoveRight = Math.round(Math.random() * 10);
+			if (chanceToMoveRight == 1){
+				this.keyHeld_TurnRight = true;
+				this.keyHeld_TurnLeft = false;
+			} else if (chanceToMoveRight == 2){
+				this.keyHeld_TurnRight = false;
+				this.keyHeld_TurnLeft = true;
+			} else {
+				this.keyHeld_TurnRight = false;
+				this.keyHeld_TurnLeft = false;
+			}	
+		} 
+			
         this.speed *= GROUNDSPEED_DECAY_MULT;
 
         if (this.keyHeld_Gas) {

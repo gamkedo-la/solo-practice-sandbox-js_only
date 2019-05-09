@@ -22,7 +22,9 @@ function initInput(){
 	document.addEventListener("keyup", keyReleased);
 	
 	
-	playerTwo.setupControls(KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW);
+	if(!computerPlayerOn) {
+		playerTwo.setupControls(KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW);
+	}
 	playerOne.setupControls(KEY_W, KEY_S, KEY_A, KEY_D);
 	
 	
