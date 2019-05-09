@@ -15,6 +15,7 @@ function carClass() {
     this.keyHeld_TurnRight = false;
     this.turnable = true;
 	this.computerPlayer = false;
+	this.second = 0.0;
 
     this.carPic = document.createElement("img");
 
@@ -51,13 +52,16 @@ function carClass() {
         this.myName = whichName;
         this.carReset();
 		this.computerPlayer = computer;
+		this.startHour = hour;
+		this.startMinute = minute;
+		this.startSecond = second;
     }
 
     this.movement = function() {
 		
 		if(this.computerPlayer){
 			var chanceToMoveForward = Math.round(Math.random() * 10);
-			if (chanceToMoveForward > 1){
+			if (chanceToMoveForward > 2){
 				this.keyHeld_Gas = true;
 				this.keyHeld_Reverse = false;
 			} else {
@@ -65,10 +69,10 @@ function carClass() {
 				this.keyHeld_Gas = false;
 			}
 			var chanceToMoveRight = Math.round(Math.random() * 10);
-			if (chanceToMoveRight == 1){
+			if (chanceToMoveRight <= 2){
 				this.keyHeld_TurnRight = true;
 				this.keyHeld_TurnLeft = false;
-			} else if (chanceToMoveRight == 2){
+			} else if (chanceToMoveRight == 3){
 				this.keyHeld_TurnRight = false;
 				this.keyHeld_TurnLeft = true;
 			} else {
@@ -129,8 +133,15 @@ function carClass() {
             default:
                 this.speed = -.5 * this.speed;
         }
-
+		this.trackTime();
     }
+	
+	this.trackTime = function(){
+		if(second > (60 - second)){
+			this.second = second - this.startSecond;
+		}
+	}
+	
 	
 	this.isOverLappingPoint = function(testX, testY){
 		var deltaX = testX - this.x;
@@ -142,14 +153,12 @@ function carClass() {
 	this.checkCarCollisionAgainst = function(thisCar){
 		if(thisCar.isOverLappingPoint(this.x,this.y)){
 			this.speed = -1 * this.speed;
-			document.getElementById("debugText").innerHTML = this.myName + "Crash!";
-			console.log(this.myName + "Crash!");
 		}
 		
 	}
 	
-
     this.drawCar = function() {
         drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, this.ang);
+		document.getElementById("debugText").innerHTML = hour + ":" + minute + ":"+ second;
 	}
 }

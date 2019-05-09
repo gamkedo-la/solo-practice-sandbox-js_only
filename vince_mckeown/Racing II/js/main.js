@@ -1,5 +1,10 @@
 var canvas;
 var canvasContext;
+var now = new Date();
+var hour = now.getHours();
+var minute = now.getMinutes();
+var second = now.getSeconds();
+var milisecond = now.getMilliseconds();
 
 var playerOne = new carClass();
 var playerTwo = new carClass();
@@ -40,14 +45,20 @@ function imageLoadingDoneSoStartGame(){
 	
 }
 
-			
-			
+function updateTime(){
+	now = new Date();
+	hour = now.getHours();
+	minute = now.getMinutes();
+	second = now.getSeconds();
+}
+	
 function moveEverything() {
 	
 	playerOne.movement();
 	playerTwo.movement();
 	playerOne.checkCarCollisionAgainst(playerTwo);	
-	playerTwo.checkCarCollisionAgainst(playerOne);				
+	playerTwo.checkCarCollisionAgainst(playerOne);	
+	updateTime();
 }
 			
 function calculateMousePos(evt) {
@@ -59,13 +70,19 @@ function calculateMousePos(evt) {
 		y: mouseY
 	};
 }
+
+function drawClock(){
+	canvasContext.drawImage(clockPic, 350, 2);
+	colorText(second+"-"+playerOne.startSecond+':'+playerOne.second, 368, 30, 'black');
+}
+
 						
 function drawEverything() {
 				
 	//clears screen
-	colorRect(0,0,canvas.width,canvas.height, 'black');
-				
+	colorRect(0,0,canvas.width,canvas.height, 'black');			
 	drawTracks();
 	playerOne.drawCar();
 	playerTwo.drawCar();
+	drawClock();
 }
