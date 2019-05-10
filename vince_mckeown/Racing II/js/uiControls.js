@@ -1,12 +1,14 @@
-const KEY_W = 87; // "W"
-const KEY_S = 83; // "S"
-const KEY_A = 65; // "A"
-const KEY_D = 68; // "D"
+const KEY_W = 87; 
+const KEY_S = 83; 
+const KEY_A = 65; 
+const KEY_D = 68; 
+const KEY_F = 70;
 
 const KEY_LEFT_ARROW = 37;
 const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
 const KEY_DOWN_ARROW = 40;
+const ENTER_KEY = 13;
 
 
 function initInput(){
@@ -23,9 +25,10 @@ function initInput(){
 	
 	
 	if(!computerPlayerOn) {
-		playerTwo.setupControls(KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW);
+		playerTwo.setupControls(KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW, ENTER_KEY);
 	}
-	playerOne.setupControls(KEY_W, KEY_S, KEY_A, KEY_D);
+	playerOne.setupControls(KEY_W, KEY_S, KEY_A, KEY_D, KEY_F
+	);
 	
 	
 
@@ -57,6 +60,10 @@ function setKeyHoldState(thisKey, thisCar, setTo) {
 	
 	if(thisKey == thisCar.controlKeyForTurnRight){
 		thisCar.keyHeld_TurnRight = setTo;
+	}
+	
+	if(thisKey == thisCar.controlKeyForNitro){
+		thisCar.keyHeld_Nitro = setTo;
 	}
 }
 

@@ -5,6 +5,7 @@ var hour = now.getHours();
 var minute = now.getMinutes();
 var second = now.getSeconds();
 var milisecond = now.getMilliseconds();
+var time = 0;
 
 var playerOne = new carClass();
 var playerTwo = new carClass();
@@ -42,7 +43,6 @@ function imageLoadingDoneSoStartGame(){
 	}, 1000/framesPerSecond);
 	playerTwo.carInit(carPic2, "Red Car", true);
 	playerOne.carInit(carPic, "Green Car", false);
-	
 }
 
 function updateTime(){

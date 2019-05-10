@@ -1,6 +1,5 @@
 const DRIVE_POWER = 0.5;
 const REVERSE_POWER = 0.2;
-const TURN_RATE = 0.03;
 const MIN_TURN_SPEED = 0.5;
 const GROUNDSPEED_DECAY_MULT = 0.94;
 const CAR_COLLISION_RADIUS = 15;
@@ -9,21 +8,25 @@ function carClass() {
     this.x = 60;
     this.y = 60;
 
+	this.turn_rate = 0.03;
     this.keyHeld_Gas = false;
     this.keyHeld_Reverse = false;
     this.keyHeld_TurnLeft = false;
     this.keyHeld_TurnRight = false;
+	this.keyHeld_Nitro = false;
     this.turnable = true;
 	this.computerPlayer = false;
 	this.second = 0.0;
+	this.nitroboost = false;
 
     this.carPic = document.createElement("img");
 
-    this.setupControls = function(forwardKey, backKey, leftKey, rightKey) {
+    this.setupControls = function(forwardKey, backKey, leftKey, rightKey, nitroKey) {
         this.controlKeyForGas = forwardKey;
         this.controlKeyForReverse = backKey;
         this.controlKeyForTurnLeft = leftKey;
         this.controlKeyForTurnRight = rightKey;
+		this.controlKeyForNitro = nitroKey;
     }
 
 
@@ -52,10 +55,26 @@ function carClass() {
         this.myName = whichName;
         this.carReset();
 		this.computerPlayer = computer;
+		this.nitroboost = false;
+		this.nitroBoostAmount = 1;
+		this.nitroBoostTime = 10;
 		this.startHour = hour;
 		this.startMinute = minute;
 		this.startSecond = second;
+
     }
+	
+	this.tryNitroBoost = function(){
+		if(this.nitroBoostAmount > 0)
+			for(var i=0; i < this.nitroBoostTime ; i++) {
+				this.speed += 2;
+				this.turn_rate = 0.01;
+				this.nitroboost = true;
+			}
+		this.nitroBoostAmount = this.nitroBoostAmount - 1;
+		this.turn_rate = 0.03;
+		this.nitroboost = false;
+	}
 
     this.movement = function() {
 		
@@ -79,22 +98,29 @@ function carClass() {
 				this.keyHeld_TurnRight = false;
 				this.keyHeld_TurnLeft = false;
 			}	
+			var chanceToUseNitro = Math.round(Math.random() * 100);
+			if (chanceToUseNitro <= 1){
+				this.controlKeyForNitro = true;
+			}
 		} 
 			
         this.speed *= GROUNDSPEED_DECAY_MULT;
 
         if (this.keyHeld_Gas) {
             this.speed += DRIVE_POWER;
+			if(this.keyHeld_Nitro){
+				this.tryNitroBoost();
+			}
         }
         if (this.keyHeld_Reverse) {
             this.speed -= REVERSE_POWER;
         }
         if (Math.abs(this.speed) >= MIN_TURN_SPEED) {
             if (this.keyHeld_TurnLeft && this.turnable) {
-                this.ang -= TURN_RATE * Math.PI;
+                this.ang -= this.turn_rate * Math.PI;
             }
             if (this.keyHeld_TurnRight && this.turnable) {
-                this.ang += TURN_RATE * Math.PI;
+                this.ang += this.turn_rate * Math.PI;
             }
         }
 
