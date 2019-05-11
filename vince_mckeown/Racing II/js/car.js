@@ -58,6 +58,7 @@ function carClass() {
 		this.nitroboost = false;
 		this.nitroBoostAmount = 1;
 		this.nitroBoostTime = 10;
+		this.airborne = false;
 		this.startHour = hour;
 		this.startMinute = minute;
 		this.startSecond = second;
@@ -150,7 +151,12 @@ function carClass() {
                 this.speed *= 0.5;
                 this.turnable = true;
                 break;
-
+			case TRACK_NORTH_RAMP:
+                this.x = nextX;
+                this.y = nextY;
+                this.turnable = false;
+				this.airborne = true;
+                break;
             case TRACK_FINISH:
                 document.getElementById("debugText").innerHTML = this.myName + " is the WINNER!";
                 playerOne.carReset();
