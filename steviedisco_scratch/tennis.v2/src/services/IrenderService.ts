@@ -8,4 +8,5 @@ export interface IrenderService extends framework.Iinitialisable
     drawRectangle(x: number, y: number, width: number, height: number, colour: string): void;
 
     renderAll(): void;
+    initialiseBuffers(): void;
 };

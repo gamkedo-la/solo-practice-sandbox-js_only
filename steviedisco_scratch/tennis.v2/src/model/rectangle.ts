@@ -1,8 +1,10 @@
 import * as framework from "helpers/exports";
-import { IrenderService } from "helpers/exports";
+import * as global from "helpers/globals";
 
 export class rectangle implements framework.Irenderable
 {    
+    $renderService: framework.IrenderService;
+
     x: number;
     y: number;
     height: number;
@@ -10,6 +12,7 @@ export class rectangle implements framework.Irenderable
     colour: string;
 
     constructor(colour: string) {
+        this.$renderService = global.$jsInject.get("IrenderService") as framework.IrenderService;
         this.colour = colour;
     };
 
@@ -31,8 +34,8 @@ export class rectangle implements framework.Irenderable
         this.setSize(width, height);
     };
 
-    render(renderService: IrenderService): void
+    render(): void
     {
-        renderService.drawRectangle(this.x, this.y, this.width, this.height, this.colour);
+        this.$renderService.drawRectangle(this.x, this.y, this.width, this.height, this.colour);
     };
 };

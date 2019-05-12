@@ -14,6 +14,8 @@ export class game
     window: Window;
     document: Document;
 
+    debouncedResize: Function = framework.debounce(this.onResize, 200);
+
     constructor(window: Window, document: Document)
     {
         this.window = window;
@@ -23,8 +25,7 @@ export class game
     run(): void
     { 
         this.registerServices();
-        this.initialise();
-        
+        this.initialise();            
         this.window.requestAnimationFrame(() => this.gameLoop());
     };
 
@@ -45,6 +46,8 @@ export class game
 
         this.$sceneService.addEntity(new framework.net());
         this.$sceneService.resetEnumerator();
+
+        this.window.addEventListener("resize", this.debouncedResize(this.$renderService));
     };
 
     gameLoop(): void
@@ -69,6 +72,11 @@ export class game
 
         this.$renderService.renderAll();
 
-        window.requestAnimationFrame(() => this.gameLoop());
+        this.window.requestAnimationFrame(() => this.gameLoop());
+    };
+
+    onResize(renderService): void
+    {
+        renderService.initialiseBuffers();
     };
 }
