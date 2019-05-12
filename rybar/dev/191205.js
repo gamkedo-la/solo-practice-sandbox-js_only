@@ -7,6 +7,8 @@ function init() {
   circleY = 0;
   c.width = 512;
   c.height = 512;
+
+  panel.addRange("radius", 20, 200, 40, 1);
 }
 
 function loop(dt){
@@ -22,11 +24,14 @@ function loop(dt){
 }
 
 function step(dt){
-
-}
+let rad = panel.getValue("radius");
+circleX = c.width/2 + Math.sin(dt) * rad;
+circleY = c.height/2 + Math.cos(dt) * rad;
 
 function draw(dt){
-
+  ctx.fillStyle = '#101';
+  ctx.fillRect(0,0,c.width,c.height);
+  ctx.ellipse(circleX, circleY, 10,10,0,0,Math.PI*2,false);
 }
 
 init();
