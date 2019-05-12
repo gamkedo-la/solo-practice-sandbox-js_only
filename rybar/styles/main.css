@@ -1,0 +1,118 @@
+@font-face {
+  font-family: '04b08';
+    src:  url('../font/04b08.ttf.woff') format('woff'),
+    url('../font/04b08.ttf.svg#04b08') format('svg'),
+    url('../font/04b08.ttf.eot'),
+    url('../font/04b08.eot?#iefix') format('embedded-opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+      font-family: 'AdvoCut';
+      src:url('AdvoCut.ttf.woff') format('woff'),
+          url('AdvoCut.ttf.svg#AdvoCut') format('svg'),
+          url('AdvoCut.ttf.eot'),
+          url('AdvoCut.ttf.eot?#iefix') format('embedded-opentype');
+          font-weight: normal;
+          font-style: normal;
+  }
+
+html, body {
+  font-family: '04b08';
+
+    color: black;
+    background-color: #403353;
+    margin: 0;
+    padding: 0;
+}
+
+a, body {
+  font-family: '04b08';
+  font-size: 14px;
+  color: #423934;
+}
+
+h1 {
+    position:relative;
+    font-family: '04b08';
+    font-size: 56px;
+    text-shadow: 1px 1px 2px rgba(255,255,255,0.4);
+    color: #fff;
+  }
+
+
+h3 {
+    margin-bottom: 0;
+}
+
+hr {
+    margin-top: 0;
+    border: 0.5px solid black;
+}
+
+a:link, a:visited, a:hover, a:active {
+    text-decoration: none;
+    color: #423934;
+}
+
+p {
+    margin-left: 10px;
+}
+
+#sortDir {
+    text-align: center;
+}
+
+.page {
+
+}
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    padding: 10px;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #c7b08b;
+    box-shadow: 0px 0px 15px 10px rgba(0,0,0,0.3);
+    overflow: hidden;
+
+}
+
+img {
+    width: 200px;
+    height: 200px;
+    margin: 5px;
+    -webkit-box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.5);
+    -moz-box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.5);
+    box-shadow: 2px 2px 6px 0px rgba(0,0,0,0.5);
+}
+
+li {
+    list-style: none;
+    margin: 10px;
+    text-indent: 0;
+}
+
+ul {
+    padding: 0;
+}
+
+.headerbar {
+  font-family: '04b08';
+  font-size: 56px;
+  text-shadow: 1px 1px 2px #000;
+  color: #fff;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  margin-left:-10px;
+  margin-right: -10px;
+  padding: 10px 10px 2px 10px;
+  background: -webkit-linear-gradient(270deg, red, red 20%, orange 20%, orange 40%, yellow 40%, yellow 60%, green 60%, green 80%, blue 80%, blue 100%);
+  color: 'black';
+  height: 10px;
+  width: 100%;
+  display: block;
+  overflow: hidden;
+}
