@@ -1,5 +1,6 @@
 import * as framework from "helpers/exports";
 import * as global from "helpers/globals";
+import { IrenderService } from "helpers/exports";
 
 export class game
 {
@@ -23,8 +24,8 @@ export class game
     run(): void
     { 
         this.registerServices();
-        this.initialise();
-        
+        this.initialise();            
+
         this.window.requestAnimationFrame(() => this.gameLoop());
     };
 
@@ -45,6 +46,8 @@ export class game
 
         this.$sceneService.addEntity(new framework.net());
         this.$sceneService.resetEnumerator();
+
+        this.window.addEventListener("resize", () => this.onResize(this.window, this.$renderService));
     };
 
     gameLoop(): void
@@ -69,6 +72,11 @@ export class game
 
         this.$renderService.renderAll();
 
-        window.requestAnimationFrame(() => this.gameLoop());
+        this.window.requestAnimationFrame(() => this.gameLoop());
+    };
+
+    onResize(window: Window, renderService: IrenderService): void
+    {
+        window.requestAnimationFrame(() => renderService.initialiseBuffers());
     };
 }

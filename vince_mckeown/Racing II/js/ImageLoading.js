@@ -36,7 +36,8 @@ function loadImages() {
 			{trackType: TRACK_WALL, theFile:  "track_wall.png"},
 			{trackType: TRACK_GRASS, theFile: "track_grass.png"},
 			{trackType: TRACK_FINISH, theFile: "track_finish.png"},
-			{trackType: TRACK_OIL_SLICK, theFile: "track_oil_slick.png"}
+			{trackType: TRACK_OIL_SLICK, theFile: "track_oil_slick.png"},
+			{trackType: TRACK_NORTH_RAMP, theFile: "track_north_ramp.png"}
 		];
 			
 	picsToLoad = imageList.length;

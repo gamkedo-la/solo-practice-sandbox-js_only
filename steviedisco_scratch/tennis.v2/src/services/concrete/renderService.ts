@@ -33,6 +33,10 @@ export class renderService implements framework.IrenderService, framework.Iiniti
             this.document.createElement('canvas')
         ];    
 
+        this.buffers.forEach((buffer) => {                       
+            this.document.body.appendChild(buffer);
+        });
+
         this.initialiseBuffers();
     };
 
@@ -60,7 +64,7 @@ export class renderService implements framework.IrenderService, framework.Iiniti
         while((entity = this.$sceneService.getNextEntity()))
         {
             if (this.isRenderable(entity))       
-                (entity as Irenderable).render(this);     
+                (entity as Irenderable).render();     
         }
     };
 
@@ -73,7 +77,7 @@ export class renderService implements framework.IrenderService, framework.Iiniti
         this.getCanvasContext();
     };
 
-    private initialiseBuffers(): void
+    initialiseBuffers(): void
     {
         let zindex: number = 0;
 
@@ -81,8 +85,7 @@ export class renderService implements framework.IrenderService, framework.Iiniti
         {            
             buffer.style["z-index"] = zindex++;
             buffer.height = this.window.innerHeight - 1;
-	        buffer.width = this.window.innerWidth - 1;
-            this.document.body.appendChild(buffer);
+            buffer.width = this.window.innerWidth - 1;            
         });      
         
         this.getCanvasContext();
