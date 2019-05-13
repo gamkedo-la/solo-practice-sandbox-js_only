@@ -62,6 +62,8 @@ function carClass() {
 		this.startHour = hour;
 		this.startMinute = minute;
 		this.startSecond = second;
+		this.xOffSet = this.x;
+		this.yOffSet = this.y;
 
     }
 	
@@ -155,7 +157,7 @@ function carClass() {
                 this.x = nextX;
                 this.y = nextY;
                 this.turnable = false;
-				this.airborne = true;
+				this.getAirTime()
                 break;
             case TRACK_FINISH:
                 document.getElementById("debugText").innerHTML = this.myName + " is the WINNER!";
@@ -167,6 +169,14 @@ function carClass() {
         }
 		this.trackTime();
     }
+	
+	this.getAirTime = function(){  // WIP:  Need to gradually increase shadow while in air.
+		this.airborne = true;
+		for(i = 0; i < 10; i++){
+			this.xOffSet = this.xOffSet + 5;
+			this.yOffSet = this.yOffSet + 5;
+		}
+	}
 	
 	this.trackTime = function(){
 		if(second > (60 - second)){
@@ -190,7 +200,13 @@ function carClass() {
 	}
 	
     this.drawCar = function() {
-        drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, this.ang);
+        drawBitmapCenteredAtLocationWithRotation(carShadowPic, this.x, this.y, this.ang);
+		var xOffSet = this.x;
+		var yOffSet = this.y;
+		if(this.airborne){
+			yOffSet = yOffSet - 10;
+		}
+		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, xOffSet, yOffSet, this.ang);
 		document.getElementById("debugText").innerHTML = hour + ":" + minute + ":"+ second;
 	}
 }
