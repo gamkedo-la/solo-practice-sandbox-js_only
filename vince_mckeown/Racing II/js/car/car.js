@@ -30,7 +30,9 @@ function carClass() {
     }
 
 
-    this.carReset = function() {
+    this.carReset = function(whichGraphic, whichName, computer) {
+		this.name = whichName;
+		this.myCarPic = whichGraphic;
         this.speed = 0;
         this.ang = -0.5 * Math.PI;
 
@@ -42,6 +44,7 @@ function carClass() {
                     this.homeX = tileCol * TRACK_W + 0.5 * TRACK_W;
                     this.homeY = tileRow * TRACK_H + 0.5 * TRACK_H;
                     trackGrid[i] = TRACK_ROAD;
+					console.log(this.homeX);
                     break;
                 }
             }
@@ -51,9 +54,9 @@ function carClass() {
     }
 
     this.carInit = function(whichGraphic, whichName, computer) {
-        this.myBitmap = whichGraphic;
-        this.myName = whichName;
-        this.carReset();
+		this.myBitmap = whichGraphic;
+		this.myName = whichName;
+        this.carReset(whichGraphic, whichName, computer);
 		this.computerPlayer = computer;
 		this.nitroboost = false;
 		this.nitroBoostAmount = 1;
@@ -170,17 +173,21 @@ function carClass() {
 				this.getAirTime();
                 break;
             case TRACK_FINISH:
+				console.log('Lap: '+this.lapNumber+' ')
                 document.getElementById("debugText").innerHTML = this.myName + " is the WINNER!";
 				if(this.lapNumber < 1){
 					this.recordALap();
+				}
+				if(this.lapNumber >= 1){
+					nextLevel();
 				}
 				this.x = nextX;
                 this.y = nextY;
                 //this.speed *= 1;
                 this.turnable = true;
-				//playerOne.carReset();
-                //playerTwo.carReset();
-                break;
+				
+				
+				break;
             default:
                 this.speed = -.5 * this.speed;
         }

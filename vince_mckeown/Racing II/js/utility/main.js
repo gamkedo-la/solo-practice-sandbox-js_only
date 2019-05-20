@@ -40,6 +40,7 @@ function imageLoadingDoneSoStartGame(){
 	}, 1000/framesPerSecond);
 	playerTwo.carInit(carPic2, "Red Car", true);
 	playerOne.carInit(carPic, "Green Car", false);
+	loadLevel(levelOne);
 }
 
 function updateTime(){
