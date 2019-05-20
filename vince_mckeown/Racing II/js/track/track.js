@@ -83,8 +83,8 @@ function nextLevel() {
 
 function loadLevel(whichLevel) {	
 	trackGrid = whichLevel.slice();
-	playerOne.carReset(); 
-	playerTwo.carReset();
+	playerOne.carReset(carPic, "Green Car", false); 
+	playerTwo.carReset(carPic2, "Red Car", true);
 }
 		
 function drawTracks(){
@@ -103,7 +103,6 @@ function drawTracks(){
 			if (tileTypeHasRoadTransparency(trackTypeHere)) {
 				canvasContext.drawImage(trackPics[TRACK_ROAD], trackLeftEdgeX, trackTopEdgeY);
 			}
-			console.log('TrackType'+ (trackPics[trackTypeHere] + ' X:' + trackLeftEdgeX + ' Y:' + trackTopEdgeY));
 			canvasContext.drawImage(trackPics[trackTypeHere], trackLeftEdgeX, trackTopEdgeY);
 			
 			
