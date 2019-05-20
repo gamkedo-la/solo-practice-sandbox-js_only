@@ -16,7 +16,7 @@ function carClass() {
 	this.keyHeld_Nitro = false;
     this.turnable = true;
 	this.computerPlayer = false;
-	this.second = 0.0;
+	this.runTime = 0.0
 	this.nitroboost = false;
 
     this.carPic = document.createElement("img");
@@ -59,11 +59,21 @@ function carClass() {
 		this.nitroBoostAmount = 1;
 		this.nitroBoostTime = 10;
 		this.airborne = false;
-		this.startHour = hour;
-		this.startMinute = minute;
-		this.startSecond = second;
+		this.startTime = now;
 		this.xOffSet = this.x;
 		this.yOffSet = this.y;
+		this.runTime = 0.0;
+		this.tenthSecond = 0;
+		this.second = 0;
+		this.secondTensSpot = 0;
+		this.minute = 0;
+		this.minuteTensSpot = 0;
+		this.lapTenthSecond = 0;
+		this.lapSecond = 0;
+		this.lapSecondTensSpot = 0;
+		this.lapMinute = 0;
+		this.lapMinuteTensSpot = 0;
+		this.lapNumber = 0;
 
     }
 	
@@ -157,12 +167,19 @@ function carClass() {
                 this.x = nextX;
                 this.y = nextY;
                 this.turnable = false;
-				this.getAirTime()
+				this.getAirTime();
                 break;
             case TRACK_FINISH:
                 document.getElementById("debugText").innerHTML = this.myName + " is the WINNER!";
-                playerOne.carReset();
-                playerTwo.carReset();
+				if(this.lapNumber < 1){
+					this.recordALap();
+				}
+				this.x = nextX;
+                this.y = nextY;
+                //this.speed *= 1;
+                this.turnable = true;
+				//playerOne.carReset();
+                //playerTwo.carReset();
                 break;
             default:
                 this.speed = -.5 * this.speed;
@@ -178,10 +195,38 @@ function carClass() {
 		}
 	}
 	
+	this.recordALap = function(){
+		this.lapNumber += 1;
+		this.lapTenthSecond = this.tenthSecond;
+		this.lapSecond = this.second;
+		this.lapSecondTensSpot = this.secondTensSpot;
+		this.lapMinute = this.minute;
+		this.lapMinuteTensSpot = this.minuteTensSpot;
+	}
+	
+	
 	this.trackTime = function(){
-		if(second > (60 - second)){
-			this.second = second - this.startSecond;
+		this.runTime = now - this.startTime;                  // 00:00:0  Minutes : Seconds : MiliSeconds
+		if(this.runTime >= 1000){ 
+			this.runTime = 0;
+			this.tenthSecond += 1;
 		}
+		if(this.tenthSecond >= 10){
+			this.tenthSecond = 0;
+			this.second += 1;
+		}
+		if(this.second >= 10){
+			this.second = 0;
+			this.secondTensSpot += 1;
+		}
+		if(this.secondTensSpot >= 6){
+			this.secondTensSpot = 0;
+			this.minute += 1;
+		}
+		if(this.minute >= 10){
+			this.minute = 0;
+			this.minuteTensSpot += 1;
+		}	
 	}
 	
 	
@@ -207,6 +252,5 @@ function carClass() {
 			yOffSet = yOffSet - 10;
 		}
 		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, xOffSet, yOffSet, this.ang);
-		document.getElementById("debugText").innerHTML = hour + ":" + minute + ":"+ second;
 	}
 }

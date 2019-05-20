@@ -1,10 +1,7 @@
 var canvas;
 var canvasContext;
+
 var now = new Date();
-var hour = now.getHours();
-var minute = now.getMinutes();
-var second = now.getSeconds();
-var milisecond = now.getMilliseconds();
 var time = 0;
 
 var playerOne = new carClass();
@@ -47,9 +44,6 @@ function imageLoadingDoneSoStartGame(){
 
 function updateTime(){
 	now = new Date();
-	hour = now.getHours();
-	minute = now.getMinutes();
-	second = now.getSeconds();
 }
 	
 function moveEverything() {
@@ -73,7 +67,11 @@ function calculateMousePos(evt) {
 
 function drawClock(){
 	canvasContext.drawImage(clockPic, 350, 2);
-	colorText(second+"-"+playerOne.startSecond+':'+playerOne.second, 368, 30, 'black');
+	colorText(playerOne.minuteTensSpot.toString() + playerOne.minute.toString() + ':' + playerOne.secondTensSpot.toString() + playerOne.second.toString() +':'+playerOne.tenthSecond.toString(), 368, 30, 'black');
+}
+
+function drawLapOneTime(){
+	colorText(playerOne.lapMinuteTensSpot.toString() + playerOne.lapMinute.toString() + ':' + playerOne.lapSecondTensSpot.toString() + playerOne.lapSecond.toString() +':'+playerOne.lapTenthSecond.toString(), 700, 30, 'black');
 }
 
 						
@@ -85,4 +83,5 @@ function drawEverything() {
 	playerOne.drawCar();
 	playerTwo.drawCar();
 	drawClock();
+	drawLapOneTime();
 }
