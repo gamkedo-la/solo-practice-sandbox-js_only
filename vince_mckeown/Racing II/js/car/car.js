@@ -36,22 +36,21 @@ function carClass() {
         this.speed = 0;
         this.ang = -0.5 * Math.PI;
 
-        if (this.homeX == undefined) {
-            for (var i = 0; i < trackGrid.length; i++) {
-                if (trackGrid[i] == TRACK_PLAYER) {
-                    var tileRow = Math.floor(i / TRACK_COLS);
-                    var tileCol = i % TRACK_COLS;
-                    this.homeX = tileCol * TRACK_W + 0.5 * TRACK_W;
-                    this.homeY = tileRow * TRACK_H + 0.5 * TRACK_H;
-                    trackGrid[i] = TRACK_ROAD;
-					console.log(this.homeX);
-                    break;
-                }
-            }
-        }
+		for (var i = 0; i < trackGrid.length; i++) {
+			if (trackGrid[i] == TRACK_PLAYER) {
+				console.log(this.homeX);
+				var tileRow = Math.floor(i / TRACK_COLS);
+				var tileCol = i % TRACK_COLS;
+				this.homeX = tileCol * TRACK_W + 0.5 * TRACK_W;
+				this.homeY = tileRow * TRACK_H + 0.5 * TRACK_H;
+				trackGrid[i] = TRACK_ROAD;
+				break;
+			}
+		}
+
         this.x = this.homeX;
         this.y = this.homeY;
-    }
+	}
 
     this.carInit = function(whichGraphic, whichName, computer) {
 		this.myBitmap = whichGraphic;
@@ -252,12 +251,12 @@ function carClass() {
 	}
 	
     this.drawCar = function() {
-        drawBitmapCenteredAtLocationWithRotation(carShadowPic, this.x, this.y, this.ang);
+        //drawBitmapCenteredAtLocationWithRotation(carShadowPic, this.x, this.y, this.ang);
 		var xOffSet = this.x;
 		var yOffSet = this.y;
 		if(this.airborne){
 			yOffSet = yOffSet - 10;
 		}
-		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, xOffSet, yOffSet, this.ang);
+		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, this.ang);
 	}
 }
