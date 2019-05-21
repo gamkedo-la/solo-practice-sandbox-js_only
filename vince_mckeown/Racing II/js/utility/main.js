@@ -7,6 +7,10 @@ var time = 0;
 var playerOne = new carClass();
 var playerTwo = new carClass();
 var computerPlayerOn = true;
+
+var titleScreen = false;
+var levelEditor = false;
+var paused = false;
 	
 window.onload = function(){
 			
@@ -42,18 +46,23 @@ function imageLoadingDoneSoStartGame(){
 	playerOne.carInit(carPic, "Green Car", false);
 	loadLevel(levelOne);
 }
+	
+function moveEverything() {
+	if(titleScreen){
+		
+	} else if (levelEditor) {
+		
+	} else {
+		playerOne.movement();
+		playerTwo.movement();
+		playerOne.checkCarCollisionAgainst(playerTwo);	
+		playerTwo.checkCarCollisionAgainst(playerOne);	
+		updateTime();
+	}
+}
 
 function updateTime(){
 	now = new Date();
-}
-	
-function moveEverything() {
-	
-	playerOne.movement();
-	playerTwo.movement();
-	playerOne.checkCarCollisionAgainst(playerTwo);	
-	playerTwo.checkCarCollisionAgainst(playerOne);	
-	updateTime();
 }
 			
 function calculateMousePos(evt) {
@@ -77,12 +86,16 @@ function drawLapOneTime(){
 
 						
 function drawEverything() {
-				
-	//clears screen
-	colorRect(0,0,canvas.width,canvas.height, 'black');			
-	drawTracks();
-	playerOne.drawCar();
-	playerTwo.drawCar();
-	drawClock();
-	drawLapOneTime();
+	if(titleScreen){
+		
+	} else if (levelEditor) {
+		drawLevelEditor();
+	} else {	
+		colorRect(0,0,canvas.width,canvas.height, 'black');			
+		drawTracks();
+		playerOne.drawCar();
+		playerTwo.drawCar();
+		drawClock();
+		drawLapOneTime();
+	}
 }

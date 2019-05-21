@@ -3,6 +3,7 @@ var carPic2 = document.createElement("img");
 var carShadowPic = document.createElement("img");
 var clockPic = document.createElement("img");
 //var titlepagePic = document.createElement("img");
+var arrowPic = document.createElement("img");
 var trackPics = [];
 
 
@@ -33,6 +34,7 @@ function loadImages() {
 			{varName: carPic2, theFile: "player2.png"},
 			{varName: clockPic, theFile: "system_clock.png"},
 			{varName: carShadowPic, theFile: "car_shadow.png"},
+			{varName: arrowPic, theFile: "leftArrow.png"},
 		
 			{trackType: TRACK_ROAD, theFile: "track_road.png"},
 			{trackType: TRACK_WALL, theFile:  "track_wall.png"},

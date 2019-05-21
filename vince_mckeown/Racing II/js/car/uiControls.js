@@ -4,11 +4,21 @@ const KEY_A = 65;
 const KEY_D = 68; 
 const KEY_F = 70;
 
+const KEY_INSERT = 45;
+const KEY_HOME = 36;
+const KEY_PAGE_UP = 33;
+const KEY_DELETE = 46;
+const KEY_END = 35;
+const KEY_PAGE_DOWN = 34;
+
 const KEY_LEFT_ARROW = 37;
 const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
 const KEY_DOWN_ARROW = 40;
 const ENTER_KEY = 13;
+
+const KEY_F1 = 112;
+const KEY_P = 80;
 
 
 function initInput(){
@@ -25,19 +35,33 @@ function initInput(){
 	
 	
 	if(!computerPlayerOn) {
-		playerTwo.setupControls(KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW, ENTER_KEY);
+		playerTwo.setupControls(KEY_W, KEY_S, KEY_A, KEY_D, KEY_F);
 	}
-	playerOne.setupControls(KEY_W, KEY_S, KEY_A, KEY_D, KEY_F
-	);
-	
-	
-
+	playerOne.setupControls(KEY_HOME, KEY_END, KEY_INSERT, KEY_PAGE_UP, KEY_PAGE_DOWN);
 }
 
 function keyPressed(evt) {
+	var levelEditorKey = KEY_F1;
+	var pausedKey = KEY_P;
+	
 	setKeyHoldState(evt.keyCode, playerOne, true);
 	setKeyHoldState(evt.keyCode, playerTwo, true);
 	evt.preventDefault();
+	
+	if(pausedKey == evt.keyCode){
+		console.log(paused);
+		if(paused){
+			paused = false;
+		} else {
+			paused = true;
+		}
+	} else if (levelEditorKey == evt.keyCode) {
+		if(levelEditor){
+			levelEditor = false;
+		} else {
+			levelEditor = true;
+		}	
+	}
 }
 
 function keyReleased(evt) {
