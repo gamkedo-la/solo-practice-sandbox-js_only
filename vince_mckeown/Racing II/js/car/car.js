@@ -7,7 +7,9 @@ const CAR_COLLISION_RADIUS = 15;
 function carClass() {
     this.x = 60;
     this.y = 60;
-
+	this.z = 0;
+	this.zVel = 0;
+	
 	this.turn_rate = 0.03;
     this.keyHeld_Gas = false;
     this.keyHeld_Reverse = false;
@@ -138,6 +140,14 @@ function carClass() {
                 this.ang += this.turn_rate * Math.PI;
             }
         }
+		
+		this.z += this.zVel;
+		if(this.z > 0){	
+			this.zVel -= 0.4;
+		} else {
+			this.z = 0;	
+			this.zVel = 0;
+		}
 
         // Motion X and Y of the car
         var nextX = this.x + Math.cos(this.ang) * this.speed;
@@ -179,13 +189,12 @@ function carClass() {
 				}
 				if(this.lapNumber >= 1){
 					nextLevel();
-				}
+					return;
+				} 
 				this.x = nextX;
                 this.y = nextY;
                 //this.speed *= 1;
                 this.turnable = true;
-				
-				
 				break;
             default:
                 this.speed = -.5 * this.speed;
@@ -194,10 +203,8 @@ function carClass() {
     }
 	
 	this.getAirTime = function(){  // WIP:  Need to gradually increase shadow while in air.
-		this.airborne = true;
-		for(i = 0; i < 10; i++){
-			this.xOffSet = this.xOffSet + 5;
-			this.yOffSet = this.yOffSet + 5;
+		if(this.z <= 0){
+			this.zVel = 5;
 		}
 	}
 	
@@ -251,12 +258,12 @@ function carClass() {
 	}
 	
     this.drawCar = function() {
-        //drawBitmapCenteredAtLocationWithRotation(carShadowPic, this.x, this.y, this.ang);
+        drawBitmapCenteredAtLocationWithRotation(carShadowPic, this.x, this.y, this.ang);
 		var xOffSet = this.x;
 		var yOffSet = this.y;
 		if(this.airborne){
 			yOffSet = yOffSet - 10;
 		}
-		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, this.ang);
+		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x - (this.z / 4), this.y - (this.z / 2), this.ang);
 	}
 }

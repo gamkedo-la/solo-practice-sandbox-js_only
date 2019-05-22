@@ -34,10 +34,10 @@ function initInput(){
 	document.addEventListener("keyup", keyReleased);
 	
 	
-	if(!computerPlayerOn) {
+	if(computerPlayerOn) {
 		playerTwo.setupControls(KEY_W, KEY_S, KEY_A, KEY_D, KEY_F);
 	}
-	playerOne.setupControls(KEY_HOME, KEY_END, KEY_INSERT, KEY_PAGE_UP, KEY_PAGE_DOWN);
+	playerOne.setupControls(KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW, KEY_PAGE_DOWN);
 }
 
 function keyPressed(evt) {
