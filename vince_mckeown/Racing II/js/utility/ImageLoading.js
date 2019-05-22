@@ -37,6 +37,9 @@ function loadImages() {
 			{varName: arrowPic, theFile: "leftArrow.png"},
 		
 			{trackType: TRACK_ROAD, theFile: "track_road.png"},
+			{trackType: TRACK_ROAD_AAA, theFile: "track_road.png"},
+			{trackType: TRACK_ROAD_BBB, theFile: "track_road.png"},
+			{trackType: TRACK_ROAD_CCC, theFile: "track_road.png"},
 			{trackType: TRACK_WALL, theFile:  "track_wall.png"},
 			{trackType: TRACK_GRASS, theFile: "track_grass.png"},
 			{trackType: TRACK_FINISH, theFile: "track_finish.png"},

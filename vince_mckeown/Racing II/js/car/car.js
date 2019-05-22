@@ -78,7 +78,9 @@ function carClass() {
 		this.lapMinute = 0;
 		this.lapMinuteTensSpot = 0;
 		this.lapNumber = 0;
-
+		this.checkPointA = false;
+		this.checkPointB = false;
+		this.checkPointC = false;
     }
 	
 	this.tryNitroBoost = function(){
@@ -160,13 +162,55 @@ function carClass() {
             case TRACK_ROAD:
                 this.x = nextX;
                 this.y = nextY;
-                //this.speed *= 1;
                 this.turnable = true;
                 break;
+			case TRACK_ROAD_AAA:
+                this.x = nextX;
+                this.y = nextY;
+                this.turnable = true;
+                this.checkPointA = true;
+				
+				console.log('A: ' + this.checkPointA + ' B: ' + this.checkPointB + ' C: ' + this.checkPointC);
+				break;
+			case TRACK_ROAD_BBB:
+                this.x = nextX;
+                this.y = nextY;
+                this.turnable = true;
+				if(this.checkPointA){
+					this.checkPointB = true;
+					this.checkPointA = false;
+					console.log('A: ' + this.checkPointA + ' B: ' + this.checkPointB + ' C: ' + this.checkPointC);
+				}
+				break;
+			case TRACK_ROAD_CCC:
+                this.x = nextX;
+                this.y = nextY;
+                this.turnable = true;
+                if(this.checkPointB){
+					this.checkPointC = true;
+					this.checkPointB = false;
+					console.log('A: ' + this.checkPointA + ' B: ' + this.checkPointB + ' C: ' + this.checkPointC);
+				}
+				break;
+			case TRACK_FINISH:
+				console.log('Lap: '+this.lapNumber+' ')
+				if(this.checkPointC){
+					this.checkPointC = false;
+					if(this.lapNumber < 3){
+						this.recordALap();
+					} else {
+						nextLevel();
+						return;
+					}
+				} 
+				this.x = nextX;
+                this.y = nextY;
+                //this.speed *= 1;
+                this.turnable = true;
+				break;	
             case TRACK_OIL_SLICK:
                 this.x = nextX;
                 this.y = nextY;
-                //this.speed *= 1;
                 this.turnable = false;
                 break;
             case TRACK_GRASS:
@@ -181,21 +225,6 @@ function carClass() {
                 this.turnable = false;
 				this.getAirTime();
                 break;
-            case TRACK_FINISH:
-				console.log('Lap: '+this.lapNumber+' ')
-                document.getElementById("debugText").innerHTML = this.myName + " is the WINNER!";
-				if(this.lapNumber < 1){
-					this.recordALap();
-				}
-				if(this.lapNumber >= 1){
-					nextLevel();
-					return;
-				} 
-				this.x = nextX;
-                this.y = nextY;
-                //this.speed *= 1;
-                this.turnable = true;
-				break;
             default:
                 this.speed = -.5 * this.speed;
         }
