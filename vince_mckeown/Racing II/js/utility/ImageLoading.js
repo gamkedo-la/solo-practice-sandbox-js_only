@@ -4,8 +4,9 @@ var carShadowPic = document.createElement("img");
 var clockPic = document.createElement("img");
 //var titlepagePic = document.createElement("img");
 var arrowPic = document.createElement("img");
+var roadSpriteSheet =  document.createElement("img");
+var trackobstaclesSpriteSheet = document.createElement("img");
 var trackPics = [];
-
 
 var picsToLoad = 0;
 
@@ -35,16 +36,8 @@ function loadImages() {
 			{varName: clockPic, theFile: "system_clock.png"},
 			{varName: carShadowPic, theFile: "car_shadow.png"},
 			{varName: arrowPic, theFile: "leftArrow.png"},
-		
-			{trackType: TRACK_ROAD, theFile: "track_road.png"},
-			{trackType: TRACK_ROAD_AAA, theFile: "track_road.png"},
-			{trackType: TRACK_ROAD_BBB, theFile: "track_road.png"},
-			{trackType: TRACK_ROAD_CCC, theFile: "track_road.png"},
-			{trackType: TRACK_WALL, theFile:  "track_wall.png"},
-			{trackType: TRACK_GRASS, theFile: "track_grass.png"},
-			{trackType: TRACK_FINISH, theFile: "track_finish.png"},
-			{trackType: TRACK_OIL_SLICK, theFile: "track_oil_slick.png"},
-			{trackType: TRACK_NORTH_RAMP, theFile: "track_north_ramp.png"}
+			{varName: roadSpriteSheet, theFile: "roadSpriteSheet.png"},
+			{varName: trackobstaclesSpriteSheet, theFile: "trackobstaclesSpriteSheet.png"},
 		];
 			
 	picsToLoad = imageList.length;
