@@ -13,13 +13,13 @@ var levelOne =
 	50,  1,  1, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
 	50,  1,  1, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
 	50, 52, 52, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
-	50, 52, 52, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,  1,  1, 50,
-	50, 53, 53, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
+	50, 51, 51, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,  1,  1, 50,
 	50,  1,  1, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
 	50,  1,  1, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
-	50,  1,  1, 50, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 50,  1,  1, 50,
+	50,  0,  0, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
+	50,  0,  0, 50, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 50,  1,  1, 50,
 	50,  0,  0,  2,  1,  1,  1,  1,  1,  5,  1,  1,  1,  1,  1,  1,  1,  1,  1, 50,  
-	50,  1,  1,  2,  1,  1,  1,  1,  1,  5,  1,  1,  1,  1,  1,  1,  1,  1,  1, 50,	
+	50,  0,  0,  2,  1,  1,  1,  1,  1,  5,  1,  1,  1,  1,  1,  1,  1,  1,  1, 50,	
 	50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50
 	];
 	
@@ -91,8 +91,14 @@ function loadLevel(whichLevel) {
 	trackGrid = whichLevel.slice();
 	console.log('Car Pic: ' + carPic);
 	console.log('X: ' + playerOne.x + ' Y: ' + playerOne.y);
-	playerOne.carReset(carPic, "Green Car", false); 
-	playerTwo.carReset(carPic2, "Red Car", true);
+	playerOne.carReset(carPic, "Car 1", false); 
+	playerTwo.carReset(carPic2, "Car 2", true);
+	playerThree.carReset(carPic2, "Car 3", true);
+	playerFour.carReset(carPic2, "Car 4", true);
+	playerFive.carReset(carPic2, "Car 5", true);
+	playerSix.carReset(carPic2, "Car 6", true);
+	playerSeven.carReset(carPic2, "Car 7", true);
+	playerEight.carReset(carPic2, "Car 8", true);
 }
 		
 function drawTracks(){

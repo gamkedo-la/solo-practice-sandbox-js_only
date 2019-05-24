@@ -6,6 +6,15 @@ var time = 0;
 
 var playerOne = new carClass();
 var playerTwo = new carClass();
+var playerThree = new carClass();
+var playerFour = new carClass();
+var playerFive = new carClass();
+var playerSix = new carClass();
+var playerSeven = new carClass();
+var playerEight = new carClass();
+
+
+
 var computerPlayerOn = true;
 
 var titleScreen = false;
@@ -34,6 +43,12 @@ window.onload = function(){
 	
 	playerOne.carReset();
 	playerTwo.carReset();
+	playerThree.carReset();
+	playerFour.carReset();
+	playerFive.carReset();
+	playerSix.carReset();
+	playerSeven.carReset();
+	playerEight.carReset();
 }
 
 function imageLoadingDoneSoStartGame(){
@@ -42,8 +57,19 @@ function imageLoadingDoneSoStartGame(){
 		moveEverything();
 		drawEverything();
 	}, 1000/framesPerSecond);
-	playerTwo.carInit(carPic2, "Red Car", true);
-	playerOne.carInit(carPic, "Green Car", false);
+	playerTwo.carInit(carPic2, "Car` 2", true);
+	playerOne.carInit(carPic, "Car 1", false);
+	playerThree.carInit(carPic2, "Car` 3", true);
+	playerFour.carInit(carPic2, "Car` 4", true);
+	playerFive.carInit(carPic2, "Car` 5", true);
+	playerSix.carInit(carPic2, "Car` 6", true);
+	playerSeven.carInit(carPic2, "Car` 7", true);
+	playerEight.carInit(carPic2, "Car` 8", true);
+	
+	
+	
+	
+	
 	loadLevel(levelOne);
 }
 	
@@ -55,8 +81,14 @@ function moveEverything() {
 	} else {
 		playerOne.movement();
 		playerTwo.movement();
+		playerThree.movement();
+		playerFour.movement();
+		playerFive.movement();
+		playerSix.movement();
+		playerSeven.movement();
+		playerEight.movement();
 		playerOne.checkCarCollisionAgainst(playerTwo);	
-		playerTwo.checkCarCollisionAgainst(playerOne);	
+		playerTwo.checkCarCollisionAgainst(playerOne);
 		updateTime();
 	}
 }
@@ -95,6 +127,12 @@ function drawEverything() {
 		drawTracks();
 		playerOne.drawCar();
 		playerTwo.drawCar();
+		playerThree.drawCar();
+		playerFour.drawCar();
+		playerFive.drawCar();
+		playerSix.drawCar();
+		playerSeven.drawCar();
+		playerEight.drawCar();
 		drawClock();
 		drawLapOneTime();
 	}
