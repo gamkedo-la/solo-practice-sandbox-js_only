@@ -57,14 +57,14 @@ function imageLoadingDoneSoStartGame(){
 		moveEverything();
 		drawEverything();
 	}, 1000/framesPerSecond);
-	playerTwo.carInit(carPic2, "Car` 2", true);
+	playerTwo.carInit(carPic2, "Car 2", true);
 	playerOne.carInit(carPic, "Car 1", false);
-	playerThree.carInit(carPic2, "Car` 3", true);
-	playerFour.carInit(carPic2, "Car` 4", true);
-	playerFive.carInit(carPic2, "Car` 5", true);
-	playerSix.carInit(carPic2, "Car` 6", true);
-	playerSeven.carInit(carPic2, "Car` 7", true);
-	playerEight.carInit(carPic2, "Car` 8", true);
+	playerThree.carInit(carPic, "Car 3", true);
+	playerFour.carInit(carPic2, "Car 4", true);
+	playerFive.carInit(carPic2, "Car 5", true);
+	playerSix.carInit(carPic2, "Car 6", true);
+	playerSeven.carInit(carPic2, "Car 7", true);
+	playerEight.carInit(carPic2, "Car 8", true);
 	
 	
 	
@@ -135,5 +135,6 @@ function drawEverything() {
 		playerEight.drawCar();
 		drawClock();
 		drawLapOneTime();
+		colorCircle(playerThree.wayPointX,playerThree.wayPointY, 5, 'blue')
 	}
 }

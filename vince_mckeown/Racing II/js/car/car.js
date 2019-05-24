@@ -80,6 +80,10 @@ function carClass() {
 		this.checkPointA = false;
 		this.checkPointB = false;
 		this.checkPointC = false;
+		this.wayPointX = 100;
+		this.wayPointY = 100;
+		this.aiRandomMovements = false;
+		this.wayPoint = true;
     }
 	
 	this.tryNitroBoost = function(){
@@ -93,35 +97,62 @@ function carClass() {
 		this.turn_rate = 0.03;
 		this.nitroboost = false;
 	}
-
-    this.movement = function() {
+	
+	this.randomMovements = function(){
+		var chanceToMoveForward = Math.round(Math.random() * 10);
+		if (chanceToMoveForward > 2){
+			this.keyHeld_Gas = true;
+			this.keyHeld_Reverse = false;
+		} else {
+			this.keyHeld_Reverse = true;
+			this.keyHeld_Gas = false;
+		}
+		var chanceToMoveRight = Math.round(Math.random() * 10);
+		if (chanceToMoveRight <= 0){  // 2
+			this.keyHeld_TurnRight = true;
+			this.keyHeld_TurnLeft = false;
+		} else if (chanceToMoveRight == 1){ // 3
+			this.keyHeld_TurnRight = false;
+			this.keyHeld_TurnLeft = true;
+		} else {
+			this.keyHeld_TurnRight = false;
+			this.keyHeld_TurnLeft = false;
+		}	
+		var chanceToUseNitro = Math.round(Math.random() * 100);
+		if (chanceToUseNitro <= 1){
+			this.controlKeyForNitro = true;
+		}
+	}
+	
+	this.wayPointMovements = function(nextX, nextY){
+		var wayPointVectorX = (this.wayPointX - this.x);
+		var wayPointVectorY = (this.wayPointY - this.y);
+		var carVectorX = (nextX - this.x)
+		var carVectorY = (nextY - this.y)
+		var dotProductA = wayPointVectorX * carVectorX;
+		var dotProductB = wayPointVectorY * carVectorY; 
+		var dotProduct = dotProductA - dotProductB
 		
-		if(this.computerPlayer){
-			var chanceToMoveForward = Math.round(Math.random() * 10);
-			if (chanceToMoveForward > 2){
-				this.keyHeld_Gas = true;
-				this.keyHeld_Reverse = false;
-			} else {
-				this.keyHeld_Reverse = true;
-				this.keyHeld_Gas = false;
-			}
-			var chanceToMoveRight = Math.round(Math.random() * 10);
-			if (chanceToMoveRight <= 2){
-				this.keyHeld_TurnRight = true;
-				this.keyHeld_TurnLeft = false;
-			} else if (chanceToMoveRight == 3){
-				this.keyHeld_TurnRight = false;
-				this.keyHeld_TurnLeft = true;
-			} else {
-				this.keyHeld_TurnRight = false;
-				this.keyHeld_TurnLeft = false;
-			}	
-			var chanceToUseNitro = Math.round(Math.random() * 100);
-			if (chanceToUseNitro <= 1){
-				this.controlKeyForNitro = true;
-			}
-		} 
-			
+		this.keyHeld_Gas = true;
+		
+		if(dotProduct > 0){
+			this.keyHeld_TurnRight = true;
+			this.keyHeld_TurnLeft = false;
+		} else if (dotProduct > -90 && dotProduct < 0) {
+			this.keyHeld_TurnRight = false;
+			this.keyHeld_TurnLeft = true;
+		} else {
+			this.keyHeld_TurnRight = false;
+			this.keyHeld_TurnLeft = true;
+		}
+
+
+		if(this.myName == "Car 3") {
+			console.log(dotProduct)
+		}
+	}
+	
+	this.carControls = function() {			
         this.speed *= GROUNDSPEED_DECAY_MULT;
 
         if (this.keyHeld_Gas) {
@@ -141,6 +172,23 @@ function carClass() {
                 this.ang += this.turn_rate * Math.PI;
             }
         }
+	}
+	
+    this.movement = function() {
+		
+		var nextX = this.x + Math.cos(this.ang) * this.speed;
+        var nextY = this.y + Math.sin(this.ang) * this.speed;
+		
+		if(this.computerPlayer){
+			if(this.aiRandomMovements){
+				this.randomMovements();
+			}
+			if(this.wayPoint){
+				this.wayPointMovements(nextX, nextY);
+			}
+		} 
+
+		this.carControls();
 		
 		this.z += this.zVel;
 		if(this.z > 0){	
@@ -151,8 +199,11 @@ function carClass() {
 		}
 
         // Motion X and Y of the car
-        var nextX = this.x + Math.cos(this.ang) * this.speed;
-        var nextY = this.y + Math.sin(this.ang) * this.speed;
+        //var nextX = this.x + Math.cos(this.ang) * this.speed;
+        //var nextY = this.y + Math.sin(this.ang) * this.speed;
+		
+		// calculate Dot Product
+		
 
         var drivingIntoTileType = getTrackAtPixelCoord(nextX, nextY);
 
@@ -168,8 +219,6 @@ function carClass() {
                 this.y = nextY;
                 this.turnable = true;
                 this.checkPointA = true;
-				
-				console.log('A: ' + this.checkPointA + ' B: ' + this.checkPointB + ' C: ' + this.checkPointC);
 				break;
 			case TRACK_ROAD_BBB:
                 this.x = nextX;
