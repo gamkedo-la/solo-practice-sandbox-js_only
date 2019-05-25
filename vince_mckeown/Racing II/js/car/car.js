@@ -125,30 +125,31 @@ function carClass() {
 	}
 	
 	this.wayPointMovements = function(nextX, nextY){
-		var wayPointVectorX = (this.wayPointX - this.x);
-		var wayPointVectorY = (this.wayPointY - this.y);
-		var carVectorX = (nextX - this.x)
-		var carVectorY = (nextY - this.y)
+		var wayPointVectorX = Math.floor(this.x - this.wayPointX);
+		var wayPointVectorY = Math.floor(this.y - this.wayPointY);
+		var carVectorX = Math.floor(this.x - nextX);
+		var carVectorY = Math.floor(this.y - nextY);
 		var dotProductA = wayPointVectorX * carVectorX;
 		var dotProductB = wayPointVectorY * carVectorY; 
 		var dotProduct = dotProductA - dotProductB
+		var anglesInDegrees = Math.atan2(this.y - this.wayPointY, this.x - this.wayPointX) * 180 / Math.PI;
 		
 		this.keyHeld_Gas = true;
 		
-		if(dotProduct > 0){
+		if(anglesInDegrees < 85){
 			this.keyHeld_TurnRight = true;
 			this.keyHeld_TurnLeft = false;
-		} else if (dotProduct > -90 && dotProduct < 0) {
+		} else if (anglesInDegrees > 95) {
 			this.keyHeld_TurnRight = false;
 			this.keyHeld_TurnLeft = true;
 		} else {
 			this.keyHeld_TurnRight = false;
-			this.keyHeld_TurnLeft = true;
+			this.keyHeld_TurnLeft = false;
 		}
 
 
 		if(this.myName == "Car 3") {
-			console.log(dotProduct)
+			console.log('McFunkyPants: ' + anglesInDegrees);
 		}
 	}
 	
