@@ -124,40 +124,25 @@ function carClass() {
 		}
 	}
 	
-	this.wayPointMovements = function(nextX, nextY){
-		var wayPointVectorX = Math.floor(this.x - this.wayPointX);
-		var wayPointVectorY = Math.floor(this.y - this.wayPointY);
-		var wayPointVectorDistance = wayPointVectorX + wayPointVectorY;
-		var carVectorX = Math.floor(this.x - nextX);
-		var carVectorY = Math.floor(this.y - nextY);
-		var wayPointAnglesInDegrees = Math.ceil(Math.atan2(this.y - this.wayPointY, this.x - this.wayPointX) * 180 / Math.PI);
-		var carAngleDirectionInDegrees = Math.ceil(Math.atan2(this.y - nextY, this.x - nextX) * 180 / Math.PI);
-		var dotProductAngle = wayPointAnglesInDegrees - carAngleDirectionInDegrees;
-		var dotProductA = wayPointVectorX * carVectorX;
-		var dotProductB = wayPointVectorY * carVectorY; 
-		var dotProduct = dotProductA - dotProductB
+	this.wayPointMovements = function(toX, toY){
+		var wayPointVectorX = toX - this.x;
+		var wayPointVectorY = toY - this.y;
+		var carVectorX = Math.cos(this.ang - Math.PI/2);
+		var carVectorY = Math.sin(this.ang - Math.PI/2);
+		var dotProduct = wayPointVectorX * carVectorX + wayPointVectorY * carVectorY;
 		
-		
-		this.keyHeld_Gas = true;
-		
-		if(dotProductAngle < -20){
-			this.keyHeld_TurnRight = false;
-			this.keyHeld_TurnLeft = true;
-		} else if (dotProductAngle > 20) {
+		if(dotProduct < 0){
 			this.keyHeld_TurnRight = true;
 			this.keyHeld_TurnLeft = false;
 		} else {
 			this.keyHeld_TurnRight = false;
-			this.keyHeld_TurnLeft = false;
+			this.keyHeld_TurnLeft = true;
 		}
 		
-		if(wayPointVectorDistance >= - 10 & wayPointVectorDistance <= 10){
-			this.wayPointX = 700;
-			this.wayPointY = 100;
-		}
-		
-		if(this.myName == "Car 4") {
-			console.log('Car Angle: '+carAngleDirectionInDegrees+' WP Angle: ' + wayPointAnglesInDegrees + ' Angle:'+ dotProductAngle+ ' Distance: ' + wayPointVectorDistance);
+		if(dist(this.x, this.y, toX, toY) < 20){
+			console.log('reached wayPoint');
+			this.wayPointX = Math.random() * canvas.width;
+			this.wayPointY = Math.random() * canvas.height;
 		}
 	}
 	
@@ -193,7 +178,9 @@ function carClass() {
 				this.randomMovements();
 			}
 			if(this.wayPoint){
-				this.wayPointMovements(nextX, nextY);
+				this.wayPointMovements(this.wayPointX, this.wayPointY);
+				this.keyHeld_Gas = true;
+				this.keyHeld_Reverse = false;
 			}
 		} 
 
@@ -349,5 +336,8 @@ function carClass() {
 			yOffSet = yOffSet - 10;
 		}
 		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x - (this.z / 4), this.y - (this.z / 2), this.ang);
+		
+		
+		
 	}
 }

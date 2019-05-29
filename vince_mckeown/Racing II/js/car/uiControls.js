@@ -24,15 +24,22 @@ const KEY_P = 80;
 function initInput(){
 	canvas.addEventListener('mousemove', function(evt) {
 	
-	var mousePos = calculateMousePos(evt);
-	
-	MousePosX = mousePos.x;
-	MousePosY = mousePos.y;
+	calculateMousePos(evt);
+	document.getElementById("debugText").innerHTML = "(" +mouseX+ ", " +mouseY+ ")";
 	});
 	
 	document.addEventListener("keydown", keyPressed);
 	document.addEventListener("keyup", keyReleased);
 	
+	canvas.addEventListener('click',function(evt){
+		if(levelEditor){
+			mouseClick(mouseX, mouseY);
+		}
+	} );
+	
+	canvas.addEventListener('mousedown',function(evt){
+		isMouseDragging = true;
+	} );
 	
 	if(computerPlayerOn) {
 		playerTwo.setupControls(KEY_W, KEY_S, KEY_A, KEY_D, KEY_F);

@@ -1,5 +1,7 @@
 var canvas;
 var canvasContext;
+var mouseX = 0;
+var mouseY = 0;
 
 var now = new Date();
 var time = 0;
@@ -29,35 +31,6 @@ window.onload = function(){
 	loadImages();
 	
 	initInput();	
-	
-	canvas.addEventListener('mousemove', function(evt) {
-	
-	var mousePos = calculateMousePos(evt);
-	
-	MousePosX = mousePos.x;
-	MousePosY = mousePos.y;
-	});
-	
-	document.addEventListener("keydown", keyPressed);
-	document.addEventListener("keyup", keyReleased);
-	
-	canvas.addEventListener('click',function(evt){
-		var mousePos = calculateMousePos(evt);
-		if(levelEditor){
-			mouseClick(MousePosX, MousePosY);
-		}
-	} );
-	
-	canvas.addEventListener('mousemove',function(evt){
-		var mousePos = calculateMousePos(evt);
-		document.getElementById("debugText").innerHTML = "(" +mousePos.x+ ", " +mousePos.y+ ")";
-			
-	} );
-	
-	canvas.addEventListener('mousedown',function(evt){
-		var mousePos = calculateMousePos(evt);
-		isMouseDragging = true;
-	} );
 	
 	playerOne.carReset();
 	playerTwo.carReset();
@@ -117,12 +90,8 @@ function updateTime(){
 			
 function calculateMousePos(evt) {
 	var rect = canvas.getBoundingClientRect(), root = document.documentElement;
-	var mouseX = evt.clientX - rect.left - root.scrollLeft;
-	var mouseY = evt.clientY - rect.top - root.scrollTop;
-	return {
-		x: mouseX, 
-		y: mouseY
-	};
+	mouseX = evt.clientX - rect.left - root.scrollLeft;
+	mouseY = evt.clientY - rect.top - root.scrollTop;
 }
 
 function drawClock(){
@@ -153,6 +122,13 @@ function drawEverything() {
 		playerEight.drawCar();
 		drawClock();
 		drawLapOneTime();
-		colorCircle(playerFour.wayPointX,playerThree.wayPointY, 5, 'blue')
+		colorCircle(playerFour.wayPointX,playerFour.wayPointY, 5, 'blue');
+		colorLine(playerFour.x, playerFour.y, playerFour.wayPointX, playerFour.wayPointY, 'white')
 	}
+}
+
+function dist (x1, y1, x2, y2){
+	var xd = x2 - x1;
+	var yd = y2 - y1;
+	return Math.sqrt(xd * xd + yd * yd);
 }
