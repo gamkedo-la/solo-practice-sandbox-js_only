@@ -6,22 +6,22 @@ const TRACK_ROWS = 15;
 
 var levelOne = 
 	[
-	50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,
-	50,  1,  1,  1,  1,  1,  1,  1,  1,  4,  1,  1,  1,  1,  1,  1,  1,  1,  1, 50,
-	50,  1,  1,  1,  1,  1,  1,  1,  1,  4,  1,  1,  1,  1,  1,  1,  1,  1,  1, 50,
-	50,  3,  3, 50, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 50,  1,  1, 50,
-	50,  1,  1, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
-	50,  1,  1, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
-	50, 52, 52, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
-	50, 51, 51, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,  1,  1, 50,
-	50,  1,  1, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
-	50,  1,  1, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
-	50,  0,  0, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1, 50,
-	50,  0,  0, 50, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 50,  1,  1, 50,
-	50,  0,  0,  2,  1,  1,  1,  1,  1,  5,  1,  1,  1,  1,  1,  1,  1,  1,  1, 50,  
-	50,  0,  0,  2,  1,  1,  1,  1,  1,  5,  1,  1,  1,  1,  1,  1,  1,  1,  1, 50,	
-	50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50
-	];
+   100,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,101,102, 
+   103,  1,  1,  1,  1,  1,  1,  1,  1,  4,  1,  1,  1,  1,  1,  1,  1,  1,  1,107,
+   103,  1,  1,  1,  1,  1,  1,  1,  1,  4,  1,  1,  1,  1,  1,  1,  1,  1,  1,107,
+   103,  3,  3, 50, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 50,  1,  1,107,
+   103,  1,  1, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1,107,
+   103,  1,  1, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1,107,
+   103, 52, 52, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1,107,
+   103, 53, 53, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50,  1,  1,107,
+   103,  1,  1, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1,107,
+   103,  1,  1, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1,107,
+   103,  0,  0, 51, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 51,  1,  1,107,
+   103,  0,  0, 50, 51, 51, 51, 51, 51, 50, 50, 51, 51, 51, 51, 51, 50,  1,  1,107,
+   103,  0,  0,  2,  1,  1,  1,  1,  1,  5,  1,  1,  1,  1,  1,  1,  1,  1,  1,107,  
+   103,  0,  0,  2,  1,  1,  1,  1,  1,  5,  1,  1,  1,  1,  1,  1,  1,  1,  1,107,	
+   104,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,102, 
+   ];
 	
 var levelTwo = 
 	[
@@ -78,6 +78,24 @@ const TRACK_GRASS = 51;
 const TRACK_OIL_SLICK = 52;
 const TRACK_NORTH_RAMP = 53;
 
+// 100 through 150 are dedicated for wallSpriteSheet
+const TRACK_BRICK_WALL_TOP_LEFT_END = 100;
+const TRACK_BRICK_WALL_TOP_MIDDLE = 101;
+const TRACK_BRICK_WALL_TOP_RIGHT_END = 102;
+const TRACK_BRICK_WALL_LEFT = 103;
+const TRACK_BRICK_WALL_BOT_LEFT_END = 104;
+const TRACK_BRICK_WALL_BOT_MIDDLE = 105;
+const TRACK_BRICK_WALL_BOT_RIGHT_END = 106;
+const TRACK_BRICK_WALL_RIGHT = 107;
+	// 108, and 109 are available
+const TRACK_BRICK_WALL_TOP_LEFT_END_GRASS = 110;
+const TRACK_BRICK_WALL_TOP_MIDDLE_GRASS = 111;
+const TRACK_BRICK_WALL_TOP_RIGHT_END_GRASS = 112;
+const TRACK_BRICK_WALL_LEFT_GRASS = 113;
+const TRACK_BRICK_WALL_BOT_LEFT_END_GRASS = 114;
+const TRACK_BRICK_WALL_BOT_MIDDLE_GRASS = 115;
+const TRACK_BRICK_WALL_BOT_RIGHT_END_GRASS = 116;
+const TRACK_BRICK_WALL_RIGHT_GRASS = 117;
 
 function nextLevel() {
 	levelNow++;
@@ -114,6 +132,7 @@ function drawTracks(){
 		for(var eachCol=0; eachCol<TRACK_COLS; eachCol++) {
 			
 			var trackTypeHere = trackGrid[trackIndex];
+			var transparencyCheckTypeHere = trackGrid[trackIndex]
 			var imageOffsetY = 0;
 			if (trackTypeHere >= 0 && trackTypeHere < 50){
 				spriteSheet = roadSpriteSheet;
@@ -126,8 +145,7 @@ function drawTracks(){
 				} else if (trackTypeHere > 39 && trackTypeHere <= 49){
 					imageOffsetY = TRACK_H * 4;
 				}
-			}
-			else if (trackTypeHere >= 50 && trackTypeHere < 100){
+			} else if (trackTypeHere >= 50 && trackTypeHere < 100){
 				spriteSheet = trackobstaclesSpriteSheet;
 				var trackTypeHere = trackTypeHere - 50;
 				if (trackTypeHere > 9 && trackTypeHere <= 19){
@@ -139,11 +157,24 @@ function drawTracks(){
 				} else if (trackTypeHere > 39 && trackTypeHere <= 49){
 					imageOffsetY = TRACK_H * 4;
 				}
+			} else if (trackTypeHere >= 100 && trackTypeHere < 150){
+				spriteSheet = wallSpriteSheet;
+				var trackTypeHere = trackTypeHere - 100;
+				if (trackTypeHere > 9 && trackTypeHere <= 19){
+					imageOffsetY = TRACK_H;
+				} else if (trackTypeHere > 19 && trackTypeHere <= 29){
+					imageOffsetY = TRACK_H * 2;
+				} else if (trackTypeHere > 29 && trackTypeHere <= 39){
+					imageOffsetY = TRACK_H * 3;
+				} else if (trackTypeHere > 39 && trackTypeHere <= 49){
+					imageOffsetY = TRACK_H * 4;
+				}
 			}
 			
-			if (tileTypeHasRoadTransparency(trackTypeHere)) {
+			if (tileTypeHasRoadTransparency(transparencyCheckTypeHere)) {
 				canvasContext.drawImage( roadSpriteSheet, 0, 0, TRACK_W, TRACK_H, trackLeftEdgeX, trackTopEdgeY, TRACK_W, TRACK_H);
-				//canvasContext.drawImage(trackPics[TRACK_ROAD], trackLeftEdgeX, trackTopEdgeY);
+			} else if (tileTypeHasgGrassTransparency(transparencyCheckTypeHere)) {
+				canvasContext.drawImage( trackobstaclesSpriteSheet, 40, 0, TRACK_W, TRACK_H, trackLeftEdgeX, trackTopEdgeY, TRACK_W, TRACK_H);
 			}
 			
 			canvasContext.drawImage( spriteSheet, trackTypeHere * TRACK_W, imageOffsetY, TRACK_W, TRACK_H, trackLeftEdgeX, trackTopEdgeY, TRACK_W, TRACK_H);
@@ -160,10 +191,30 @@ function drawTracks(){
 	} // end of each row
 }
 
-function tileTypeHasRoadTransparency(checkTileType){
-	return	(
-			checkTileType == TRACK_OIL_SLICK || 
-			checkTileType == TRACK_OIL_SLICK
+function tileTypeHasRoadTransparency(transparencyCheckTypeHere){
+	 return (
+			transparencyCheckTypeHere == TRACK_OIL_SLICK ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_TOP_LEFT_END ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_TOP_MIDDLE ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_TOP_RIGHT_END ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_BOT_LEFT_END ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_BOT_MIDDLE ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_BOT_RIGHT_END ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_LEFT ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_RIGHT	
+			);
+}
+
+function tileTypeHasgGrassTransparency(transparencyCheckTypeHere){
+	 return (
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_TOP_LEFT_END_GRASS ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_TOP_MIDDLE_GRASS ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_TOP_RIGHT_END_GRASS ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_BOT_LEFT_END_GRASS ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_BOT_MIDDLE_GRASS ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_BOT_RIGHT_END_GRASS ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_LEFT_GRASS ||
+			transparencyCheckTypeHere == TRACK_BRICK_WALL_RIGHT_GRASS			
 			);
 }
 

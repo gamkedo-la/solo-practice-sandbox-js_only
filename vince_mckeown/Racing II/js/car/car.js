@@ -127,42 +127,50 @@ function carClass() {
 	this.wayPointMovements = function(nextX, nextY){
 		var wayPointVectorX = Math.floor(this.x - this.wayPointX);
 		var wayPointVectorY = Math.floor(this.y - this.wayPointY);
+		var wayPointVectorDistance = wayPointVectorX + wayPointVectorY;
 		var carVectorX = Math.floor(this.x - nextX);
 		var carVectorY = Math.floor(this.y - nextY);
+		var wayPointAnglesInDegrees = Math.ceil(Math.atan2(this.y - this.wayPointY, this.x - this.wayPointX) * 180 / Math.PI);
+		var carAngleDirectionInDegrees = Math.ceil(Math.atan2(this.y - nextY, this.x - nextX) * 180 / Math.PI);
+		var dotProductAngle = wayPointAnglesInDegrees - carAngleDirectionInDegrees;
 		var dotProductA = wayPointVectorX * carVectorX;
 		var dotProductB = wayPointVectorY * carVectorY; 
 		var dotProduct = dotProductA - dotProductB
-		var anglesInDegrees = Math.atan2(this.y - this.wayPointY, this.x - this.wayPointX) * 180 / Math.PI;
+		
 		
 		this.keyHeld_Gas = true;
 		
-		if(anglesInDegrees < 85){
-			this.keyHeld_TurnRight = true;
-			this.keyHeld_TurnLeft = false;
-		} else if (anglesInDegrees > 95) {
+		if(dotProductAngle < -20){
 			this.keyHeld_TurnRight = false;
 			this.keyHeld_TurnLeft = true;
+		} else if (dotProductAngle > 20) {
+			this.keyHeld_TurnRight = true;
+			this.keyHeld_TurnLeft = false;
 		} else {
 			this.keyHeld_TurnRight = false;
 			this.keyHeld_TurnLeft = false;
 		}
-
-
-		if(this.myName == "Car 3") {
-			console.log('McFunkyPants: ' + anglesInDegrees);
+		
+		if(wayPointVectorDistance >= - 10 & wayPointVectorDistance <= 10){
+			this.wayPointX = 700;
+			this.wayPointY = 100;
+		}
+		
+		if(this.myName == "Car 4") {
+			console.log('Car Angle: '+carAngleDirectionInDegrees+' WP Angle: ' + wayPointAnglesInDegrees + ' Angle:'+ dotProductAngle+ ' Distance: ' + wayPointVectorDistance);
 		}
 	}
 	
 	this.carControls = function() {			
         this.speed *= GROUNDSPEED_DECAY_MULT;
 
-        if (this.keyHeld_Gas) {
+        if (this.keyHeld_Gas && !this.airborne) {
             this.speed += DRIVE_POWER;
 			if(this.keyHeld_Nitro){
 				this.tryNitroBoost();
 			}
         }
-        if (this.keyHeld_Reverse) {
+        if (this.keyHeld_Reverse && !this.airborne) {
             this.speed -= REVERSE_POWER;
         }
         if (Math.abs(this.speed) >= MIN_TURN_SPEED) {
@@ -228,7 +236,6 @@ function carClass() {
 				if(this.checkPointA){
 					this.checkPointB = true;
 					this.checkPointA = false;
-					console.log('A: ' + this.checkPointA + ' B: ' + this.checkPointB + ' C: ' + this.checkPointC);
 				}
 				break;
 			case TRACK_ROAD_CCC:
@@ -238,7 +245,6 @@ function carClass() {
                 if(this.checkPointB){
 					this.checkPointC = true;
 					this.checkPointB = false;
-					console.log('A: ' + this.checkPointA + ' B: ' + this.checkPointB + ' C: ' + this.checkPointC);
 				}
 				break;
 			case TRACK_FINISH:

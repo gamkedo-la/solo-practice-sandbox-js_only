@@ -13,13 +13,13 @@ var playerSix = new carClass();
 var playerSeven = new carClass();
 var playerEight = new carClass();
 
-
-
 var computerPlayerOn = true;
 
 var titleScreen = false;
 var levelEditor = false;
 var paused = false;
+
+var isMouseDragging = false;
 	
 window.onload = function(){
 			
@@ -41,6 +41,24 @@ window.onload = function(){
 	document.addEventListener("keydown", keyPressed);
 	document.addEventListener("keyup", keyReleased);
 	
+	canvas.addEventListener('click',function(evt){
+		var mousePos = calculateMousePos(evt);
+		if(levelEditor){
+			mouseClick(MousePosX, MousePosY);
+		}
+	} );
+	
+	canvas.addEventListener('mousemove',function(evt){
+		var mousePos = calculateMousePos(evt);
+		document.getElementById("debugText").innerHTML = "(" +mousePos.x+ ", " +mousePos.y+ ")";
+			
+	} );
+	
+	canvas.addEventListener('mousedown',function(evt){
+		var mousePos = calculateMousePos(evt);
+		isMouseDragging = true;
+	} );
+	
 	playerOne.carReset();
 	playerTwo.carReset();
 	playerThree.carReset();
@@ -59,8 +77,8 @@ function imageLoadingDoneSoStartGame(){
 	}, 1000/framesPerSecond);
 	playerTwo.carInit(carPic2, "Car 2", true);
 	playerOne.carInit(carPic, "Car 1", false);
-	playerThree.carInit(carPic, "Car 3", true);
-	playerFour.carInit(carPic2, "Car 4", true);
+	playerThree.carInit(carPic2, "Car 3", true);
+	playerFour.carInit(carPic, "Car 4", true);
 	playerFive.carInit(carPic2, "Car 5", true);
 	playerSix.carInit(carPic2, "Car 6", true);
 	playerSeven.carInit(carPic2, "Car 7", true);
@@ -135,6 +153,6 @@ function drawEverything() {
 		playerEight.drawCar();
 		drawClock();
 		drawLapOneTime();
-		colorCircle(playerThree.wayPointX,playerThree.wayPointY, 5, 'blue')
+		colorCircle(playerFour.wayPointX,playerThree.wayPointY, 5, 'blue')
 	}
 }

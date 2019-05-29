@@ -69,7 +69,6 @@ function keyReleased(evt) {
 	setKeyHoldState(evt.keyCode, playerTwo, false);
 }
 
-
 function setKeyHoldState(thisKey, thisCar, setTo) {
 
 	if(thisKey == thisCar.controlKeyForGas){
@@ -90,4 +89,18 @@ function setKeyHoldState(thisKey, thisCar, setTo) {
 		thisCar.keyHeld_Nitro = setTo;
 	}
 }
+
+
+function calculateMousePos(evt) {
+	var rect = canvas.getBoundingClientRect(), root = document.documentElement;
+	
+	var mouseX = evt.clientX - rect.left - root.scrollLeft;
+	var mouseY = evt.clientY - rect.top - root.scrollTop;
+	return {
+		x: mouseX,
+		y: mouseY
+	};
+}
+
+
 
