@@ -20,6 +20,7 @@ function carClass() {
 	this.computerPlayer = false;
 	this.runTime = 0.0
 	this.nitroboost = false;
+	this.wayPointNumber = 0;
 
     this.carPic = document.createElement("img");
 
@@ -80,8 +81,8 @@ function carClass() {
 		this.checkPointA = false;
 		this.checkPointB = false;
 		this.checkPointC = false;
-		this.wayPointX = 100;
-		this.wayPointY = 100;
+		this.wayPointX = [100, 680, 680, 150]; 
+		this.wayPointY = [100, 100, 500, 500];
 		this.aiRandomMovements = false;
 		this.wayPoint = true;
     }
@@ -141,8 +142,10 @@ function carClass() {
 		
 		if(dist(this.x, this.y, toX, toY) < 20){
 			console.log('reached wayPoint');
-			this.wayPointX = Math.random() * canvas.width;
-			this.wayPointY = Math.random() * canvas.height;
+			this.wayPointNumber++;
+			if(this.wayPointNumber >= this.wayPointX.length) {
+				this.wayPointNumber = 0;
+			}
 		}
 	}
 	
@@ -178,7 +181,7 @@ function carClass() {
 				this.randomMovements();
 			}
 			if(this.wayPoint){
-				this.wayPointMovements(this.wayPointX, this.wayPointY);
+				this.wayPointMovements(this.wayPointX[this.wayPointNumber], this.wayPointY[this.wayPointNumber]);
 				this.keyHeld_Gas = true;
 				this.keyHeld_Reverse = false;
 			}
@@ -288,7 +291,6 @@ function carClass() {
 		this.lapMinuteTensSpot = this.minuteTensSpot;
 	}
 	
-	
 	this.trackTime = function(){
 		this.runTime = now - this.startTime;                  // 00:00:0  Minutes : Seconds : MiliSeconds
 		if(this.runTime >= 1000){ 
@@ -313,7 +315,6 @@ function carClass() {
 		}	
 	}
 	
-	
 	this.isOverLappingPoint = function(testX, testY){
 		var deltaX = testX - this.x;
 		var deltaY = testY - this.y;
@@ -325,7 +326,6 @@ function carClass() {
 		if(thisCar.isOverLappingPoint(this.x,this.y)){
 			this.speed = -1 * this.speed;
 		}
-		
 	}
 	
     this.drawCar = function() {
@@ -335,9 +335,6 @@ function carClass() {
 		if(this.airborne){
 			yOffSet = yOffSet - 10;
 		}
-		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x - (this.z / 4), this.y - (this.z / 2), this.ang);
-		
-		
-		
+		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x - (this.z / 4), this.y - (this.z / 2), this.ang);	
 	}
 }
