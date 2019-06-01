@@ -4,7 +4,7 @@ function setup(yymmdd, prev, next, desc, issueNumber, links) {
     document.title = yymmdd;
     QuickSettings.useExtStyleSheet();
     panel= QuickSettings.create(10, 10, yymmdd)
-        .addHTML("home", '<a href="/">INDEX</a>');
+        .addHTML("home", '<a href="https://gamkedo-la.github.io/solo-practice-sandbox/rybar">INDEX</a>');
 
     var prevNext = '';
     if(prev) {
