@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="Ryan's Gamkedo Practice Doodles">
+    <link href="https://fonts.googleapis.com/css?family=VT323" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../styles/daily.css">
+    <link rel="stylesheet" type="text/css" href="../styles/quicksettings.css">
+
+</head>
+<body>
+    <div id = "container">
+            <div id = "view">
+                    <canvas id="canvas" width="320" height="240"></canvas>
+                    <div id="info">FPS: N/A</div>    
+                    <div id="output">Output: N/A</div>
+                    <div id="message">Based on JS examples at raymarching.com with lots of tweaks</div>
+            </div>
+            
+    </div>
+
+
+<script src="../js/ui.js"></script>
+<script src="../libs/quicksettings_3_0_2.min.js"></script>
+<script src="../libs/stats.js"></script>
+<script>
+    var date = 190531;
+    var desc = "raymarching in canvas";
+    var issueNumber = 9999;
+    setup(date, 190513, date + 1, desc, issueNumber);
+</script>
+  
+</body>
+<style>
+    #container {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#view {
+  max-width: 50%;
+}
+
+canvas {
+    image-rendering: optimizeSpeed;
+    image-rendering: pixelated;
+    width: 640px;
+    height: 480px;
+}
+</style>
+</html>
