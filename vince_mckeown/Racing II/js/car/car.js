@@ -21,6 +21,8 @@ function carClass() {
 	this.runTime = 0.0
 	this.nitroboost = false;
 	this.wayPointNumber = 0;
+	this.width = 50;
+	this.height = 50;
 
     this.carPic = document.createElement("img");
 
@@ -81,10 +83,12 @@ function carClass() {
 		this.checkPointA = false;
 		this.checkPointB = false;
 		this.checkPointC = false;
-		this.wayPointX = [100, 680, 680, 150]; 
-		this.wayPointY = [100, 100, 500, 500];
+		this.wayPointX = [110, 680, 680, 150]; 
+		this.wayPointY = [110, 100, 500, 500];
 		this.aiRandomMovements = false;
 		this.wayPoint = true;
+		this.width = 50;
+		this.height = 50;
     }
 	
 	this.tryNitroBoost = function(){

@@ -6,6 +6,7 @@ var mouseY = 0;
 var now = new Date();
 var time = 0;
 
+var vehicleList = [];
 var playerOne = new carClass();
 var playerTwo = new carClass();
 var playerThree = new carClass();
@@ -30,8 +31,11 @@ window.onload = function(){
 				
 	loadImages();
 	
-	initInput();	
-	
+	initInput();
+	// code for future vehicleList	
+	/*for (var i = 0; i < 8; i++) {  		
+		addVehicle();
+	} */
 	playerOne.carReset();
 	playerTwo.carReset();
 	playerThree.carReset();
@@ -39,7 +43,7 @@ window.onload = function(){
 	playerFive.carReset();
 	playerSix.carReset();
 	playerSeven.carReset();
-	playerEight.carReset();
+	playerEight.carReset(); 
 }
 
 function imageLoadingDoneSoStartGame(){
@@ -48,20 +52,20 @@ function imageLoadingDoneSoStartGame(){
 		moveEverything();
 		drawEverything();
 	}, 1000/framesPerSecond);
-	playerTwo.carInit(carPic2, "Car 2", true);
 	playerOne.carInit(carPic, "Car 1", false);
+	playerTwo.carInit(carPic2, "Car 2", true);
 	playerThree.carInit(carPic2, "Car 3", true);
 	playerFour.carInit(carPic, "Car 4", true);
 	playerFive.carInit(carPic2, "Car 5", true);
 	playerSix.carInit(carPic2, "Car 6", true);
 	playerSeven.carInit(carPic2, "Car 7", true);
 	playerEight.carInit(carPic2, "Car 8", true);
-	
-	
-	
-	
-	
 	loadLevel(levelOne);
+}
+
+function addVehicle(){
+	var tempVehicle = new carClass();
+	vehicleList.push(tempVehicle);
 }
 	
 function moveEverything() {
@@ -70,17 +74,49 @@ function moveEverything() {
 	} else if (levelEditor) {
 		
 	} else {
-		playerOne.movement();
-		playerTwo.movement();
-		playerThree.movement();
-		playerFour.movement();
-		playerFive.movement();
-		playerSix.movement();
-		playerSeven.movement();
-		playerEight.movement();
-		playerOne.checkCarCollisionAgainst(playerTwo);	
-		playerTwo.checkCarCollisionAgainst(playerOne);
-		updateTime();
+		// code for future vehicleList
+		/* for (var i = 0; i < vehicleList.length; i++) {		
+			vehicleList[i].movement();
+		} */
+	playerOne.movement();
+	playerTwo.movement();
+	playerThree.movement();
+	playerFour.movement();
+	playerFive.movement();
+	playerSix.movement();
+	playerSeven.movement();
+	playerEight.movement();
+	// change into a list
+	playerOne.checkCarCollisionAgainst(playerTwo);	
+	playerOne.checkCarCollisionAgainst(playerThree);	
+	playerOne.checkCarCollisionAgainst(playerFour);	
+	playerOne.checkCarCollisionAgainst(playerFive);	
+	playerOne.checkCarCollisionAgainst(playerSix);	
+	playerOne.checkCarCollisionAgainst(playerSeven);	
+	playerOne.checkCarCollisionAgainst(playerEight);	
+	playerTwo.checkCarCollisionAgainst(playerThree);	
+	playerTwo.checkCarCollisionAgainst(playerFour);	
+	playerTwo.checkCarCollisionAgainst(playerFive);	
+	playerTwo.checkCarCollisionAgainst(playerSix);	
+	playerTwo.checkCarCollisionAgainst(playerSeven);	
+	playerTwo.checkCarCollisionAgainst(playerEight);	
+	playerThree.checkCarCollisionAgainst(playerFour);	
+	playerThree.checkCarCollisionAgainst(playerFive);	
+	playerThree.checkCarCollisionAgainst(playerSix);	
+	playerThree.checkCarCollisionAgainst(playerSeven);	
+	playerThree.checkCarCollisionAgainst(playerEight);
+	playerFour.checkCarCollisionAgainst(playerFive);	
+	playerFour.checkCarCollisionAgainst(playerSix);	
+	playerFour.checkCarCollisionAgainst(playerSeven);	
+	playerFour.checkCarCollisionAgainst(playerEight);		
+	playerFive.checkCarCollisionAgainst(playerSix);	
+	playerFive.checkCarCollisionAgainst(playerSeven);	
+	playerFive.checkCarCollisionAgainst(playerEight);	
+	playerSix.checkCarCollisionAgainst(playerSeven);	
+	playerSix.checkCarCollisionAgainst(playerEight);	
+	playerSeven.checkCarCollisionAgainst(playerEight);
+	
+	updateTime();
 	}
 }
 
@@ -112,6 +148,10 @@ function drawEverything() {
 	} else {	
 		colorRect(0,0,canvas.width,canvas.height, 'black');			
 		drawTracks();
+		// code for future vehicleList
+		/*for (var i = 0; i < vehicleList.length; i++) {
+			vehicleList[i].drawCar();
+		} */
 		playerOne.drawCar();
 		playerTwo.drawCar();
 		playerThree.drawCar();
@@ -119,7 +159,8 @@ function drawEverything() {
 		playerFive.drawCar();
 		playerSix.drawCar();
 		playerSeven.drawCar();
-		playerEight.drawCar();
+		playerEight.drawCar(); 
+		
 		drawClock();
 		drawLapOneTime();
 		colorCircle(playerFour.wayPointX,playerFour.wayPointY, 5, 'blue');
