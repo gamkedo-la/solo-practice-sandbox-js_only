@@ -54,12 +54,12 @@ function imageLoadingDoneSoStartGame(){
 	}, 1000/framesPerSecond);
 	playerOne.carInit(carPic, "Car 1", false);
 	playerTwo.carInit(carPic2, "Car 2", true);
-	playerThree.carInit(carPic2, "Car 3", true);
-	playerFour.carInit(carPic, "Car 4", true);
-	playerFive.carInit(carPic2, "Car 5", true);
-	playerSix.carInit(carPic2, "Car 6", true);
-	playerSeven.carInit(carPic2, "Car 7", true);
-	playerEight.carInit(carPic2, "Car 8", true);
+	playerThree.carInit(carPic3, "Car 3", true);
+	playerFour.carInit(carPic4, "Car 4", true);
+	playerFive.carInit(carPic5, "Car 5", true);
+	playerSix.carInit(carPic6, "Car 6", true);
+	playerSeven.carInit(carPic7, "Car 7", true);
+	playerEight.carInit(carPic8, "Car 8", true);
 	loadLevel(levelOne);
 }
 
