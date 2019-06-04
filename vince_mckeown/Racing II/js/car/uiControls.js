@@ -34,6 +34,8 @@ function initInput(){
 	canvas.addEventListener('click',function(evt){
 		if(levelEditor){
 			mouseClick(mouseX, mouseY);
+		} else if(titleScreen){
+			titleScreenMouseClick(mouseX, mouseY);
 		}
 	} );
 	

@@ -328,7 +328,7 @@ function carClass() {
 	
 	this.checkCarCollisionAgainst = function(thisCar){
 		if(thisCar.isOverLappingPoint(this.x,this.y)){
-			this.speed = -1 * this.speed;
+			this.speed = -0.25 * this.speed; 
 		}
 	}
 	
