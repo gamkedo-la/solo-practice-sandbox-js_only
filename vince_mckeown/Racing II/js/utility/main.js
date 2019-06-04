@@ -21,6 +21,7 @@ var computerPlayerOn = true;
 var titleScreen = true;
 var levelEditor = false;
 var winScreen = false;
+var carUpgradeScreen = false;
 var paused = false;
 
 var isMouseDragging = false;
@@ -73,9 +74,11 @@ function moveEverything() {
 	if(titleScreen){
 		colorRect(0,0,canvas.width,canvas.height, 'green');	
 	} else if (levelEditor) {
-		
+		//nothing - no movement
 	} else if (winScreen){
 		winScreenTimer();
+	} else if (carUpgradeScreen){
+		//nothing - no movement		
 	} else {
 		// code for future vehicleList
 		/* for (var i = 0; i < vehicleList.length; i++) {		
@@ -155,6 +158,8 @@ function drawEverything() {
 		drawLevelEditor();
 	} else if (winScreen){
 		drawWinScreen();
+	} else if (carUpgradeScreen){
+		drawCarUpgradeScreen();
 	} else {	
 		colorRect(0,0,canvas.width,canvas.height, 'black');			
 		drawTracks();

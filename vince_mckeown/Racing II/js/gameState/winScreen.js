@@ -15,9 +15,10 @@ function drawWinScreen(){
 
 function winScreenTimer(){
 	winScreenTime++;
-	if(winScreenTime == 300){
+	if(winScreenTime == 200){
 		winScreenTime = 0;
 		winScreen = false;
+		carUpgradeScreen = true;
 	}
 	
 }

@@ -36,6 +36,8 @@ function initInput(){
 			mouseClick(mouseX, mouseY);
 		} else if(titleScreen){
 			titleScreenMouseClick(mouseX, mouseY);
+		} else if(carUpgradeScreen){
+			carUpgradeScreenMouseClick(mouseX, mouseY)
 		}
 	} );
 	
