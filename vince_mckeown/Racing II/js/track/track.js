@@ -113,6 +113,7 @@ function nextLevel() {
 	playerSix.updateWayPoints();
 	playerSeven.updateWayPoints();
 	playerEight.updateWayPoints();
+	winScreen = true;
 	
 }
 

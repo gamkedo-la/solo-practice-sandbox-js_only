@@ -175,7 +175,6 @@ function carClass() {
 		}
 		
 		if(dist(this.x, this.y, toX, toY) < 20){
-			console.log('reached wayPoint');
 			this.wayPointNumber++;
 			if(this.wayPointNumber >= this.wayPointX.length) {
 				this.wayPointNumber = 0;
@@ -220,11 +219,8 @@ function carClass() {
 		
 		var nextX = this.x + Math.cos(this.ang) * this.speed;
         var nextY = this.y + Math.sin(this.ang) * this.speed;
-		
-		console.log(playerThree.speed);
-		
+				
 		if(this.computerPlayer){
-			console.log('Random: ' + playerThree.aiRandomMovements);
 			if(this.aiRandomMovements){
 				this.randomMovements();
 			}

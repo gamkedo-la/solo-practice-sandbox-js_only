@@ -20,6 +20,7 @@ var computerPlayerOn = true;
 
 var titleScreen = true;
 var levelEditor = false;
+var winScreen = false;
 var paused = false;
 
 var isMouseDragging = false;
@@ -73,6 +74,8 @@ function moveEverything() {
 		colorRect(0,0,canvas.width,canvas.height, 'green');	
 	} else if (levelEditor) {
 		
+	} else if (winScreen){
+		winScreenTimer();
 	} else {
 		// code for future vehicleList
 		/* for (var i = 0; i < vehicleList.length; i++) {		
@@ -150,6 +153,8 @@ function drawEverything() {
 		colorText("2 Players", 515, 430, 'black', font = "14px Arial Black");
 	} else if (levelEditor) {
 		drawLevelEditor();
+	} else if (winScreen){
+		drawWinScreen();
 	} else {	
 		colorRect(0,0,canvas.width,canvas.height, 'black');			
 		drawTracks();
