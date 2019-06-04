@@ -1,4 +1,4 @@
-const DRIVE_POWER = 0.5;
+const DRIVE_POWER = 0.5
 const REVERSE_POWER = 0.2;
 const MIN_TURN_SPEED = 0.5;
 const GROUNDSPEED_DECAY_MULT = 0.94;
@@ -83,21 +83,23 @@ function carClass() {
 		this.checkPointA = false;
 		this.checkPointB = false;
 		this.checkPointC = false;
-		this.wayPointX = [110, 680, 680, 150]; 
-		this.wayPointY = [110, 100, 500, 500];
 		this.aiRandomMovements = false;
 		this.wayPoint = true;
 		this.width = 50;
 		this.height = 50;
+		this.wayPointX = [110, 680, 680, 150]; 
+		this.wayPointY = [110, 100, 500, 500];
+		this.level = 0;
+		this.stuckTime = 0;
+		this.randomMovementsTimer = 0;
     }
 	
 	this.tryNitroBoost = function(){
-		if(this.nitroBoostAmount > 0)
-			for(var i=0; i < this.nitroBoostTime ; i++) {
-				this.speed += 2;
-				this.turn_rate = 0.01;
-				this.nitroboost = true;
-			}
+		if(this.nitroBoostAmount > 0){
+			this.speed += 2;
+			this.turn_rate = 0.01;
+			this.nitroboost = true;
+		}
 		this.nitroBoostAmount = this.nitroBoostAmount - 1;
 		this.turn_rate = 0.03;
 		this.nitroboost = false;
@@ -105,7 +107,8 @@ function carClass() {
 	
 	this.randomMovements = function(){
 		var chanceToMoveForward = Math.round(Math.random() * 10);
-		if (chanceToMoveForward > 2){
+		this.randomMovementsTimer++
+		if (chanceToMoveForward > 3){
 			this.keyHeld_Gas = true;
 			this.keyHeld_Reverse = false;
 		} else {
@@ -127,8 +130,35 @@ function carClass() {
 		if (chanceToUseNitro <= 1){
 			this.controlKeyForNitro = true;
 		}
+		if(this.randomMovementsTimer > 300){
+			this.randomMovementsTimer = 0;
+			this.aiRandomMovements = false;
+			this.wayPoint = true;
+		}
 	}
 	
+	this.updateWayPoints = function(){
+		this.level = this.level + 1;
+		this.wayPointNumber = 0;
+		this.lapNumber = 0;
+		this.checkPointA = false;
+		this.checkPointB = false;
+		this.checkPointC = false;
+		if(this.level == 0){
+			this.wayPointX = [110, 680, 680, 150]; 
+			this.wayPointY = [110, 100, 500, 500];
+		} else if (this.level == 1){
+			this.wayPointX = [110, 304, 334, 437, 461, 680, 680, 150]; 
+			this.wayPointY = [110, 106, 266, 277,  86, 100, 500, 500];
+		} else if (this.level == 2){
+			this.wayPointX = [ 71, 164, 218, 332, 327, 450, 454, 725, 721, 640, 738,  66]; 
+			this.wayPointY = [243, 167,  76, 134, 411, 355,  96, 104, 246, 313, 508, 512]; 
+		} else if (this.level == 3){
+			this.wayPointX = [110, 680, 680, 150]; 
+			this.wayPointY = [110, 100, 500, 500];
+		}
+	}
+
 	this.wayPointMovements = function(toX, toY){
 		var wayPointVectorX = toX - this.x;
 		var wayPointVectorY = toY - this.y;
@@ -149,6 +179,17 @@ function carClass() {
 			this.wayPointNumber++;
 			if(this.wayPointNumber >= this.wayPointX.length) {
 				this.wayPointNumber = 0;
+			}
+		}
+	}
+	
+	this.checkIfStuck = function(){
+		if(this.speed < 1){
+			this.stuckTime++;
+			if(this.stuckTime == 100){
+				this.aiRandomMovements = true;
+				this.wayPoint = false;
+				this.stuckTime = 0;
 			}
 		}
 	}
@@ -180,7 +221,10 @@ function carClass() {
 		var nextX = this.x + Math.cos(this.ang) * this.speed;
         var nextY = this.y + Math.sin(this.ang) * this.speed;
 		
+		console.log(playerThree.speed);
+		
 		if(this.computerPlayer){
+			console.log('Random: ' + playerThree.aiRandomMovements);
 			if(this.aiRandomMovements){
 				this.randomMovements();
 			}
@@ -188,6 +232,7 @@ function carClass() {
 				this.wayPointMovements(this.wayPointX[this.wayPointNumber], this.wayPointY[this.wayPointNumber]);
 				this.keyHeld_Gas = true;
 				this.keyHeld_Reverse = false;
+				this.checkIfStuck();
 			}
 		} 
 
