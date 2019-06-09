@@ -23,6 +23,7 @@ var levelEditor = false;
 var winScreen = false;
 var carUpgradeScreen = false;
 var paused = false;
+var debugMode = false;
 
 var isMouseDragging = false;
 	
@@ -148,12 +149,7 @@ function drawLapOneTime(){
 						
 function drawEverything() {
 	if(titleScreen){
-		colorRect(0,0,canvas.width,canvas.height, 'black');	
-		colorText("Little Racers", 310, 200, 'white', font = "24px Arial Black");
-		colorRect(200,400,100,50, 'white');	
-		colorRect(500,400,100,50, 'white');	
-		colorText("1 Player", 215, 430, 'black', font = "14px Arial Black");
-		colorText("2 Players", 515, 430, 'black', font = "14px Arial Black");
+		drawTitleScreen();
 	} else if (levelEditor) {
 		drawLevelEditor();
 	} else if (winScreen){

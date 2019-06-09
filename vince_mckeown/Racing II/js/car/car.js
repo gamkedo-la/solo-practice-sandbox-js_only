@@ -246,8 +246,6 @@ function carClass() {
         //var nextX = this.x + Math.cos(this.ang) * this.speed;
         //var nextY = this.y + Math.sin(this.ang) * this.speed;
 		
-		// calculate Dot Product
-		
 
         var drivingIntoTileType = getTrackAtPixelCoord(nextX, nextY);
 
@@ -380,6 +378,10 @@ function carClass() {
 		if(this.airborne){
 			yOffSet = yOffSet - 10;
 		}
-		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x - (this.z / 4), this.y - (this.z / 2), this.ang);	
+		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x - (this.z / 4), this.y - (this.z / 2), this.ang);
+		if(debugMode){
+			console.log(debugMode);
+			colorRect(this.x - (this.z / 4), this.y - (this.z / 2), 2, 2, 'red');
+		}
 	}
 }

@@ -18,6 +18,7 @@ const KEY_DOWN_ARROW = 40;
 const ENTER_KEY = 13;
 
 const KEY_F1 = 112;
+const KEY_F2 = 113;
 const KEY_P = 80;
 
 
@@ -53,6 +54,7 @@ function initInput(){
 
 function keyPressed(evt) {
 	var levelEditorKey = KEY_F1;
+	var debugKey = KEY_F2;
 	var pausedKey = KEY_P;
 	
 	setKeyHoldState(evt.keyCode, playerOne, true);
@@ -69,9 +71,14 @@ function keyPressed(evt) {
 	} else if (levelEditorKey == evt.keyCode) {
 		if(levelEditor){
 			levelEditor = false;
-		} else {
+		} else 
 			levelEditor = true;
-		}	
+	} else if (debugKey = evt.keyCode){
+		if(debugMode){
+			debugMode = false;
+		} else {
+			debugMode = true;
+		}
 	}
 }
 
