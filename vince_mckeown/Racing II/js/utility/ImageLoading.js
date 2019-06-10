@@ -1,4 +1,4 @@
-var carPic = document.createElement("img");
+var carPic1 = document.createElement("img");
 var carPic2 = document.createElement("img");
 var carPic3 = document.createElement("img");
 var carPic4 = document.createElement("img");
@@ -38,7 +38,7 @@ function loadImageForTrackCode(trackCode, fileName)  {
 function loadImages() {
 	
 		var imageList = [
-			{varName: carPic, theFile: "player1.png"},
+			{varName: carPic1, theFile: "player1.png"},
 			{varName: carPic2, theFile: "player2.png"},
 			{varName: carPic3, theFile: "player3.png"},
 			{varName: carPic4, theFile: "player4.png"},

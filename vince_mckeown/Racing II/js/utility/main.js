@@ -7,14 +7,6 @@ var now = new Date();
 var time = 0;
 
 var vehicleList = [];
-var playerOne = new carClass();
-var playerTwo = new carClass();
-var playerThree = new carClass();
-var playerFour = new carClass();
-var playerFive = new carClass();
-var playerSix = new carClass();
-var playerSeven = new carClass();
-var playerEight = new carClass();
 
 var computerPlayerOn = true;
 
@@ -31,22 +23,15 @@ window.onload = function(){
 			
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
-				
+	for (var i = 0; i < 8; i++) {  		
+		addVehicle();
+	} 			
 	loadImages();
-	
 	initInput();
 	// code for future vehicleList	
-	/*for (var i = 0; i < 8; i++) {  		
-		addVehicle();
-	} */
-	playerOne.carReset();
-	playerTwo.carReset();
-	playerThree.carReset();
-	playerFour.carReset();
-	playerFive.carReset();
-	playerSix.carReset();
-	playerSeven.carReset();
-	playerEight.carReset(); 
+	for (var i = 0; i < vehicleList.length; i++) {  		
+		vehicleList[i].carReset();
+	} 	
 }
 
 function imageLoadingDoneSoStartGame(){
@@ -55,14 +40,10 @@ function imageLoadingDoneSoStartGame(){
 		moveEverything();
 		drawEverything();
 	}, 1000/framesPerSecond);
-	playerOne.carInit(carPic, "Car 1", false);
-	playerTwo.carInit(carPic2, "Car 2", true);
-	playerThree.carInit(carPic3, "Car 3", true);
-	playerFour.carInit(carPic4, "Car 4", true);
-	playerFive.carInit(carPic5, "Car 5", true);
-	playerSix.carInit(carPic6, "Car 6", true);
-	playerSeven.carInit(carPic7, "Car 7", true);
-	playerEight.carInit(carPic8, "Car 8", true);
+	for (var i = 0; i < vehicleList.length; i++) {  		
+		vehicleList[i].carInit(window['carPic'+(i+1)], 'Car '+(i+1), true);
+	} 
+	
 	loadLevel(levelOne);
 }
 
@@ -81,48 +62,18 @@ function moveEverything() {
 	} else if (carUpgradeScreen){
 		//nothing - no movement		
 	} else {
-		// code for future vehicleList
-		/* for (var i = 0; i < vehicleList.length; i++) {		
+		for (var i = 0; i < vehicleList.length; i++) {		
 			vehicleList[i].movement();
-		} */
-	playerOne.movement();
-	playerTwo.movement();
-	playerThree.movement();
-	playerFour.movement();
-	playerFive.movement();
-	playerSix.movement();
-	playerSeven.movement();
-	playerEight.movement();
-	// change into a list
-	playerOne.checkCarCollisionAgainst(playerTwo);	
-	playerOne.checkCarCollisionAgainst(playerThree);	
-	playerOne.checkCarCollisionAgainst(playerFour);	
-	playerOne.checkCarCollisionAgainst(playerFive);	
-	playerOne.checkCarCollisionAgainst(playerSix);	
-	playerOne.checkCarCollisionAgainst(playerSeven);	
-	playerOne.checkCarCollisionAgainst(playerEight);	
-	playerTwo.checkCarCollisionAgainst(playerThree);	
-	playerTwo.checkCarCollisionAgainst(playerFour);	
-	playerTwo.checkCarCollisionAgainst(playerFive);	
-	playerTwo.checkCarCollisionAgainst(playerSix);	
-	playerTwo.checkCarCollisionAgainst(playerSeven);	
-	playerTwo.checkCarCollisionAgainst(playerEight);	
-	playerThree.checkCarCollisionAgainst(playerFour);	
-	playerThree.checkCarCollisionAgainst(playerFive);	
-	playerThree.checkCarCollisionAgainst(playerSix);	
-	playerThree.checkCarCollisionAgainst(playerSeven);	
-	playerThree.checkCarCollisionAgainst(playerEight);
-	playerFour.checkCarCollisionAgainst(playerFive);	
-	playerFour.checkCarCollisionAgainst(playerSix);	
-	playerFour.checkCarCollisionAgainst(playerSeven);	
-	playerFour.checkCarCollisionAgainst(playerEight);		
-	playerFive.checkCarCollisionAgainst(playerSix);	
-	playerFive.checkCarCollisionAgainst(playerSeven);	
-	playerFive.checkCarCollisionAgainst(playerEight);	
-	playerSix.checkCarCollisionAgainst(playerSeven);	
-	playerSix.checkCarCollisionAgainst(playerEight);	
-	playerSeven.checkCarCollisionAgainst(playerEight);
+		} 
 	
+	// change into a list
+	for (var i = 0; i < vehicleList.length; i++) {  
+		for (var ii = i+1; ii < vehicleList.length; ii++) {  		
+			vehicleList[i].checkCarCollisionAgainst(vehicleList[ii]);
+		} 	
+		
+	} 
+
 	updateTime();
 	}
 }
@@ -139,10 +90,12 @@ function calculateMousePos(evt) {
 
 function drawClock(){
 	canvasContext.drawImage(clockPic, 350, 2);
+	var playerOne = vehicleList[0];
 	colorText(playerOne.minuteTensSpot.toString() + playerOne.minute.toString() + ':' + playerOne.secondTensSpot.toString() + playerOne.second.toString() +':'+playerOne.tenthSecond.toString(), 368, 30, 'black');
 }
 
 function drawLapOneTime(){
+	var playerOne = vehicleList[0];
 	colorText(playerOne.lapMinuteTensSpot.toString() + playerOne.lapMinute.toString() + ':' + playerOne.lapSecondTensSpot.toString() + playerOne.lapSecond.toString() +':'+playerOne.lapTenthSecond.toString(), 700, 30, 'black');
 }
 
@@ -160,22 +113,12 @@ function drawEverything() {
 		colorRect(0,0,canvas.width,canvas.height, 'black');			
 		drawTracks();
 		// code for future vehicleList
-		/*for (var i = 0; i < vehicleList.length; i++) {
+		for (var i = 0; i < vehicleList.length; i++) {
 			vehicleList[i].drawCar();
-		} */
-		playerOne.drawCar();
-		playerTwo.drawCar();
-		playerThree.drawCar();
-		playerFour.drawCar();
-		playerFive.drawCar();
-		playerSix.drawCar();
-		playerSeven.drawCar();
-		playerEight.drawCar(); 
-		
+		} 
+
 		drawClock();
 		drawLapOneTime();
-		colorCircle(playerFour.wayPointX,playerFour.wayPointY, 5, 'blue');
-		colorLine(playerFour.x, playerFour.y, playerFour.wayPointX, playerFour.wayPointY, 'white')
 	}
 }
 

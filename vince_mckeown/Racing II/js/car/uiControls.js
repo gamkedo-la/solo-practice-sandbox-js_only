@@ -47,9 +47,9 @@ function initInput(){
 	} );
 	
 	if(computerPlayerOn) {
-		playerTwo.setupControls(KEY_W, KEY_S, KEY_A, KEY_D, KEY_F);
+		vehicleList[1].setupControls(KEY_W, KEY_S, KEY_A, KEY_D, KEY_F);
 	}
-	playerOne.setupControls(KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW, KEY_PAGE_DOWN);
+	vehicleList[0].setupControls(KEY_UP_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW, KEY_RIGHT_ARROW, KEY_PAGE_DOWN);
 }
 
 function keyPressed(evt) {
@@ -57,8 +57,8 @@ function keyPressed(evt) {
 	var debugKey = KEY_F2;
 	var pausedKey = KEY_P;
 	
-	setKeyHoldState(evt.keyCode, playerOne, true);
-	setKeyHoldState(evt.keyCode, playerTwo, true);
+	setKeyHoldState(evt.keyCode, vehicleList[0], true);
+	setKeyHoldState(evt.keyCode, vehicleList[1], true);
 	evt.preventDefault();
 	
 	if(pausedKey == evt.keyCode){
@@ -83,8 +83,8 @@ function keyPressed(evt) {
 }
 
 function keyReleased(evt) {
-	setKeyHoldState(evt.keyCode, playerOne, false);
-	setKeyHoldState(evt.keyCode, playerTwo, false);
+	setKeyHoldState(evt.keyCode, vehicleList[0], false);
+	setKeyHoldState(evt.keyCode, vehicleList[1], false);
 }
 
 function setKeyHoldState(thisKey, thisCar, setTo) {

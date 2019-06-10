@@ -105,28 +105,18 @@ function nextLevel() {
 	loadLevel(levelList[levelNow]);
 	//make into a list
 	//updates wayPoints
-	playerOne.updateWayPoints();
-	playerTwo.updateWayPoints();
-	playerThree.updateWayPoints();
-	playerFour.updateWayPoints();
-	playerFive.updateWayPoints();
-	playerSix.updateWayPoints();
-	playerSeven.updateWayPoints();
-	playerEight.updateWayPoints();
+	for (var i = 0; i < vehicleList.length; i++) {  	
+		vehicleList[i].updateWayPoints(); 
+	}
 	winScreen = true;
 	
 }
 
 function loadLevel(whichLevel) {	
 	trackGrid = whichLevel.slice();
-	playerOne.carReset(carPic, "Car 1", false); 
-	playerTwo.carReset(carPic2, "Car 2", true);
-	playerThree.carReset(carPic2, "Car 3", true);
-	playerFour.carReset(carPic2, "Car 4", true);
-	playerFive.carReset(carPic2, "Car 5", true);
-	playerSix.carReset(carPic2, "Car 6", true);
-	playerSeven.carReset(carPic2, "Car 7", true);
-	playerEight.carReset(carPic2, "Car 8", true);
+	for (var i = 0; i < vehicleList.length; i++) {  
+		vehicleList[i].carReset(window['carPic'+(i+1)], 'Car '+(i+1), true);
+	} 	
 }
 		
 function drawTracks(){
