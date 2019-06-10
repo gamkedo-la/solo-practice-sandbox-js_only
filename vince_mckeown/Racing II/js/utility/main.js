@@ -27,8 +27,7 @@ window.onload = function(){
 		addVehicle();
 	} 			
 	loadImages();
-	initInput();
-	// code for future vehicleList	
+	initInput();	
 	for (var i = 0; i < vehicleList.length; i++) {  		
 		vehicleList[i].carReset();
 	} 	
@@ -56,24 +55,20 @@ function moveEverything() {
 	if(titleScreen){
 		colorRect(0,0,canvas.width,canvas.height, 'green');	
 	} else if (levelEditor) {
-		//nothing - no movement
+		//Intentionally left empty - no movement
 	} else if (winScreen){
 		winScreenTimer();
 	} else if (carUpgradeScreen){
-		//nothing - no movement		
+		//Intentionally left empty - no movement		
 	} else {
 		for (var i = 0; i < vehicleList.length; i++) {		
 			vehicleList[i].movement();
 		} 
-	
-	// change into a list
-	for (var i = 0; i < vehicleList.length; i++) {  
-		for (var ii = i+1; ii < vehicleList.length; ii++) {  		
-			vehicleList[i].checkCarCollisionAgainst(vehicleList[ii]);
-		} 	
-		
-	} 
-
+		for (var i = 0; i < vehicleList.length; i++) {  
+			for (var ii = i+1; ii < vehicleList.length; ii++) {  		
+				vehicleList[i].checkCarCollisionAgainst(vehicleList[ii]);
+			} 	
+		} 
 	updateTime();
 	}
 }
@@ -98,8 +93,7 @@ function drawLapOneTime(){
 	var playerOne = vehicleList[0];
 	colorText(playerOne.lapMinuteTensSpot.toString() + playerOne.lapMinute.toString() + ':' + playerOne.lapSecondTensSpot.toString() + playerOne.lapSecond.toString() +':'+playerOne.lapTenthSecond.toString(), 700, 30, 'black');
 }
-
-						
+			
 function drawEverything() {
 	if(titleScreen){
 		drawTitleScreen();
@@ -112,11 +106,9 @@ function drawEverything() {
 	} else {	
 		colorRect(0,0,canvas.width,canvas.height, 'black');			
 		drawTracks();
-		// code for future vehicleList
 		for (var i = 0; i < vehicleList.length; i++) {
 			vehicleList[i].drawCar();
 		} 
-
 		drawClock();
 		drawLapOneTime();
 	}

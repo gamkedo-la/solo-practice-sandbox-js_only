@@ -23,6 +23,7 @@ function carClass() {
 	this.wayPointNumber = 0;
 	this.width = 50;
 	this.height = 50;
+	this.cash = 0;
 
     this.carPic = document.createElement("img");
 
@@ -242,11 +243,6 @@ function carClass() {
 			this.zVel = 0;
 		}
 
-        // Motion X and Y of the car
-        //var nextX = this.x + Math.cos(this.ang) * this.speed;
-        //var nextY = this.y + Math.sin(this.ang) * this.speed;
-		
-
         var drivingIntoTileType = getTrackAtPixelCoord(nextX, nextY);
 
         switch (drivingIntoTileType) {
@@ -287,13 +283,11 @@ function carClass() {
 					if(this.lapNumber < 3){
 						this.recordALap();
 					} else {
-						nextLevel();
-						return;
+						whichPlace(this.myName, this.cash);
 					}
 				} 
 				this.x = nextX;
                 this.y = nextY;
-                //this.speed *= 1;
                 this.turnable = true;
 				break;	
             case TRACK_OIL_SLICK:
@@ -380,7 +374,6 @@ function carClass() {
 		}
 		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x - (this.z / 4), this.y - (this.z / 2), this.ang);
 		if(debugMode){
-			console.log(debugMode);
 			colorRect(this.x - (this.z / 4), this.y - (this.z / 2), 2, 2, 'red');
 		}
 	}
