@@ -1,8 +1,14 @@
 var canvas, canvasContext;
 
-const SET_FRAMES_PER_SECOND = 30;
+const FRAMES_PER_SECOND = 30;
 var C_WIDTH;
 var C_HEIGHT;
+
+var columns;
+var rows;
+var numOfElements = 100;
+
+var shuffled = false;
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -10,13 +16,15 @@ window.onload = function() {
 
 	C_WIDTH = canvas.width;
 	C_HEIGHT = canvas.height;
-
+	
+	rows = Math.round(numOfElements/10);
+	columns = numOfElements/rows;
 	initInput();
+	initBoxes();
 
-	// these next few lines set up our game logic and render to happen 30 times per second
 	setInterval(function() {
 	    update();
-	  }, 1000/SET_FRAMES_PER_SECOND);
+	  }, 1000/FRAMES_PER_SECOND);
 }
 
 function update() {
@@ -26,9 +34,11 @@ function update() {
 
 function drawEverything() {
 	colorRect(0, 0, C_WIDTH, C_HEIGHT, 'black');
-	colorText('Centered', C_WIDTH/2,C_HEIGHT/2, 'white','center');
+	drawBoxes();
 }
 
 function moveEverything() {
-
+	if (!shuffled) {
+		shuffleBoxes();
+	}
 }
