@@ -10,13 +10,13 @@ function initBoxes() {
 		y += BOX_HEIGHT + 2;
 	}
 	var len = boxes.length;
-	for (var b = len - 1; b > numOfElements - 1; b--) {
-		boxes.pop();
+	for (var b = len - 1; b >= 0; b--) {
+		if (b > numOfElements - 1) {
+			boxes.pop();
+		} else {
+			boxes[b].id = b;
+		}
 	}
-	len = boxes.length;
-	for (var b = 0; b < len; b++) {
-		boxes[b].id = b;
-	} //TODO: Make one for loop
 }
 
 function drawBoxes() {
