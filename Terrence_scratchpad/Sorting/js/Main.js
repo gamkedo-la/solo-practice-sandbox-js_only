@@ -6,13 +6,8 @@ var C_HEIGHT;
 
 var columns;
 var rows;
-var numOfElements = 300;
 
-var shuffled = false;
-var sortActivated = false;
-var visualize = true;
-
-var sortTypes = [BUBBLE_SORT];
+var numOfElements = 200;
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -37,7 +32,7 @@ window.onload = function() {
 	columns = numOfElements/rows;
 
 	initInput();
-	initBoxes();
+	initBoxes(boxes);
 
 	setInterval(function() {
 	    update();
@@ -55,13 +50,18 @@ function drawEverything() {
 }
 
 function moveEverything() {
-	if (!shuffled) {
+	if (!boxesStates.shuffled) {
 		shuffleBoxes();
 		return;
 	}
 
-	if (sortActivated) {
+	if (sortStates.activated) {
 		sort(sortTypes[0]);
+	}
+
+	if (boxesStates.getOriginalShuffle) {
+		recallShuffledBoxes();
+		boxesStates.getOriginalShuffle = false;
 	}
 }
 

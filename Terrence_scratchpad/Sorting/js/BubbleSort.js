@@ -1,25 +1,30 @@
-const BUBBLE_SORT = 0;
-
 function bubbleSort() {
 	var len = boxes.length;
-	var i,box,nextBox,hold;
+	var i,box,nextBox;
 
 	for (i = 0; i < len; i++) {
+		step++;
 		if (i != len - 1) {
 			box = boxes[i];
-			nextBox = boxes[i + 1] 
+			nextBox = boxes[i + 1]; 
 			if (box.id < nextBox.id) {
-				continue;
+				sortedCount++;
 			} else {
-				hold = boxes[i].id;
-				box.id = nextBox.id;
-				nextBox.id = hold;
+				swap(boxes,i,i + 1);
+				sortedCount = 0;
 				i--;
 			}
-		} else {
-			if (!visualize)
-			i = 0;
-			len--;
-		}
-	}
+		} else { // end of if (i != len - 1)
+			if (isSortFinished()) {
+				return;
+			} else {
+				if (!sortStates.visualize) {
+					i = 0;
+					len--;
+				}
+				sortedCount = 0;
+			}
+		} // end of else
+	} // end of for loop i < len
 } // Bubble Sort function
+
