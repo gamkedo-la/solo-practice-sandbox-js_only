@@ -7,7 +7,7 @@ var C_HEIGHT;
 var columns;
 var rows;
 
-var numOfElements = 200;
+var numOfElements = 10;
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -56,7 +56,7 @@ function moveEverything() {
 	}
 
 	if (sortStates.activated) {
-		sort(sortTypes[0]);
+		sort(sortStates.selected);
 	}
 
 	if (boxesStates.getOriginalShuffle) {
@@ -69,6 +69,9 @@ function sort(type) {
 	switch(type) {
 		case BUBBLE_SORT:
 			bubbleSort();
+			break;
+		case INSERTION_SORT:
+			insertionSort();
 			break;
 		default:
 			console.log("No sort selected");

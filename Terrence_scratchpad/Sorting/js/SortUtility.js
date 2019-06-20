@@ -1,13 +1,15 @@
-var sortStates = {
-	activated: false,
-	visualize: false
-};
-
 var sortedCount = 0;
 var step = 0;
 
-const BUBBLE_SORT = 0;
-var sortTypes = [BUBBLE_SORT];
+const BUBBLE_SORT = "bubble sort";
+const INSERTION_SORT = "insertion sort";
+var sortTypes = [BUBBLE_SORT, INSERTION_SORT];
+
+var sortStates = {
+	activated: false,
+	visualize: false,
+	selected: sortTypes[1],
+};
 
 function getRandomIntInclusive(min, max) {
 	min = Math.ceil(min);
