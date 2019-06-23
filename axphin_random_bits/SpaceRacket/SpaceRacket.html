@@ -16,6 +16,7 @@
   var paddle1Y = 250, paddle2Y = 250; 
   var showingWinScreen = false;
   
+  const BALL_SIZE = 20;
   const PADDLE_HEIGHT = 100;
   const PADDLE_THICKNESS = 10;
   const WINNING_SCORE = 3;
@@ -50,7 +51,7 @@
     canvasContext = canvas.getContext('2d');
 
     // these next few lines set up our game logic and render to happen 30 times per second
-    var framesPerSecond = 30;
+    var framesPerSecond = 10; // default 30
     setInterval(function() {
         moveEverything();
         drawEverything();
@@ -127,11 +128,11 @@
       }
     }
 
-    if(ballY < 0) { // if ball has moved beyond the top edge
+    if((ballY - BALL_SIZE) < 0) { // if ball has moved beyond the top edge
       ballSpeedY *= -1; // reverse ball's vertical direction
     }
     
-    if(ballY > canvas.height) { // if ball has moved beyond the bottom edge
+    if((ballY + BALL_SIZE) > canvas.height) { // if ball has moved beyond the bottom edge
       ballSpeedY *= -1; // reverse ball's vertical direction
     }
   
@@ -176,17 +177,17 @@
                   canvas.width/2,canvas.height-20,'white');
     } else { 
       // draw a white rectangle to use as the left player's paddle
-      colorRect(0, paddle1Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'white');
+      colorRect(0, paddle1Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'blue');
   
       // draw a white rectangle to use as the right player's paddle 
       colorRect(canvas.width-PADDLE_THICKNESS, paddle2Y,   
-               PADDLE_THICKNESS, PADDLE_HEIGHT, 'white'); 
+               PADDLE_THICKNESS, PADDLE_HEIGHT, 'red'); 
       
       // draw net in the middle of the playfield
       drawNet();
       
       // draw the ball
-      colorCircle(ballX, ballY, 10, 'white');
+      colorCircle(ballX, ballY, BALL_SIZE, 'yellow');
     }
     // display text on screen - will be used for score
     colorText(paddle1Score,100,100,'white');
