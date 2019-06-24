@@ -8,23 +8,27 @@
 <canvas id="gameCanvas" width="800" height="600"></canvas>
 
 <script>
+  // save the canvas for dimensions, and its 2d context for drawing to it
+  var canvas, canvasContext;
+
   // variables to keep track of ball position
-  var ballX = 75, ballY = 75;
+  var ballX = 75;
+  //var ballX = canvas.width/2;
+  var ballY = 75;
   var ballSpeedX = 6, ballSpeedY = 8;
   
   var paddle1Score = 0, paddle2Score = 0;
   var paddle1Y = 250, paddle2Y = 250; 
   var showingWinScreen = false;
   
-  const BALL_SIZE = 20;
+  const BALL_SIZE = 10;
   const PADDLE_HEIGHT = 100;
-  const PADDLE_THICKNESS = 10;
+  const PADDLE_WIDTH = 10;
   const WINNING_SCORE = 3;
   
   const PADDLE_COMPUTER_MOVE_SPEED = 7.0;
   
-  // save the canvas for dimensions, and its 2d context for drawing to it
-  var canvas, canvasContext;
+
   
   function calculateMousePos(evt) {
     var rect = canvas.getBoundingClientRect(), root = document.documentElement;
@@ -51,7 +55,7 @@
     canvasContext = canvas.getContext('2d');
 
     // these next few lines set up our game logic and render to happen 30 times per second
-    var framesPerSecond = 10; // default 30
+    var framesPerSecond = 30; // default 30
     setInterval(function() {
         moveEverything();
         drawEverything();
@@ -104,7 +108,8 @@
   
     moveComputerPaddle();
     
-    if(ballX < 0) { // if ball has moved beyond the left edge
+    //if((ballX + BALL_SIZE) < 0) { // if ball has moved beyond the left edge
+	if((ballX + BALL_SIZE/2) <= 0) { // if ball has moved beyond the left edge
       if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
         ballSpeedX *= -1; // reverse ball's horizontal direction
 
@@ -116,7 +121,7 @@
       }
     }
     
-    if(ballX > canvas.width) { // if ball has moved beyond the right edge
+    if((ballX - BALL_SIZE/2) >= canvas.width) { // if ball has moved beyond the right edge
       if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT) {
         ballSpeedX *= -1; // reverse ball's horizontal direction
 
@@ -177,11 +182,11 @@
                   canvas.width/2,canvas.height-20,'white');
     } else { 
       // draw a white rectangle to use as the left player's paddle
-      colorRect(0, paddle1Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'blue');
+      colorRect(0, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'blue');
   
       // draw a white rectangle to use as the right player's paddle 
-      colorRect(canvas.width-PADDLE_THICKNESS, paddle2Y,   
-               PADDLE_THICKNESS, PADDLE_HEIGHT, 'red'); 
+      colorRect(canvas.width-PADDLE_WIDTH, paddle2Y,   
+               PADDLE_WIDTH, PADDLE_HEIGHT, 'red'); 
       
       // draw net in the middle of the playfield
       drawNet();

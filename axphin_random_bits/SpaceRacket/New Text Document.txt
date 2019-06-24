@@ -1,0 +1,46 @@
+axphin [9:35 PM]
+quick js question related to the brick breaker code.  why can't I instantiate the ballX and ballY at canvas.width/2 and canvas.height/2?  it works when set to 75, but not when set to the canvas width and height.  but later, when the ballreset function is called, it does work.
+
+I thought maybe it has to do with the order of things.  so I moved the var canvas, canvasContext; line above the var ballX and ballY lines.  but that didn't work.
+
+chris_deleon [9:48 PM]
+the canvas variable doesn't get set until the window.onload function gets reached, which doesn't happen until all lines of the game's source files have been reached/loaded
+because window.onload is where the execution of functions kicks off, and it sets the reference up to canvas first thing, any code inside a function will have a valid reference, but any code outside of a function the canvas variable won't yet have been initialized when it's reached
+
+chris_deleon [9:58 PM]
+```<html>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+<script>
+var canvas; // no value yet
+var someNumber; // no value yet
+
+// var halfWidth = canvas.width; // can't do, canvas isn't defined here yet
+ 
+window.onload = function(){ // starts only after last line of code loaded
+    canvas = document.getElementById('gameCanvas'); // NOW it's set
+    someNumber = canvas.width / 2; // so now we can do this
+
+    setInterval(tickFunction,1000);
+}
+ 
+function tickFunction(){
+    console.log(someNumber);
+}
+</script>
+</html>```
+
+Anthony J [10:04 PM]
+So there's a point where a canvas exists, but there's no reference to it in our javascript and a blank variable called "canvas" exists in our script but it does not point to the canvas yet.  Interesting. (edited) 
+
+chris_deleon [10:05 PM]
+yep, as a reminder the only relationship between the <canvas> tag and the var canvas isn't that either is called canvas, but that it's fetched by its id attribute in the tag
+Technically no less valid to the machine, but unhelpful for human reader :wink: :
+```<canvas id="mapleSyrup" width="800" height="600"></canvas>
+<script>
+var ponies;
+var someNumber
+window.onload = function(){
+    ponies = document.getElementById('mapleSyrup');
+    someNumber = ponies.width / 2;
+}
+</script>```
