@@ -12,9 +12,7 @@
   var canvas, canvasContext;
 
   // variables to keep track of ball position
-  var ballX = 75;
-  //var ballX = canvas.width/2;
-  var ballY = 75;
+  var ballX, ballY;
   var ballSpeedX = 6, ballSpeedY = 8;
   
   var paddle1Score = 0, paddle2Score = 0;
@@ -25,6 +23,7 @@
   const PADDLE_HEIGHT = 100;
   const PADDLE_WIDTH = 10;
   const WINNING_SCORE = 3;
+  const EDGE_THICKNESS = 10;
   
   const PADDLE_COMPUTER_MOVE_SPEED = 7.0;
   
@@ -54,6 +53,9 @@
     canvas = document.getElementById('gameCanvas');
     canvasContext = canvas.getContext('2d');
 
+	ballX = canvas.width/2;
+	ballY = canvas.height/2;
+	
     // these next few lines set up our game logic and render to happen 30 times per second
     var framesPerSecond = 30; // default 30
     setInterval(function() {
@@ -108,8 +110,7 @@
   
     moveComputerPaddle();
     
-    //if((ballX + BALL_SIZE) < 0) { // if ball has moved beyond the left edge
-	if((ballX + BALL_SIZE/2) <= 0) { // if ball has moved beyond the left edge
+	if((ballX + BALL_SIZE/2) <= 0) { // if ball has moved beyond the LEFT edge
       if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
         ballSpeedX *= -1; // reverse ball's horizontal direction
 
@@ -121,7 +122,7 @@
       }
     }
     
-    if((ballX - BALL_SIZE/2) >= canvas.width) { // if ball has moved beyond the right edge
+    if((ballX - BALL_SIZE/2) >= canvas.width) { // if ball has moved beyond the RIGHT edge
       if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT) {
         ballSpeedX *= -1; // reverse ball's horizontal direction
 
@@ -133,11 +134,11 @@
       }
     }
 
-    if((ballY - BALL_SIZE) < 0) { // if ball has moved beyond the top edge
+    if((ballY - BALL_SIZE/2) <= EDGE_THICKNESS) { // if ball hits the TOP edge or goes beyond
       ballSpeedY *= -1; // reverse ball's vertical direction
     }
     
-    if((ballY + BALL_SIZE) > canvas.height) { // if ball has moved beyond the bottom edge
+    if((ballY + BALL_SIZE/2) >= canvas.height-EDGE_THICKNESS) { // if ball hits the BOTTOM edge or goes beyond
       ballSpeedY *= -1; // reverse ball's vertical direction
     }
   
@@ -181,22 +182,34 @@
       colorText("-- click anywhere to begin a new match --",
                   canvas.width/2,canvas.height-20,'white');
     } else { 
+	
+	  // draw top edge
+	  colorRect(0, 0, canvas.width, EDGE_THICKNESS, 'green');
+	  
+	  // draw bottom edge
+	  colorRect(0, canvas.height-EDGE_THICKNESS, canvas.width, EDGE_THICKNESS, 'green');
+	  
+	  
       // draw a white rectangle to use as the left player's paddle
-      colorRect(0, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'blue');
+      colorRect(0, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'aqua');
+	  colorText(paddle1Y,PADDLE_WIDTH + 20,paddle1Y,'aqua');
   
       // draw a white rectangle to use as the right player's paddle 
       colorRect(canvas.width-PADDLE_WIDTH, paddle2Y,   
-               PADDLE_WIDTH, PADDLE_HEIGHT, 'red'); 
-      
+               PADDLE_WIDTH, PADDLE_HEIGHT, 'orange'); 
+	  colorText(paddle2Y,canvas.width-PADDLE_WIDTH - 20,paddle2Y,'orange');
       // draw net in the middle of the playfield
       drawNet();
       
       // draw the ball
       colorCircle(ballX, ballY, BALL_SIZE, 'yellow');
+	  var ballSpeedYRnd = ballSpeedY.toFixed(2);
+	  colorText("ballspeedYRnd:  "+ballSpeedYRnd, canvas.width / 2,35,'yellow');
     }
     // display text on screen - will be used for score
     colorText(paddle1Score,100,100,'white');
     colorText(paddle2Score,canvas.width-100,100,'white');
+	
   }
 </script>
 
