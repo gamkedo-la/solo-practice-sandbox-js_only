@@ -23,25 +23,6 @@ function update() {
 	moveEverything();
 	drawEverything();
 	variableDisplay();
-	if (radiusIncrease) {
-		jumperRadius++;
-		if (jumperRadius > 40) {
-			jumperRadius = 40;
-			console.log("jumper as big as possible");
-		} else {
-			console.log("radius increasing");
-		}
-	}
-	if (radiusDecrease) {
-		jumperRadius--;
-		if (jumperRadius < 1) {
-			jumperRadius = 1;
-			console.log("jumper as small as possible");
-		} else {
-			console.log("radius decreasing");
-		}
-	}
-	jumpPower = jumperRadius;
 }
 
 function drawEverything() {
