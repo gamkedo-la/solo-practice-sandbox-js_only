@@ -1,5 +1,6 @@
 var runSpeed = 5;
 var jumperRadius = 20;
+const JUMPER_ORGINAL_RADIUS = jumperRadius;
 var jumpPower = jumperRadius;
 var groundFriction = 0.6;
 var airResistance = 0.9;
@@ -27,8 +28,8 @@ function jumperMove() {
 	} else {
 		jumperSpeedY *= airResistance;
 		jumperSpeedY += gravity;
-		if(jumperSpeedY > jumperRadius) {
-			jumperSpeedY = jumperRadius;
+		if(jumperSpeedY > jumperRadius/2) {
+			jumperSpeedY = jumperRadius/2;
 		}
 
 		if (jumperSpeedY > 0) {
@@ -48,28 +49,34 @@ function jumperMove() {
 		jumperSpeedX = 0;
 	}
 
-	if(jumperSpeedY < 0 && isBrickAtPixelCoord(jumperX,jumperY-jumperRadius) == 1) {
-		jumperY = (Math.floor( jumperY / BRICK_H )) * BRICK_H + jumperRadius;
+	if(jumperSpeedY < 0 && isBrickAtPixelCoord(jumperX,jumperY-jumperRadius/2) == 1) {
+		jumperY = (Math.floor( jumperY / BRICK_H )) * BRICK_H + jumperRadius/2;
 		jumperSpeedY = 0;
 	}
 
-	if(jumperSpeedY > 0 && isBrickAtPixelCoord(jumperX,jumperY+jumperRadius) == 1) {
-		jumperY = (1+Math.floor( jumperY / BRICK_H )) * BRICK_H - jumperRadius;
+	if(jumperSpeedY > 0 && isBrickAtPixelCoord(jumperX,jumperY+jumperRadius/2) == 1) {
+		jumperY = (1+Math.floor( jumperY / BRICK_H )) * BRICK_H - jumperRadius/2;
 		jumperOnGround = true;
 		jumperSpeedY = 0;
-	} else if(isBrickAtPixelCoord(jumperX,jumperY+jumperRadius+2) == 0) {
+	} else if(isBrickAtPixelCoord(jumperX,jumperY+jumperRadius/2+2) == 0) {
 		jumperOnGround = false;
 	}
 
-	if(jumperSpeedX < 0 && isBrickAtPixelCoord(jumperX-jumperRadius,jumperY) == 1) {
-		jumperX = (Math.floor( jumperX / BRICK_W )) * BRICK_W + jumperRadius;
+	if(jumperSpeedX < 0 && isBrickAtPixelCoord(jumperX-jumperRadius/2,jumperY) == 1) {
+		jumperX = (Math.floor( jumperX / BRICK_W )) * BRICK_W + jumperRadius/2;
 	}
-	if(jumperSpeedX > 0 && isBrickAtPixelCoord(jumperX+jumperRadius,jumperY) == 1) {
-		jumperX = (1+Math.floor( jumperX / BRICK_W )) * BRICK_W - jumperRadius;
+	if(jumperSpeedX > 0 && isBrickAtPixelCoord(jumperX+jumperRadius/2,jumperY) == 1) {
+		jumperX = (1+Math.floor( jumperX / BRICK_W )) * BRICK_W - jumperRadius/2;
 	}
 
 	jumperX += jumperSpeedX; // move the jumper based on its current horizontal speed 
 	jumperY += jumperSpeedY; // same as above, but for vertical
+}
+
+function jumperDraw() {
+	canvasContext.drawImage(jumperRed,jumperX - jumperRadius/2,jumperY - jumperRadius/2,
+							jumperRed.width * jumperRadius/JUMPER_ORGINAL_RADIUS, 
+							jumperRed.height * jumperRadius/JUMPER_ORGINAL_RADIUS);
 }
 
 function jumperReset() {

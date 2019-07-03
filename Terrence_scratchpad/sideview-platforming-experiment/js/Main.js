@@ -12,7 +12,10 @@ window.onload = function() {
 	setInterval(function() {
 	    update();
 	  }, 1000/SET_FRAMES_PER_SECOND);
-	  
+	loadImages();
+}
+
+function startGame() {
 	jumperReset();
 }
 
@@ -45,11 +48,10 @@ function drawEverything() {
 	colorRect(0, 0, canvas.width, canvas.height, 'black');
 
 	drawBricks();
+	jumperDraw();
 
 	canvasContext.fillStyle = 'white';
 	canvasContext.fillText("Arrow keys to run, spacebar to jump",8,14);
-
-	colorCircle(jumperX, jumperY, jumperRadius, 'white');
 }
 
 function moveEverything() {
@@ -62,7 +64,11 @@ function variableDisplay() {
 	var textYPosition = 14;
 	canvasContext.font = "12px Verdana";
 	for (var j = 0; j < jumpVariables.length; j++) {
-		canvasContext.fillText(jumpVariableNames[j] + " : " + jumpVariables[j],textXPosition,textYPosition);
+		if (jumpVariableNames[j] == "jumperRadius") {
+			canvasContext.fillText(jumpVariableNames[j] + " : " + jumpVariables[j]/2,textXPosition,textYPosition);
+		} else {
+			canvasContext.fillText(jumpVariableNames[j] + " : " + jumpVariables[j],textXPosition,textYPosition);
+		}
 		textYPosition += 14;
 	}
 }
