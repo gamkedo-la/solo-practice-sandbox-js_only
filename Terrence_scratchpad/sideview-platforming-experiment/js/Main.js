@@ -30,7 +30,7 @@ function drawEverything() {
 
 	drawBricks();
 	jumperDraw();
-
+	canvasContext.imageSmoothingEnabled = false;
 	canvasContext.fillStyle = 'white';
 	canvasContext.fillText("Arrow keys to run, spacebar to jump",8,14);
 }
