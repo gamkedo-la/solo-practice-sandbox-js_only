@@ -45,11 +45,7 @@ function variableDisplay() {
 	var textYPosition = 14;
 	canvasContext.font = "12px Verdana";
 	for (var j = 0; j < jumpVariables.length; j++) {
-		if (jumpVariableNames[j] == "jumperRadius") {
-			canvasContext.fillText(jumpVariableNames[j] + " : " + jumpVariables[j]/2,textXPosition,textYPosition);
-		} else {
-			canvasContext.fillText(jumpVariableNames[j] + " : " + jumpVariables[j],textXPosition,textYPosition);
-		}
+		canvasContext.fillText(jumpVariableNames[j] + " : " + jumpVariables[j],textXPosition,textYPosition);
 		textYPosition += 14;
 	}
 }

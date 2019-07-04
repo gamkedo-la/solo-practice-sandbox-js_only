@@ -12,14 +12,12 @@ var gravity = 0.7;
 
 var jumperX = 75, jumperY = 75;
 var jumperSpeedX = 0, jumperSpeedY = 0;
-var jumperOnGround = false;
+var jumperOnGround = true;
 
 var jumpVariables = [];
 var jumpVariableNames = ["jumperRadius","runSpeed","jumperSpeedX", "jumpPower","jumperSpeedY", "groundFriction", "airResistance", "gravity"];
 
 function jumperMove() {
-	jumperRadiusChange();
-
 	if(jumperOnGround) {
 		if (holdJump) {
 			if (jumperSpeedX != 0) {
@@ -28,9 +26,6 @@ function jumperMove() {
 				jumperSpeedY = -jumpPower;
 			}
 		}
-		jumperYCollision();
-		jumperXMovementInput();
-
 	} else { // jumping
 		jumperSpeedY *= airResistance;
 		jumperSpeedY += gravity;
@@ -46,6 +41,7 @@ function jumperMove() {
 	}
 
 	jumperXMovementInput();
+	jumperRadiusChange();
 	jumperYCollision();
 
 	jumperX += jumperSpeedX; // move the jumper based on its current horizontal speed 
@@ -72,8 +68,8 @@ function jumperReset() {
 function jumperXMovementInput() {
 	rotationAngle = Math.PI/180 * 5;
 	if (holdLeft) {
-		if (isBrickAtPixelCoord(jumperX - jumperRadius/2,jumperY) == 1) {
-			jumperX = (Math.floor(jumperX / BRICK_W)) * BRICK_W + jumperRadius/2;
+		if (isBrickAtPixelCoord(jumperX - jumperRadius/2, jumperY) == 1) {
+			jumperX = (Math.floor(jumperX / BRICK_W)) * BRICK_W + jumperRadius/2.1;
 			jumperSpeedX = 0;
 		} else {
 			jumperSpeedX = -runSpeed;
@@ -95,8 +91,8 @@ function jumperXMovementInput() {
 			}
 			jumperRotation += rotationAngle;
 		} else if (jumperSpeedX < 0) {
-			if(isBrickAtPixelCoord(jumperX-jumperRadius/2,jumperY) == 1) {
-				jumperX = (Math.floor( jumperX / BRICK_W )) * BRICK_W + jumperRadius/2;
+			if(isBrickAtPixelCoord(jumperX - jumperRadius/2,jumperY) == 1) {
+				jumperX = (Math.floor( jumperX / BRICK_W )) * BRICK_W + jumperRadius/2.1;
 				jumperSpeedX = 0;
 			}
 				jumperRotation -= rotationAngle;
@@ -106,9 +102,7 @@ function jumperXMovementInput() {
 		rotationAngle *= 0.9;
 
 		var jumperSpeedXFixed = jumperSpeedX.toFixed(1);
-		//console.log("jumperSpeedX.toFixed(1): " + jumperSpeedXFixed);
-		if (jumperSpeedXFixed == 0.00 ||
-			jumperSpeedXFixed == -0.00) {
+		if (jumperSpeedXFixed == 0.00) {
 			jumperSpeedX = 0;
 			rotationAngle = 0;
 		}
@@ -116,17 +110,16 @@ function jumperXMovementInput() {
 }
 
 function jumperYCollision() {
-	if(isBrickAtPixelCoord(jumperX,jumperY-jumperRadius/2) == 1) {
+	if (jumperSpeedY < 0 && isBrickAtPixelCoord(jumperX,jumperY - jumperRadius/2) == 1) {
 		jumperY = (Math.floor( jumperY / BRICK_H )) * BRICK_H + jumperRadius/2;
 		jumperSpeedY = 0;
 	}
 
-	if(isBrickAtPixelCoord(jumperX,jumperY + (jumperRadius/2) + 2) == 1 && !jumperOnGround) {
+	if (jumperSpeedY > 0 && isBrickAtPixelCoord(jumperX,jumperY + (jumperRadius/2) + 2) == 1) {
 		jumperY = (1+Math.floor( jumperY / BRICK_H )) * BRICK_H - jumperRadius/2;
 		jumperOnGround = true;
 		jumperSpeedY = 0;
-		return;
-	} else if(isBrickAtPixelCoord(jumperX,jumperY + (jumperRadius/2)) == 0) {
+	} else if(isBrickAtPixelCoord(jumperX, jumperY + (jumperRadius/2)) == 0) {
 		jumperOnGround = false;
 		jumperSpeedX *= airResistance;
 	}
@@ -134,16 +127,20 @@ function jumperYCollision() {
 
 function jumperRadiusChange() {
 	if (radiusIncrease) {
-		jumperRadius++;
+		jumperRadius += 10;
 		if (jumperRadius > 80) {
 			jumperRadius = 80;
 			console.log("jumper as big as possible");
 		} else {
 			console.log("radius increasing");
 		}
+		if (isBrickAtPixelCoord(jumperX,jumperY + (jumperRadius/2) + 2) == 1) {
+			jumperY = (1+Math.floor( jumperY / BRICK_H )) * BRICK_H - jumperRadius/2;
+		}
 	}
+
 	if (radiusDecrease) {
-		jumperRadius--;
+		jumperRadius -= 10;
 		if (jumperRadius < 10) {
 			jumperRadius = 10;
 			console.log("jumper as small as possible");
@@ -153,5 +150,4 @@ function jumperRadiusChange() {
 	}
 
 	jumpPower = jumperRadius;
-	jumperYCollision();
 }

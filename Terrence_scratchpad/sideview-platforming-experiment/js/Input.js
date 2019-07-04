@@ -54,6 +54,7 @@ function setKeyHoldState(thisKey, setTo) {
 		radiusIncrease = setTo;
 		break;
 	case KEY_MINUS:
+		//TODO: Create delay?
 		radiusDecrease = setTo;
 		break;
 	default:
