@@ -20,6 +20,8 @@ function init() {
     speed: 5,
     color: "red",
   }
+
+  panel.addRange("speed", 1, 20, 5, 1);
   
   //initialize  event listeners--------------------------
     window.addEventListener('keyup', function (event) {
@@ -51,7 +53,8 @@ function loop(dt){
 }
 
 function step(dt){
-//let rad = panel.getValue("radius");
+  let speed = panel.getValue("speed");
+  hero.speed = speed;
 
   //handle left-right movement
   if( Key.isDown(Key.a) || Key.isDown(Key.LEFT) ){
