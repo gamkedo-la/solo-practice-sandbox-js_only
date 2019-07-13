@@ -81,8 +81,15 @@
        showingWinScreen = true;
      }
   
-     // reverse ball heading, so whoever scored a point "serves"
+    // reverse ball heading, so whoever was scored on "serves"
     ballSpeedX = -ballSpeedX;
+	// reset ball speed to 8 and keep heading
+	if(ballSpeedY < 0) {
+		ballSpeedY = 8;
+	} else {
+		ballSpeedY = -8;
+	}
+	
   
     // center ball on screen
     ballX = canvas.width/2;
@@ -205,6 +212,7 @@
       colorCircle(ballX, ballY, BALL_SIZE, 'yellow');
 	  var ballSpeedYRnd = ballSpeedY.toFixed(2);
 	  colorText("ballspeedYRnd:  "+ballSpeedYRnd, canvas.width / 2,35,'yellow');
+	  //colorText("ballspeedX:  "+ballSpeedX, canvas.width / 2,45,'yellow');
     }
     // display text on screen - will be used for score
     colorText(paddle1Score,100,100,'white');
