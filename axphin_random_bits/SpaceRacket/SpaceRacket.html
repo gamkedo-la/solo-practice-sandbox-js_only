@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-<meta content="utf-8" http-equiv="encoding">
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+	<title>Space Racket</title>
 </head>
 <body>
-<canvas id="gameCanvas" width="800" height="600"></canvas>
+	<canvas id="gameCanvas" width="800" height="600"></canvas>
 
 <script>
   // save the canvas for dimensions, and its 2d context for drawing to it
-  var canvas, canvasContext;
+  var canvas;
+  var canvasContext;
 
   // variables to keep track of ball position
-  var ballX, ballY;
-  var ballSpeedX = 6, ballSpeedY = 8;
+  var ballX;
+  var ballY;
+  var ballSpeedX = 6;
+  var ballSpeedY = 10;
   
-  var paddle1Score = 0, paddle2Score = 0;
-  var paddle1Y = 250, paddle2Y = 250; 
+  var paddle1Score = 0;
+  var paddle2Score = 0;
+  var paddle1Y = 250;
+  var paddle2Y = 250; 
   var showingWinScreen = false;
   
-  const BALL_SIZE = 10;
+  var framesPerSecond = 2; // default 30
+  
+  const BALL_RADIUS = 10;
   const PADDLE_HEIGHT = 100;
   const PADDLE_WIDTH = 10;
   const WINNING_SCORE = 3;
-  const EDGE_THICKNESS = 10;
+  const EDGE_THICKNESS = 100;
   
   const PADDLE_COMPUTER_MOVE_SPEED = 7.0;
   
@@ -53,11 +61,12 @@
     canvas = document.getElementById('gameCanvas');
     canvasContext = canvas.getContext('2d');
 
+	//move ball to center of playing field aka center of screen
 	ballX = canvas.width/2;
 	ballY = canvas.height/2;
 	
     // these next few lines set up our game logic and render to happen 30 times per second
-    var framesPerSecond = 30; // default 30
+    //var framesPerSecond = 2; // default 30
     setInterval(function() {
         moveEverything();
         drawEverything();
@@ -117,7 +126,12 @@
   
     moveComputerPaddle();
     
-	if((ballX + BALL_SIZE/2) <= 0) { // if ball has moved beyond the LEFT edge
+	//if(ballX + ballSpeedX > canvas.width-BALL_RADIUS || ballX + ballSpeedX < BALL_RADIUS) {
+    //    ballSpeedX = -ballSpeedX;
+    //}
+	
+	
+	if((ballX + BALL_RADIUS/2) <= 0) { // if ball has moved beyond the LEFT edge
       if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
         ballSpeedX *= -1; // reverse ball's horizontal direction
 
@@ -129,7 +143,7 @@
       }
     }
     
-    if((ballX - BALL_SIZE/2) >= canvas.width) { // if ball has moved beyond the RIGHT edge
+    if((ballX - BALL_RADIUS/2) >= canvas.width) { // if ball has moved beyond the RIGHT edge
       if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT) {
         ballSpeedX *= -1; // reverse ball's horizontal direction
 
@@ -141,11 +155,11 @@
       }
     }
 
-    if((ballY - BALL_SIZE/2) <= EDGE_THICKNESS) { // if ball hits the TOP edge or goes beyond
+    if((ballY - (BALL_RADIUS+2)) <= EDGE_THICKNESS) { // if ball hits the TOP edge or goes beyond
       ballSpeedY *= -1; // reverse ball's vertical direction
     }
     
-    if((ballY + BALL_SIZE/2) >= canvas.height-EDGE_THICKNESS) { // if ball hits the BOTTOM edge or goes beyond
+    if((ballY + BALL_RADIUS+2) >= canvas.height-EDGE_THICKNESS) { // if ball hits the BOTTOM edge or goes beyond
       ballSpeedY *= -1; // reverse ball's vertical direction
     }
   
@@ -167,6 +181,7 @@
   
   function colorText(showWords, textX, textY, fillColor) {
     canvasContext.fillStyle = fillColor;
+	canvasContext.font = "12px arial"
     canvasContext.fillText(showWords, textX, textY);
   }
   
@@ -209,10 +224,14 @@
       drawNet();
       
       // draw the ball
-      colorCircle(ballX, ballY, BALL_SIZE, 'yellow');
+      colorCircle(ballX, ballY, BALL_RADIUS, 'yellow');
+	  
+	  // draw debug text
 	  var ballSpeedYRnd = ballSpeedY.toFixed(2);
-	  colorText("ballspeedYRnd:  "+ballSpeedYRnd, canvas.width / 2,35,'yellow');
-	  //colorText("ballspeedX:  "+ballSpeedX, canvas.width / 2,45,'yellow');
+	  colorText("ballspeedYRnd:  "+ballSpeedYRnd, canvas.width / 4,30,'yellow');
+	  colorText("ballspeedY:  "+ballSpeedY, canvas.width / 4,45,'yellow');
+	  colorText("ballY:  "+ballY, canvas.width / 4,60,'yellow');
+	  colorText("FPS:  "+framesPerSecond, canvas.width / 4,75,'yellow');
     }
     // display text on screen - will be used for score
     colorText(paddle1Score,100,100,'white');
