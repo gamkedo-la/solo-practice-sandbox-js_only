@@ -1,47 +1,125 @@
-const TRACK_W = 40;
-const TRACK_H = 40 ;
-const TRACK_COLS = 20;
-const TRACK_ROWS = 15;
-var framesPerSecond = 30;
-var trackGrid = [
-    4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, ////
-    4, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, ////
-    1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, ////
-    1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, ////
-    1, 0, 0, 0, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 1, ////
-    1, 0, 0, 1, 1, 0, 0, 1, 4, 4, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, ////
-    1, 0, 0, 1, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, ////
-    1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, ////
-    1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1, 0, 0, 1, ////
-    1, 0, 0, 1, 0, 0, 5, 0, 0, 0, 5, 0, 0, 1, 0, 0, 1, 0, 0, 1, ////
-    1, 2, 2, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1, ////
-    1, 1, 1, 5, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, ////
-    1, 0, 3, 0, 0, 0, 1, 4, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, ////
-    1, 0, 3, 0, 0, 0, 1, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, ////
-    1, 1, 1, 5, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1
-];
-const TRACK_ROAD = 0;
-const TRACK_WALL = 1;
-const TRACK_PLAYER = 2;
-const TRACK_GOAL = 3;
-const TRACK_TREE = 4;
-const TRACK_FLAG = 5;
+const track = new (function() {
+	const TILE_WIDTH = 40;
+	const TILE_HEIGHT = 40;
+	const COLS = 20;
+	const ROWS = 15;
+	const GRID = [
+		4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, ////
+		4, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, ////
+		1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, ////
+		1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, ////
+		1, 0, 0, 0, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 1, ////
+		1, 0, 0, 1, 1, 0, 0, 1, 4, 4, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, ////
+		1, 0, 0, 1, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, ////
+		1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, ////
+		1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1, 0, 0, 1, ////
+		1, 0, 0, 1, 0, 0, 5, 0, 0, 0, 5, 0, 0, 1, 0, 0, 1, 0, 0, 1, ////
+		1, 2, 2, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1, ////
+		1, 1, 1, 5, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, ////
+		1, 0, 3, 0, 0, 0, 1, 4, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, ////
+		1, 0, 3, 0, 0, 0, 1, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, ////
+		1, 1, 1, 5, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1
+	];
+	const TILE_INDEX = {
+		_default: Number.MAX_SAFE_INTEGER,
+		road: 0,
+		wall: 1,
+		player: 2,
+		goal: 3,
+		tree: 4,
+		flag: 5
+	};
+	const TILE_TYPES = {
+		[TILE_INDEX.road]: {
+			image: imageLoader.getImage('TRACK_ROAD'),
+			driveable: true,
+			onDrive: ()=>{}
+		},
+		[TILE_INDEX.wall]: {
+			image: imageLoader.getImage('TRACK_WALL'),
+			driveable: false,
+			onDrive: ()=>{}
+		},
+		[TILE_INDEX.player]: {
+			image: imageLoader.getImage('TRACK_ROAD'),
+			driveable: true,
+			onDrive: ()=>{}
+		},
+		[TILE_INDEX.goal]: {
+			image: imageLoader.getImage('TRACK_GOAL'),
+			driveable: true,
+			onDrive: function(car) {
+				document.getElementById("debugText").innerHTML = car.myName + " hit the goal line";
+				takenPlayerTiles.splice(0, takenPlayerTiles.length);
+				p1.carReset();
+				p2.carReset();
+		}},
+		[TILE_INDEX.tree]: {
+			image: imageLoader.getImage('TRACK_TREE'),
+			driveable: true,
+			onDrive: ()=>{}
+		},
+		[TILE_INDEX.flag]: {
+			image: imageLoader.getImage('TRACK_FLAG'),
+			driveable: true,
+			onDrive: ()=>{}
+		},
+		[TILE_INDEX._default]: {
+			image: imageLoader.getImage('TRACK_WALL'),
+			driveable: false,
+			onDrive: ()=>{}
+		}
+	};
+	const takenPlayerTiles = [];
 
-function drawTracks() {
-    var trackIndex = 0;
-    var trackLeftEdgeX = 0;
-    var trackTopEdgeY = 0;
-    for (var eachRow=0; eachRow<TRACK_ROWS; eachRow++) {
-	trackLeftEdgeX = 0;
-	for (var eachCol=0; eachCol<TRACK_COLS; eachCol++) {
-	    var trackTypeHere = trackGrid[trackIndex];
-	    canvasContext.drawImage(trackPics[trackTypeHere], trackLeftEdgeX, trackTopEdgeY);
-	    trackIndex++;
-	    trackLeftEdgeX += TRACK_W;
+	this.getTileAtPixelCoord = function(X, Y) {
+		const tileCol = Math.floor(X / TILE_WIDTH);
+		const tileRow = Math.floor(Y / TILE_HEIGHT);
+		if (tileCol < 0 || tileCol >= COLS ||
+			tileRow < 0 || tileRow >= ROWS) {
+			return TILE_TYPES[TILE_INDEX._default];
+		}
+		const trackIndex = this.trackToTileIndex(tileCol, tileRow);
+		return TILE_TYPES[GRID[trackIndex]];
+	};
+
+	this.trackToTileIndex = function(tileCol, tileRow) {
+		return tileCol + COLS * tileRow;
+	};
+
+	this.draw = function() {
+		let trackIndex = 0;
+		let trackLeftEdgeX = 0;
+		let trackTopEdgeY = 0;
+		for (let eachRow=0; eachRow<ROWS; eachRow++) {
+			trackLeftEdgeX = 0;
+			for (let eachCol=0; eachCol<COLS; eachCol++) {
+				let tileTypeHere = TILE_TYPES[GRID[trackIndex]];
+				if (tileTypeHere.image) {
+					canvasContext.drawImage(tileTypeHere.image, trackLeftEdgeX, trackTopEdgeY);
+				}
+				trackIndex++;
+				trackLeftEdgeX += TILE_WIDTH;
+			}
+			trackTopEdgeY += TILE_HEIGHT;
+		}
+	};
+
+	this.getFreePlayerTileCoord = function() {
+		for(let i=0; i<GRID.length; i++){
+			let tileKey = GRID[i];
+			if(tileKey == TILE_INDEX.player && !takenPlayerTiles.includes(i)) {
+				let tileRow = Math.floor(i/COLS);
+				let tileCol = i % COLS;
+				let homeX = tileCol * TILE_WIDTH + 0.5*TILE_WIDTH;
+				let homeY = tileRow * TILE_HEIGHT + 0.5*TILE_HEIGHT;
+				takenPlayerTiles.push(i);
+				return [homeX, homeY];
+			}
+		}
+		return [-1, -1];
 	}
-	trackTopEdgeY += TRACK_H;
-    }
-}
+})();
 
 function checkForAndRemoveTrackAtPixelCoord(pixelX, pixelY) {
     var tileX = Math.floor(pixelX / TRACK_W);
@@ -49,24 +127,8 @@ function checkForAndRemoveTrackAtPixelCoord(pixelX, pixelY) {
     var trackIndex = tileX + TRACK_COLS * tileY;
     var trackPresent = false;
     if (trackIndex < TRACK_COLS * TRACK_ROWS) {
-	trackPresent = trackGrid[trackIndex] == TRACK_WALL;
-	trackGrid[trackIndex] = TRACK_ROAD;
+		trackPresent = trackGrid[trackIndex] == trackTypes[1];
+		trackGrid[trackIndex] = trackTypes[0];
     }
     return trackPresent;
-}
-
-function trackToTileIndex(tileCol, tileRow) {
-    return tileCol + TRACK_COLS * tileRow;
-}
-
-function getTrackAtPixelCoord(pixelX, pixelY) {
-    var tileCol = Math.floor(pixelX / TRACK_W);
-    var tileRow = Math.floor(pixelY / TRACK_H);
-    if (tileCol < 0 || tileCol >= TRACK_COLS ||
-	tileRow < 0 || tileRow >= TRACK_ROWS) {
-	return TRACK_WALL;
-    }
-
-    var trackIndex = trackToTileIndex(tileCol, tileRow);
-    return trackGrid[trackIndex];
 }

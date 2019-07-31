@@ -33,20 +33,7 @@ function carClass() {
     this.carReset = function() {
 		this.carSpeed = 0;
 		this.carAng = -0.5 * Math.PI;
-		if (this.homeX == undefined) {
-			for(var i=0; i<trackGrid.length; i++){
-				if(trackGrid[i] == TRACK_PLAYER) {
-					var tileRow = Math.floor(i/TRACK_COLS);
-					var tileCol = i % TRACK_COLS;
-					this.homeX = tileCol * TRACK_W + 0.5*TRACK_W;
-					this.homeY = tileRow * TRACK_H + 0.5*TRACK_H;
-					trackGrid[i] = TRACK_ROAD;
-					break;
-				}
-			}
-		}
-		this.carX = this.homeX;
-		this.carY = this.homeY;
+		[this.carX, this.carY] = track.getFreePlayerTileCoord();
     }
 
     this.carMove = function(dt) {
@@ -63,18 +50,15 @@ function carClass() {
 			if (this.keyHeld_TurnRight) {
 				this.carAng += TURN_RATE*Math.PI * dt;
 			}
-		}	
-		var nextX = this.carX + Math.cos(this.carAng) * this.carSpeed * dt;
-		var nextY = this.carY + Math.sin(this.carAng) * this.carSpeed * dt;
-		var drivingIntoTileType = getTrackAtPixelCoord(nextX, nextY);
-		if (drivingIntoTileType == TRACK_ROAD) {
+		}
+		let nextX = this.carX + Math.cos(this.carAng) * this.carSpeed * dt;
+		let nextY = this.carY + Math.sin(this.carAng) * this.carSpeed * dt;
+		let tile = track.getTileAtPixelCoord(nextX, nextY);
+		if (tile.driveable) {
 			this.carX = nextX;
 			this.carY = nextY;
 			this.carSpeed *= GROUNDSPEED_DECAY_MULT;
-		} else if (drivingIntoTileType == TRACK_GOAL) {
-			document.getElementById("debugText").innerHTML = this.myName + " hit the goal line";
-			p1.carReset();
-			p2.carReset();
+			tile.onDrive(this);
 		} else {
 			this.carSpeed = 0.0;
 		}

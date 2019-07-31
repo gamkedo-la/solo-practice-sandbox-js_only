@@ -20,18 +20,18 @@ function runGameStep(browserTimeStamp)
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');
     canvasContext = canvas.getContext('2d');
-    loadImages();
+    imageLoader.loadImages();
     initInput();
 }
 
 function loadingDoneSoStartGame() {
-    p2.carInit(car2Pic, "Green Car");
-    p1.carInit(carPic, "Blue Car");
+    p2.carInit(imageLoader.getImage("car2Pic"), "Green Car");
+    p1.carInit(imageLoader.getImage("carPic"), "Blue Car");
 	window.requestAnimationFrame(runGameStep);
 }
 
 function drawEverything() {
-    drawTracks();
+    track.draw();
     p1.carDraw();
     p2.carDraw();
 }
