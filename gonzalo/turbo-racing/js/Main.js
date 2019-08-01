@@ -20,11 +20,11 @@ function runGameStep(browserTimeStamp)
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');
     canvasContext = canvas.getContext('2d');
-    imageLoader.loadImages();
+    imageLoader.loadImages().then(startGame);
     initInput();
 }
 
-function loadingDoneSoStartGame() {
+function startGame(values) {
     p2.carInit(imageLoader.getImage("car2Pic"), "Green Car");
     p1.carInit(imageLoader.getImage("carPic"), "Blue Car");
 	window.requestAnimationFrame(runGameStep);

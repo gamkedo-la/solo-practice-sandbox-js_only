@@ -31,22 +31,22 @@ const track = new (function() {
 	};
 	const TILE_TYPES = {
 		[TILE_INDEX.road]: {
-			image: imageLoader.getImage('TRACK_ROAD'),
+			imageId: 'TRACK_ROAD',
 			driveable: true,
 			onDrive: ()=>{}
 		},
 		[TILE_INDEX.wall]: {
-			image: imageLoader.getImage('TRACK_WALL'),
+			imageId: 'TRACK_WALL',
 			driveable: false,
 			onDrive: ()=>{}
 		},
 		[TILE_INDEX.player]: {
-			image: imageLoader.getImage('TRACK_ROAD'),
+			imageId: 'TRACK_ROAD',
 			driveable: true,
 			onDrive: ()=>{}
 		},
 		[TILE_INDEX.goal]: {
-			image: imageLoader.getImage('TRACK_GOAL'),
+			imageId: 'TRACK_GOAL',
 			driveable: true,
 			onDrive: function(car) {
 				document.getElementById("debugText").innerHTML = car.myName + " hit the goal line";
@@ -55,17 +55,17 @@ const track = new (function() {
 				p2.carReset();
 		}},
 		[TILE_INDEX.tree]: {
-			image: imageLoader.getImage('TRACK_TREE'),
+			imageId: 'TRACK_TREE',
 			driveable: true,
 			onDrive: ()=>{}
 		},
 		[TILE_INDEX.flag]: {
-			image: imageLoader.getImage('TRACK_FLAG'),
+			imageId: 'TRACK_FLAG',
 			driveable: true,
 			onDrive: ()=>{}
 		},
 		[TILE_INDEX._default]: {
-			image: imageLoader.getImage('TRACK_WALL'),
+			imageId: 'TRACK_WALL',
 			driveable: false,
 			onDrive: ()=>{}
 		}
@@ -95,8 +95,8 @@ const track = new (function() {
 			trackLeftEdgeX = 0;
 			for (let eachCol=0; eachCol<COLS; eachCol++) {
 				let tileTypeHere = TILE_TYPES[GRID[trackIndex]];
-				if (tileTypeHere.image) {
-					canvasContext.drawImage(tileTypeHere.image, trackLeftEdgeX, trackTopEdgeY);
+				if (tileTypeHere.imageId) {
+					canvasContext.drawImage(imageLoader.getImage(tileTypeHere.imageId), trackLeftEdgeX, trackTopEdgeY);
 				}
 				trackIndex++;
 				trackLeftEdgeX += TILE_WIDTH;
