@@ -1,6 +1,14 @@
 var canvas, canvasContext;
 
-var testUnit = new unitClass();
+const PLAYER_START_UNITS = 8;
+var playerUnits = [];
+var selectedUnits = [];
+
+var lassoX1 = 0;
+var lassoY1 = 0;
+var lassoX2 = 0;
+var lassoY2 = 0;
+var isMouseDragging = false;
 
 function calcMousePos(evt) {
     var rect = canvas.getBoundingClientRect(), root = document.documentElement;
@@ -26,20 +34,57 @@ window.onload = function() {
 
     canvas.addEventListener('mousemove', function(evt) {
         var mousePos = calcMousePos(evt);
-        document.getElementById("debugText").innerHTML = "(" + mousePos.x + ", " + mousePos.y + ")";
+        
+        if (isMouseDragging)
+        {
+            lassoX2 = mousePos.x;
+            lassoY2 = mousePos.y;
+        }
     });
 
-    canvas.addEventListener('click', function(evt) {
+    //canvas.addEventListener('click', function(evt) {
+    //    var mousePos = calcMousePos(evt);
+        
+    //    for (var i = 0; i < playerUnits.length; i++) {
+    //        playerUnits[i].gotoNear(mousePos.x, mousePos.y);
+    //    }
+    //});
+
+
+    canvas.addEventListener('mousedown', function(evt) {
         var mousePos = calcMousePos(evt);
-        testUnit.gotoX = mousePos.x;
-        testUnit.gotoY = mousePos.y;
+        lassoX1 = mousePos.x;
+        lassoY1 = mousePos.y;
+        lassoX2 = lassoX1;
+        lassoY2 = lassoY1;
+        isMouseDragging = true;
     });
 
-    testUnit.reset();
+    canvas.addEventListener('mouseup', function(evt) {
+        isMouseDragging = false;
+
+        selectedUnits = [];
+
+        for (var i = 0; i < playerUnits.length; i++) {
+            if (playerUnits[i].isInBox(lassoX1, lassoY1, lassoX2, lassoY2)) {
+                selectedUnits.push(playerUnits[i]);
+            }
+        }
+
+        document.getElementById("debugText").innerHTML = "Selected " + selectedUnits.length + " units";
+    });
+
+    for (var i = 0; i < PLAYER_START_UNITS; i++) {
+        var spawnUnit = new unitClass();
+        spawnUnit.reset();
+        playerUnits.push(spawnUnit);
+    }
 }
 
-function moveEverything() {
-    testUnit.move();
+function moveEverything() {    
+    for (var i = 0; i < playerUnits.length; i++) {
+        playerUnits[i].move();
+    }
 }
 
 function drawEverything() {
@@ -47,5 +92,16 @@ function drawEverything() {
     colorRect(0, 0, canvas.width, canvas.height, 'black');
 
     // <-- Unit --> //
-    testUnit.draw();
+    for (var i = 0; i < playerUnits.length; i++) {
+        playerUnits[i].draw();
+    }
+
+    // <-- lasso for selecting unit --> //
+    for (var i = 0; i < playerUnits.length; i++) {
+        selectedUnits[i].drawSelectionBox();
+    }
+    
+    if (isMouseDragging) {
+        coloredOutlineRectCornerToCorner(lassoX1, lassoY1, lassoX2, lassoY2, 'yellow');
+    }
 }
