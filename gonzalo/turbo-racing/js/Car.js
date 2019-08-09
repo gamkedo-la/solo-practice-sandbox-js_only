@@ -12,6 +12,7 @@ function carClass() {
     this.keyHeld_Reverse = false;
     this.keyHeld_TurnLeft = false;
     this.keyHeld_TurnRight = false;
+	this.canSteer = true;
 
     this.setupControls = function(forwardKey, backKey, leftKey, rightKey) {
 		this.controlKeyForGas = forwardKey;
@@ -43,7 +44,7 @@ function carClass() {
 		if (this.keyHeld_Reverse) {
 			this.carSpeed -= REVERSE_POWER*dt;
 		}
-		if (Math.abs(this.carSpeed) > MIN_TURN_SPEED) {
+		if (this.canSteer && Math.abs(this.carSpeed) > MIN_TURN_SPEED) {
 			if (this.keyHeld_TurnLeft) {
 				this.carAng += -TURN_RATE*Math.PI * dt;
 			}
