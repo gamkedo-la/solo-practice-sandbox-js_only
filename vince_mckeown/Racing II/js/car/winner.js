@@ -26,28 +26,27 @@ function whichPlace(whichCar, cash){
 		cash = cash + 750;
 	} else if(!thirdPlaceFilled){
 		thirdPlace = whichCar;
-		thirdPlacePlaceFilled = true;
+		thirdPlaceFilled = true;
 		cash = cash + 500;
 	} else if(!fourthPlaceFilled){
-		fourthPlacePlace = whichCar;
-		fourthPlacePlaceFilled = true;
+		fourthPlace = whichCar;
+		fourthPlaceFilled = true;
 		cash = cash + 250;
-		console.log(whichCar, cash);
 	} else if(!fifthPlaceFilled){
-		fifthPlacePlace = whichCar;
-		fifthPlacePlaceFilled = true;
+		fifthPlace = whichCar;
+		fifthPlaceFilled = true;
 		cash = cash + 100;
-	} else if(!sixthPlaceFilled, cash){
+	} else if(!sixthPlaceFilled){
 		sixthPlace = whichCar;
 		sixthPlaceFilled = true;
 		cash = cash + 50;
-	} else if(!seventhPlaceFilled, cash){
+	} else if(!seventhPlaceFilled){
 		seventhPlace = whichCar;
 		seventhPlaceFilled = true;
 		cash = cash + 25;
-	} else if(!eigthPlaceFilled, cash){
-		eigthPlacePlace = whichCar;
-		ePlaceFilled = true;
+	} else if(!eigthPlaceFilled){
+		eigthPlace = whichCar;
+		eigthPlaceFilled = true;
 		cash = cash + 10;
 	} else {
 		nextLevel();

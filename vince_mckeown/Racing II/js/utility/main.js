@@ -70,6 +70,7 @@ function moveEverything() {
 			} 	
 		} 
 	updateTime();
+	//cameraFollow();
 	}
 }
 

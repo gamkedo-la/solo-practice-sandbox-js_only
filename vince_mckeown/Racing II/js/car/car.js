@@ -93,6 +93,8 @@ function carClass() {
 		this.level = 0;
 		this.stuckTime = 0;
 		this.randomMovementsTimer = 0;
+		this.cash = 0;
+		this.placedPosition = false;
     }
 	
 	this.tryNitroBoost = function(){
@@ -148,6 +150,7 @@ function carClass() {
 		if(this.level == 0){
 			this.wayPointX = [110, 680, 680, 150]; 
 			this.wayPointY = [110, 100, 500, 500];
+			
 		} else if (this.level == 1){
 			this.wayPointX = [110, 304, 334, 437, 461, 680, 680, 150]; 
 			this.wayPointY = [110, 106, 266, 277,  86, 100, 500, 500];
@@ -175,8 +178,15 @@ function carClass() {
 			this.keyHeld_TurnLeft = true;
 		}
 		
+		if(dist(this.x, this.y, toX, toY) < 300){
+			this.keyHeld_Gas = false;
+			this.keyHeld_Reverse = false;
+		}
+		
 		if(dist(this.x, this.y, toX, toY) < 20){
 			this.wayPointNumber++;
+			this.keyHeld_Gas = true;
+			this.keyHeld_Reverse = false;
 			if(this.wayPointNumber >= this.wayPointX.length) {
 				this.wayPointNumber = 0;
 			}
@@ -194,6 +204,12 @@ function carClass() {
 		}
 	}
 	
+	this.driveToWinnersLane = function(){
+		this.speed  = 1;
+		this.wayPointX = [85, 97, 334]; 
+		this.wayPointY = [500, 418, 418];		
+	}
+		
 	this.carControls = function() {			
         this.speed *= GROUNDSPEED_DECAY_MULT;
 
@@ -277,13 +293,13 @@ function carClass() {
 				}
 				break;
 			case TRACK_FINISH:
-				console.log('Lap: '+this.lapNumber+' ')
 				if(this.checkPointC){
 					this.checkPointC = false;
 					if(this.lapNumber < 3){
 						this.recordALap();
 					} else {
 						whichPlace(this.myName, this.cash);
+						this.driveToWinnersLane();
 					}
 				} 
 				this.x = nextX;
@@ -378,3 +394,46 @@ function carClass() {
 		}
 	}
 }
+
+function instantCamFollow() {
+    camPanX = vehicleList[0].x - canvas.width/2;
+    camPanY = vehicleList[0].y - canvas.height/2;
+}
+
+function cameraFollow() {
+    var cameraFocusCenterX = camPanX + canvas.width/2;
+    var cameraFocusCenterY = camPanY + canvas.height/2;
+
+    var playerDistFromCameraFocusX = Math.abs(vehicleList[0].x-cameraFocusCenterX);
+    var playerDistFromCameraFocusY = Math.abs(vehicleList[0].y-cameraFocusCenterY);
+
+    if(playerDistFromCameraFocusX > PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_X) {
+      if(cameraFocusCenterX < vehicleList[0].x)  {
+        camPanX += playerMoveSpeed;
+      } else {
+        camPanX -= playerMoveSpeed;
+      }
+    }
+    if(playerDistFromCameraFocusY > PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_Y) {
+      if(cameraFocusCenterY < vehicleList[0].y)  {
+        camPanY += playerMoveSpeed;
+      } else {
+        camPanY -= playerMoveSpeed;
+      }
+    }
+	
+	if(camPanX < 0) {
+      camPanX = 0;
+    }
+    if(camPanY < 0) {
+      camPanY = 0;
+    }
+    var maxPanRight = ROOM_COLS * TILE_W - canvas.width;
+    var maxPanTop = ROOM_ROWS * TILE_H - canvas.height;
+    if(camPanX > maxPanRight) {
+      camPanX = maxPanRight;
+    }
+    if(camPanY > maxPanTop) {
+      camPanY = maxPanTop;
+    }
+  }
