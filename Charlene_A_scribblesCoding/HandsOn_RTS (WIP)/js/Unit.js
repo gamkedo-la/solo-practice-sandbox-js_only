@@ -1,16 +1,33 @@
 const UNIT_PLACEHOLDER_RADIUS = 5;
 const UNIT_SELECT_DIM_HALF = UNIT_PLACEHOLDER_RADIUS + 3;
 const UNIT_PIXELS_MOVE_RATE = 2;
-const UNIT_MAX_RAND_DIST_FROM_WALKING_TARGET = 50;
+const UNIT_RANKS_SPACING = UNIT_PLACEHOLDER_RADIUS * 3;
 
 function unitClass() {
     
-    this.reset = function() {
+    this.resetAndSetPlayerTeam = function(playerTeam) {
+        this.playerControlled = playerTeam;
         this.x = Math.random() * canvas.width / 4;
         this.y = Math.random() * canvas.height / 4;
+
+        // flip all non-player units to the opposite corner
+        if (this.playerControlled == false) {
+            this.x = canvas.width - this.x;
+            this.y = canvas.height - this.y;
+            this.unitColor = 'red';
+        } else {
+            this.unitColor = 'white';
+        }
+
         this.gotoX = this.x;
         this.gotoY = this.y;
         this.isDead = false;
+    }
+
+    this.distFrom = function(otherX, otherY) {
+        var deltaX = otherX - this.x;
+        var deltaY = otherY - this.y;
+        return Math.sqrt((deltaX * deltaX) + (deltaY * deltaY))
     }
 
     this.move = function() {
@@ -35,16 +52,36 @@ function unitClass() {
 
     this.draw = function() {
         if (this.isDead == false) {
-            colorCircle(this.x, this.y, UNIT_PLACEHOLDER_RADIUS, 'white');
+            colorCircle(this.x, this.y, UNIT_PLACEHOLDER_RADIUS, this.unitColor);
         }
     }
 
-    this.gotoNear = function(aroundX, aroundY) {
-        this.gotoX = aroundX + Math.random() * UNIT_MAX_RAND_DIST_FROM_WALKING_TARGET;
-        this.gotoY = aroundY + Math.random() * UNIT_MAX_RAND_DIST_FROM_WALKING_TARGET;
+    this.gotoNear = function(aroundX, aroundY, formationPos, formationDim) {
+        var colNum = formationPos % formationDim;
+        var rowNum = Math.floor(formationPos / formationDim);
+        this.gotoX = aroundX + colNum * UNIT_RANKS_SPACING;
+        this.gotoY = aroundY + rowNum * UNIT_RANKS_SPACING;
     }
 
-    this.isInBox = function(leftX, topY, rightX, bottomY) {
+    this.isInBox = function(x1, y1, x2, y2) {
+        var leftX, rightX;
+        if (x1 < x2) {
+            leftX = x1;
+            rightX = x2;
+        } else {
+            leftX = x2;
+            rightX = x1;
+        }
+
+        var topY, bottomY;
+        if (y1 < y2) {
+            topY = y1;
+            bottomY = y2;
+        } else {
+            topY = y2;
+            bottomY = y1;
+        }
+        
         if (this.x < leftX) {
             return false;
         }
