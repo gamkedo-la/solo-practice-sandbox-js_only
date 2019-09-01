@@ -1,26 +1,10 @@
 var canvas, canvasContext;
 
-const PLAYER_START_UNITS = 8;
+const PLAYER_START_UNITS = 20;
 var playerUnits = [];
-var selectedUnits = [];
+const ENEMY_START_UNITS = 15;
+var enemyUnits = [];
 
-var lassoX1 = 0;
-var lassoY1 = 0;
-var lassoX2 = 0;
-var lassoY2 = 0;
-var isMouseDragging = false;
-
-function calcMousePos(evt) {
-    var rect = canvas.getBoundingClientRect(), root = document.documentElement;
-  
-    // account for the margins, canvas position on page, scroll amount, etc
-    var mouseX = evt.clientX - rect.left - root.scrollLeft;
-    var mouseY = evt.clientY - rect.top - root.scrollTop;
-    return {
-      x: mouseX,
-      y: mouseY
-    };
-  }
 
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');
@@ -32,16 +16,6 @@ window.onload = function() {
         drawEverything();
     }, 1000/framesPerSecond);
 
-    canvas.addEventListener('mousemove', function(evt) {
-        var mousePos = calcMousePos(evt);
-        
-        if (isMouseDragging)
-        {
-            lassoX2 = mousePos.x;
-            lassoY2 = mousePos.y;
-        }
-    });
-
     //canvas.addEventListener('click', function(evt) {
     //    var mousePos = calcMousePos(evt);
         
@@ -49,34 +23,20 @@ window.onload = function() {
     //        playerUnits[i].gotoNear(mousePos.x, mousePos.y);
     //    }
     //});
-
-
-    canvas.addEventListener('mousedown', function(evt) {
-        var mousePos = calcMousePos(evt);
-        lassoX1 = mousePos.x;
-        lassoY1 = mousePos.y;
-        lassoX2 = lassoX1;
-        lassoY2 = lassoY1;
-        isMouseDragging = true;
-    });
-
-    canvas.addEventListener('mouseup', function(evt) {
-        isMouseDragging = false;
-
-        selectedUnits = [];
-
-        for (var i = 0; i < playerUnits.length; i++) {
-            if (playerUnits[i].isInBox(lassoX1, lassoY1, lassoX2, lassoY2)) {
-                selectedUnits.push(playerUnits[i]);
-            }
-        }
-
-        document.getElementById("debugText").innerHTML = "Selected " + selectedUnits.length + " units";
-    });
+    
+    canvas.addEventListener('mousemove', mousemoveHandler);
+    canvas.addEventListener('mousedown', mousedownHandler);
+    canvas.addEventListener('mouseup', mouseupHandler);
 
     for (var i = 0; i < PLAYER_START_UNITS; i++) {
         var spawnUnit = new unitClass();
-        spawnUnit.reset();
+        spawnUnit.resetAndSetPlayerTeam(true);
+        playerUnits.push(spawnUnit);
+    }
+
+    for (var i = 0; i < ENEMY_START_UNITS; i++) {
+        var spawnUnit = new unitClass();
+        spawnUnit.resetAndSetPlayerTeam(false);
         playerUnits.push(spawnUnit);
     }
 }
@@ -84,6 +44,10 @@ window.onload = function() {
 function moveEverything() {    
     for (var i = 0; i < playerUnits.length; i++) {
         playerUnits[i].move();
+    }
+
+    for (var i = 0; i < enemyUnits.length; i++) {
+        enemyUnits[i].move();
     }
 }
 
@@ -94,6 +58,10 @@ function drawEverything() {
     // <-- Unit --> //
     for (var i = 0; i < playerUnits.length; i++) {
         playerUnits[i].draw();
+    }
+
+    for (var i = 0; i < enemyUnits.length; i++) {
+        enemyUnits[i].draw();
     }
 
     // <-- lasso for selecting unit --> //
