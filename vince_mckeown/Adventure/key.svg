@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="50"
+   height="50"
+   viewBox="0 0 13.229166 13.229167"
+   version="1.1"
+   id="svg8"
+   inkscape:export-filename="C:\Users\Administrator\Desktop\Training\Adventure\images\track_yellowkey.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="key.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="5.2254329"
+     inkscape:cx="-9.2211648"
+     inkscape:cy="37.034703"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer2"
+     showgrid="false"
+     units="px"
+     inkscape:showpageshadow="false"
+     inkscape:pagecheckerboard="true"
+     inkscape:window-width="2400"
+     inkscape:window-height="1261"
+     inkscape:window-x="6391"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1"
+     inkscape:snap-grids="false" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Sketch"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-283.77082)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Sketch 1">
+    <g
+       id="g110"
+       style="fill:#ffff00"
+       transform="translate(0.81014022,-0.91140774)">
+      <path
+         id="rect90"
+         transform="scale(0.26458333)"
+         d="M 3.4453125,19.572266 V 32.777344 H 17.605469 V 19.572266 Z m 1.6347656,2.017578 h 3.828125 v 9.570312 h -3.828125 z m 5.9999999,0 h 3.828125 v 9.570312 h -3.828125 z"
+         style="opacity:1;fill:#ffff00;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linejoin:miter;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:0"
+         inkscape:connector-curvature="0" />
+      <rect
+         y="6.2417068"
+         x="1.8734492"
+         height="1.2152103"
+         width="8.8102741"
+         id="rect92"
+         style="opacity:1;fill:#ffff00;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linejoin:miter;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:0" />
+      <rect
+         y="6.8493123"
+         x="7.7975998"
+         height="3.1392932"
+         width="1.1139427"
+         id="rect94"
+         style="opacity:1;fill:#ffff00;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linejoin:miter;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:0" />
+      <rect
+         y="6.3201456"
+         x="9.5697803"
+         height="3.1392932"
+         width="1.1139427"
+         id="rect98"
+         style="opacity:1;fill:#ffff00;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linejoin:miter;stroke-miterlimit:0;stroke-dasharray:none;stroke-opacity:0" />
+    </g>
+  </g>
+</svg>
