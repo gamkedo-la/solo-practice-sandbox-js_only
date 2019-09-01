@@ -1,29 +1,30 @@
 const ROOM_W = 50;
 const ROOM_H = 50;
 const ROOM_COLS = 16;
-const ROOM_ROWS = 12;
+const ROOM_ROWS = 13;
+
 
 //Not used yet
 var roomGrid = [
-					1,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,				
-					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1
+					7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,
+					5,6,7,1,1,1,1,1,1,1,1,1,1,1,1,7,
+					7,5,7,1,1,1,1,1,1,1,1,1,1,1,1,7,
+					7,7,7,1,1,1,1,1,1,1,1,1,1,1,1,7,
+					7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,7,
+					7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,7,
+					7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,7,
+					7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,7,
+					7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,7,				
+					7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,7,
+					7,1,1,1,1,1,1,1,1,1,1,1,1,1,1,7,
+					7,7,7,7,7,7,7,7,7,7,7,7,7,7,7,7
 					];
 					
 	const water = 1;
-	const land = 2;
+	const raisedLand = 5
+	const building = 6;
+	const land = 7;
 	
-
-
 function tileTypeHasTransparency(checkTileType){
 	//return (checkTileType == TILE_FINISH ||
 			//checkTileType == TILE_YELLOW_DOOR ||
@@ -46,7 +47,6 @@ function drawTracks(){
 			//if(tileTypeHasTransparency(trackTypeHere)) {
 			//	canvasContext.drawImage(trackPics[TILE_ROAD], tileLeftEdgeX, tileTopEdgeY);
 			//}
-			console.log(trackTypeHere);
 			drawImageTile(eachRow, eachCol, trackTypeHere);
 			//drawImageTile(eachRow, eachCol, Math.floor(Math.random() * 1));
 			tileIndex++;
