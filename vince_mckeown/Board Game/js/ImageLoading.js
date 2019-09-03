@@ -1,4 +1,5 @@
 var spriteSheet1Pic = document.createElement("img");
+var spriteCharacterPic = document.createElement("img");
 
 //var titlepagePic = document.createElement("img");
 var trackPics = [];
@@ -28,6 +29,7 @@ function loadImages() {
 	
 		var imageList = [
 			{varName: spriteSheet1Pic, theFile: "spriteSheet1.png"},
+			{varName: spriteCharacterPic, theFile: "spritePlayer.png"}
 		];
 			
 	picsToLoad = imageList.length;

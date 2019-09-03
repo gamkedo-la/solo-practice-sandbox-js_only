@@ -2,6 +2,11 @@ function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
 	canvasContext.fillStyle = fillColor;
 	canvasContext.fillRect(topLeftX,topLeftY,boxWidth,boxHeight);
 }
+
+function CharacterRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
+	characterContext.fillStyle = fillColor;
+	characterContext.fillRect(topLeftX,topLeftY,boxWidth,boxHeight);
+}
 			
 function colorCircle(centerX, centerY, radius, fillColor){
 	canvasContext.fillStyle = fillColor;
