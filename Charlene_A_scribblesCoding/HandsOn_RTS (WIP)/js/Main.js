@@ -1,11 +1,5 @@
 var canvas, canvasContext;
 
-const PLAYER_START_UNITS = 20;
-var playerUnits = [];
-const ENEMY_START_UNITS = 15;
-var enemyUnits = [];
-
-
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');
     canvasContext = canvas.getContext('2d');      
@@ -28,26 +22,13 @@ window.onload = function() {
     canvas.addEventListener('mousedown', mousedownHandler);
     canvas.addEventListener('mouseup', mouseupHandler);
 
-    for (var i = 0; i < PLAYER_START_UNITS; i++) {
-        var spawnUnit = new unitClass();
-        spawnUnit.resetAndSetPlayerTeam(true);
-        playerUnits.push(spawnUnit);
-    }
-
-    for (var i = 0; i < ENEMY_START_UNITS; i++) {
-        var spawnUnit = new unitClass();
-        spawnUnit.resetAndSetPlayerTeam(false);
-        playerUnits.push(spawnUnit);
-    }
+    populateTeam(playerUnits, PLAYER_START_UNITS, true);
+    populateTeam(enemyUnits, ENEMY_START_UNITS, false);
 }
 
 function moveEverything() {    
-    for (var i = 0; i < playerUnits.length; i++) {
-        playerUnits[i].move();
-    }
-
-    for (var i = 0; i < enemyUnits.length; i++) {
-        enemyUnits[i].move();
+    for (var i = 0; i < allUnits.length; i++) {
+       allUnits[i].move();
     }
 }
 
@@ -56,12 +37,8 @@ function drawEverything() {
     colorRect(0, 0, canvas.width, canvas.height, 'black');
 
     // <-- Unit --> //
-    for (var i = 0; i < playerUnits.length; i++) {
-        playerUnits[i].draw();
-    }
-
-    for (var i = 0; i < enemyUnits.length; i++) {
-        enemyUnits[i].draw();
+    for (var i = 0; i < allUnits.length; i++) {
+        allUnits[i].draw();
     }
 
     // <-- lasso for selecting unit --> //
