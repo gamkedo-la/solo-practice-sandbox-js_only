@@ -4,6 +4,7 @@ const UNIT_PIXELS_MOVE_RATE = 2;
 const UNIT_RANKS_SPACING = UNIT_PLACEHOLDER_RADIUS * 3;
 const UNIT_ATTACK_RANGE = 55;
 const UNIT_AI_ATTACK_INITIATE = UNIT_ATTACK_RANGE + 10;
+const UNIT_PLAYABLE_AREA_MARGIN = 20;
 
 function unitClass() {
     
@@ -25,6 +26,8 @@ function unitClass() {
         this.gotoX = this.x;
         this.gotoY = this.y;
         this.isDead = false;
+
+        soonCheckUnitsToClear();
     }
 
     this.distFrom = function(otherX, otherY) {
@@ -63,6 +66,20 @@ function unitClass() {
                     this.gotoX = this.x - Math.random() * 70;
                     this.gotoY = this.y - Math.random() * 70;
                 }
+            }
+        }
+
+        this.keepInPlayableArea = function() {
+            if (this.gotoX < UNIT_PLAYABLE_AREA_MARGIN) {
+                this.gotoX = UNIT_PLAYABLE_AREA_MARGIN;
+            } else if (this.gotoX > canvas.width - UNIT_PLAYABLE_AREA_MARGIN) {
+                this.gotoX = canvas.width - UNIT_PLAYABLE_AREA_MARGIN
+            }
+    
+            if (this.gotoY < UNIT_PLAYABLE_AREA_MARGIN) {
+                this.gotoY = UNIT_PLAYABLE_AREA_MARGIN;
+            } else if (this.gotoY > canvas.height - UNIT_PLAYABLE_AREA_MARGIN) {
+                this.gotoY = canvas.height - UNIT_PLAYABLE_AREA_MARGIN
             }
         }
 
