@@ -9,7 +9,7 @@ var height;
 var playersTurn = true;
 
 var player1 = new playerClass();
-var enemy1 = new enemyClass(105, 75, "1");
+var enemy1 = new enemyClass(135, 90, "1");
 var enemy2 = new enemyClass(165, 105, "2");
 var enemy3 = new enemyClass(225, 135, "3");
 

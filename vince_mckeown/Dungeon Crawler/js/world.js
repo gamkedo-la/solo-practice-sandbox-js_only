@@ -3,21 +3,19 @@ const ROOM_H = 50;
 const ROOM_COLS = 16;
 const ROOM_ROWS = 13;
 
-
-//Not used yet
 var roomGrid = [
-					6, 4, 4, 4, 4, 4, 4, 4, 4,10, 4, 4, 4, 4, 4, 4,
-					4, 4, 5, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4,
-					4,10, 6, 7, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4,
-					4, 4, 4, 6, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 4,
-					4, 1, 1,10, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 4,
-					4, 1, 1,10, 1, 1, 1, 4, 4, 4, 1, 1, 2, 1, 1, 4,
-					4, 1,10,11,10,10, 1, 4, 7, 4, 1, 1, 1, 1, 1, 4,
-					4, 1,10,11,11,10,10, 4, 4, 4, 1, 1, 1, 3, 1, 6,
-					4, 1,10,10,10,10, 1, 1, 1, 1, 1, 4, 4, 4, 4, 6,				
-					4, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 4, 9, 4, 4, 6,
-					4, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 4, 4, 4, 5, 7,
-					4, 4, 4, 7, 8, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4
+					6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 7,
+					3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+					3, 0, 0, 0, 6, 1, 9, 9, 1, 9, 7, 0, 0, 0, 0, 2,
+				   10, 0, 0, 0, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2,
+					3, 0, 0, 0,10, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2,
+					6, 0, 1, 1, 3, 0,11, 0, 0, 0, 2, 5, 5, 5, 5, 4,
+					3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2,
+					3, 0, 0, 0, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2,
+					3, 0,11, 0, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 2,				
+				   10, 0, 0, 0, 8, 5, 5, 5, 0, 5, 4, 0, 0,11, 0, 2,
+					3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+					8, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4
 					];
 					
 	const WATER1 = 1;
@@ -66,7 +64,6 @@ function drawTracks(){
 			//	canvasContext.drawImage(trackPics[TILE_ROAD], tileLeftEdgeX, tileTopEdgeY);
 			//}
 			drawImageTile(eachRow, eachCol, trackTypeHere);
-			//drawImageTile(eachRow, eachCol, Math.floor(Math.random() * 1));
 			tileIndex++;
 			tileLeftEdgeX += ROOM_W;
 				
@@ -82,7 +79,7 @@ function drawImageTile(x, y, index) {
 			return;
 		}
 		canvasContext.save();
-		canvasContext.translate((x - y) * tileWidth / 2, (x + y) * tileHeight / 2);  
+		canvasContext.translate((x - y) * tileWidth / 2, (x + y) * tileHeight / 2 );  
 		canvasContext.drawImage(spriteSheet1Pic, index * tileWidth, 0, tileWidth, spriteSheet1Pic.height,
 			-tileWidth / 2, 0, tileWidth, spriteSheet1Pic.height);
 		
