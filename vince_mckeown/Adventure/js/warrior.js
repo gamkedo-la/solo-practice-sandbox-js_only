@@ -1,8 +1,8 @@
 const PLAYER_MOVE_SPEED = 3.0;
 
 function warriorClass() {
-	this.x = 60;
-	this.y = 60;
+	this.x = 600;
+	this.y = 800;
 	
 	this.keyHeld_North = false;
 	this.keyHeld_East = false;
@@ -21,16 +21,22 @@ function warriorClass() {
 	this.warriorReset = function() {
 		this.speed = 0;
 		this.keysHeld = 0;
+		
+		console.log("Home X: " + this.homeX);
 				
 		if(this.homeX == undefined) {
 			for(var i=0; i<roomGrid.length; i++){
 				if( roomGrid[i] == TILE_PLAYER) {
+					console.log(roomGrid[i] == TILE_PLAYER);
+					console.log(roomGrid[i]);
 					var tileRow = Math.floor(i/ROOM_COLS);
 					var tileCol	= i%ROOM_COLS;
-					this.homeX = tileCol * ROOM_W + 0.5*ROOM_W;
-					this.homeY = tileRow * ROOM_H + 0.5*ROOM_H;
-					this.homeX = (this.homeX - this.homeY)/2;
-					this.homeY = (this.homeX + this.homeY)/4;
+					var tileLeftEdgeX = 700
+					var tileTopEdgeY = 0;
+					console.log("R: " + tileRow + " C: " + tileCol);
+					this.homeX = ((tileLeftEdgeX - tileTopEdgeY)/2); //+ tileCol * ROOM_W + 0.5*ROOM_W;
+					this.homeY = ((tileLeftEdgeX + tileTopEdgeY)/4); //+ tileRow * ROOM_H + 0.5*ROOM_H;
+
 					roomGrid[i] = TILE_ROAD;
 					break;
 				}
@@ -38,6 +44,7 @@ function warriorClass() {
 		}
 		this.x = this.homeX;
 		this.y = this.homeY;
+		console.log("Start X: " + this.x + " Start Y: " + this.y);
 	}
 					
 	this.init = function(whichGraphic, whichName) {
@@ -51,18 +58,28 @@ function warriorClass() {
 		var nextX = this.x; 
 		var nextY = this.y; 
 		
-		if(this.keyHeld_North){
+		if(this.keyHeld_North && this.keyHeld_West){
 			nextY -= PLAYER_MOVE_SPEED;
-		}
-		if(this.keyHeld_East){
+		} else if(this.keyHeld_North && this.keyHeld_East){
 			nextX += PLAYER_MOVE_SPEED;
-		}
-		if(this.keyHeld_South){
-			nextY += PLAYER_MOVE_SPEED;
-		}
-		if(this.keyHeld_West){
+		} else if(this.keyHeld_South && this.keyHeld_West){
 			nextX -= PLAYER_MOVE_SPEED;
+		} else if(this.keyHeld_South && this.keyHeld_East){
+			nextY += PLAYER_MOVE_SPEED;
+		} else if(this.keyHeld_North){
+			nextY -= 0.5 * PLAYER_MOVE_SPEED;
+			nextX += PLAYER_MOVE_SPEED;
+		} else if(this.keyHeld_East){
+			nextX += PLAYER_MOVE_SPEED;
+			nextY += 0.5 * PLAYER_MOVE_SPEED;
+		} else if(this.keyHeld_South){
+			nextY += 0.5 * PLAYER_MOVE_SPEED;
+			nextX -= PLAYER_MOVE_SPEED;
+		} else if(this.keyHeld_West){
+			nextX -= PLAYER_MOVE_SPEED;
+			nextY -= 0.5 * PLAYER_MOVE_SPEED;
 		}
+		
 				
 		var walkIntoTileIndex = getTileIndexAtPixelCoord(nextX,nextY);
 		var walkIntoTileType = TILE_WALL;
@@ -102,6 +119,7 @@ function warriorClass() {
 		
 		
 	this.warrior = function(){
+		this.isoX = this.x
 		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, 0.0);
 	}
 }

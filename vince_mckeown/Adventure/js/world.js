@@ -1,10 +1,14 @@
 const ROOM_W = 50;
 const ROOM_H = 50;
 const ROOM_COLS = 16;
-const ROOM_ROWS = 12;
+const ROOM_ROWS = 16;
 
 var roomGrid = [
 					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+					1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
+					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+					1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,
 					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 					1,0,0,1,1,3,1,1,3,1,1,1,1,1,3,1,
@@ -13,8 +17,8 @@ var roomGrid = [
 					1,0,0,1,1,0,0,1,0,0,0,1,0,0,0,1,
 					1,0,0,1,1,0,0,1,0,0,0,1,0,0,0,1,
 					1,0,0,1,1,0,0,1,1,1,1,1,0,0,0,1,				
+					1,0,0,1,0,0,4,0,0,1,1,1,0,0,0,1,
 					1,0,0,1,0,0,0,0,0,1,1,1,0,0,0,1,
-					1,0,0,1,4,0,0,0,0,1,1,1,0,0,2,1,
 					1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1
 					];
 					
@@ -33,17 +37,16 @@ function tileTypeHasTransparency(checkTileType){
 					
 function drawTracks(){
 	var tileIndex = 0;
-	var tileLeftEdgeX = 500
+	var tileLeftEdgeX = 700
 	var tileTopEdgeY = 0;
 	var isoTileLeftEdgeX = 0;
 	var isoTileTopEdgeY = 0;
 	
 	for(var eachRow = 0; eachRow < ROOM_ROWS; eachRow++){
-		tileLeftEdgeX = 500;
+		tileLeftEdgeX = 700;
 		
 		for(var eachCol = 0; eachCol < ROOM_COLS; eachCol++) {
 			var trackTypeHere = roomGrid[tileIndex];
-			console.log("TI: " + tileIndex + " IsoX: " + isoTileLeftEdgeX + " X: " + tileLeftEdgeX + " IsoY: " +  isoTileTopEdgeY + " Y: " + tileTopEdgeY);
 			tileLeftEdgeX += ROOM_W;
 			isoTileLeftEdgeX = (tileLeftEdgeX - tileTopEdgeY)/2;
 			isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/4;
