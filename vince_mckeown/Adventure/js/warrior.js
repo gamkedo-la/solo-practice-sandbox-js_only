@@ -29,6 +29,8 @@ function warriorClass() {
 					var tileCol	= i%ROOM_COLS;
 					this.homeX = tileCol * ROOM_W + 0.5*ROOM_W;
 					this.homeY = tileRow * ROOM_H + 0.5*ROOM_H;
+					this.homeX = (this.homeX - this.homeY)/2;
+					this.homeY = (this.homeX + this.homeY)/4;
 					roomGrid[i] = TILE_ROAD;
 					break;
 				}

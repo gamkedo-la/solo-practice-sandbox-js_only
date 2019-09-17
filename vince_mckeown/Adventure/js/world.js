@@ -1,6 +1,5 @@
 const ROOM_W = 50;
 const ROOM_H = 50;
-//const TRACK_GAP = 2;
 const ROOM_COLS = 16;
 const ROOM_ROWS = 12;
 
@@ -13,10 +12,10 @@ var roomGrid = [
 					1,0,0,1,1,0,0,1,0,0,0,1,5,0,0,1,
 					1,0,0,1,1,0,0,1,0,0,0,1,0,0,0,1,
 					1,0,0,1,1,0,0,1,0,0,0,1,0,0,0,1,
-					1,5,0,1,1,0,0,1,1,1,1,1,0,0,0,1,				
+					1,0,0,1,1,0,0,1,1,1,1,1,0,0,0,1,				
 					1,0,0,1,0,0,0,0,0,1,1,1,0,0,0,1,
-					1,0,0,1,4,0,0,0,0,1,1,1,0,0,0,1,
-					1,0,2,1,1,1,1,1,1,1,1,1,1,1,1,1
+					1,0,0,1,4,0,0,0,0,1,1,1,0,0,2,1,
+					1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1
 					];
 					
 	const TILE_ROAD = 0;
@@ -34,27 +33,26 @@ function tileTypeHasTransparency(checkTileType){
 					
 function drawTracks(){
 	var tileIndex = 0;
-	var tileLeftEdgeX = 0;
+	var tileLeftEdgeX = 500
 	var tileTopEdgeY = 0;
+	var isoTileLeftEdgeX = 0;
+	var isoTileTopEdgeY = 0;
 	
-	for(var eachRow = 0; eachRow<ROOM_ROWS; eachRow++){
+	for(var eachRow = 0; eachRow < ROOM_ROWS; eachRow++){
+		tileLeftEdgeX = 500;
 		
-		tileLeftEdgeX = 0;
-		
-		for(var eachCol=0; eachCol<ROOM_COLS; eachCol++) {
-			
+		for(var eachCol = 0; eachCol < ROOM_COLS; eachCol++) {
 			var trackTypeHere = roomGrid[tileIndex];
-			
-			if(tileTypeHasTransparency(trackTypeHere)) {
-				canvasContext.drawImage(trackPics[TILE_ROAD], tileLeftEdgeX, tileTopEdgeY);
-			}
-			canvasContext.drawImage(trackPics[trackTypeHere], tileLeftEdgeX, tileTopEdgeY);
-			tileIndex++;
+			console.log("TI: " + tileIndex + " IsoX: " + isoTileLeftEdgeX + " X: " + tileLeftEdgeX + " IsoY: " +  isoTileTopEdgeY + " Y: " + tileTopEdgeY);
 			tileLeftEdgeX += ROOM_W;
-				
+			isoTileLeftEdgeX = (tileLeftEdgeX - tileTopEdgeY)/2;
+			isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/4;
+			canvasContext.drawImage(trackPics[trackTypeHere], isoTileLeftEdgeX, isoTileTopEdgeY);
+			tileIndex++;
 		} // end of each col
 		
 		tileTopEdgeY += ROOM_H;
+		//isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/2;
 		
 	} // end of each row
 }
