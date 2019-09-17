@@ -3,6 +3,10 @@ const PLAYER_MOVE_SPEED = 3.0;
 function warriorClass() {
 	this.x = 600;
 	this.y = 800;
+	this.width = 30;
+	this.height = 30;
+	this.offSetWidth = 0;
+	this.offSetHeight = 0;
 	
 	this.keyHeld_North = false;
 	this.keyHeld_East = false;
@@ -69,15 +73,21 @@ function warriorClass() {
 		} else if(this.keyHeld_North){
 			nextY -= 0.5 * PLAYER_MOVE_SPEED;
 			nextX += PLAYER_MOVE_SPEED;
+			this.offSetHeight = this.height * 4;
 		} else if(this.keyHeld_East){
 			nextX += PLAYER_MOVE_SPEED;
 			nextY += 0.5 * PLAYER_MOVE_SPEED;
+			this.offSetHeight = this.height * 1;
 		} else if(this.keyHeld_South){
 			nextY += 0.5 * PLAYER_MOVE_SPEED;
 			nextX -= PLAYER_MOVE_SPEED;
+			this.offSetHeight = this.height * 2;
 		} else if(this.keyHeld_West){
 			nextX -= PLAYER_MOVE_SPEED;
 			nextY -= 0.5 * PLAYER_MOVE_SPEED;
+			this.offSetHeight = this.height * 3;
+		} else {
+			this.offSetHeight = 0;
 		}
 		
 				
@@ -119,7 +129,7 @@ function warriorClass() {
 		
 		
 	this.warrior = function(){
-		this.isoX = this.x
-		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, 0.0);
+		canvasContext.drawImage(this.myBitmap, this.offSetWidth, this.offSetHeight, this.width, this.height, this.x+33, this.y+72, this.width, this.height);
+		console.log("X: " + this.x + " Y: " + this.y);
 	}
 }
