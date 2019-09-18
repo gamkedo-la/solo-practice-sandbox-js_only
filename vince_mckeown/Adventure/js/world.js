@@ -5,21 +5,21 @@ const ROOM_ROWS = 16;
 
 var roomGrid = [
 					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-					1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
-					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-					1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,
-					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
-					1,0,0,1,1,3,1,1,3,1,1,1,1,1,3,1,
-					1,0,0,1,1,0,0,1,0,5,0,1,0,0,0,1,
-					1,0,0,1,1,0,0,1,0,0,0,1,5,0,0,1,
-					1,0,0,1,1,0,0,1,0,0,0,1,0,0,0,1,
-					1,0,0,1,1,0,0,1,0,0,0,1,0,0,0,1,
-					1,0,0,1,1,0,0,1,1,1,1,1,0,0,0,1,				
-					1,0,0,1,0,0,4,0,0,1,1,1,0,0,0,1,
-					1,0,0,1,0,0,0,0,0,1,1,1,0,0,0,1,
-					1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1
+					1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,1,
+					1,5,2,5,5,5,5,5,5,5,5,5,5,5,5,1,
+					1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,1,
+					1,1,1,1,1,1,1,1,1,1,1,1,1,0,5,1,
+					1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,1,
+					1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,1,
+					1,5,0,1,1,3,1,1,3,1,1,1,1,1,3,1,
+					1,5,0,1,1,0,0,1,0,5,0,1,0,0,5,1,
+					1,5,0,1,1,0,0,1,0,0,0,1,5,0,5,1,
+					1,5,0,1,1,0,0,1,0,0,0,1,0,0,5,1,
+					1,5,0,1,1,0,0,1,0,0,0,1,0,0,5,1,
+					1,5,0,1,1,0,0,1,1,1,1,1,0,0,5,1,				
+					1,5,0,1,0,0,4,0,0,1,1,1,0,0,5,1,
+					1,5,0,1,0,0,0,0,0,1,1,1,0,0,5,1,
+					1,5,5,1,1,1,1,1,1,1,1,1,1,1,1,1
 					];
 					
 	const TILE_ROAD = 0;
@@ -41,22 +41,35 @@ function drawTracks(){
 	var tileTopEdgeY = 0;
 	var isoTileLeftEdgeX = 0;
 	var isoTileTopEdgeY = 0;
+	var miniMapX = 600;
+	var miniMapY = 10;
 	
 	for(var eachRow = 0; eachRow < ROOM_ROWS; eachRow++){
 		tileLeftEdgeX = 700;
+		miniMapX = 600;
 		
 		for(var eachCol = 0; eachCol < ROOM_COLS; eachCol++) {
 			var trackTypeHere = roomGrid[tileIndex];
 			tileLeftEdgeX += ROOM_W;
+			miniMapX += 10;
 			isoTileLeftEdgeX = (tileLeftEdgeX - tileTopEdgeY)/2;
 			isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/4;
 			canvasContext.drawImage(trackPics[trackTypeHere], isoTileLeftEdgeX, isoTileTopEdgeY);
+			if(trackTypeHere == 0){
+				colorRect(miniMapX, miniMapY, 10, 10, "grey");
+			} else if (trackTypeHere == 1){
+				colorRect(miniMapX, miniMapY, 10, 10, "white");
+			} else if (trackTypeHere == 3){
+				colorRect(miniMapX, miniMapY, 10, 10, "yellow");
+			} else if (trackTypeHere == 4){
+				colorRect(miniMapX, miniMapY, 10, 10, "purple");
+			} else if (trackTypeHere == 5){
+				colorRect(miniMapX, miniMapY, 10, 10, "orange");	
+			}
 			tileIndex++;
 		} // end of each col
-		
+		miniMapY += 10;
 		tileTopEdgeY += ROOM_H;
-		//isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/2;
-		
 	} // end of each row
 }
 
@@ -70,14 +83,14 @@ function isWallAtTileCoord(trackTileCol, trackTileRow){
 function rowColToArrayIndex(col, row) {
 	return col + ROOM_COLS * row;
 }			
-
-			
+		
 function getTileIndexAtPixelCoord(pixelX,pixelY){
-	var tileCol = pixelX / ROOM_W;		
-	var tileRow = pixelY / ROOM_H;
-				
+	var tileCol = ((pixelX - pixelY)/2) / ROOM_W;		
+	var tileRow = ((pixelY + pixelX)/4) / ROOM_H;
+					
 	tileCol = Math.floor(tileCol);
-	tileRow = Math.floor(tileRow);
+	tileRow = Math.floor(tileRow); 
+	//console.log("X: "+pixelX+ " Y: "+pixelY+ " col: " + tileCol + " row: " + tileRow);
 				
 	if(tileCol < 0 || tileCol >= ROOM_COLS || 
 		tileRow < 0 || tileRow >= ROOM_ROWS) {
