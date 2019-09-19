@@ -114,12 +114,19 @@ function warriorClass() {
 				this.y = nextY;
 				break;
 			case (TILE_YELLOW_DOOR):
+			case (TILE_RED_DOOR):
+			case (TILE_BLUE_DOOR):
 				if(this.keysHeld > 0){
 					this.keysHeld--;
 					document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
 					roomGrid[walkIntoTileIndex] = TILE_ROAD;
 				}
-				break;			
+				break;	
+			case (TILE_TREASURE):	
+				this.keysHeld--;
+				document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
+				roomGrid[walkIntoTileIndex] = TILE_ROAD;
+				break;
 			case (TILE_YELLOW_KEY):	
 				this.keysHeld++;
 				document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
@@ -141,6 +148,6 @@ function warriorClass() {
 		
 	this.warrior = function(){
 		canvasContext.drawImage(this.myBitmap, this.offSetWidth, this.offSetHeight, this.width, this.height, this.x+33, this.y+72, this.width, this.height);
-		colorRect(this.miniMapX, this.miniMapY, 10, 10, "red");	
+		colorRect(this.miniMapX, this.miniMapY, 10, 10, "green");	
 	}
 }

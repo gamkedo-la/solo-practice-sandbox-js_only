@@ -11,12 +11,12 @@ var roomGrid = [
 					1,1,1,1,1,1,1,1,1,1,1,1,1,0,5,1,
 					1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,1,
 					1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,1,
-					1,5,0,1,1,3,1,1,3,1,1,1,1,1,3,1,
+					1,5,0,1,1,6,1,1,3,1,1,1,1,1,7,1,
 					1,5,0,1,1,0,0,1,0,5,0,1,0,0,5,1,
 					1,5,0,1,1,0,0,1,0,0,0,1,5,0,5,1,
+					1,5,0,1,1,0,0,1,0,8,0,1,0,0,5,1,
 					1,5,0,1,1,0,0,1,0,0,0,1,0,0,5,1,
-					1,5,0,1,1,0,0,1,0,0,0,1,0,0,5,1,
-					1,5,0,1,1,0,0,1,1,1,1,1,0,0,5,1,				
+					1,5,0,1,1,0,0,1,1,1,1,1,8,0,5,1,				
 					1,5,0,1,0,0,4,0,0,1,1,1,0,0,5,1,
 					1,5,0,1,0,0,0,0,0,1,1,1,0,0,5,1,
 					1,5,5,1,1,1,1,1,1,1,1,1,1,1,1,1
@@ -28,6 +28,9 @@ var roomGrid = [
 	const TILE_YELLOW_DOOR = 3;
 	const TILE_FINISH = 4;
 	const TILE_YELLOW_KEY = 5;
+	const TILE_RED_DOOR = 6;
+	const TILE_BLUE_DOOR = 7;
+	const TILE_TREASURE = 8;
 
 function tileTypeHasTransparency(checkTileType){
 	return (checkTileType == TILE_FINISH ||
@@ -56,15 +59,19 @@ function drawTracks(){
 			isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/4;
 			canvasContext.drawImage(trackPics[trackTypeHere], isoTileLeftEdgeX, isoTileTopEdgeY);
 			if(trackTypeHere == 0){
-				colorRect(miniMapX, miniMapY, 10, 10, "grey");
-			} else if (trackTypeHere == 1){
 				colorRect(miniMapX, miniMapY, 10, 10, "white");
+			} else if (trackTypeHere == 1){
+				colorRect(miniMapX, miniMapY, 10, 10, "gray");
 			} else if (trackTypeHere == 3){
 				colorRect(miniMapX, miniMapY, 10, 10, "yellow");
-			} else if (trackTypeHere == 4){
+			} else if (trackTypeHere == 4 || trackTypeHere == 8){
 				colorRect(miniMapX, miniMapY, 10, 10, "purple");
 			} else if (trackTypeHere == 5){
 				colorRect(miniMapX, miniMapY, 10, 10, "orange");	
+			} else if (trackTypeHere == 6){
+				colorRect(miniMapX, miniMapY, 10, 10, "red");	
+			} else if (trackTypeHere == 7){
+				colorRect(miniMapX, miniMapY, 10, 10, "blue");	
 			}
 			tileIndex++;
 		} // end of each col

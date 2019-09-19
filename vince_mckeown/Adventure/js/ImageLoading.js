@@ -32,7 +32,10 @@ function loadImages() {
 			{trackType: TILE_ROAD, theFile: "track_road.png"},
 			{trackType: TILE_WALL, theFile:  "track_wall.png"},	
 			{trackType: TILE_YELLOW_DOOR, theFile:  "track_yellowdoor.png"},
-			{trackType: TILE_YELLOW_KEY, theFile:  "track_yellowkey.png"},
+			{trackType: TILE_RED_DOOR, theFile:  "track_reddoor.png"},		
+			{trackType: TILE_BLUE_DOOR, theFile:  "track_bluedoor.png"},				
+			{trackType: TILE_YELLOW_KEY, theFile:  "track_yellowkey.png"},			
+			{trackType: TILE_TREASURE, theFile:  "track_treasure.png"},
 			{trackType: TILE_FINISH, theFile: "track_finish.png"}
 		];
 			
