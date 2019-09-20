@@ -1,4 +1,5 @@
 const PLAYER_MOVE_SPEED = 3.0;
+const ISO_CHAR_FOOT_Y = 8;
 
 function warriorClass() {
 	this.x = 600;
@@ -37,8 +38,8 @@ function warriorClass() {
 					var tileLeftEdgeX = 700
 					var tileTopEdgeY = 0;
 					console.log("R: " + tileRow + " C: " + tileCol);
-					this.homeX = ((tileLeftEdgeX - tileTopEdgeY)/2); //+ tileCol * ROOM_W + 0.5*ROOM_W;
-					this.homeY = ((tileLeftEdgeX + tileTopEdgeY)/4); //+ tileRow * ROOM_H + 0.5*ROOM_H;
+					this.homeX = tileCol * ROOM_W + 0.5 * ROOM_W; 
+					this.homeY = tileRow * ROOM_H + 0.5 * ROOM_H; 
 
 					roomGrid[i] = TILE_ROAD;
 					break;
@@ -61,7 +62,7 @@ function warriorClass() {
 		var nextX = this.x; 
 		var nextY = this.y; 
 		
-		if(this.keyHeld_North && this.keyHeld_West){
+		/*if(this.keyHeld_North && this.keyHeld_West){
 			nextY -= PLAYER_MOVE_SPEED;
 		} else if(this.keyHeld_North && this.keyHeld_East){
 			nextX += PLAYER_MOVE_SPEED;
@@ -74,30 +75,27 @@ function warriorClass() {
 		} else if(this.keyHeld_South && this.keyHeld_East){
 			nextY += PLAYER_MOVE_SPEED;
 			this.miniMapX += PLAYER_MOVE_SPEED/10;
-			this.miniMapY += PLAYER_MOVE_SPEED/10;
-		} else if(this.keyHeld_North){
-			nextY -= 0.5 * PLAYER_MOVE_SPEED;
-			nextX += PLAYER_MOVE_SPEED;
+			this.miniMapY += PLAYER_MOVE_SPEED/10; 
+		} else */ if(this.keyHeld_North){
+			nextY -= PLAYER_MOVE_SPEED;
 			this.offSetHeight = this.height * 4;
-			this.miniMapY -= PLAYER_MOVE_SPEED/5;
 		} else if(this.keyHeld_East){
 			nextX += PLAYER_MOVE_SPEED;
-			nextY += 0.5 * PLAYER_MOVE_SPEED;
 			this.offSetHeight = this.height * 1;
-			this.miniMapX += PLAYER_MOVE_SPEED/5;
+		//	this.miniMapX += PLAYER_MOVE_SPEED/5;
 		} else if(this.keyHeld_South){
-			nextY += 0.5 * PLAYER_MOVE_SPEED;
-			nextX -= PLAYER_MOVE_SPEED;
+			nextY += PLAYER_MOVE_SPEED;
 			this.offSetHeight = this.height * 2;
-			this.miniMapY += PLAYER_MOVE_SPEED/5;
+		//	this.miniMapY += PLAYER_MOVE_SPEED/5;
 		} else if(this.keyHeld_West){
 			nextX -= PLAYER_MOVE_SPEED;
-			nextY -= 0.5 * PLAYER_MOVE_SPEED;
 			this.offSetHeight = this.height * 3;
-			this.miniMapX -= PLAYER_MOVE_SPEED/5;
+		//	this.miniMapX -= PLAYER_MOVE_SPEED/5;
 		} else {
 			this.offSetHeight = 0;
 		}
+		this.miniMapX = nextX;
+		this.miniMapY = nextY;
 		
 		var walkIntoTileIndex = getTileIndexAtPixelCoord(nextX,nextY);
 		var walkIntoTileType = TILE_WALL;
@@ -147,7 +145,9 @@ function warriorClass() {
 		
 		
 	this.warrior = function(){
-		canvasContext.drawImage(this.myBitmap, this.offSetWidth, this.offSetHeight, this.width, this.height, this.x+33, this.y+72, this.width, this.height);
+		gameCoordToIsoCoord(this.x,this.y);
+		canvasContext.drawImage(this.myBitmap, this.offSetWidth, this.offSetHeight, this.width, this.height, 
+								isoDrawX-(this.width/2), isoDrawY-this.height - ISO_CHAR_FOOT_Y, this.width, this.height);
 		colorRect(this.miniMapX, this.miniMapY, 10, 10, "green");	
 	}
 }

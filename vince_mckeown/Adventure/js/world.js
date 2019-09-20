@@ -1,7 +1,15 @@
+const ISO_GRID_W = 50;
+const ISO_GRID_H = ISO_GRID_W / 2;
+const ISO_TILE_GROUND_Y = 35;
+
 const ROOM_W = 50;
-const ROOM_H = 50;
+const ROOM_H = ROOM_W;
 const ROOM_COLS = 16;
 const ROOM_ROWS = 16;
+
+
+var isoDrawX = 0;
+var isoDrawY = 0;
 
 var roomGrid = [
 					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
@@ -37,6 +45,20 @@ function tileTypeHasTransparency(checkTileType){
 			checkTileType == TILE_YELLOW_DOOR ||
 			checkTileType == TILE_YELLOW_KEY);
 	}
+	
+function gameCoordToIsoCoord (pixelX, pixelY){
+	var camPanX = -350;
+	var camPanY = 0;
+	var tileCFraction = pixelX / ROOM_W;
+	var tileRFraction = pixelY / ROOM_H;
+	
+	isoDrawX = -camPanX + tileCFraction * (ISO_GRID_W/2) - tileRFraction * (ISO_GRID_W/2);
+	isoDrawY = -camPanY + tileCFraction * (ISO_GRID_H/2) + tileRFraction * (ISO_GRID_H/2);
+}	
+
+function tileCoordToIsoCoord(tileC, tileR ){
+	gameCoordToIsoCoord(tileC * ROOM_W, tileR * ROOM_H);
+}
 					
 function drawTracks(){
 	var tileIndex = 0;
@@ -57,7 +79,9 @@ function drawTracks(){
 			miniMapX += 10;
 			isoTileLeftEdgeX = (tileLeftEdgeX - tileTopEdgeY)/2;
 			isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/4;
-			canvasContext.drawImage(trackPics[trackTypeHere], isoTileLeftEdgeX, isoTileTopEdgeY);
+			//canvasContext.drawImage(trackPics[trackTypeHere], isoTileLeftEdgeX, isoTileTopEdgeY);
+			tileCoordToIsoCoord(eachCol, eachRow);
+			canvasContext.drawImage(trackPics[trackTypeHere], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
 			if(trackTypeHere == 0){
 				colorRect(miniMapX, miniMapY, 10, 10, "white");
 			} else if (trackTypeHere == 1){
@@ -92,8 +116,8 @@ function rowColToArrayIndex(col, row) {
 }			
 		
 function getTileIndexAtPixelCoord(pixelX,pixelY){
-	var tileCol = ((pixelX - pixelY)/2) / ROOM_W;		
-	var tileRow = ((pixelY + pixelX)/4) / ROOM_H;
+	var tileCol = pixelX / ROOM_W;		
+	var tileRow = pixelY / ROOM_H;
 					
 	tileCol = Math.floor(tileCol);
 	tileRow = Math.floor(tileRow); 
