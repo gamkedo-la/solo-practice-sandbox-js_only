@@ -98,9 +98,7 @@ function enemyClass() {
 		if(walkIntoTileType != undefined){	
 			walkIntoTileType = roomGrid[walkIntoTileIndex];
 		}
-		
-		//console.log(walkIntoTileType);
-		
+	
 		switch(walkIntoTileType) {
 			case TILE_ROAD:
 			case TILE_YELLOW_KEY:	
@@ -169,6 +167,7 @@ function enemyClass() {
 		
 	this.draw = function(){
 		gameCoordToIsoCoord(this.x,this.y);
+		canvasContext.drawImage(shadowPic,isoDrawX-(this.width/2), isoDrawY-this.height - ISO_CHAR_FOOT_Y);
 		canvasContext.drawImage(this.myBitmap, this.offSetWidth, this.offSetHeight, this.width, this.height, 
 								isoDrawX-(this.width/2), isoDrawY-this.height - ISO_CHAR_FOOT_Y, this.width, this.height);
 		//colorRect(this.miniMapX, this.miniMapY, 10, 10, "green");	

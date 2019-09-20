@@ -80,5 +80,6 @@ function drawEverything() {
 	goblin2.draw();
 	goblin3.draw();
 	goblin4.draw();
-	
+	canvasContext.drawImage(feedbackGUIPic,0, canvas.height-50);
+	colorText("Keys: " + playerOne.keysHeld, 20, 582, "black");
 }

@@ -17,3 +17,10 @@ function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY, withAngle){
 	canvasContext.drawImage(graphic, -graphic.width/2, -graphic.height/2); //center, draws car
 	canvasContext.restore(); //undoes the translation movement and rotation since save()
 }
+
+function colorText(showWords, textX, textY, fillColor) {
+  canvasContext.textAlign = "left";
+  canvasContext.fillStyle = fillColor;
+  canvasContext.font = "14px Arial Black";
+  canvasContext.fillText(showWords, textX, textY);
+}
