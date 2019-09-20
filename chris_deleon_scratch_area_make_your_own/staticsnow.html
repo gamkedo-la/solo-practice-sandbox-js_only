@@ -1,0 +1,80 @@
+<html>
+<style>
+canvas {
+    outline: 0;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: none;
+    margin: 0;
+}
+</style>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+
+var canvas;
+var canvasContext;
+
+var sqSz = 24;
+var widSz = 5;
+var framesPerSecond = 15;
+var waveOsc = 0;
+
+function resize()
+{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+window.onload = function() {
+    canvas = document.getElementById('gameCanvas');
+    canvasContext = canvas.getContext('2d');
+
+    setInterval(function() {
+        drawEverything();
+    }, 1000 / framesPerSecond);
+
+    window.addEventListener("resize", resize);
+    resize();
+}
+
+function drawEverything() {
+    waveOsc += 0.25;
+    var waveHeight = 12;
+    var tileCount = Math.floor(canvas.width / widSz) * Math.floor(canvas.height / sqSz);
+    var whiteBlockIdx = Math.floor(Math.random() * tileCount);
+    var countBlocks = 0;
+    for(var i=0;i<canvas.width;i+=widSz) {
+        for(var ii=-waveHeight;ii<canvas.height+waveHeight;ii+=sqSz) {
+            countBlocks++;
+            colorRect(i, ii+Math.cos(-waveOsc+i*0.01)*waveHeight, widSz, sqSz, 
+                        (countBlocks != whiteBlockIdx ? getRandomColor() : "#a7a7a7"));
+        }
+    }
+}
+
+function getRandomColor() {
+  var characters = "0123456789ABCDEF";
+  var color = '#';
+  var shade = characters[getRandomNumber(13, 14)] + characters[getRandomNumber(0, 15)];
+  for (var i = 0; i < 3; i++) {
+    color += shade;
+  }
+  
+  return color;
+}
+
+function getRandomNumber(low, high) {
+  var r = Math.floor(Math.random() * (high - low + 1)) + low;
+  return r;
+}
+
+function colorRect(leftX, topY, width, height, drawColor) {
+    canvasContext.fillStyle = drawColor;
+    canvasContext.fillRect(leftX, topY, width, height);
+}
+</script>
+
+</html>
