@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Scrolling Camera</title>
+  </head>
+  <body>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      canvas {
+        background: #000;
+        width: 800px;
+        height: 600px;
+      }
+    </style>
+
+    <canvas></canvas>
+    <script>
+      let canvas, canvasContext;
+
+      let rectX = 700;
+      let playerX = 0;
+
+      window.onload = function() {
+        canvas = document.querySelector('canvas');
+        canvasContext = canvas.getContext('2d');
+
+        canvas.width = 800;
+        canvas.height = 600;
+
+        const framesPerSecond = 30;
+        setInterval(update, 1000 / framesPerSecond);
+      };
+
+      function update() {
+        // Clear screen
+        drawRect(0, 0, canvas.width, canvas.height, '#000');
+
+        // Draw the origin of the canvas relative to the player's position
+        // x: 0 -> x :2 -> x: 4, ...
+        // So this way it looks like the player isn't moving, but the obstacle is
+
+        // Save the information of the canvas
+        canvasContext.save();
+
+        // Moves the canvas and its origin x units horizontally and y units vertically
+        canvasContext.translate(-playerX + 10, 0);
+
+        playerX += 2;
+        // Player
+        drawRect(playerX, 400, 20, 50, 'blue');
+
+        // Red Rect
+        drawRect(rectX, 400, 50, 50, 'red');
+
+        canvasContext.restore();
+      }
+
+      function drawRect(x, y, width, height, color) {
+        canvasContext.fillStyle = color;
+        canvasContext.fillRect(x, y, width, height);
+      }
+    </script>
+  </body>
+</html>
