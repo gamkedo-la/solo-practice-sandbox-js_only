@@ -111,7 +111,7 @@ function enemyClass() {
 			case TILE_YELLOW_DOOR:
 			case TILE_RED_DOOR:
 			case TILE_BLUE_DOOR:
-				this.movementTimer = 0;
+			case TILE_TABLE:
 			default:
 				this.movementTimer = 0;
 				break;

@@ -112,32 +112,33 @@ function warriorClass() {
 				this.x = nextX;
 				this.y = nextY;
 				break;
-			case (TILE_YELLOW_DOOR):
-			case (TILE_RED_DOOR):
-			case (TILE_BLUE_DOOR):
+			case TILE_YELLOW_DOOR:
+			case TILE_RED_DOOR:
+			case TILE_BLUE_DOOR:
 				if(this.keysHeld > 0){
 					this.keysHeld--;
 					//colorText("Keys: " + this.keysHeld, 10, canvas.height-18, "black");
 					roomGrid[walkIntoTileIndex] = TILE_ROAD;
 				}
 				break;	
-			case (TILE_TREASURE):	
+			case TILE_TREASURE:	
 				this.keysHeld--;
 				document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
 				roomGrid[walkIntoTileIndex] = TILE_ROAD;
 				break;
-			case (TILE_YELLOW_KEY):	
+			case TILE_YELLOW_KEY:	
 				this.keysHeld++;
 				document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
 				
 				roomGrid[walkIntoTileIndex] = TILE_ROAD;
 				break;			
-			case (TILE_FINISH):
+			case TILE_FINISH:
 				document.getElementById("debugText").innerHTML = this.myName + " won";
 				this.warriorReset();
 				break;						
-			case (TILE_WALL):
-				default:
+			case TILE_WALL:
+			case TILE_TABLE:
+			default:
 				break;
 		} // END OF SWITCH CASE
 	}	// END OF THIS.MOVEMENT

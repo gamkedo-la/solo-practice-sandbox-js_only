@@ -20,7 +20,7 @@ var roomGrid = [
 					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 					1,0,0,1,1,6,1,1,3,1,1,1,1,1,7,1,
-					1,0,0,1,1,0,0,1,0,0,0,1,0,0,0,1,
+					1,0,0,1,1,0,10,1,0,0,10,1,10,0,0,1,
 					1,0,0,1,1,0,0,1,0,0,0,1,5,0,0,1,
 					1,0,0,1,1,0,0,1,0,8,0,1,0,0,0,1,
 					1,0,0,1,1,0,0,1,5,9,0,1,0,0,0,1,
@@ -40,6 +40,7 @@ var roomGrid = [
 	const TILE_BLUE_DOOR = 7;
 	const TILE_TREASURE = 8;
 	const TILE_ENEMY = 9;
+	const TILE_TABLE = 10;
 
 function tileTypeHasTransparency(checkTileType){
 	return (checkTileType == TILE_FINISH ||

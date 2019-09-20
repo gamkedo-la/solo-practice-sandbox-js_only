@@ -70,10 +70,7 @@ function calculateMousePos(evt) {
 }
 						
 function drawEverything() {
-				
-	//clears screen
 	colorRect(0,0,canvas.width,canvas.height, 'black');
-				
 	drawTracks();
 	playerOne.draw();
 	goblin1.draw();
