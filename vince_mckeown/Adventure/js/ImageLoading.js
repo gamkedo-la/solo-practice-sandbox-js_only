@@ -1,4 +1,5 @@
 var warriorPic = document.createElement("img");
+var enemyPic = document.createElement("img");
 
 //var titlepagePic = document.createElement("img");
 var trackPics = [];
@@ -28,6 +29,7 @@ function loadImages() {
 	
 		var imageList = [
 			{varName: warriorPic, theFile: "warrior1.png"},
+			{varName: enemyPic, theFile: "enemy1.png"},
 			
 			{trackType: TILE_ROAD, theFile: "track_road.png"},
 			{trackType: TILE_WALL, theFile:  "track_wall.png"},	

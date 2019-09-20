@@ -13,21 +13,21 @@ var isoDrawY = 0;
 
 var roomGrid = [
 					1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
-					1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,1,
-					1,5,2,5,5,5,5,5,5,5,5,5,5,5,5,1,
-					1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,1,
-					1,1,1,1,1,1,1,1,1,1,1,1,1,0,5,1,
-					1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,1,
-					1,5,5,5,5,5,5,5,5,5,5,5,5,5,5,1,
-					1,5,0,1,1,6,1,1,3,1,1,1,1,1,7,1,
-					1,5,0,1,1,0,0,1,0,5,0,1,0,0,5,1,
-					1,5,0,1,1,0,0,1,0,0,0,1,5,0,5,1,
-					1,5,0,1,1,0,0,1,0,8,0,1,0,0,5,1,
-					1,5,0,1,1,0,0,1,0,0,0,1,0,0,5,1,
-					1,5,0,1,1,0,0,1,1,1,1,1,8,0,5,1,				
-					1,5,0,1,0,0,4,0,0,1,1,1,0,0,5,1,
-					1,5,0,1,0,0,0,0,0,1,1,1,0,0,5,1,
-					1,5,5,1,1,1,1,1,1,1,1,1,1,1,1,1
+					1,5,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+					1,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1,
+					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+					1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,1,
+					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+					1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+					1,0,0,1,1,6,1,1,3,1,1,1,1,1,7,1,
+					1,0,0,1,1,0,0,1,0,0,0,1,0,0,0,1,
+					1,0,0,1,1,0,0,1,0,0,0,1,5,0,0,1,
+					1,0,0,1,1,0,0,1,0,8,0,1,0,0,0,1,
+					1,0,0,1,1,0,0,1,5,9,0,1,0,0,0,1,
+					1,0,0,1,1,0,0,1,1,1,1,1,8,0,0,1,				
+					1,0,0,1,0,0,4,0,0,1,1,1,0,0,0,1,
+					1,0,0,1,0,0,9,0,9,1,1,1,0,9,5,1,
+					1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1
 					];
 					
 	const TILE_ROAD = 0;
@@ -39,6 +39,7 @@ var roomGrid = [
 	const TILE_RED_DOOR = 6;
 	const TILE_BLUE_DOOR = 7;
 	const TILE_TREASURE = 8;
+	const TILE_ENEMY = 9;
 
 function tileTypeHasTransparency(checkTileType){
 	return (checkTileType == TILE_FINISH ||
@@ -66,40 +67,36 @@ function drawTracks(){
 	var tileTopEdgeY = 0;
 	var isoTileLeftEdgeX = 0;
 	var isoTileTopEdgeY = 0;
-	var miniMapX = 600;
-	var miniMapY = 10;
+	var miniMapX = 750;
+	var miniMapY = 2;
 	
 	for(var eachRow = 0; eachRow < ROOM_ROWS; eachRow++){
-		tileLeftEdgeX = 700;
-		miniMapX = 600;
+		tileLeftEdgeX = 7;
+		miniMapX = 730;
 		
 		for(var eachCol = 0; eachCol < ROOM_COLS; eachCol++) {
 			var trackTypeHere = roomGrid[tileIndex];
 			tileLeftEdgeX += ROOM_W;
-			miniMapX += 10;
+			miniMapX += 4;
 			isoTileLeftEdgeX = (tileLeftEdgeX - tileTopEdgeY)/2;
 			isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/4;
 			//canvasContext.drawImage(trackPics[trackTypeHere], isoTileLeftEdgeX, isoTileTopEdgeY);
 			tileCoordToIsoCoord(eachCol, eachRow);
 			canvasContext.drawImage(trackPics[trackTypeHere], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
 			if(trackTypeHere == 0){
-				colorRect(miniMapX, miniMapY, 10, 10, "white");
+				colorRect(miniMapX, miniMapY, 4, 4, "white");
 			} else if (trackTypeHere == 1){
-				colorRect(miniMapX, miniMapY, 10, 10, "gray");
-			} else if (trackTypeHere == 3){
-				colorRect(miniMapX, miniMapY, 10, 10, "yellow");
+				colorRect(miniMapX, miniMapY, 4, 4, "gray");
+			} else if (trackTypeHere == 3 || trackTypeHere == 6 || trackTypeHere == 7){
+				colorRect(miniMapX, miniMapY, 4, 4, "blue");
 			} else if (trackTypeHere == 4 || trackTypeHere == 8){
-				colorRect(miniMapX, miniMapY, 10, 10, "purple");
+				colorRect(miniMapX, miniMapY, 4, 4, "purple");
 			} else if (trackTypeHere == 5){
-				colorRect(miniMapX, miniMapY, 10, 10, "orange");	
-			} else if (trackTypeHere == 6){
-				colorRect(miniMapX, miniMapY, 10, 10, "red");	
-			} else if (trackTypeHere == 7){
-				colorRect(miniMapX, miniMapY, 10, 10, "blue");	
+				colorRect(miniMapX, miniMapY, 4, 4, "orange");		
 			}
 			tileIndex++;
 		} // end of each col
-		miniMapY += 10;
+		miniMapY += 4;
 		tileTopEdgeY += ROOM_H;
 	} // end of each row
 }
