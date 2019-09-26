@@ -137,14 +137,31 @@ function warriorClass() {
 				this.warriorReset();
 				break;						
 			case TILE_WALL:
+			case TILE_WALL_WITH_TORCH:
+			case TILE_WALL_WITH_TORCH_2:
 			case TILE_TABLE:
 			default:
 				break;
-		} // END OF SWITCH CASE
+		} // END OF SWITCH CASE			
 	}	// END OF THIS.MOVEMENT
 
-
 		
+	this.checkCollisionsAgainst = function(otherHumanoid){
+		document.getElementById("debugText").innerHTML = "testing collision against " + otherHumanoid;
+		if(this.collisionTest(otherHumanoid)){
+			document.getElementById("debugText").innerHTML = "Collision Detected";	
+		}
+	}
+	
+	this.collisionTest = function(otherHumanoid){
+		document.getElementById("debugText").innerHTML = "testing " + otherHumanoid;
+		if(	this.x > otherHumanoid.x && this.x < (otherHumanoid.x + 40) &&
+			this.y > otherHumanoid.y && this.y < (otherHumanoid.y + 40)){
+				document.getElementById("debugText").innerHTML = "within box";	
+				return true;
+		}
+		return false;
+	}
 		
 	this.draw = function(){
 		gameCoordToIsoCoord(this.x,this.y);

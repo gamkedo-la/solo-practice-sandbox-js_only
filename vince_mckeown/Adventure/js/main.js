@@ -56,6 +56,12 @@ function moveEverything() {
 	goblin2.movement();
 	goblin3.movement();
 	goblin4.movement();	
+	document.getElementById("debugText").innerHTML = "line called";
+	
+	playerOne.checkCollisionsAgainst(goblin1);
+	playerOne.checkCollisionsAgainst(goblin2);
+	playerOne.checkCollisionsAgainst(goblin3);
+	playerOne.checkCollisionsAgainst(goblin4);
 }
 			
 function calculateMousePos(evt) {
