@@ -18,6 +18,10 @@ function enemyClass() {
 	this.keyHeld_East = false;
 	this.keyHeld_South = false;
 	this.keyHeld_West = false;
+	this.canMoveNorth = true;
+	this.canMoveEast = true;
+	this.canMoveSouth = true;
+	this.canMoveWest = true;
 
 	this.enemyPic = document.createElement("img");
 	
@@ -71,18 +75,18 @@ function enemyClass() {
 			nextY += PLAYER_MOVE_SPEED;
 			this.miniMapX += PLAYER_MOVE_SPEED/10;
 			this.miniMapY += PLAYER_MOVE_SPEED/10; 
-		} else */ if(this.moveNorth){
+		} else */ if(this.moveNorth && this.canMoveNorth){
 			nextY -= this.speed;
 			this.offSetHeight = this.height * 4;
-		} else if(this.moveEast){
+		} else if(this.moveEast && this.canMoveEast){
 			nextX += this.speed;
 			this.offSetHeight = this.height * 1;
 		//	this.miniMapX += PLAYER_MOVE_SPEED/5;
-		} else if(this.moveSouth){
+		} else if(this.moveSouth && this.canMoveSouth){
 			nextY += this.speed;
 			this.offSetHeight = this.height * 2;
 		//	this.miniMapY += PLAYER_MOVE_SPEED/5;
-		} else if(this.moveWest){
+		} else if(this.moveWest && this.canMoveWest){
 			nextX -= this.speed;
 			this.offSetHeight = this.height * 3;
 		//	this.miniMapX -= PLAYER_MOVE_SPEED/5;
@@ -164,10 +168,43 @@ function enemyClass() {
 		this.moveSouth = false;
 		this.moveEast = false;
 	}	
+	
+	this.checkCollisionsAgainst = function(otherHumanoid){
+		if(this.collisionTest(otherHumanoid)){
+			console.log("collision");
+			if(this.keyHeld_North){
+				this.canMoveNorth = false;
+				this.y += this.speed;
+			} else if(this.keyHeld_East){
+				this.canMoveEast = false;
+				this.x -= this.speed;
+			} else if(this.keyHeld_South){
+				this.canMoveSouth = false;
+				this.y -= this.speed;
+			} else if(this.keyHeld_West){
+				this.canMoveWest = false;
+				this.x += this.speed;				
+			}
+		} else {
+			this.canMoveNorth = true;
+			this.canMoveEast = true;
+			this.canMoveSouth = true;
+			this.canMoveWest = true;
+		}
+	}
+	
+	this.collisionTest = function(otherHumanoid){
+		if(	this.x > otherHumanoid.x && this.x < (otherHumanoid.x + 40) &&
+			this.y > otherHumanoid.y && this.y < (otherHumanoid.y + 40)){
+				return true;
+		}
+		return false;
+	}
 		
 	this.draw = function(){
 		gameCoordToIsoCoord(this.x,this.y);
 		canvasContext.drawImage(shadowPic,isoDrawX-(this.width/2), isoDrawY-this.height - ISO_CHAR_FOOT_Y);
+		colorText(this.myName, isoDrawX-20, isoDrawY-50, "black", "8px Arial Black");
 		canvasContext.drawImage(this.myBitmap, this.offSetWidth, this.offSetHeight, this.width, this.height, 
 								isoDrawX-(this.width/2), isoDrawY-this.height - ISO_CHAR_FOOT_Y, this.width, this.height);
 		//colorRect(this.miniMapX, this.miniMapY, 10, 10, "green");	

@@ -23,10 +23,10 @@ var roomGrid = [
 					12, 0, 0, 1, 1, 0,10, 1, 0, 0,10, 1,10, 0, 0, 1,
 					 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0, 1,
 					12, 0, 0, 1, 1, 0, 0, 1, 0, 8, 0, 1, 0, 0, 0, 1,
-					 1, 0, 0, 1, 1, 0, 0, 1, 5, 9, 0, 1, 0, 0, 0, 1,
+					 1, 0, 0, 1, 1, 0, 0, 1, 5, 0, 0, 1, 0, 0, 0, 1,
 					12, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 8, 0, 0, 1,				
 					 1, 0, 0, 1, 0, 0, 4, 0, 0, 1, 1, 1, 0, 0, 0, 1,
-					12, 0, 0, 1, 0, 0, 9, 0, 9, 1, 1, 1, 0, 9, 5, 1,
+					12, 0, 0, 1, 0, 9, 0, 0, 0, 1, 1, 1, 0, 0, 5, 1,
 					 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 					];
 					
@@ -43,12 +43,6 @@ var roomGrid = [
 	const TILE_TABLE = 10;
 	const TILE_WALL_WITH_TORCH = 11;
 	const TILE_WALL_WITH_TORCH_2 = 12;
-
-function tileTypeHasTransparency(checkTileType){
-	return (checkTileType == TILE_FINISH ||
-			checkTileType == TILE_YELLOW_DOOR ||
-			checkTileType == TILE_YELLOW_KEY);
-	}
 	
 function gameCoordToIsoCoord (pixelX, pixelY){
 	var camPanX = -350;
@@ -79,16 +73,20 @@ function drawTracks(){
 		
 		for(var eachCol = 0; eachCol < ROOM_COLS; eachCol++) {
 			var trackTypeHere = roomGrid[tileIndex];
+			
 			tileLeftEdgeX += ROOM_W;
 			miniMapX += 4;
 			isoTileLeftEdgeX = (tileLeftEdgeX - tileTopEdgeY)/2;
 			isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/4;
-			//canvasContext.drawImage(trackPics[trackTypeHere], isoTileLeftEdgeX, isoTileTopEdgeY);
 			tileCoordToIsoCoord(eachCol, eachRow);
+			if(trackTypeHere == TILE_ENEMY){
+				addEnemy();
+			}
+			
 			canvasContext.drawImage(trackPics[trackTypeHere], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
 			if(trackTypeHere == 0){
 				colorRect(miniMapX, miniMapY, 4, 4, "white");
-			} else if (trackTypeHere == 1){
+			} else if (trackTypeHere == 1 || trackTypeHere == 11 || trackTypeHere == 12 ){
 				colorRect(miniMapX, miniMapY, 4, 4, "gray");
 			} else if (trackTypeHere == 3 || trackTypeHere == 6 || trackTypeHere == 7){
 				colorRect(miniMapX, miniMapY, 4, 4, "blue");
@@ -103,8 +101,6 @@ function drawTracks(){
 		tileTopEdgeY += ROOM_H;
 	} // end of each row
 }
-
-
 
 function isWallAtTileCoord(trackTileCol, trackTileRow){
 				var tileIndex = roomTileToIndex(tileCol, tileRow);

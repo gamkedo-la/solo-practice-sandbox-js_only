@@ -2,6 +2,7 @@ var canvas;
 var canvasContext;
 
 var playerOne = new warriorClass();
+var enemyList = [];
 var goblin1 = new enemyClass();
 var goblin2 = new enemyClass();
 var goblin3 = new enemyClass();
@@ -28,11 +29,10 @@ window.onload = function(){
 	document.addEventListener("keyup", keyReleased);
 	
 	playerOne.warriorReset();
-	goblin1.enemyReset();
-	goblin2.enemyReset();
-	goblin3.enemyReset();
-	goblin4.enemyReset();
-	
+	for(var i = 0; i < enemyList.length; i++){
+		enemyList[i].enemyReset();
+	}
+		
 }
 
 function imageLoadingDoneSoStartGame(){
@@ -42,26 +42,33 @@ function imageLoadingDoneSoStartGame(){
 		drawEverything();
 	}, 1000/framesPerSecond);
 	playerOne.init(warriorPic, "The Warrior");
-	goblin1.init(enemyPic, "Goblin 1");
-	goblin2.init(enemyPic, "Goblin 2");
-	goblin3.init(enemyPic, "Goblin 3");
-	goblin4.init(enemyPic, "Goblin 4");	
+	for(var i = 0; i < enemyList.length; i++){
+		enemyList[i].init(enemyPic, "Goblin");
+	}	
+}
+
 	
+function addEnemy(){
+	var tempEnemy = new enemyClass();
+	enemyList.push(tempEnemy);
+	console.log(enemyList.length);
 }
 			
 function moveEverything() {
 	
 	playerOne.movement();
-	goblin1.movement();
-	goblin2.movement();
-	goblin3.movement();
-	goblin4.movement();	
-	document.getElementById("debugText").innerHTML = "line called";
-	
-	playerOne.checkCollisionsAgainst(goblin1);
-	playerOne.checkCollisionsAgainst(goblin2);
-	playerOne.checkCollisionsAgainst(goblin3);
-	playerOne.checkCollisionsAgainst(goblin4);
+	for(var i = 0; i < enemyList.length; i++){
+		enemyList[i].movement();
+	}
+	for(var i = 0; i < enemyList.length; i++){
+		playerOne.checkCollisionsAgainst(enemyList[i]);
+	}	
+	goblin1.checkCollisionsAgainst(goblin2);
+	goblin1.checkCollisionsAgainst(goblin3);
+	goblin1.checkCollisionsAgainst(goblin4);
+	goblin2.checkCollisionsAgainst(goblin3);
+	goblin2.checkCollisionsAgainst(goblin4);
+	goblin3.checkCollisionsAgainst(goblin4);
 }
 			
 function calculateMousePos(evt) {
@@ -79,10 +86,9 @@ function drawEverything() {
 	colorRect(0,0,canvas.width,canvas.height, 'black');
 	drawTracks();
 	playerOne.draw();
-	goblin1.draw();
-	goblin2.draw();
-	goblin3.draw();
-	goblin4.draw();
+	for(var i = 0; i < enemyList.length; i++){
+		enemyList[i].draw();
+	}
 	canvasContext.drawImage(feedbackGUIPic,0, canvas.height-50);
-	colorText("Keys: " + playerOne.keysHeld, 20, 582, "black");
+	colorText("Keys: " + playerOne.keysHeld, 20, 582, "black", "14px Arial Black");
 }
