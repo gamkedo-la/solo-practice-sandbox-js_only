@@ -15,8 +15,8 @@ var isoDrawY = 0;
 var sharedAnimCycle = 0;
 
 var roomGrid = [
-					 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11,
-					 1, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+					 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1, 1,
+					 1,13, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 					12, 0, 2, 0, 9, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 1,
 					 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 					 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1, 0, 0, 1,
@@ -46,6 +46,7 @@ var roomGrid = [
 	const TILE_TABLE = 10;
 	const TILE_WALL_WITH_TORCH = 11;
 	const TILE_WALL_WITH_TORCH_2 = 12;
+	const TILE_STAIRS = 13;
 	
 function gameCoordToIsoCoord (pixelX, pixelY){
 	var camPanX = -350;

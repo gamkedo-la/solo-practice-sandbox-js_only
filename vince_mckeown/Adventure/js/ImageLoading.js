@@ -48,7 +48,8 @@ function loadImages() {
 			{trackType: TILE_YELLOW_KEY, theFile:  "track_yellowkey.png"},			
 			{trackType: TILE_TREASURE, theFile:  "track_treasure.png"},
 			{trackType: TILE_TABLE, theFile:  "track_table.png"},
-			{trackType: TILE_FINISH, theFile: "track_finish.png"}
+			{trackType: TILE_FINISH, theFile: "track_finish.png"},
+			{trackType: TILE_STAIRS, theFile: "track_stairs.png"}
 		];
 			
 	picsToLoad = imageList.length;
