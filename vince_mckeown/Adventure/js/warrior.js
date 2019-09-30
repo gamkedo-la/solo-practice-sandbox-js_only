@@ -131,13 +131,14 @@ function warriorClass() {
 				roomGrid[walkIntoTileIndex] = TILE_ROAD;
 				break;			
 			case TILE_FINISH:
+			case TILE_STAIRS:
 				document.getElementById("debugText").innerHTML = this.myName + " won";
 				this.warriorReset();
 				break;						
 			case TILE_WALL:
 			case TILE_WALL_WITH_TORCH:
-			case TILE_WALL_WITH_TORCH_2:
 			case TILE_TABLE:
+			case TILE_BOOKSHELF:
 			default:
 				break;
 		} // END OF SWITCH CASE			

@@ -2,8 +2,9 @@ var camPanX = 0;
 var camPanY = 0;
 
 function updatedCameraPosition(){
-	camPanX = isoDrawX - canvas.width/2;
-	camPanY = isoDrawY - canvas.height/2;
+	camPanX = playerOne.x - canvas.width/2;
+	camPanY = playerOne.y - canvas.height/2;
+	
 	if(camPanX < 0){
 		camPanX = 0;
 	}
