@@ -64,7 +64,6 @@ function imageLoadingDoneSoStartGame(){
 function addEnemy(){
 	var tempEnemy = new enemyClass();
 	enemyList.push(tempEnemy);
-	console.log(enemyList.length);
 }
 			
 //All movement occurs here.  This is called every frame.
@@ -73,6 +72,7 @@ function moveEverything() {
 	for(var i = 0; i < enemyList.length; i++){
 		enemyList[i].movement();
 	}
+	updatedCameraPosition();
 }
 
 //This checks player and enemy collisions.  This is called every frame.
@@ -90,11 +90,13 @@ function checkAllPlayerAndEnemyCollisions(){
 //All movement occurs here.  This is called every frame.
 function drawEverything() {
 	colorRect(0,0,canvas.width,canvas.height, 'black');
+	shiftForCameraPan();
 	drawTracks();
 	playerOne.draw();
 	for(var i = 0; i < enemyList.length; i++){
 		enemyList[i].draw();
 	}
+	finishedCameraPan();
 	canvasContext.drawImage(feedbackGUIPic,0, canvas.height-50);
 	colorText("Keys: " + playerOne.keysHeld, 20, 582, "black", "14px Arial Black");
 }
