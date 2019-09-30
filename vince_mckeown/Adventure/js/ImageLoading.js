@@ -41,7 +41,6 @@ function loadImages() {
 			{trackType: TILE_ROAD, theFile: "track_road.png"},
 			{trackType: TILE_WALL, theFile:  "track_wall.png"},	
 			{trackType: TILE_WALL_WITH_TORCH, theFile:  "track_wall_with_torch.png"},
-			{trackType: TILE_WALL_WITH_TORCH_2, theFile:  "track_wall_with_torch2.png"},
 			{trackType: TILE_YELLOW_DOOR, theFile:  "track_yellowdoor.png"},
 			{trackType: TILE_RED_DOOR, theFile:  "track_reddoor.png"},		
 			{trackType: TILE_BLUE_DOOR, theFile:  "track_bluedoor.png"},				
@@ -49,7 +48,8 @@ function loadImages() {
 			{trackType: TILE_TREASURE, theFile:  "track_treasure.png"},
 			{trackType: TILE_TABLE, theFile:  "track_table.png"},
 			{trackType: TILE_FINISH, theFile: "track_finish.png"},
-			{trackType: TILE_STAIRS, theFile: "track_stairs.png"}
+			{trackType: TILE_STAIRS, theFile: "track_stairs.png"},
+			{trackType: TILE_BOOKSHELF, theFile: "track_bookshelf.png"}
 		];
 			
 	picsToLoad = imageList.length;

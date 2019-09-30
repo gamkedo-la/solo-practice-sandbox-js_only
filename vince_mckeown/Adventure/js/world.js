@@ -16,20 +16,20 @@ var sharedAnimCycle = 0;
 
 var roomGrid = [
 					 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1, 1,
-					 1,13, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-					12, 0, 2, 0, 9, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 1,
+					 1,12, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+					11, 0, 2, 0, 9, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 1,
 					 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 					 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1, 0, 0, 1,
 					 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-					12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+					11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
 					 1, 0, 0, 1, 1, 6, 1, 1, 3, 1, 1, 1, 1, 1, 7, 1,
-					12, 0, 0, 1, 1, 0,10, 1, 0, 0,10, 1,10, 0, 0, 1,
+					11, 0, 0, 1, 1, 0,10, 1, 0, 0,10, 1,10, 0, 0, 1,
 					 1, 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 5, 0, 0, 1,
-					12, 0, 0, 1, 1, 0, 0, 1, 0, 8, 0, 1, 0, 0, 0, 1,
+					11, 0, 0, 1, 1, 0, 0, 1, 0, 8, 0, 1, 0, 0, 0, 1,
 					 1, 0, 0, 1, 1, 0, 0, 1, 5, 0, 0, 1, 0, 0, 0, 1,
-					12, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 8, 0, 0, 1,				
-					 1, 0, 0, 1, 0, 0, 4, 0, 0, 1, 1, 1, 0, 0, 0, 1,
-					12, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 5, 1,
+					11, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 8, 0, 0, 1,				
+					 1, 0, 0, 1,13, 0, 4, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+					11, 0, 0, 1,13, 0, 0, 0, 0, 1, 0, 0, 0, 0, 5, 1,
 					 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 					];
 					
@@ -45,8 +45,8 @@ var roomGrid = [
 	const TILE_ENEMY = 9;
 	const TILE_TABLE = 10;
 	const TILE_WALL_WITH_TORCH = 11;
-	const TILE_WALL_WITH_TORCH_2 = 12;
-	const TILE_STAIRS = 13;
+	const TILE_STAIRS = 12;
+	const TILE_BOOKSHELF = 13;
 	
 function gameCoordToIsoCoord (pixelX, pixelY){
 	var camPanX = -350;
@@ -82,11 +82,18 @@ function drawTracks(){
 			miniMapX += 4;
 			isoTileLeftEdgeX = (tileLeftEdgeX - tileTopEdgeY)/2;
 			isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/4;
-			tileCoordToIsoCoord(eachCol, eachRow);			
-			if(trackTypeHere == TILE_WALL_WITH_TORCH || trackTypeHere == TILE_WALL_WITH_TORCH_2){
+			tileCoordToIsoCoord(eachCol, eachRow);	
+			
+			if( tileTypeHasRoadTransparency(trackTypeHere) ) {
+				canvasContext.drawImage(trackPics[TILE_ROAD], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
+			}
+
+			if(trackTypeHere == TILE_WALL_WITH_TORCH){
 				canvasContext.drawImage(trackPics[TILE_WALL], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
+				
 				var torchFrames = 4;
 				var animOffset = (eachCol + eachRow + Math.floor(sharedAnimCycle * 0.1) ) % torchFrames;
+				
 				canvasContext.drawImage(trackPics[TILE_WALL_WITH_TORCH],
 				animOffset * ISO_TILE_DRAW_W, 0, ISO_TILE_DRAW_W, ISO_TILE_DRAW_H, 
 				isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y, ISO_TILE_DRAW_W, ISO_TILE_DRAW_H);
@@ -113,6 +120,11 @@ function drawTracks(){
 		miniMapY += 4;
 		tileTopEdgeY += ROOM_H;
 	} // end of each row
+}
+
+function tileTypeHasRoadTransparency(checkTileType) {
+	return (checkTileType == TILE_BOOKSHELF 
+			);
 }
 
 function isWallAtTileCoord(trackTileCol, trackTileRow){
