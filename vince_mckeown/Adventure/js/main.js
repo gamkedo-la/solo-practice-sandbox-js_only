@@ -3,10 +3,6 @@ var canvasContext;
 
 var playerOne = new warriorClass();
 var enemyList = [];
-var goblin1 = new enemyClass();
-var goblin2 = new enemyClass();
-var goblin3 = new enemyClass();
-var goblin4 = new enemyClass();
 
 window.onload = function(){
 			
@@ -35,42 +31,6 @@ window.onload = function(){
 		
 }
 
-function imageLoadingDoneSoStartGame(){
-	var framesPerSecond = 30;
-	setInterval(function() {
-		moveEverything();
-		drawEverything();
-	}, 1000/framesPerSecond);
-	playerOne.init(warriorPic, "The Warrior");
-	for(var i = 0; i < enemyList.length; i++){
-		enemyList[i].init(enemyPic, "Goblin");
-	}	
-}
-
-	
-function addEnemy(){
-	var tempEnemy = new enemyClass();
-	enemyList.push(tempEnemy);
-	console.log(enemyList.length);
-}
-			
-function moveEverything() {
-	
-	playerOne.movement();
-	for(var i = 0; i < enemyList.length; i++){
-		enemyList[i].movement();
-	}
-	for(var i = 0; i < enemyList.length; i++){
-		playerOne.checkCollisionsAgainst(enemyList[i]);
-	}	
-	goblin1.checkCollisionsAgainst(goblin2);
-	goblin1.checkCollisionsAgainst(goblin3);
-	goblin1.checkCollisionsAgainst(goblin4);
-	goblin2.checkCollisionsAgainst(goblin3);
-	goblin2.checkCollisionsAgainst(goblin4);
-	goblin3.checkCollisionsAgainst(goblin4);
-}
-			
 function calculateMousePos(evt) {
 	
 	var rect = canvas.getBoundingClientRect(), root = document.documentElement;
@@ -81,7 +41,51 @@ function calculateMousePos(evt) {
 		y: mouseY
 	};
 }
-						
+
+function imageLoadingDoneSoStartGame(){
+	var framesPerSecond = 30;
+	setInterval(function() {
+		moveEverything();
+		//checkAllPlayerAndEnemyCollisions();
+		drawEverything();
+	}, 1000/framesPerSecond);
+	playerOne.init(warriorPic, "The Warrior");
+	for(var i = 0; i < roomGrid.length; i++){
+		if(roomGrid[i] == TILE_ENEMY){
+			addEnemy();
+		}
+	}
+	for(var i = 0; i < enemyList.length; i++){
+		enemyList[i].init(enemyPic, "Goblin");
+	}	
+}
+
+//Adds an enemy 
+function addEnemy(){
+	var tempEnemy = new enemyClass();
+	enemyList.push(tempEnemy);
+	console.log(enemyList.length);
+}
+			
+//All movement occurs here.  This is called every frame.
+function moveEverything() {
+	playerOne.movement();
+	for(var i = 0; i < enemyList.length; i++){
+		enemyList[i].movement();
+	}
+}
+
+//This checks player and enemy collisions.  This is called every frame.
+function checkAllPlayerAndEnemyCollisions(){
+	for(var i = 0; i < enemyList.length; i++){
+		playerOne.checkCollisionsAgainst(enemyList[i]);
+		for(var ii = 1; i < enemyList.length; ii++){
+		enemyList[ii].checkCollisionsAgainst(enemyList[ii+1]);
+		}
+	}
+}
+
+//All movement occurs here.  This is called every frame.
 function drawEverything() {
 	colorRect(0,0,canvas.width,canvas.height, 'black');
 	drawTracks();

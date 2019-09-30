@@ -26,7 +26,7 @@ var roomGrid = [
 					 1, 0, 0, 1, 1, 0, 0, 1, 5, 0, 0, 1, 0, 0, 0, 1,
 					12, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 8, 0, 0, 1,				
 					 1, 0, 0, 1, 0, 0, 4, 0, 0, 1, 1, 1, 0, 0, 0, 1,
-					12, 0, 0, 1, 0, 9, 0, 0, 0, 1, 1, 1, 0, 0, 5, 1,
+					12, 9, 9, 1, 9, 0, 0, 0, 0, 1, 1, 1, 0, 0, 5, 1,
 					 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 					];
 					
@@ -78,11 +78,7 @@ function drawTracks(){
 			miniMapX += 4;
 			isoTileLeftEdgeX = (tileLeftEdgeX - tileTopEdgeY)/2;
 			isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/4;
-			tileCoordToIsoCoord(eachCol, eachRow);
-			if(trackTypeHere == TILE_ENEMY){
-				addEnemy();
-			}
-			
+			tileCoordToIsoCoord(eachCol, eachRow);			
 			canvasContext.drawImage(trackPics[trackTypeHere], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
 			if(trackTypeHere == 0){
 				colorRect(miniMapX, miniMapY, 4, 4, "white");

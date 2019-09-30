@@ -9,6 +9,7 @@ var trackPics = [];
 
 var picsToLoad = 0;
 
+//All pictures prior to launching the game.  If a picture doesn't load, the game doesn't launch.
 function countLoadedImagesAndLaunchIfReady(){
 		picsToLoad--;
 		//console.log(picsToLoad);
@@ -16,6 +17,7 @@ function countLoadedImagesAndLaunchIfReady(){
 			imageLoadingDoneSoStartGame();
 	}
 }
+
 
 function beginLoadingImage(imgVar, fileName) {
 	imgVar.onload = countLoadedImagesAndLaunchIfReady;
@@ -27,6 +29,7 @@ function loadImageForRoomCode(trackCode, fileName)  {
 	beginLoadingImage(trackPics[trackCode], fileName);	
 }
 
+//All images are loaded here.  varNames are for any pictures that are not tiles.
 function loadImages() {
 	
 		var imageList = [
