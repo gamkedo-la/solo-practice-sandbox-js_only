@@ -77,12 +77,14 @@ function moveEverything() {
 
 //This checks player and enemy collisions.  This is called every frame.
 function checkAllPlayerAndEnemyCollisions(){
+	//player
 	for(var i = 0; i < enemyList.length; i++){
 		playerOne.checkCollisionsAgainst(enemyList[i]);
 		for(var ii = i+1; ii < enemyList.length; ii++){
 			enemyList[i].checkCollisionsAgainst(enemyList[ii]);
+			enemyList[i].checkCollisionsAgainst(playerOne);
 		}
-	}
+	}	
 }
 
 //All movement occurs here.  This is called every frame.

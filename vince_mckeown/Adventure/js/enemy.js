@@ -172,17 +172,25 @@ function enemyClass() {
 	this.checkCollisionsAgainst = function(otherHumanoid){
 		if(this.collisionTest(otherHumanoid)){
 			console.log("collision");
-			if(this.keyHeld_North){
+			if(this.moveNorth){
 				this.canMoveNorth = false;
+				this.resetDirections();
+				this.moveSouth = true;
 				this.y += this.speed;
-			} else if(this.keyHeld_East){
+			} else if(this.moveEast){
 				this.canMoveEast = false;
+				this.resetDirections();
+				this.moveWest = true;
 				this.x -= this.speed;
-			} else if(this.keyHeld_South){
+			} else if(this.moveSouth){
 				this.canMoveSouth = false;
+				this.resetDirections();
+				this.moveNorth = true;
 				this.y -= this.speed;
-			} else if(this.keyHeld_West){
+			} else if(this.moveWest){
 				this.canMoveWest = false;
+				this.resetDirections();
+				this.moveEast = true;
 				this.x += this.speed;				
 			}
 		} else {
@@ -194,8 +202,8 @@ function enemyClass() {
 	}
 	
 	this.collisionTest = function(otherHumanoid){
-		if(	this.x > otherHumanoid.x && this.x < (otherHumanoid.x + 40) &&
-			this.y > otherHumanoid.y && this.y < (otherHumanoid.y + 40)){
+		if(	this.x > otherHumanoid.x - 20 && this.x < otherHumanoid.x + 20 &&
+			this.y > otherHumanoid.y - 20 && this.y < otherHumanoid.y + 20){
 				return true;
 		}
 		return false;
