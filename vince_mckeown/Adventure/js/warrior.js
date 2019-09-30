@@ -14,10 +14,10 @@ function warriorClass() {
 	this.keyHeld_East = false;
 	this.keyHeld_South = false;
 	this.keyHeld_West = false;
-	this.canMoveNorth = false;
-	this.canMoveEast = false;
-	this.canMoveSouth = false;
-	this.canMoveWest = false;	
+	this.canMoveNorth = true;
+	this.canMoveEast = true;
+	this.canMoveSouth = true;
+	this.canMoveWest = true;	
 
 	this.warriorPic = document.createElement("img");
 	
@@ -144,6 +144,7 @@ function warriorClass() {
 
 		
 	this.checkCollisionsAgainst = function(otherHumanoid){
+		console.log("Check collisions");
 		if(this.collisionTest(otherHumanoid)){
 			console.log("collision");
 			if(this.keyHeld_North){

@@ -46,7 +46,7 @@ function imageLoadingDoneSoStartGame(){
 	var framesPerSecond = 30;
 	setInterval(function() {
 		moveEverything();
-		//checkAllPlayerAndEnemyCollisions();
+		checkAllPlayerAndEnemyCollisions();
 		drawEverything();
 	}, 1000/framesPerSecond);
 	playerOne.init(warriorPic, "The Warrior");
@@ -79,8 +79,8 @@ function moveEverything() {
 function checkAllPlayerAndEnemyCollisions(){
 	for(var i = 0; i < enemyList.length; i++){
 		playerOne.checkCollisionsAgainst(enemyList[i]);
-		for(var ii = 1; i < enemyList.length; ii++){
-		enemyList[ii].checkCollisionsAgainst(enemyList[ii+1]);
+		for(var ii = i+1; ii < enemyList.length; ii++){
+			enemyList[i].checkCollisionsAgainst(enemyList[ii]);
 		}
 	}
 }
