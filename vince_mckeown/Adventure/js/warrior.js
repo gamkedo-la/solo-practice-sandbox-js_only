@@ -1,4 +1,5 @@
 const ISO_CHAR_FOOT_Y = 8;
+const COLLIDE_BUMP_MULT = 2; // this needs to be improved.  This could potentially cause enemy or player in an illegal position (wall)
 
 function warriorClass() {
 	this.x = 600;
@@ -144,21 +145,20 @@ function warriorClass() {
 
 		
 	this.checkCollisionsAgainst = function(otherHumanoid){
-		console.log("Check collisions");
 		if(this.collisionTest(otherHumanoid)){
 			console.log("collision");
 			if(this.keyHeld_North){
 				this.canMoveNorth = false;
-				this.y += this.playerMovementSpeed;
+				this.y += this.playerMovementSpeed * COLLIDE_BUMP_MULT;
 			} else if(this.keyHeld_East){
 				this.canMoveEast = false;
-				this.x -= this.playerMovementSpeed;
+				this.x -= this.playerMovementSpeed * COLLIDE_BUMP_MULT;
 			} else if(this.keyHeld_South){
 				this.canMoveSouth = false;
-				this.y -= this.playerMovementSpeed;
+				this.y -= this.playerMovementSpeed * COLLIDE_BUMP_MULT;
 			} else if(this.keyHeld_West){
 				this.canMoveWest = false;
-				this.x += this.playerMovementSpeed;				
+				this.x += this.playerMovementSpeed * COLLIDE_BUMP_MULT;				
 			}
 		} else {
 			this.canMoveNorth = true;
@@ -169,8 +169,8 @@ function warriorClass() {
 	}
 	
 	this.collisionTest = function(otherHumanoid){
-		if(	this.x > otherHumanoid.x && this.x < (otherHumanoid.x + 40) &&
-			this.y > otherHumanoid.y && this.y < (otherHumanoid.y + 40)){
+		if(	this.x > otherHumanoid.x - 20 && this.x < otherHumanoid.x + 20 &&
+			this.y > otherHumanoid.y - 20 && this.y < otherHumanoid.y + 20){
 				return true;
 		}
 		return false;

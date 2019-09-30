@@ -1,7 +1,8 @@
 const ISO_GRID_W = 50;
 const ISO_GRID_H = ISO_GRID_W / 2;
 const ISO_TILE_GROUND_Y = 35;
-
+const ISO_TILE_DRAW_W = 50;
+const ISO_TILE_DRAW_H = 50;
 const ROOM_W = 50;
 const ROOM_H = ROOM_W;
 const ROOM_COLS = 16;
@@ -10,6 +11,8 @@ const ROOM_ROWS = 16;
 
 var isoDrawX = 0;
 var isoDrawY = 0;
+
+var sharedAnimCycle = 0;
 
 var roomGrid = [
 					 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11,
@@ -66,6 +69,7 @@ function drawTracks(){
 	var isoTileTopEdgeY = 0;
 	var miniMapX = 750;
 	var miniMapY = 2;
+	sharedAnimCycle++;
 	
 	for(var eachRow = 0; eachRow < ROOM_ROWS; eachRow++){
 		tileLeftEdgeX = 7;
@@ -73,13 +77,25 @@ function drawTracks(){
 		
 		for(var eachCol = 0; eachCol < ROOM_COLS; eachCol++) {
 			var trackTypeHere = roomGrid[tileIndex];
-			
 			tileLeftEdgeX += ROOM_W;
 			miniMapX += 4;
 			isoTileLeftEdgeX = (tileLeftEdgeX - tileTopEdgeY)/2;
 			isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/4;
 			tileCoordToIsoCoord(eachCol, eachRow);			
-			canvasContext.drawImage(trackPics[trackTypeHere], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
+			if(trackTypeHere == TILE_WALL_WITH_TORCH || trackTypeHere == TILE_WALL_WITH_TORCH_2){
+				canvasContext.drawImage(trackPics[TILE_WALL], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
+				var torchFrames = 4;
+				var animOffset = (eachCol + eachRow + Math.floor(sharedAnimCycle * 0.1) ) % torchFrames;
+				canvasContext.drawImage(trackPics[TILE_WALL_WITH_TORCH],
+				animOffset * ISO_TILE_DRAW_W, 0, ISO_TILE_DRAW_W, ISO_TILE_DRAW_H, 
+				isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y, ISO_TILE_DRAW_W, ISO_TILE_DRAW_H);
+				
+				//this.myBitmap, this.offSetWidth, this.offSetHeight, this.width, this.height, 
+				//				isoDrawX-(this.width/2), isoDrawY-this.height - ISO_CHAR_FOOT_Y, this.width, this.height)
+			} else {
+				canvasContext.drawImage(trackPics[trackTypeHere], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
+			}
+			//minimap:  This needs refactored
 			if(trackTypeHere == 0){
 				colorRect(miniMapX, miniMapY, 4, 4, "white");
 			} else if (trackTypeHere == 1 || trackTypeHere == 11 || trackTypeHere == 12 ){
