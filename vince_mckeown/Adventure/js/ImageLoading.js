@@ -35,7 +35,7 @@ function loadImages() {
 		var imageList = [
 			{varName: warriorPic, theFile: "warrior1.png"},
 			//{varName: enemyPic, theFile: "enemy1.png"},
-			{varName: enemyPic, theFile: "goblin.png"},
+			{varName: enemyPic, theFile: "enemy2.png"},
 			{varName: shadowPic, theFile: "shadow.png"},
 			{varName: feedbackGUIPic, theFile: "feedbackGUI.png"},
 			

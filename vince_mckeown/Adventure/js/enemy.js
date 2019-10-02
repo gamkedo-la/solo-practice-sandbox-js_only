@@ -1,8 +1,8 @@
 function enemyClass() {
 	this.x = 600;
 	this.y = 800;
-	this.width = 32; //30
-	this.height = 45; //30
+	this.width = 30; //30
+	this.height = 30; //30
 	this.isoEnemyFootY = 8;
 	this.offSetWidth = 0;
 	this.offSetHeight = 0;
