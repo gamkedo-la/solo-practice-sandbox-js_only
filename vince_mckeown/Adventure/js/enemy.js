@@ -1,3 +1,7 @@
+goblinNames = [ "Lalx", "Hosterz", "Wruc", "Arx", "Plex", "Brong", "Bogz", 
+				"Stror", "Klerk", "Rizz", "Lals", "Urt", "Xagz", "Slirm", 
+				"Kiok", "Wrokx", "Fiog", "Goziord"];
+
 function enemyClass() {
 	this.x = 600;
 	this.y = 800;

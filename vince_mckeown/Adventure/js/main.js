@@ -56,7 +56,7 @@ function imageLoadingDoneSoStartGame(){
 		}
 	}
 	for(var i = 0; i < enemyList.length; i++){
-		enemyList[i].init(enemyPic, "Goblin");
+		enemyList[i].init(enemyPic, goblinNames[i]);
 	}	
 }
 
