@@ -56,13 +56,14 @@ var roomGrid = [
 	const TILE_RED_DOOR = 6;
 	const TILE_BLUE_DOOR = 7;
 	const TILE_TREASURE = 8;
-	const TILE_ENEMY = 9;
+	const TILE_GOBLIN = 9;
 	const TILE_TABLE = 10;
 	const TILE_WALL_WITH_TORCH = 11;
 	const TILE_STAIRS = 12;
 	const TILE_BOOKSHELF = 13;
 	const TILE_FIRE_PLACE_LIT = 14;
 	const TILE_FIRE_PLACE = 15;
+	const TILE_ORC = 16;
 	
 function gameCoordToIsoCoord (pixelX, pixelY){
 	var camPanX = -350;

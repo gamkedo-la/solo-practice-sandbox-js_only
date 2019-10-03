@@ -1,6 +1,8 @@
 goblinNames = [ "Lalx", "Hosterz", "Wruc", "Arx", "Plex", "Brong", "Bogz", 
 				"Stror", "Klerk", "Rizz", "Lals", "Urt", "Xagz", "Slirm", 
 				"Kiok", "Wrokx", "Fiog", "Goziord"];
+				
+orcNames = [ "ORC 1", "ORC 2", "ORC 3", "ORC 4", "ORC 5", "ORC 6"];     
 
 function enemyClass() {
 	this.x = 600;
@@ -35,7 +37,7 @@ function enemyClass() {
 				
 		if(this.homeX == undefined) {
 			for(var i=0; i<roomGrid.length; i++){
-				if( roomGrid[i] == TILE_ENEMY) {
+				if( roomGrid[i] == TILE_GOBLIN) {
 					var tileRow = Math.floor(i/ROOM_COLS);
 					var tileCol	= i%ROOM_COLS;
 					
