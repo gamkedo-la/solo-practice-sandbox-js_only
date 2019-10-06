@@ -34,7 +34,8 @@ function loadImageForRoomCode(trackCode, fileName)  {
 function loadImages() {
 	
 		var imageList = [
-			{varName: warriorPic, theFile: "warrior1.png"},
+			//{varName: warriorPic, theFile: "warrior1.png"},
+			{varName: warriorPic, theFile: "warrior.png"},
 			{varName: orcPic, theFile: "enemy1.png"},
 			{varName: goblinPic, theFile: "enemy2.png"},
 			{varName: shadowPic, theFile: "shadow.png"},

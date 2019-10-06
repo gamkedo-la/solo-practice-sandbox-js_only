@@ -28,8 +28,6 @@ function enemyClass() {
 	this.canMoveEast = true;
 	this.canMoveSouth = true;
 	this.canMoveWest = true;
-
-	this.enemyPic = document.createElement("img");
 	
 	this.enemyReset = function() {
 		this.speed = 3;
@@ -46,7 +44,16 @@ function enemyClass() {
 
 					roomGrid[i] = TILE_ROAD;
 					break;
-				}
+				} else if( roomGrid[i] == TILE_ORC) {
+					var tileRow = Math.floor(i/ROOM_COLS);
+					var tileCol	= i%ROOM_COLS;
+					
+					this.homeX = tileCol * ROOM_W + 0.5 * ROOM_W; 
+					this.homeY = tileRow * ROOM_H + 0.5 * ROOM_H; 
+
+					roomGrid[i] = TILE_ROAD;
+					break;
+				} 
 			}
 		}
 		this.x = this.homeX;
@@ -177,7 +184,6 @@ function enemyClass() {
 	
 	this.checkCollisionsAgainst = function(otherHumanoid){
 		if(this.collisionTest(otherHumanoid)){
-			console.log("collision");
 			if(this.moveNorth){
 				this.canMoveNorth = false;
 				this.resetDirections();

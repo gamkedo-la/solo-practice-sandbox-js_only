@@ -57,6 +57,8 @@ function imageLoadingDoneSoStartGame(){
 	for(var i = 0; i < roomGrid.length; i++){
 		if(roomGrid[i] == TILE_GOBLIN){
 			addGoblin();
+		} 
+		if(roomGrid[i] == TILE_ORC){
 			addOrc();
 		}
 	}
@@ -114,7 +116,7 @@ function drawEverything() {
 	for(var i = 0; i < goblinList.length; i++){
 		goblinList[i].draw();
 	}
-		for(var i = 0; i < orcList.length; i++){
+	for(var i = 0; i < orcList.length; i++){
 		orcList[i].draw();
 	}
 	finishedCameraPan();
