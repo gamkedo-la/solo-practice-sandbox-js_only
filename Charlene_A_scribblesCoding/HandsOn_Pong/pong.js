@@ -1,17 +1,17 @@
 const MAX_BALL_SPEED = 12;
 
 var ballX = 75, ballY = 75;
-var ballSpeedX = 6, ballSpeedY = 6;
+var ballSpeedX = 10, ballSpeedY = 6;
 var canvas, canvasContext;
 var framesPerSecond = 30;
 
-var paddle1Y = 250, paddle2Y = 250;
-const PADDLE_HEIGHT = 100;
+var paddle1Y = 250, paddle2Y = 350;
+const PADDLE_HEIGHT = 80;
 const PADDLE_THICKNESS = 10;
 
 var playerSP = 0;
 var compSP = 0;
-var winningScore = 3;
+var winningScore = 11;
 var isGameOver = false;
 
 window.onload = function() {
