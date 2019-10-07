@@ -3,6 +3,7 @@ var goblinPic = document.createElement("img");
 var orcPic = document.createElement("img");
 var shadowPic = document.createElement("img");
 var feedbackGUIPic = document.createElement("img");
+var healthbarPic = document.createElement("img");
 
 //var titlepagePic = document.createElement("img");
 var trackPics = [];
@@ -40,6 +41,8 @@ function loadImages() {
 			{varName: goblinPic, theFile: "enemy2.png"},
 			{varName: shadowPic, theFile: "shadow.png"},
 			{varName: feedbackGUIPic, theFile: "feedbackGUI.png"},
+			{varName: healthbarPic, theFile: "healthbar.png"},
+
 			
 			{trackType: TILE_ROAD, theFile: "track_road.png"},
 			{trackType: TILE_WALL, theFile:  "track_wall.png"},	
