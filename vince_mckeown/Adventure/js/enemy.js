@@ -35,16 +35,7 @@ function enemyClass() {
 				
 		if(this.homeX == undefined) {
 			for(var i=0; i<roomGrid.length; i++){
-				if( roomGrid[i] == TILE_GOBLIN) {
-					var tileRow = Math.floor(i/ROOM_COLS);
-					var tileCol	= i%ROOM_COLS;
-					
-					this.homeX = tileCol * ROOM_W + 0.5 * ROOM_W; 
-					this.homeY = tileRow * ROOM_H + 0.5 * ROOM_H; 
-
-					roomGrid[i] = TILE_ROAD;
-					break;
-				} else if( roomGrid[i] == TILE_ORC) {
+				if( roomGrid[i] == this.myTile) {
 					var tileRow = Math.floor(i/ROOM_COLS);
 					var tileCol	= i%ROOM_COLS;
 					
@@ -60,9 +51,10 @@ function enemyClass() {
 		this.y = this.homeY;
 	}
 					
-	this.init = function(whichGraphic, whichName) {
+	this.init = function(whichGraphic, whichName, whichTile) {
 		this.myBitmap = whichGraphic;
 		this.myName = whichName;
+		this.myTile = whichTile;
 		this.enemyReset();
 	}	
 	 

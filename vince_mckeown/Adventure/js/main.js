@@ -26,13 +26,6 @@ window.onload = function(){
 	document.addEventListener("keyup", keyReleased);
 	
 	playerOne.warriorReset();
-	for(var i = 0; i < goblinList.length; i++){
-		goblinList[i].enemyReset();
-	}
-	for(var i = 0; i < orcList.length; i++){
-		orcList[i].enemyReset();
-	}
-		
 }
 
 function calculateMousePos(evt) {
@@ -63,11 +56,11 @@ function imageLoadingDoneSoStartGame(){
 		}
 	}
 	for(var i = 0; i < goblinList.length; i++){
-		goblinList[i].init(goblinPic, goblinNames[i]);
+		goblinList[i].init(goblinPic, goblinNames[i], TILE_GOBLIN);
 	}
 
 	for(var i = 0; i < orcList.length; i++){
-		orcList[i].init(orcPic, orcNames[i]);
+		orcList[i].init(orcPic, orcNames[i], TILE_ORC);
 	}		
 }
 
