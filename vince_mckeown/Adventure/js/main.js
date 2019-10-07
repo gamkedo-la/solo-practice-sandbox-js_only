@@ -1,9 +1,11 @@
 var canvas;
 var canvasContext;
 
+//characters (Player, NPC's, Enemies)
 var playerOne = new warriorClass();
 var goblinList = [];
 var orcList = [];
+var ogreList = [];
 
 window.onload = function(){
 			
@@ -54,14 +56,19 @@ function imageLoadingDoneSoStartGame(){
 		if(roomGrid[i] == TILE_ORC){
 			addOrc();
 		}
+		if(roomGrid[i] == TILE_OGRE){
+			addOgre();
+		}
 	}
 	for(var i = 0; i < goblinList.length; i++){
 		goblinList[i].init(goblinPic, goblinNames[i], TILE_GOBLIN);
 	}
-
 	for(var i = 0; i < orcList.length; i++){
 		orcList[i].init(orcPic, orcNames[i], TILE_ORC);
 	}		
+	for(var i = 0; i < ogreList.length; i++){
+		ogreList[i].init(ogrePic, ogreNames[i], TILE_OGRE);
+	}
 }
 
 //Adds an enemy 
@@ -74,6 +81,13 @@ function addOrc(){
 	var tempEnemy = new enemyClass();
 	orcList.push(tempEnemy);
 }
+
+function addOgre(){
+	var tempEnemy = new enemyClass();
+	ogreList.push(tempEnemy);
+}
+
+
 			
 //All movement occurs here.  This is called every frame.
 function moveEverything() {
@@ -83,6 +97,9 @@ function moveEverything() {
 	}
 	for(var i = 0; i < orcList.length; i++){
 		orcList[i].movement();
+	}
+	for(var i = 0; i < ogreList.length; i++){
+		ogreList[i].movement();
 	}
 	updatedCameraPosition();
 }
@@ -105,7 +122,15 @@ function checkAllPlayerAndEnemyCollisions(){
 		orcList[i].checkCollisionsAgainst(orcList[ii]);
 		orcList[i].checkCollisionsAgainst(playerOne);
 		}
-	}	
+	}
+	//check ogres
+	/*for(var i = 0; i < ogreList.length; i++){
+		playerOne.checkCollisionsAgainst(ogreList[i]);
+		for(var ii = i+1; ii < orcList.length; ii++){
+		ogreList[i].checkCollisionsAgainst(ogreList[ii]);
+		ogreList[i].checkCollisionsAgainst(playerOne);
+		}
+	} */		
 }
 
 
@@ -120,6 +145,9 @@ function drawEverything() {
 	}
 	for(var i = 0; i < orcList.length; i++){
 		orcList[i].draw();
+	}
+	for(var i = 0; i < ogreList.length; i++){
+		ogreList[i].draw();
 	}
 	finishedCameraPan();
 	canvasContext.drawImage(feedbackGUIPic,0, canvas.height-50);

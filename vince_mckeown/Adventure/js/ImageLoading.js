@@ -1,6 +1,7 @@
 var warriorPic = document.createElement("img");
 var goblinPic = document.createElement("img");
 var orcPic = document.createElement("img");
+var ogrePic = document.createElement("img");
 var shadowPic = document.createElement("img");
 var feedbackGUIPic = document.createElement("img");
 var healthbarPic = document.createElement("img");
@@ -35,10 +36,11 @@ function loadImageForRoomCode(trackCode, fileName)  {
 function loadImages() {
 	
 		var imageList = [
-			//{varName: warriorPic, theFile: "warrior1.png"},
+			//characters
 			{varName: warriorPic, theFile: "warrior.png"},
-			{varName: orcPic, theFile: "enemy1.png"},
-			{varName: goblinPic, theFile: "enemy2.png"},
+			{varName: orcPic, theFile: "orc.png"},
+			{varName: goblinPic, theFile: "goblin.png"},
+			{varName: ogrePic, theFile: "ogre.png"},
 			{varName: shadowPic, theFile: "shadow.png"},
 			{varName: feedbackGUIPic, theFile: "feedbackGUI.png"},
 			{varName: healthbarPic, theFile: "healthbar.png"},

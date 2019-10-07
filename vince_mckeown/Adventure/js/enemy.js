@@ -2,7 +2,10 @@ goblinNames = [ "Lalx", "Hosterz", "Wruc", "Arx", "Plex", "Brong", "Bogz",
 				"Stror", "Klerk", "Rizz", "Lals", "Urt", "Xagz", "Slirm", 
 				"Kiok", "Wrokx", "Fiog", "Goziord"];
 				
-orcNames = [ "ORC 1", "ORC 2", "ORC 3", "ORC 4", "ORC 5", "ORC 6"];     
+orcNames = [ "Orc 1", "Orc 2", "Orc 3", "Orc 4", "Orc 5", "Orc 6"];     
+
+ogreNames = [ "Ogre 1", "Ogre 2", "Ogre 3", "Ogre 4", "Ogre 5", "Ogre 6"];     
+
 
 function enemyClass() {
 	this.x = 600;
