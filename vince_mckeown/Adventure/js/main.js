@@ -88,17 +88,26 @@ function moveEverything() {
 }
 
 //This checks player and enemy collisions.  This is called every frame.
+//This requires refactoring.  Too many individual lines checking monsters to players
 function checkAllPlayerAndEnemyCollisions(){
-	//player
+	//check goblins
 	for(var i = 0; i < goblinList.length; i++){
 		playerOne.checkCollisionsAgainst(goblinList[i]);
 		for(var ii = i+1; ii < goblinList.length; ii++){
 			goblinList[i].checkCollisionsAgainst(goblinList[ii]);
 			goblinList[i].checkCollisionsAgainst(playerOne);
 		}
-		//add orcs
+	}
+	//check orcs
+	for(var i = 0; i < orcList.length; i++){
+		playerOne.checkCollisionsAgainst(orcList[i]);
+		for(var ii = i+1; ii < orcList.length; ii++){
+		orcList[i].checkCollisionsAgainst(orcList[ii]);
+		orcList[i].checkCollisionsAgainst(playerOne);
+		}
 	}	
 }
+
 
 //All movement occurs here.  This is called every frame.
 function drawEverything() {
