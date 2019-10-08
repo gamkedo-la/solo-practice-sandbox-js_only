@@ -21,6 +21,8 @@ function warriorClass() {
 	this.canMoveWest = true;	
 	this.health = 4;
 	this.maxHealth = 4;
+	this.trapCoolDownTimer = 0;
+	this.trapCoolDownCounter = 0;
 
 	this.warriorPic = document.createElement("img");
 	
@@ -113,6 +115,8 @@ function warriorClass() {
 
 		switch(walkIntoTileType) {
 			case TILE_ROAD:
+			case TILE_SPIKES_UNARMED:
+			case TILE_PITTRAP_UNARMED:
 				this.x = nextX;
 				this.y = nextY;
 				break;
@@ -136,14 +140,24 @@ function warriorClass() {
 			case TILE_STAIRS:
 				document.getElementById("debugText").innerHTML = this.myName + " won";
 				this.warriorReset();
-				break;						
+				break;			
+			case TILE_PITTRAP_ARMED:
+				this.takeDamageFromTrap(1);
+				roomGrid[walkIntoTileIndex] = TILE_PITTRAP_UNARMED;
+				break;
+			case TILE_SPIKES_ARMED:
+				this.takeDamageFromTrap(1);
+				roomGrid[walkIntoTileIndex] = TILE_SPIKES_UNARMED;
+				break;
 			case TILE_WALL:
 			case TILE_WALL_WITH_TORCH:
 			case TILE_TABLE:
 			case TILE_BOOKSHELF:
 			default:
 				break;
-		} // END OF SWITCH CASE			
+		} // END OF SWITCH CASE		
+		this.trapCoolDown();
+		
 	}	// END OF THIS.MOVEMENT
 
 		
@@ -189,4 +203,25 @@ function warriorClass() {
 		canvasContext.drawImage(healthbarPic,isoDrawX-(this.width/2), isoDrawY-this.height - 20);
 		//colorRect(this.miniMapX, this.miniMapY, 4, 4, "green");	
 	}
+		
+	//this delivers damage to the player when setting off a trap
+	this.takeDamageFromTrap = function(howMuchDamage){
+		if(this.trapCoolDownCounter == 0){
+			this.health = this.health - howMuchDamage;
+		}
+		trapCoolDownTimer = true;
+	}
+	
+	//this is used to keep traps from constantly causing damage to the player
+	this.trapCoolDown = function(){
+		if(this.trapCoolDownTimer == true){
+			this.trapCoolDownCounter++
+		}
+		if(this.trapCoolDownCounter == 120){
+			this.trapCoolDownCounter = 0;
+			this.trapCoolDownTimer = false;
+		}
+	}
+	
+	
 }

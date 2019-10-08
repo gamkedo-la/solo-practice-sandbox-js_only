@@ -59,7 +59,11 @@ function loadImages() {
 			{trackType: TILE_STAIRS, theFile: "track_stairs.png"},
 			{trackType: TILE_BOOKSHELF, theFile: "track_bookshelf.png"},
 			{trackType: TILE_FIRE_PLACE_LIT, theFile: "track_fireplace.png"},
-			{trackType: TILE_FIRE_PLACE, theFile: "track_fireplaceNotLit.png"}
+			{trackType: TILE_FIRE_PLACE, theFile: "track_fireplaceNotLit.png"},
+			{trackType: TILE_PITTRAP_ARMED, theFile: "track_road.png"},
+			{trackType: TILE_PITTRAP_UNARMED, theFile: "track_pittrap.png"},
+			{trackType: TILE_SPIKES_ARMED, theFile: "track_road.png"},
+			{trackType: TILE_SPIKES_UNARMED, theFile: "track_spikes.png"}
 		];
 			
 	picsToLoad = imageList.length;

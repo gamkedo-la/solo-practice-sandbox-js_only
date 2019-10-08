@@ -16,7 +16,7 @@ var sharedAnimCycle = 0;
 
 var roomGrid = [
 					 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1, 1,
-					 1,12, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 1, 
+					 1,12, 5, 0, 0, 0, 0, 0, 0, 0,18, 0,20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 1, 
 					11, 0, 2, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 1, 
 					 1, 0, 0, 0, 0, 0, 0,16,17, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 
 					 1,11, 1,11, 1,11, 1,11, 1,11, 1,11, 1, 0, 0, 1, 1, 1, 1, 7, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 1, 1, 1, 1, 1, 1, 1, 6, 1, 
@@ -65,6 +65,10 @@ var roomGrid = [
 	const TILE_FIRE_PLACE = 15;
 	const TILE_ORC = 16;
 	const TILE_OGRE = 17;
+	const TILE_PITTRAP_ARMED = 18;
+	const TILE_PITTRAP_UNARMED = 19;
+	const TILE_SPIKES_ARMED = 20;
+	const TILE_SPIKES_UNARMED = 21;
 	
 function gameCoordToIsoCoord (pixelX, pixelY){
 	var camPanX = -350;
@@ -150,7 +154,9 @@ function drawTracks(){
 }
 
 function tileTypeHasRoadTransparency(checkTileType) {
-	return (checkTileType == TILE_BOOKSHELF 
+	return (checkTileType == TILE_BOOKSHELF ||
+			checkTileType == TILE_PITTRAP_UNARMED ||
+				checkTileType == TILE_SPIKES_UNARMED 
 			);
 }
 
