@@ -8,6 +8,8 @@ const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
 const KEY_DOWN_ARROW = 40;
 
+const KEY_P = 80;
+
 
 function initInput(){
 	
@@ -28,6 +30,12 @@ function initInput(){
 function keyPressed(evt) {
 	setKeyHoldState(evt.keyCode, playerOne, true);
 	evt.preventDefault();
+	
+	var paused = KEY_P;
+	if(paused == evt.keyCode){
+		changePauseState();
+	}
+	
 }
 
 function keyReleased(evt) {
@@ -50,5 +58,13 @@ function setKeyHoldState(thisKey, thisWarrior, setTo) {
 	if(thisKey == thisWarrior.controlKeyForWest){
 		thisWarrior.keyHeld_West = setTo;
 	}
+}
+
+function changePauseState(){
+	if(pauseScreen){
+		pauseScreen = false;
+	} else {
+		pauseScreen = true;
+	}	
 }
 

@@ -7,6 +7,13 @@ var goblinList = [];
 var orcList = [];
 var ogreList = [];
 
+//game states
+var liveGame = true;
+var pauseScreen = false;
+var inventoryScreen = false;
+var mainMenu = false;
+
+
 window.onload = function(){
 			
 	canvas = document.getElementById('gameCanvas');
@@ -91,17 +98,19 @@ function addOgre(){
 			
 //All movement occurs here.  This is called every frame.
 function moveEverything() {
-	playerOne.movement();
-	for(var i = 0; i < goblinList.length; i++){
-		goblinList[i].movement();
+	if(liveGame){
+		playerOne.movement();
+		for(var i = 0; i < goblinList.length; i++){
+			goblinList[i].movement();
+		}
+		for(var i = 0; i < orcList.length; i++){
+			orcList[i].movement();
+		}
+		for(var i = 0; i < ogreList.length; i++){
+			ogreList[i].movement();
+		}
+		updatedCameraPosition();
 	}
-	for(var i = 0; i < orcList.length; i++){
-		orcList[i].movement();
-	}
-	for(var i = 0; i < ogreList.length; i++){
-		ogreList[i].movement();
-	}
-	updatedCameraPosition();
 }
 
 //This checks player and enemy collisions.  This is called every frame.
@@ -124,32 +133,34 @@ function checkAllPlayerAndEnemyCollisions(){
 		}
 	}
 	//check ogres
-	/*for(var i = 0; i < ogreList.length; i++){
+	for(var i = 0; i < ogreList.length; i++){
 		playerOne.checkCollisionsAgainst(ogreList[i]);
 		for(var ii = i+1; ii < orcList.length; ii++){
 		ogreList[i].checkCollisionsAgainst(ogreList[ii]);
 		ogreList[i].checkCollisionsAgainst(playerOne);
 		}
-	} */		
+	} 		
 }
 
 
 //All movement occurs here.  This is called every frame.
 function drawEverything() {
 	colorRect(0,0,canvas.width,canvas.height, 'black');
-	shiftForCameraPan();
-	drawTracks();
-	playerOne.draw();
-	for(var i = 0; i < goblinList.length; i++){
-		goblinList[i].draw();
+	if(liveGame){
+		shiftForCameraPan();
+		drawTracks();
+		playerOne.draw();
+		for(var i = 0; i < goblinList.length; i++){
+			goblinList[i].draw();
+		}
+		for(var i = 0; i < orcList.length; i++){
+			orcList[i].draw();
+		}
+		for(var i = 0; i < ogreList.length; i++){
+			ogreList[i].draw();
+		}
+		finishedCameraPan();
+		canvasContext.drawImage(feedbackGUIPic,0, canvas.height-50);
+		colorText("Keys: " + playerOne.keysHeld, 20, 582, "black", "14px Arial Black");
 	}
-	for(var i = 0; i < orcList.length; i++){
-		orcList[i].draw();
-	}
-	for(var i = 0; i < ogreList.length; i++){
-		ogreList[i].draw();
-	}
-	finishedCameraPan();
-	canvasContext.drawImage(feedbackGUIPic,0, canvas.height-50);
-	colorText("Keys: " + playerOne.keysHeld, 20, 582, "black", "14px Arial Black");
 }
