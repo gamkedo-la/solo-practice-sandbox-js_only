@@ -118,6 +118,10 @@ function enemyClass() {
 				this.y = nextY;
 				break;					
 			case TILE_WALL:
+			case TILE_SPIKES_ARMED:
+			case TILE_SPIKES_UNARMED:
+			case TILE_PITTRAP_ARMED:
+			case TILE_PITTRAP_UNARMED:
 			case TILE_TREASURE:
 			case TILE_FINISH:			
 			case TILE_YELLOW_DOOR:

@@ -21,7 +21,6 @@ function countLoadedImagesAndLaunchIfReady(){
 	}
 }
 
-
 function beginLoadingImage(imgVar, fileName) {
 	imgVar.onload = countLoadedImagesAndLaunchIfReady;
 	imgVar.src = "images/" + fileName;
@@ -63,7 +62,8 @@ function loadImages() {
 			{trackType: TILE_PITTRAP_ARMED, theFile: "track_road.png"},
 			{trackType: TILE_PITTRAP_UNARMED, theFile: "track_pittrap.png"},
 			{trackType: TILE_SPIKES_ARMED, theFile: "track_road.png"},
-			{trackType: TILE_SPIKES_UNARMED, theFile: "track_spikes.png"}
+			{trackType: TILE_SPIKES_UNARMED, theFile: "track_spikes.png"},
+			{trackType: TILE_STAIRS_DOWN, theFile: "stairsDown.png"}
 		];
 			
 	picsToLoad = imageList.length;
