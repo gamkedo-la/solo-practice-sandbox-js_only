@@ -55,6 +55,7 @@ function imageLoadingDoneSoStartGame(){
 		checkAllPlayerAndEnemyCollisions();
 		drawEverything();
 	}, 1000/framesPerSecond);
+	loadLevel(levelOne)
 	playerOne.init(warriorPic, "The Warrior");
 	for(var i = 0; i < roomGrid.length; i++){
 		if(roomGrid[i] == TILE_GOBLIN){
@@ -94,6 +95,42 @@ function addOgre(){
 	ogreList.push(tempEnemy);
 }
 
+function nextLevel() {
+	levelNow++;
+	if(levelNow > levelList.length) {
+		levelNow = 0;
+	}
+	loadLevel(levelList[levelNow]);
+}
+
+function loadLevel(whichLevel) {	
+	roomGrid = whichLevel.slice();
+	//playerOne.warriorReset();
+	
+	for(var i = 0; i < roomGrid.length; i++){
+		if(roomGrid[i] == TILE_GOBLIN){
+			addGoblin();
+		} 
+		if(roomGrid[i] == TILE_ORC){
+			addOrc();
+		}
+		if(roomGrid[i] == TILE_OGRE){
+			addOgre();
+		}
+	}
+	for(var i = 0; i < goblinList.length; i++){
+		goblinList[i].init(goblinPic, goblinNames[i], TILE_GOBLIN);
+	}
+	for(var i = 0; i < orcList.length; i++){
+		orcList[i].init(orcPic, orcNames[i], TILE_ORC);
+	}		
+	for(var i = 0; i < ogreList.length; i++){
+		ogreList[i].init(ogrePic, ogreNames[i], TILE_OGRE);
+	}
+	for(var i = ogreList.length; i > 0; i--){
+		goblinList[i].slice;
+	}	
+}
 
 			
 //All movement occurs here.  This is called every frame.

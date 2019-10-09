@@ -137,8 +137,10 @@ function warriorClass() {
 				roomGrid[walkIntoTileIndex] = TILE_ROAD;
 				break;			
 			case TILE_FINISH:
+			case TILE_STAIRS_DOWN:
+				loadLevel(levelOne);
+				break;
 			case TILE_STAIRS:
-				document.getElementById("debugText").innerHTML = this.myName + " won";
 				this.warriorReset();
 				break;			
 			case TILE_PITTRAP_ARMED:
