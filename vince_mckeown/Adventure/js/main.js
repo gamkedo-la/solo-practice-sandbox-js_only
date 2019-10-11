@@ -105,7 +105,7 @@ function nextLevel() {
 
 function loadLevel(whichLevel) {	
 	roomGrid = whichLevel.slice();
-	//playerOne.warriorReset();
+	playerOne.warriorReset();
 	
 	for(var i = 0; i < roomGrid.length; i++){
 		if(roomGrid[i] == TILE_GOBLIN){
