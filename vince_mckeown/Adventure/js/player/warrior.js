@@ -146,10 +146,12 @@ function warriorClass() {
 			case TILE_PITTRAP_ARMED:
 				this.takeDamageFromTrap(1);
 				roomGrid[walkIntoTileIndex] = TILE_PITTRAP_UNARMED;
+				crashIntoConeSound.play();
 				break;
 			case TILE_SPIKES_ARMED:
 				this.takeDamageFromTrap(1);
 				roomGrid[walkIntoTileIndex] = TILE_SPIKES_UNARMED;
+				crashIntoConeSound.play();
 				break;
 			case TILE_WALL:
 			case TILE_WALL_WITH_TORCH:
