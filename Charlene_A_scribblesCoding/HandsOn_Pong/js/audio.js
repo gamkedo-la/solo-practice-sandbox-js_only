@@ -12,5 +12,5 @@ function setFormat() {
 
 function loadSounds() {
     setFormat();
-    ballHitPaddleSound = new Audio("sound/ball_hit_paddle" + audioFormat);
+    ballHitPaddleSound = new Audio("../sound/ball_hit_paddle" + audioFormat);
 }

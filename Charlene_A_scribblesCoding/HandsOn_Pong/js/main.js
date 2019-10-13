@@ -28,31 +28,9 @@ window.onload = function() {
     drawEverything();
   }, 1000/framesPerSecond);
 
-  canvas.addEventListener('mousemove', function(evt) {
-    if (!isGameOver) {
-      var mousePos = calcMousePos(evt);
-      paddle1Y = mousePos.y - (PADDLE_HEIGHT/2);
-    }
-  });
-
-  canvas.addEventListener('dblclick', function(evt) {
-    if (isGameOver) {
-      if (playerSP > compSP) {
-        ballSpeedX = 6;
-        ballSpeedY = 6;            
-      } else {
-        ballSpeedX = -6;
-        ballSpeedY = -6;
-      }
-
-      playerSP = 0;
-      compSP = 0;
-      paddle1Y = 250;
-      paddle2Y = 250;         
-      
-      isGameOver = false;
-    }
-  });
+  canvas.addEventListener('mousemove', mousemoveHandler);
+  canvas.addEventListener('dblclick', dblclickHandler);
+  
 }
 
 function calcMousePos(evt) {
@@ -89,16 +67,6 @@ function ballReset(isPlayerScore) {
 function moveBallAngle(paddle) {
   var middle = paddle + PADDLE_HEIGHT / 2;
   ballSpeedY = ballY - middle;
-}
-
-function moveComputerPaddle() {
-  var middle = paddle2Y + PADDLE_HEIGHT / 2;
-  
-  if (ballY > middle + 25) {
-    paddle2Y += 8;
-  } else if (ballY < middle - 25) {
-    paddle2Y -= 8;
-  }
 }
 
 function moveEverything() {
@@ -141,18 +109,6 @@ function moveEverything() {
   ballSpeedY = Math.abs(ballSpeedY) > MAX_BALL_SPEED ? Math.sign(ballSpeedY) * MAX_BALL_SPEED : ballSpeedY;
   ballX += ballSpeedX;
   ballY += ballSpeedY;
-}
-
-function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
-  canvasContext.fillStyle = fillColor;
-  canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
-}
-
-function colorCircle(centerX, centerY, radius, fillColor) {
-  canvasContext.fillStyle = fillColor;
-  canvasContext.beginPath();
-  canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
-  canvasContext.fill();
 }
 
 function drawEverything() {
