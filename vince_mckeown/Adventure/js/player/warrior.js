@@ -69,9 +69,12 @@ function warriorClass() {
 		
 		var nextX = this.x; 
 		var nextY = this.y; 
+		var collisionX = nextX;
+		var collisionY = nextY;
 		
 		if(this.keyHeld_North && this.keyHeld_West){
 			nextY -= this.playerMovementSpeed;
+			collisionY = nextY 
 		} else if(this.keyHeld_North && this.keyHeld_East){
 			nextX += this.playerMovementSpeed;
 			this.miniMapX += this.playerMovementSpeed/10;

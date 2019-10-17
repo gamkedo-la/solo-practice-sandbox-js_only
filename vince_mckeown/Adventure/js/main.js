@@ -6,6 +6,7 @@ var playerOne = new warriorClass();
 var goblinList = [];
 var orcList = [];
 var ogreList = [];
+var ratList = [];
 
 //game states
 var liveGame = true;
@@ -77,6 +78,9 @@ function imageLoadingDoneSoStartGame(){
 	for(var i = 0; i < ogreList.length; i++){
 		ogreList[i].init(ogrePic, ogreNames[i], TILE_OGRE);
 	}
+	for(var i = 0; i < ratList.length; i++){
+		ratList[i].init(ratPic, ratNames[i], TILE_RAT);
+	}
 }
 
 //Adds an enemy 
@@ -93,6 +97,11 @@ function addOrc(){
 function addOgre(){
 	var tempEnemy = new enemyClass();
 	ogreList.push(tempEnemy);
+}
+
+function addRat(){
+	var tempEnemy = new ratClass();
+	ratList.push(tempEnemy);
 }
 
 function nextLevel() {
@@ -117,6 +126,9 @@ function loadLevel(whichLevel) {
 		if(roomGrid[i] == TILE_OGRE){
 			addOgre();
 		}
+		if(roomGrid[i] == TILE_RAT){
+			addRat();
+		}
 	}
 	for(var i = 0; i < goblinList.length; i++){
 		goblinList[i].init(goblinPic, goblinNames[i], TILE_GOBLIN);
@@ -127,9 +139,10 @@ function loadLevel(whichLevel) {
 	for(var i = 0; i < ogreList.length; i++){
 		ogreList[i].init(ogrePic, ogreNames[i], TILE_OGRE);
 	}
-	for(var i = ogreList.length; i > 0; i--){
-		goblinList[i].slice;
-	}	
+	for(var i = 0; i < ratList.length; i++){
+		ratList[i].init(ratPic, ogreNames[i], TILE_OGRE);
+	}
+
 }
 
 			
@@ -145,6 +158,9 @@ function moveEverything() {
 		}
 		for(var i = 0; i < ogreList.length; i++){
 			ogreList[i].movement();
+		}
+		for(var i = 0; i < ratList.length; i++){
+			ratList[i].movement();
 		}
 		updatedCameraPosition();
 	}
@@ -176,7 +192,15 @@ function checkAllPlayerAndEnemyCollisions(){
 		ogreList[i].checkCollisionsAgainst(ogreList[ii]);
 		ogreList[i].checkCollisionsAgainst(playerOne);
 		}
-	} 		
+	}
+	//check rats
+	for(var i = 0; i < ratList.length; i++){
+		playerOne.checkCollisionsAgainst(ratList[i]);
+		for(var ii = i+1; ii < ratList.length; ii++){
+		ratList[i].checkCollisionsAgainst(ratList[ii]);
+		ratList[i].checkCollisionsAgainst(playerOne);
+		}
+	} 
 }
 
 
@@ -195,6 +219,9 @@ function drawEverything() {
 		}
 		for(var i = 0; i < ogreList.length; i++){
 			ogreList[i].draw();
+		}
+		for(var i = 0; i < ratList.length; i++){
+			ratList[i].draw();
 		}
 		finishedCameraPan();
 		canvasContext.drawImage(feedbackGUIPic,0, canvas.height-50);
