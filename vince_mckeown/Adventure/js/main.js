@@ -8,6 +8,13 @@ var orcList = [];
 var ogreList = [];
 var ratList = [];
 
+function resetEnemyLists(){
+	goblinList = [];
+	orcList = [];
+	ogreList = [];
+	ratList = [];
+}
+
 //game states
 var liveGame = true;
 var pauseScreen = false;
@@ -113,6 +120,7 @@ function nextLevel() {
 }
 
 function loadLevel(whichLevel) {	
+	resetEnemyLists();
 	roomGrid = whichLevel.slice();
 	playerOne.warriorReset();
 	
@@ -142,7 +150,7 @@ function loadLevel(whichLevel) {
 	for(var i = 0; i < ratList.length; i++){
 		ratList[i].init(ratPic, ogreNames[i], TILE_OGRE);
 	}
-
+	console.log("Finish Load Level");
 }
 
 			

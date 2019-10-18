@@ -37,22 +37,21 @@ function warriorClass() {
 		this.speed = 0;
 		this.keysHeld = 1;
 					
-		if(this.homeX == undefined) {
-			for(var i=0; i<roomGrid.length; i++){
-				if( roomGrid[i] == TILE_PLAYER) {
-					var tileRow = Math.floor(i/ROOM_COLS);
-					var tileCol	= i%ROOM_COLS;
-					var tileLeftEdgeX = 700
-					var tileTopEdgeY = 0;
-	
-					this.homeX = tileCol * ROOM_W + 0.5 * ROOM_W; 
-					this.homeY = tileRow * ROOM_H + 0.5 * ROOM_H; 
+		for(var i=0; i<roomGrid.length; i++){
+			if( roomGrid[i] == TILE_PLAYER) {
+				var tileRow = Math.floor(i/ROOM_COLS);
+				var tileCol	= i%ROOM_COLS;
+				var tileLeftEdgeX = 700
+				var tileTopEdgeY = 0;
 
-					roomGrid[i] = TILE_ROAD;
-					break;
-				}
+				this.homeX = tileCol * ROOM_W + 0.5 * ROOM_W; 
+				this.homeY = tileRow * ROOM_H + 0.5 * ROOM_H; 
+
+				roomGrid[i] = TILE_ROAD;
+				break;
 			}
 		}
+	
 		this.x = this.homeX;
 		this.y = this.homeY;
 		this.miniMapX = this.homeX + 750;
@@ -141,7 +140,8 @@ function warriorClass() {
 				break;			
 			case TILE_FINISH:
 			case TILE_STAIRS_DOWN:
-				loadLevel(levelOne);
+				console.log("Stair 2");
+				loadLevel(levelTwo);
 				break;
 			case TILE_STAIRS:
 				this.warriorReset();
