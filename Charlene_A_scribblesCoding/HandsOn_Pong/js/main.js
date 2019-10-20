@@ -4,6 +4,7 @@ var ballX = 75, ballY = 75;
 var ballSpeedX = 10, ballSpeedY = 6;
 var canvas, canvasContext;
 var framesPerSecond = 30;
+var awayFromSides = 20;
 
 var paddle1Y = 250, paddle2Y = 350;
 const PADDLE_HEIGHT = 80;
@@ -74,27 +75,31 @@ function moveEverything() {
   moveComputerPaddle();
 
   // if ball moves beyond the right edge, reverse direction
-  if (ballX > canvas.width - PADDLE_THICKNESS) {
+  if (ballX > canvas.width - PADDLE_THICKNESS - awayFromSides) {
     // positive value = to the right, negative value = to the left
     if (ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT) {
       ballHitPaddleSound.play();
       ballSpeedX *= -1;
       moveBallAngle(paddle2Y);
     } else {
-      // computer win +1
-      // otherwise, reset the ball back
-      ballReset(true);
+      if (ballX > canvas.width - PADDLE_THICKNESS) {
+        // computer win +1
+        // otherwise, reset the ball back
+        ballReset(true);
+      }
     }
-  } else if (ballX < PADDLE_THICKNESS) {
+  } else if (ballX < PADDLE_THICKNESS + awayFromSides) {
     // ball bounces back to the other side of the screen
     if (ballY > paddle1Y && ballY < paddle1Y + PADDLE_HEIGHT) {
       ballHitPaddleSound.play();
       ballSpeedX *= -1;
       moveBallAngle(paddle1Y); 
     } else {
-      // player win +1
-      // otherwise, reset the ball back          
-      ballReset(false);
+      if (ballX < PADDLE_THICKNESS) {
+        // player win +1
+        // otherwise, reset the ball back
+        ballReset(false);
+      }
     }
   } else if (ballY > canvas.height) {
     ballSpeedY *= -1;
@@ -124,10 +129,10 @@ function drawEverything() {
   }
 
   // <-- paddle --> //
-  colorRect(0, paddle1Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'white');
+  colorRect(awayFromSides, paddle1Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'white');
 
   // <-- Computer paddle --> //
-  colorRect(canvas.width - PADDLE_THICKNESS, paddle2Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'white');
+  colorRect(canvas.width - PADDLE_THICKNESS - awayFromSides, paddle2Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'white');
 
   // <-- white circle --> //
   // canvasContext.fillStyle = 'white';
