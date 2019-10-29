@@ -14,3 +14,11 @@ If you want to just browse the solution or compare to it, the solutions folder s
 
 Disclaimer, exploration here is visualized per cycle, instead of done instantly / all at once:
 In order to make the algorithm easier to visualize, this code is written to advance exploration by a single tile step per cycle. This gives the program a chance to incrementally update the display so you can see how or where it is searching, and in what order, useful to either troubleshoot wrong behavior or to better see what's going on when it is working. In a typical implementation for a game instead of incrementing a single tile of exploration per cycle, the A* will instead be executed in a loop that momentarily ties up execution until related computation is finished and an answer is found. Most games that use pathfinding do something like this only periodically (ex. when an RTS unit is given move orders) and then only check if there's a need to update it every few seconds or upon running into an unexpected obstacle, rather than re-calculating every frame.
+
+Solutions behavior (full code of which is also here in this folder in the solo sandbox, but viewing these as URLs in browser may help reduce not peeking ahead at the solutions):
+
+Non-A* (Dijsktra):
+https://gamkedo-la.github.io/solo-practice-sandbox/example_starter_js_to_copy_to_your_folder/html5%20pathfinding%20a-star/solutions/dijkstra%20non-a-star/index.html
+
+With A* heuristic added:
+https://gamkedo-la.github.io/solo-practice-sandbox/example_starter_js_to_copy_to_your_folder/html5%20pathfinding%20a-star/solutions/using%20a-star%20heuristic/index.html
