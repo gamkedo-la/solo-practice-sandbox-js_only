@@ -1,4 +1,4 @@
-# Ryan's Gamkedo Practice Lab
+# Ryan's HomeTeam GameDev Practice Lab
   
 Resurrecting my doodles project as a project-within-a-project at Gamkedo!
 
