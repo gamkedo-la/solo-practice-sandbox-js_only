@@ -1,0 +1,95 @@
+<html>
+​
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+​
+<script>
+var c;
+var ctx;
+var posX = 100;
+var posY = 100;
+var lastPosX = posX;
+var lastPosY = posY;
+const ELEMENT_WIDTH = 50;
+const ELEMENT_HEIGHT = 50;
+var mouseToDrag = false;
+ var mousePos = {x:0, y:0};
+
+
+window.onload = function() {
+	c = document.getElementById('gameCanvas');
+	ctx = c.getContext('2d');
+
+	var fps = 30;
+	setInterval(function() {
+			moveEverything();
+			drawEverything();	
+		}, 1000/fps);
+
+	c.addEventListener('mousemove', mouseMovesObject);
+	c.addEventListener('mousedown', mouseDrag);
+	c.addEventListener('mouseup', noMouseDrag);
+}
+
+function drawEverything() {
+	drawRect(0, 0, c.width, c.height, 'black');
+	drawRect(lastPosX, lastPosY, ELEMENT_WIDTH, ELEMENT_HEIGHT, 'white');
+	}
+
+function moveEverything() {
+//not needed for now
+	}
+
+
+function mouseMovesObject(evt) {
+	mousePos = calculateMousePos(evt);
+	if (mouseToDrag) {
+		console.log("drag");
+		lastPosX = mousePos.x;
+		lastPosY = mousePos.y;
+		}
+		else {
+		console.log("nodrag");
+		lastPosX = lastPosX ;
+		lastPosY = lastPosY;
+		//if you want the square to snap back to original position when mouse is not dragging:
+		//lastPosX = posX;
+		//lastPosY = posY;
+		 }
+	}
+	
+
+function noMouseDrag(evt) {
+	mouseToDrag = false;
+	}
+
+function mouseDrag(evt) {
+	if( overlapPointRect(mousePos, {x1:lastPosX, y1:lastPosY, x2:lastPosX+ELEMENT_WIDTH, y2:lastPosY+ELEMENT_HEIGHT}) ){
+		mouseToDrag = true;
+	}	
+}
+
+function calculateMousePos(evt) {
+	var rect = c.getBoundingClientRect();
+	var root = document.documentElement;
+	var mouseX = evt.clientX - rect.left - root.scrollLeft;
+	var mouseY = evt.clientY - rect.top - root.scrollTop;
+	return {
+		x:mouseX,
+		y:mouseY
+	};
+}
+
+function drawRect(leftX, topY, width, height, color) {
+	ctx.fillStyle = color;
+	ctx.fillRect (leftX, topY, width, height);
+	}
+
+function overlapPointRect(point, rect){
+	console.log(point, rect, (point.x > rect.x1 && point.x < rect.x2 && point.y > rect.y1 && point.y < rect.y2))
+	return point.x > rect.x1 && point.x < rect.x2 && point.y > rect.y1 && point.y < rect.y2;
+}
+
+
+</script>
+</html>
+
