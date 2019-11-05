@@ -15,11 +15,10 @@ function init() {
   hero = {
     x: c.width/2,
     y: c.height/2,
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
     speed: 5,
-    color: "#505",
-    moveColor: "#959"
+    color: "red",
   }
   
   //initialize  event listeners--------------------------
@@ -53,23 +52,19 @@ function loop(dt){
 
 function step(dt){
 //let rad = panel.getValue("radius");
-  hero.moving = false;
+
   //handle left-right movement
   if( Key.isDown(Key.a) || Key.isDown(Key.LEFT) ){
     hero.x -= hero.speed;
-    hero.moving = true;
   }else if(Key.isDown(Key.d) || Key.isDown(Key.RIGHT) ){
     hero.x += hero.speed;
-    hero.moving = true;
   }
 
   //handle up-down movement
   if( Key.isDown(Key.w) || Key.isDown(Key.UP) ){
     hero.y -= hero.speed;
-    hero.moving = true;
   }else if(Key.isDown(Key.s) || Key.isDown(Key.DOWN) ){
     hero.y += hero.speed;
-    hero.moving = true;
   }
 
 }
@@ -80,7 +75,7 @@ function draw(dt){
   ctx.fillRect(0,0, c.width, c.height);
 
   //draw our hero
-  ctx.fillStyle = hero.moving ? hero.moveColor : hero.color;
+  ctx.fillStyle = hero.color;
   ctx.fillRect(hero.x, hero.y, hero.width, hero.height);
 }
 
