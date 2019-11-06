@@ -45,3 +45,19 @@
             this._released = {};
         }
     };
+
+    function calculateMousePos(evt) {
+        var rect = c.getBoundingClientRect();
+        var root = document.documentElement;
+        var mouseX = evt.clientX - rect.left - root.scrollLeft;
+        var mouseY = evt.clientY - rect.top - root.scrollTop;
+        return {
+            x:mouseX,
+            y:mouseY
+        };
+    }
+
+    function overlapPointRect(point, rect){
+        console.log(point, rect, (point.x > rect.x1 && point.x < rect.x2 && point.y > rect.y1 && point.y < rect.y2))
+        return point.x > rect.x1 && point.x < rect.x2 && point.y > rect.y1 && point.y < rect.y2;
+    }
