@@ -14,11 +14,11 @@ function init() {
   squares = [];
   for(let i = 2000; i > 0; i--){
     squares.push({
-      yvel: Math.random()*3,
+      yvel: Math.random()/10,
       x: Math.random()*512,
       y: Math.random()*512,
-      width: Math.random()*7 + 5,
-      height: Math.random()*7 + 5,
+      width: Math.random()*10 + 5,
+      height: Math.random()*17 + 5,
       dragged: false,
       selected: false,
       hue: Math.random()*360,
