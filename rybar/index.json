@@ -25,6 +25,14 @@
 
    "191105": {
     "tags": "gamedev, mouse, drag, ui, interaction, color change"
- }
+   },
+
+   "191106": {
+    "tags": "mouse, drag, ui, interaction, color change, lights, glow"
+   },
+
+   "191107": {
+    "tags": "mouse, drag, ui, interaction, color change, lights, glow, procedural animation"
+   }
 
 }
