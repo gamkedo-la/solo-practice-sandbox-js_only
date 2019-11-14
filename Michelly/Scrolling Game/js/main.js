@@ -4,12 +4,11 @@ const KEY_SPACE = 32;
 let canvas, canvasContext;
 const CANVAS_HEIGHT = 600;
 const CANVAS_WIDTH = 800;
-const distFromLeftEdge = 100;
 
 let player = new Player();
-let obstacle = new Obstacle();
-
+let obstacles = [];
 const floor = CANVAS_HEIGHT - player.height;
+let frameCount = 0;
 
 function handleInput(e) {
   e.preventDefault();
@@ -31,20 +30,17 @@ window.onload = function() {
 };
 
 function update() {
+  afterSomeTimeAddObs();
   moveEverything();
   drawEverything();
 }
 
 function moveEverything() {
-  applyGravity();
-  obstacleOffscreen();
-}
+  applyGravityToPlayer();
 
-function applyGravity() {
-  const gravity = 1.5;
-
-  if (player.y < floor) {
-    player.y += gravity;
+  // Move obstacles
+  for (let i = 0; i < obstacles.length; i++) {
+    obstacles[i].move();
   }
 }
 
@@ -52,25 +48,23 @@ function drawEverything() {
   // Clear screen
   drawRect(0, 0, canvas.width, canvas.height, 'black');
 
-  // Save current canvas state
-  canvasContext.save();
-
-  // Translate canvas origin
-  canvasContext.translate(-player.x + distFromLeftEdge, 0);
-
   // Draw obstacles
-  obstacle.draw();
+  for (let i = obstacles.length - 1; i >= 0; i--) {
+    obstacles[i].draw();
+    if (obstacles[i].obstacleOffscreen()) {
+      obstacles.splice(i, 1);
+    }
+  }
 
   // Draw player
   player.draw();
-
-  // Restore canvas to previously saved state
-  canvasContext.restore();
-
-  // console.log(player.x, obstacle.x, player.x + distFromLeftEdge);
 }
 
 function drawRect(x, y, w, h, color) {
   canvasContext.fillStyle = color;
   canvasContext.fillRect(x, y, w, h);
+}
+
+function randomRange(myMin, myMax) {
+  return Math.floor(Math.random() * (myMax - myMin)) + myMin;
 }

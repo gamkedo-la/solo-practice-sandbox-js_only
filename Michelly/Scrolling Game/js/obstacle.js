@@ -1,24 +1,28 @@
 function Obstacle() {
   this.width = 25;
   this.height = 25;
-  this.x = CANVAS_WIDTH - distFromLeftEdge;
+  this.x = CANVAS_WIDTH;
   this.y = CANVAS_HEIGHT - this.height;
+  this.xSpeed = -3;
 
   this.draw = function() {
-    drawRect(this.x, this.y, this.width, this.height, 'white');
+    drawRect(this.x, this.y, this.width, this.height, 'red');
+  };
+
+  this.obstacleOffscreen = function() {
+    return this.x < 0 ? true : false;
+  };
+
+  this.move = function() {
+    this.x += this.xSpeed;
   };
 }
 
-function obstacleOffscreen() {
-  // Check if the obstacle reached the left edge of the canvas
-  // If so, restart it on the right side of the canvas
-  const obsRightEdge = obstacle.x + obstacle.width;
-  // Subtracting distFromLeftEdge from the player left side, we get the canvas left side; the player is draw always 100px from the start of the canvas
-  // Take in consideration that we are translating the canvas's origin
-  const canvasLeftEdge = player.x - distFromLeftEdge;
+function afterSomeTimeAddObs() {
+  frameCount++;
+  const frameToDraw = frameCount + randomRange(1, 8);
 
-  if (obsRightEdge < canvasLeftEdge) {
-    // Put the obstacle back on the right side
-    obstacle.x = canvasLeftEdge + CANVAS_WIDTH;
+  if (frameToDraw % 50 === 0) {
+    obstacles.push(new Obstacle());
   }
 }
