@@ -34,3 +34,35 @@ function applyGravityToPlayer() {
     player.y += player.ySpeed;
   }
 }
+
+function collisionCheck() {
+  const obsRightEdge = obstacles[0].x + obstacles[0].width;
+  const obsBottomEdge = obstacles[0].y + obstacles[0].height;
+  const obsLeftEdge = obstacles[0].x;
+  const obsTop = obstacles[0].y;
+
+  const playerLeftSide = player.x;
+  const playerRightSide = player.x + player.width;
+  const playerBottom = player.y + player.height;
+
+  // Check if player hits the first obstacle
+  if (
+    playerLeftSide < obsRightEdge &&
+    playerRightSide > obsLeftEdge &&
+    playerBottom > obsTop &&
+    playerBottom <= obsBottomEdge
+  ) {
+    gameOver = true;
+    return;
+  }
+
+  if (playerBottom < floor && playerRightSide > obsLeftEdge && playerLeftSide < obsRightEdge) {
+    addPoint = true;
+  }
+
+  if (addPoint && playerLeftSide > obsRightEdge) {
+    score++;
+    addPoint = false;
+    checkHighestScore();
+  }
+}
