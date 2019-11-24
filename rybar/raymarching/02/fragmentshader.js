@@ -5,6 +5,7 @@ uniform vec2 resolution;
 void main( void ) {
     
     vec2 p = gl_FragCoord.xy / resolution.xy;
+    p.x *= resolution.x / resolution.y; //correct aspect ratio
     p -= vec2(0.5, 0.5);
     float r = sqrt( dot(p,p));
     float a = atan( p.y, p.x);
