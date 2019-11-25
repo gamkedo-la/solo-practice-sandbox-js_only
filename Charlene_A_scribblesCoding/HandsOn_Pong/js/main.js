@@ -14,21 +14,34 @@ var playerSP = 0;
 var compSP = 0;
 var winningScore = 11;
 var isGameOver = false;
+var isGameStarted = false;
 
 window.onload = function() {
-  loadSounds();
-
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');      
+  //loadSounds();
 
-  setInterval(function() {
-    console.log(isGameOver);
-    if (!isGameOver) {
-      moveEverything();
-    }        
-    drawEverything();
+  // Title screen, cheating by making it black on white text,
+  // So when the game starts, it "disappears" into the background
+  canvasContext.font = "48px serif";
+  canvasContext.fillStyle = "black";
+  canvasContext.fillText("Welcome to Pong!", 200, 200);
+  canvasContext.font = "30px serif";
+  canvasContext.fillText("Click anywhere to start playing", 180, 250);
+
+  canvas.addEventListener('click', function(e) {
+    isGameStarted = true;
+  });
+
+  setInterval(function() {    
+    if (isGameStarted == true) {
+      if (!isGameOver) {
+        moveEverything();
+      }        
+  
+      drawEverything();
+    }
   }, 1000/framesPerSecond);
-
   canvas.addEventListener('mousemove', mousemoveHandler);
   canvas.addEventListener('dblclick', dblclickHandler);
   
@@ -78,7 +91,7 @@ function moveEverything() {
   if (ballX > canvas.width - PADDLE_THICKNESS - awayFromSides) {
     // positive value = to the right, negative value = to the left
     if (ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT) {
-      ballHitPaddleSound.play();
+      //ballHitPaddleSound.play();
       ballSpeedX *= -1;
       moveBallAngle(paddle2Y);
     } else {
@@ -91,7 +104,7 @@ function moveEverything() {
   } else if (ballX < PADDLE_THICKNESS + awayFromSides) {
     // ball bounces back to the other side of the screen
     if (ballY > paddle1Y && ballY < paddle1Y + PADDLE_HEIGHT) {
-      ballHitPaddleSound.play();
+      // ballHitPaddleSound.play();
       ballSpeedX *= -1;
       moveBallAngle(paddle1Y); 
     } else {
@@ -114,6 +127,12 @@ function moveEverything() {
   ballSpeedY = Math.abs(ballSpeedY) > MAX_BALL_SPEED ? Math.sign(ballSpeedY) * MAX_BALL_SPEED : ballSpeedY;
   ballX += ballSpeedX;
   ballY += ballSpeedY;
+}
+
+function drawStartScreen() {
+  colorRect(0, 0, canvas.width, canvas.height, 'green');
+  canvasContext.font = '36px serif';
+  canvasContext.fillText("Press ENTER to play PONG!", 275, 100);
 }
 
 function drawEverything() {

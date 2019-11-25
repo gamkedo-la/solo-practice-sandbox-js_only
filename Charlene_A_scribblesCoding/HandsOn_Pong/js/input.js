@@ -1,7 +1,7 @@
 function mousemoveHandler(evt) {
     if (!isGameOver) {
       var mousePos = calcMousePos(evt);
-      ballHitPaddleSound.play();
+      // ballHitPaddleSound.play();
       paddle1Y = mousePos.y - (PADDLE_HEIGHT/2);
     }
 }
