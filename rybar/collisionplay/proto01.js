@@ -22,48 +22,52 @@ window.ctx = c.getContext('2d');
 
 const whiteBall = {x: 0.5, y:0.5, r: 0.25, fill: 'white'}
 const pointsA = [];
-for(let i = 0; i < 2000; i++){
+for(let i = 0; i < 7000; i++){
     let x = Math.random();
     let y = Math.random();
     let collides = pointCircle( x, y, whiteBall.x, whiteBall.y, whiteBall.r )
-    if(!collides) pointsA.push( { x: x, y: y, fill: Math.random()>0.5?'chartreuse':'yellow' } )
+    if(!collides) pointsA.push( { hit:false, x: x, y: y, fill: Math.random()>0.5?'chartreuse':'yellow' } )
 }
 function render(){
-    ctx.save();
+    //ctx.save();
 
-    ctx.fillStyle="#202";
+    ctx.fillStyle="rgba(30,0,30,0.2)";
+    //ctx.globalAlpha = 0.9;
     ctx.fillRect(0,0,c.width,c.height);
 
-    // ctx.fillStyle='white';
-    // for(let i = 0; i < 400; i++){
-    //     let j = i/400 * 6.283185;
-    //     let x = whiteBall.x + Math.cos(j)*whiteBall.r;
-    //     let y = whiteBall.y + Math.sin(j)*whiteBall.r;
-    //     ctx.fillRect(posX(x), posY(y), 2, 2)
-    // }
-
-    // ctx.fillStyle=whiteBall.fill;
-    // circle( posX(whiteBall.x), posY(whiteBall.y), posX(whiteBall.r) );
-
-    // ctx.fillStyle='#fff'
-    // circle( 376, 376, 188 );
     
-    // ctx.arc(376,376,188,0,6.283185306);
-    // ctx.fill();
     ctx.fillStyle = 'white';
-    polyCircle(whiteBall.x, whiteBall.y, whiteBall.r, 20);
+    polyCircle(whiteBall.x, whiteBall.y, whiteBall.r, 60);
     
     pointsA.forEach(function(e){
         ctx.fillStyle = e.fill;
-        pset( posX(e.x), posY(e.y) )
+        if(e.hit){
+            ctx.fillStyle="#aaf";
+            polyCircle(e.prevX, e.prevY, .01, 10);
+            
+        }
+        else {
+            pset( posX(e.x), posY(e.y) )
+        }
+        e.hit = false;
+        
     })
-    ctx.restore();
+    //ctx.restore();
 
 }
 
 function update(){
     pointsA.forEach(function(e){
+
         e.fill=='chartreuse'?e.x += 0.005 : e.y+=0.005;
+        if(pointCircle( e.x, e.y, whiteBall.x, whiteBall.y, whiteBall.r )){
+            
+            e.hit = true;
+            e.prevX = e.x;
+            e.prevY = e.y;
+            e.fill=='chartreuse'?e.x -= Math.random()+1 : e.y -= Math.random()+1;
+            
+        }
         if(e.x > 1) e.x -= 1;
         if(e.y > 1) e.y -= 1;
     })
