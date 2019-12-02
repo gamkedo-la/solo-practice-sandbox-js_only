@@ -79,6 +79,7 @@ float cnoise(vec2 P)
 }
 
 /* #endregion */
+
 //the signed distance field function
 //used in the ray march loop
 float map(vec3 p) {
@@ -87,8 +88,9 @@ float map(vec3 p) {
   float d = length( p ) - 1.;
 
   //a ground plane
-  float d2 = pos.y + 0.1;
+  float d2 = p.y + 0.9;
   return min(d, d2);
+
 }
 
 vec3 calcNormal( in vec3 pos )
