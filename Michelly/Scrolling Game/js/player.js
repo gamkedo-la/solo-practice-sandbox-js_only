@@ -1,23 +1,38 @@
 function Player() {
   this.height = 50;
-  this.width = 20;
+  this.width = 25;
   this.x = 100;
-  this.y = CANVAS_HEIGHT - this.height;
+  this.y = floor - this.height;
   this.ySpeed = 0;
+  this.jumping = false;
+  this.animation = new Animation();
 
   const JUMP = -8;
 
   this.move = function() {
     // Check if player isn't already jumping
-    if (this.y >= floor) {
+    if (this.y + this.height >= floor) {
       // Make player jump
       this.ySpeed = JUMP;
       this.y += this.ySpeed;
+      // Play sound
+      jumpSound.play();
     }
   };
 
   this.draw = function() {
-    drawRect(this.x, this.y, this.width, this.height, 'blue');
+    // drawRect(this.x, this.y, this.width, this.height, 'white');
+    canvasContext.drawImage(
+      spriteSheet.image,
+      this.animation.spriteNumber * SPRITE_SIZE,
+      0,
+      SPRITE_SIZE,
+      SPRITE_SIZE,
+      this.x - 10,
+      this.y,
+      SPRITE_SIZE * 3,
+      SPRITE_SIZE * 3
+    );
   };
 }
 
@@ -25,9 +40,10 @@ function applyGravityToPlayer() {
   const gravity = 0.5;
 
   // if player hits the floor, don't apply gravity
-  if (player.y >= floor) {
+  if (player.y + player.height >= floor) {
+    player.jumping = false;
     player.ySpeed = 0;
-    player.y = floor;
+    player.y = floor - player.height;
   } else {
     // If player is on the air, apply gravity
     player.ySpeed += gravity;
@@ -53,6 +69,7 @@ function collisionCheck() {
     playerBottom <= obsBottomEdge
   ) {
     gameOver = true;
+    gameOverSound.play();
     return;
   }
 
@@ -63,6 +80,6 @@ function collisionCheck() {
   if (addPoint && playerLeftSide > obsRightEdge) {
     score++;
     addPoint = false;
-    checkHighestScore();
+    checkAndSetHighestScore();
   }
 }
