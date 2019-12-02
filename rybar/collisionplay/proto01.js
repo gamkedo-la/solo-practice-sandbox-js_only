@@ -1,4 +1,4 @@
-import { circle, pset, posX, posY } from './js/graphics.js';
+import { circle, pset, posX, posY, polyCircle } from './js/graphics.js';
 import { pointCircle } from './js/collision.js';
 import Stats from './js/stats.module.js';
 
@@ -34,14 +34,24 @@ function render(){
     ctx.fillStyle="#202";
     ctx.fillRect(0,0,c.width,c.height);
 
+    // ctx.fillStyle='white';
+    // for(let i = 0; i < 400; i++){
+    //     let j = i/400 * 6.283185;
+    //     let x = whiteBall.x + Math.cos(j)*whiteBall.r;
+    //     let y = whiteBall.y + Math.sin(j)*whiteBall.r;
+    //     ctx.fillRect(posX(x), posY(y), 2, 2)
+    // }
+
     // ctx.fillStyle=whiteBall.fill;
     // circle( posX(whiteBall.x), posY(whiteBall.y), posX(whiteBall.r) );
 
     // ctx.fillStyle='#fff'
     // circle( 376, 376, 188 );
     
-    ctx.arc(376,376,188,0,6.283185306);
-    ctx.fill();
+    // ctx.arc(376,376,188,0,6.283185306);
+    // ctx.fill();
+    ctx.fillStyle = 'white';
+    polyCircle(whiteBall.x, whiteBall.y, whiteBall.r, 20);
     
     pointsA.forEach(function(e){
         ctx.fillStyle = e.fill;

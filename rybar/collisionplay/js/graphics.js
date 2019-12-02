@@ -4,6 +4,19 @@ export function circle(x, y, r){
     ctx.fill();
 }
 
+export function polyCircle(x,y,r,sides){
+    ctx.beginPath();
+    for(let i = 0; i < sides; i++){
+        let j = i/sides * 6.283185;
+        let px = x + Math.cos(j)*r;
+        let py = y + Math.sin(j)*r;
+        //ctx.moveTo(px, py);
+        ctx.lineTo(posX(px),posY(py));
+    }
+    ctx.closePath();
+    ctx.fill();
+}
+
 export function pset(x,y){
     //assumes global ctx
     ctx.fillRect(x,y,2,2);
