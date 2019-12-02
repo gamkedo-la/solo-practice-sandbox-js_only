@@ -30,7 +30,7 @@ for(let i = 0; i < 2000; i++){
 }
 function render(){
     ctx.save();
-    
+
     ctx.fillStyle="#202";
     ctx.fillRect(0,0,c.width,c.height);
 
@@ -40,8 +40,8 @@ function render(){
     // ctx.fillStyle='#fff'
     // circle( 376, 376, 188 );
     
-    // ctx.arc(376,376,188,0,6.283185306);
-    // ctx.fill();
+    ctx.arc(376,376,188,0,6.283185306);
+    ctx.fill();
     
     pointsA.forEach(function(e){
         ctx.fillStyle = e.fill;
