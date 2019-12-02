@@ -1,12 +1,12 @@
 export function circle(x, y, r){
     //assumes global ctx
-    ctx.arc(x,y,r,0,Math.PI*2);
+    ctx.arc(x,y,r,0,6.283185306);
     ctx.fill();
 }
 
 export function pset(x,y){
     //assumes global ctx
-    ctx.fillRect(Math.floor(x),Math.floor(y),1,1);
+    ctx.fillRect(x,y,2,2);
 }
 
 export function posX(normalized){

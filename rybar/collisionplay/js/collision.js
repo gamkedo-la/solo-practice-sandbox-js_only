@@ -5,7 +5,7 @@ export function pointPoint(x1, y1, x2, y2){
 export function pointCircle(px, py, cx, cy, r){
     let distX = px - cx;
     let distY = py - cy;
-    let distance = hypot(distX, distY);
+    let distance = Math.hypot(distX, distY);
     
     return distance <= r;
 }

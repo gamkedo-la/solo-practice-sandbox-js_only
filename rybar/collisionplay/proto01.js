@@ -1,5 +1,10 @@
 import { circle, pset, posX, posY } from './js/graphics.js';
-import {pointCircle} from './js/collision.js';
+import { pointCircle } from './js/collision.js';
+import Stats from './js/stats.module.js';
+
+const stats = new Stats();
+stats.showPanel( 1 ); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild( stats.dom );
 
 const bgcanvas = document.getElementById('bg');
 bgcanvas.width = window.innerWidth;
@@ -12,22 +17,57 @@ bgctx.fillRect(0,0,bgcanvas.width, bgcanvas.height);
 window.c=document.getElementById("c")
 c.width = window.innerHeight * .8
 c.height = window.innerHeight * .8
+console.log(c.width, c.height);
 window.ctx = c.getContext('2d');
-ctx.fillStyle="#202";
-ctx.fillRect(0,0,c.width,c.height);
-ctx.fillStyle="white";
-circle( posX(0.5), posY(0.5), posX(0.25) );
 
-const points = [];
-for(let i = 0; i < 1000; i++){
-    points.push(
-        {
-            x: Math.random(),
-            y: Math.random()
-        }
-    )
+const whiteBall = {x: 0.5, y:0.5, r: 0.25, fill: 'white'}
+const pointsA = [];
+for(let i = 0; i < 2000; i++){
+    let x = Math.random();
+    let y = Math.random();
+    let collides = pointCircle( x, y, whiteBall.x, whiteBall.y, whiteBall.r )
+    if(!collides) pointsA.push( { x: x, y: y, fill: Math.random()>0.5?'chartreuse':'yellow' } )
+}
+function render(){
+    ctx.save();
+    
+    ctx.fillStyle="#202";
+    ctx.fillRect(0,0,c.width,c.height);
+
+    // ctx.fillStyle=whiteBall.fill;
+    // circle( posX(whiteBall.x), posY(whiteBall.y), posX(whiteBall.r) );
+
+    // ctx.fillStyle='#fff'
+    // circle( 376, 376, 188 );
+    
+    // ctx.arc(376,376,188,0,6.283185306);
+    // ctx.fill();
+    
+    pointsA.forEach(function(e){
+        ctx.fillStyle = e.fill;
+        pset( posX(e.x), posY(e.y) )
+    })
+    ctx.restore();
+
 }
 
-points.forEach(function(e){
-    pset( posX(e.x), posY(e.y) )
-})
+function update(){
+    pointsA.forEach(function(e){
+        e.fill=='chartreuse'?e.x += 0.005 : e.y+=0.005;
+        if(e.x > 1) e.x -= 1;
+        if(e.y > 1) e.y -= 1;
+    })
+}
+
+function frame(){
+    stats.begin();
+    update();
+    render();
+    stats.end();
+    requestAnimationFrame(frame);
+}
+
+requestAnimationFrame(frame);
+//frame();
+
+
