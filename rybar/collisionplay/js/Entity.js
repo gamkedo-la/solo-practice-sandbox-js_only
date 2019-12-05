@@ -1,7 +1,7 @@
 
 //an Entity is just a unique ID...
 
-export const Entity = function Entity(){
+const Entity = function Entity(){
     this.id = (+new Date()).toString(16) + 
     (Math.random() * 100000000 | 0).toString(16) + 
     Entity.prototype._count;
@@ -16,6 +16,11 @@ Entity.prototype._count = 0;
 
 Entity.prototype.addComponent = function addComponent( component ){
     this.components[component.name] = component;
+    return this;
+}
+
+Entity.prototype.addComponents = function addComponents( arr ){
+    arr.forEach(e=>{this.components[e.name] = e})
     return this;
 }
 
@@ -34,3 +39,5 @@ Entity.prototype.print = function print () {
     return this;
 };
 
+
+export default Entity;

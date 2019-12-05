@@ -1,10 +1,9 @@
-export function circle(x, y, r){
-    //assumes global ctx
-    ctx.arc(x,y,r,0,6.283185306);
-    ctx.fill();
+export function clearScreen(color='#aa00aa'){
+    ctx.fillStyle = color;
+    ctx.fillRect(0,0,c.width,c.height)
 }
 
-export function polyCircle(x,y,r,sides){
+export function polyCircle(x,y,r,sides=10){
     ctx.beginPath();
     for(let i = 0; i < sides; i++){
         let j = i/sides * 6.283185;
@@ -23,7 +22,7 @@ export function pset(x,y){
 }
 
 export function posX(normalized){
-    //takes number between 0 and 1, returns value between 0 and canvas width
+    //takes number in "height units" where 1 = screenheight. 
     //assumes global canvas object c
     return c.width * normalized;
 }
@@ -32,6 +31,8 @@ export function posY(normalized){
     //assumes global canvas object c
     return c.height * normalized;
 }
+
+
 
 export const colors = [
     
