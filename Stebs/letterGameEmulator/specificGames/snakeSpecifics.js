@@ -11,7 +11,7 @@ var snakeDimension = 20;
 
 var snakeGameFrameRate = 1000/10;
 
-var snakeBackButtonRectangleColor = 'cyan';
+var snakeBackButtonRectangleColor = 'yellow';
 var snakeBackButtonTextColor = 'blueviolet';
 
 var snakeLetterColor = 'cyan';

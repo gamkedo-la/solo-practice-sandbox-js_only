@@ -7,8 +7,8 @@ var gravity = 4;
 
 var birdGameFrameRate = 1000/30;
 
-var birdBackButtonRectangleColor = 'BlueViolet';
-var birdBackButtonTextColor = 'Chartreuse';
+var birdBackButtonRectangleColor = 'yellow';
+var birdBackButtonTextColor = 'red';
 
 var birdLetterSpawnRate = 2000;
 
