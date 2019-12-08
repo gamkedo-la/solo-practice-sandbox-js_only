@@ -39,7 +39,22 @@ function spawnALetterIfAppropriate()
   } else {
     name = 'n';
   }
-  arrayOfLetters.push({xCoordinate:640,yCoordinate:Math.random()*700, name:name, correctAnswer:false});
+  if (playerShouldBePlayingBird)
+  {
+    arrayOfLetters.push({xCoordinate:640,yCoordinate:Math.random()*700, name:name, correctAnswer:false});
+  } else if (playerShouldBePlayingLane)
+  {
+    let randomNumber2 = Math.random()*10;
+    let randomChoiceOf2XStartingPositions = undefined;
+    if (randomNumber2 < 5)
+    {
+      randomChoiceOf2XStartingPositions = 230;
+    } else {
+      randomChoiceOf2XStartingPositions = 380;
+    }
+    arrayOfLetters.push({xCoordinate:randomChoiceOf2XStartingPositions,yCoordinate:-20, name:name, correctAnswer:false});
+  }
+
 }
 
 function moveLettersIfAppropriate()
@@ -48,7 +63,13 @@ function moveLettersIfAppropriate()
   {
     for (var letterIndex = 0; letterIndex < arrayOfLetters.length; letterIndex++)
     {
-      arrayOfLetters[letterIndex].xCoordinate -= letterSpeed;
+      arrayOfLetters[letterIndex].xCoordinate -= letterSpeed;//letters move right to left in bird
+    }
+  } else if (playerShouldBePlayingLane)
+  {
+    for (var letterIndex = 0; letterIndex < arrayOfLetters.length; letterIndex++)
+    {
+      arrayOfLetters[letterIndex].yCoordinate += letterSpeed;//letters move top to bottom in lane
     }
   }
 }
@@ -61,6 +82,9 @@ function drawLetters()
   } else if (playerShouldBePlayingBird)
   {
     gameCanvasContext.fillStyle = birdLetterColor;
+  } else if (playerShouldBePlayingLane)
+  {
+    gameCanvasContext.fillStyle = laneLetterColor;
   }
   gameCanvasContext.font = '30px Helvetica';
   for (var letterIndex = 0; letterIndex < arrayOfLetters.length; letterIndex++)
@@ -110,6 +134,30 @@ function handleCollisionsWithLetters()
           setOrResetCorrectLetter();
           arrayOfLetters.splice(letterIndex,1);
         }
+    }
+  } else if (playerShouldBePlayingLane)
+  {
+    for (let letterIndex = 0; letterIndex < arrayOfLetters.length; letterIndex++)
+    {
+      if (arrayOfLetters[letterIndex].yCoordinate - 5 > playerYCoordinate && arrayOfLetters[letterIndex].yCoordinate - 5 < playerYCoordinate + 60 &&
+        arrayOfLetters[letterIndex].xCoordinate === playerXCoordinate &&
+        arrayOfLetters[letterIndex].name === currentCorrectLetter)
+      {
+        console.log('correct letter collision detected');
+        amountCorrect++;
+        calculateAccuracy();
+        setOrResetCorrectLetter();
+        arrayOfLetters.splice(letterIndex,1);
+      } else if (arrayOfLetters[letterIndex].yCoordinate - 5 > playerYCoordinate && arrayOfLetters[letterIndex].yCoordinate - 5 < playerYCoordinate + 60 &&
+        arrayOfLetters[letterIndex].xCoordinate === playerXCoordinate &&
+        arrayOfLetters[letterIndex].name !== currentCorrectLetter)
+      {
+        console.log('incorrect letter collision detected');
+        amountIncorrect++;
+        calculateAccuracy();
+        setOrResetCorrectLetter();
+        arrayOfLetters.splice(letterIndex,1);
+      }
     }
   }
 }

@@ -11,6 +11,8 @@ function drawGameSpecificPlayer()
     drawSnakePlayer();
   } else if (playerShouldBePlayingBird) {
     drawBirdPlayer();
+  } else if (playerShouldBePlayingLane) {
+    drawCarPlayer();
   }
 }
 

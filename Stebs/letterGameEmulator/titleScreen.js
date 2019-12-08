@@ -91,7 +91,9 @@ function handleGameCellClicks()
       {
         playerShouldBePlayingLane = true;
         playerShouldSeeTitleScreen = false;
+        letterSpawnInterval.reset(laneLetterSpawnRate);
         playerIsPlayingAnyGame = true;
+        setOrResetCorrectLetter();
       }
   else if (mouseCoordinates.mouseX > 320 && mouseCoordinates.mouseX < 420 &&
            mouseCoordinates.mouseY > 150 && mouseCoordinates.mouseY < 250)

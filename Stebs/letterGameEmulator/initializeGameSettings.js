@@ -14,5 +14,10 @@ function initializeSpecificGameSettings()
     playerYCoordinate = birdStartingY;
     playerSpeedX = birdSpeed;
     letterSpeed = birdLetterSpeed;
+  } else if (playerShouldBePlayingLane)
+  {
+    playerXCoordinate = laneStartingX;
+    playerYCoordinate = laneStartingY;
+    letterSpeed = laneLetterSpeed;
   }
 }

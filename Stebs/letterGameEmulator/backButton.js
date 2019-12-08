@@ -1,21 +1,27 @@
 function drawBackButton()
 {
-  if (playerShouldBePlayingBird)
+  if (playerIsPlayingAnyGame)
   {
-    gameCanvasContext.fillStyle = birdBackButtonRectangleColor;
+    //draw the rectangle
+    if (playerShouldBePlayingBird){
+      gameCanvasContext.fillStyle = birdBackButtonRectangleColor;
+    } else if (playerShouldBePlayingSnake) {
+      gameCanvasContext.fillStyle = snakeBackButtonRectangleColor;
+    } else if (playerShouldBePlayingLane) {
+      gameCanvasContext.fillStyle = laneBackButtonRectangleColor;
+    }
     gameCanvasContext.fillRect(540,650, 100,50);
 
-    gameCanvasContext.fillStyle = birdBackButtonTextColor;
-    gameCanvasContext.font = '27px Helvetica';
-    gameCanvasContext.fillText('Back', 560,685);
-  } else if (playerShouldBePlayingSnake)
-  {
-    gameCanvasContext.fillStyle = birdBackButtonRectangleColor;
-    gameCanvasContext.fillRect(540,650, 100,50);
-
-    gameCanvasContext.fillStyle = birdBackButtonTextColor;
-    gameCanvasContext.font = '27px Helvetica';
-    gameCanvasContext.fillText('Back', 560,685);
+    //draw the text
+    if (playerShouldBePlayingBird){
+      gameCanvasContext.fillStyle = birdBackButtonTextColor;
+    } else if (playerShouldBePlayingSnake) {
+      gameCanvasContext.fillStyle = snakeBackButtonTextColor;
+    } else if (playerShouldBePlayingLane) {
+      gameCanvasContext.fillStyle = laneBackButtonTextColor;
+    }
+      gameCanvasContext.font = '27px Helvetica';
+      gameCanvasContext.fillText('Back', 560,685);
   }
 }
 
@@ -28,6 +34,7 @@ function handleBackButtonClick()
         playerIsPlayingAnyGame = false;
         playerShouldBePlayingBird = false;
         playerShouldBePlayingSnake = false;
+        playerShouldBePlayingLane = false;
         arrayOfLetters = [];
       }
 }

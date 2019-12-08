@@ -53,8 +53,10 @@ function keyDown(builtInDocumentEventObject)
     } else if (playerShouldBePlayingBird)
     {
       leftArrowDown = true;
-    }
-    break;
+    } else if (playerShouldBePlayingLane)
+      if (playerXCoordinate > 230)
+      playerXCoordinate = 230;
+      break;
 
     case 38://up arrow
     if (playerShouldBePlayingSnake)
@@ -72,6 +74,12 @@ function keyDown(builtInDocumentEventObject)
     }  else if (playerShouldBePlayingBird)
     {
       rightArrowDown = true;
+    } else if (playerShouldBePlayingLane)
+    {
+      if (playerXCoordinate !== 380)
+      {
+        playerXCoordinate = 380;
+      }
     }
     break;
 

@@ -16,5 +16,8 @@ function drawGameSpecificBackground()
   } else if (playerShouldBePlayingBird)
   {
     drawBirdBackground();
+  } else if (playerShouldBePlayingLane)
+  {
+    drawLaneBackground();
   }
 }

@@ -39,6 +39,10 @@ function gameSpecificUpdates()
   if (playerShouldBePlayingSnake)
   {
     updateSnakeTail();
+  } else if (playerShouldBePlayingLane)
+  {
+    moveYellowCenterDashes();
+    handleDashArrayPopulation();
   }
 }
 
