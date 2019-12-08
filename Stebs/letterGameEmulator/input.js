@@ -42,7 +42,7 @@ var rightArrowDown = false;
 
 function keyDown(builtInDocumentEventObject)
 {
-  console.log(builtInDocumentEventObject.keyCode);
+  builtInDocumentEventObject.preventDefault();
   switch(builtInDocumentEventObject.keyCode)
   {
     case 37://left arrow
@@ -50,7 +50,6 @@ function keyDown(builtInDocumentEventObject)
     {
       playerSpeedX = -20;
       playerSpeedY = 0;
-      console.log(snakeTail);
     } else if (playerShouldBePlayingBird)
     {
       leftArrowDown = true;
@@ -62,8 +61,6 @@ function keyDown(builtInDocumentEventObject)
     {
       playerSpeedX = 0;
       playerSpeedY = -20;
-      console.log(snakeTail);
-
     }
     break;
 
@@ -72,8 +69,6 @@ function keyDown(builtInDocumentEventObject)
     {
       playerSpeedX = 20;
       playerSpeedY = 0;
-      console.log(snakeTail);
-
     }  else if (playerShouldBePlayingBird)
     {
       rightArrowDown = true;
@@ -85,8 +80,6 @@ function keyDown(builtInDocumentEventObject)
     {
       playerSpeedX = 0;
       playerSpeedY = 20;
-      console.log(snakeTail);
-
     }
     break;
 

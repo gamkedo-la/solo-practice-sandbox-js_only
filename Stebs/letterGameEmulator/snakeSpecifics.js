@@ -91,5 +91,4 @@ function populateArrayOfLettersForSnake()
   arrayOfLetters = [];
   arrayOfLetters.push({name:'m',xCoordinate:Math.floor(Math.random()*640),yCoordinate:Math.floor(Math.random()*675)});
   arrayOfLetters.push({name:'n',xCoordinate:Math.floor(Math.random()*640),yCoordinate:Math.floor(Math.random()*675)});
-  console.log('inside populate array of letters for snake: ' + arrayOfLetters);
 }

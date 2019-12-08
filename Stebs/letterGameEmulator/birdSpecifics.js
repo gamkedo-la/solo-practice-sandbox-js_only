@@ -64,17 +64,13 @@ function handleBirdOffScreenPossibilities()
   if (playerYCoordinate > 690)
   {
     playerYCoordinate = 5;
-    console.log("bird off bottom side");
   } else if (playerYCoordinate < 0) {
     playerYCoordinate = 0;
-    console.log("bird off bottom side");
   } else if (playerXCoordinate > 630)
   {
     playerXCoordinate = -5;
-    console.log("bird off bottom side");
   } else if (playerXCoordinate < -5)
   {
     playerXCoordinate = 635;
-    console.log("bird off bottom side");
   }
 }
