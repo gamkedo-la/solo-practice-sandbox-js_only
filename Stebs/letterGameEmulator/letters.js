@@ -18,7 +18,7 @@ function setOrResetCorrectLetter()
   } else {
     currentCorrectLetter = 'n';
   }
-  correctLetterAudioTag.src = currentCorrectLetter + '.mp3';
+  correctLetterAudioTag.src = "audio/" + currentCorrectLetter + '.mp3';
   correctLetterAudioTag.play();
 }
 
