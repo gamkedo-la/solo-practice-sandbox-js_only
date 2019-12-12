@@ -85,6 +85,9 @@ function drawLetters()
   } else if (playerShouldBePlayingLane)
   {
     gameCanvasContext.fillStyle = laneLetterColor;
+  } else if (playerShouldBePlayingJumper)
+  {
+    gameCanvasContext.fillStyle = jumperLetterColor;
   }
   gameCanvasContext.font = '30px Helvetica';
   for (var letterIndex = 0; letterIndex < arrayOfLetters.length; letterIndex++)
@@ -160,7 +163,37 @@ function handleCollisionsWithLetters()
       }
     }
   }
+  else if (playerShouldBePlayingJumper)
+  {
+    for (let letterIndex = 0; letterIndex < arrayOfLetters.length; letterIndex++)
+    {
+      if (playerYCoordinate + 20 > arrayOfLetters[letterIndex].yCoordinate - 20 &&
+        playerYCoordinate < arrayOfLetters[letterIndex].yCoordinate &&
+        playerXCoordinate + 20 > arrayOfLetters[letterIndex].xCoordinate &&
+        playerXCoordinate < arrayOfLetters[letterIndex].xCoordinate + 20 &&
+        arrayOfLetters[letterIndex].name === currentCorrectLetter)
+      {
+        console.log('correct letter collision detected');
+        amountCorrect++;
+        calculateAccuracy();
+        setOrResetCorrectLetter();
+        initializeLettersForJumper();
+      } else if (playerYCoordinate + 20 > arrayOfLetters[letterIndex].yCoordinate - 20 &&
+        playerYCoordinate < arrayOfLetters[letterIndex].yCoordinate &&
+        playerXCoordinate + 20 > arrayOfLetters[letterIndex].xCoordinate &&
+        playerXCoordinate < arrayOfLetters[letterIndex].xCoordinate + 20 &&
+        arrayOfLetters[letterIndex].name !== currentCorrectLetter)
+      {
+        console.log('incorrect letter collision detected');
+        amountIncorrect++;
+        calculateAccuracy();
+        setOrResetCorrectLetter();
+        initializeLettersForJumper();
+      }
+    }
+  }
 }
+
 
 // function checkForLettersOffLeftSideOfScreen()
 // {

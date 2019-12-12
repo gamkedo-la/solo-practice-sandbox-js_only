@@ -19,5 +19,9 @@ function initializeSpecificGameSettings()
     playerXCoordinate = laneStartingX;
     playerYCoordinate = laneStartingY;
     letterSpeed = laneLetterSpeed;
+  } else if (playerShouldBePlayingJumper)
+  {
+    playerXCoordinate = jumperStartingXCoordinate;
+    playerYCoordinate = jumperStartingYCoordinate;
   }
 }

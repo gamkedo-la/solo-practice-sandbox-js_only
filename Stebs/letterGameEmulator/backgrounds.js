@@ -19,5 +19,9 @@ function drawGameSpecificBackground()
   } else if (playerShouldBePlayingLane)
   {
     drawLaneBackground();
+  } else if (playerShouldBePlayingJumper)
+  {
+    drawJumperBackground();
+    drawJumperPlatforms();
   }
 }

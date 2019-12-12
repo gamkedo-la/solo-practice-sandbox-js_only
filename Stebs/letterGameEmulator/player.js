@@ -13,6 +13,8 @@ function drawGameSpecificPlayer()
     drawBirdPlayer();
   } else if (playerShouldBePlayingLane) {
     drawCarPlayer();
+  } else if (playerShouldBePlayingJumper){
+    drawJumperPlayer();
   }
 }
 
@@ -24,5 +26,8 @@ function moveGameSpecificPlayer()
   } else if (playerShouldBePlayingBird)
   {
     moveBirdPlayer();
+  } else if (playerShouldBePlayingJumper)
+  {
+    moveJumperPlayer();
   }
 }

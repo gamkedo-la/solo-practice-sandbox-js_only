@@ -9,6 +9,8 @@ function drawBackButton()
       gameCanvasContext.fillStyle = snakeBackButtonRectangleColor;
     } else if (playerShouldBePlayingLane) {
       gameCanvasContext.fillStyle = laneBackButtonRectangleColor;
+    } else if (playerShouldBePlayingJumper) {
+      gameCanvasContext.fillStyle = jumperBackButtonRectangleColor;
     }
     gameCanvasContext.fillRect(540,650, 100,50);
 
@@ -19,6 +21,9 @@ function drawBackButton()
       gameCanvasContext.fillStyle = snakeBackButtonTextColor;
     } else if (playerShouldBePlayingLane) {
       gameCanvasContext.fillStyle = laneBackButtonTextColor;
+    } else if (playerShouldBePlayingJumper)
+    {
+      gameCanvasContext.fillStyle = jumperBackButtonTextColor;
     }
       gameCanvasContext.font = '27px Helvetica';
       gameCanvasContext.fillText('Back', 560,685);
@@ -35,6 +40,7 @@ function handleBackButtonClick()
         playerShouldBePlayingBird = false;
         playerShouldBePlayingSnake = false;
         playerShouldBePlayingLane = false;
+        playerShouldBePlayingJumper = false;
         arrayOfLetters = [];
       }
 }

@@ -30,10 +30,10 @@ function drawBirdPlayer()
 function moveBirdPlayer()
 {
   applyGravityToBird();
-  if (leftArrowDown)
+  if (leftArrowIsBeingHeld)
   {
     moveBirdPlayerLeft();
-  } else if (rightArrowDown)
+  } else if (rightArrowIsBeingHeld)
   {
     moveBirdPlayerRight();
   }

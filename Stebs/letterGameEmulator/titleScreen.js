@@ -46,6 +46,8 @@ function drawGameNames()
 {
   gameCanvasContext.fillStyle = 'blue';
   gameCanvasContext.font = '27px Helvetica';
+
+  //row 1
   gameCanvasContext.fillText('Snake', 29,205);
 
   gameCanvasContext.fillText('Bird', 142,205);
@@ -58,6 +60,7 @@ function drawGameNames()
 
   gameCanvasContext.fillText('Catcher', 522,205);
 
+  //row two
   gameCanvasContext.fillText('Shooter', 22,305);
 
   gameCanvasContext.fillText('Space', 130, 290);
@@ -89,18 +92,24 @@ function handleGameCellClicks()
   else if (mouseCoordinates.mouseX > 220 && mouseCoordinates.mouseX < 320 &&
            mouseCoordinates.mouseY > 150 && mouseCoordinates.mouseY < 250)
       {
+        console.log("inside lane cell click");
         playerShouldBePlayingLane = true;
         playerShouldSeeTitleScreen = false;
         letterSpawnInterval.reset(laneLetterSpawnRate);
         playerIsPlayingAnyGame = true;
+        gameInterval.reset(laneFrameRate);
         setOrResetCorrectLetter();
       }
   else if (mouseCoordinates.mouseX > 320 && mouseCoordinates.mouseX < 420 &&
            mouseCoordinates.mouseY > 150 && mouseCoordinates.mouseY < 250)
       {
+        console.log("inside jumper cell click");
         playerShouldBePlayingJumper = true;
         playerShouldSeeTitleScreen = false;
         playerIsPlayingAnyGame = true;
+        gameInterval.reset(jumperFrameRate);
+        setOrResetCorrectLetter();
+        initializeLettersForJumper();
       }
   else if (mouseCoordinates.mouseX > 420 && mouseCoordinates.mouseX < 520 &&
            mouseCoordinates.mouseY > 150 && mouseCoordinates.mouseY < 250)

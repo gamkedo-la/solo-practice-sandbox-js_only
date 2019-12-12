@@ -37,8 +37,10 @@ function calculateMousePosition(builtInDocumentEventObject)
   mouseCoordinates.mouseY = y;
 }
 
-var leftArrowDown = false;
-var rightArrowDown = false;
+var leftArrowIsBeingHeld = false;
+var rightArrowIsBeingHeld = false;
+var upArrowIsBeingHeld = false;
+var downArrowIsBeingHeld = false;
 
 function keyDown(builtInDocumentEventObject)
 {
@@ -46,34 +48,45 @@ function keyDown(builtInDocumentEventObject)
   switch(builtInDocumentEventObject.keyCode)
   {
     case 37://left arrow
+    leftArrowIsBeingHeld = true;
     if (playerShouldBePlayingSnake)
     {
       playerSpeedX = -20;
       playerSpeedY = 0;
     } else if (playerShouldBePlayingBird)
     {
-      leftArrowDown = true;
+
     } else if (playerShouldBePlayingLane)
+    {
       if (playerXCoordinate > 230)
       playerXCoordinate = 230;
-      break;
+    } else if (playerShouldBePlayingJumper)
+    {
+
+    }
+    break;
 
     case 38://up arrow
+    upArrowIsBeingHeld = true;
     if (playerShouldBePlayingSnake)
     {
       playerSpeedX = 0;
       playerSpeedY = -20;
+    } else if (playerShouldBePlayingJumper)
+    {
+
     }
     break;
 
     case 39://right arrow
+    rightArrowIsBeingHeld = true;
     if (playerShouldBePlayingSnake)
     {
       playerSpeedX = 20;
       playerSpeedY = 0;
     }  else if (playerShouldBePlayingBird)
     {
-      rightArrowDown = true;
+
     } else if (playerShouldBePlayingLane)
     {
       if (playerXCoordinate !== 380)
@@ -84,17 +97,29 @@ function keyDown(builtInDocumentEventObject)
     break;
 
     case 40://down arrow
+    downArrowIsBeingHeld = true;
     if (playerShouldBePlayingSnake)
     {
       playerSpeedX = 0;
       playerSpeedY = 20;
+    } else if (playerShouldBePlayingJumper)
+    {
+      playerYCoordinate += 100;
+      if (playerYCoordinate > 700)//if the player goes below the screen
+      {
+        playerYCoordinate = 30;//put them at the top platform
+      }
     }
+
     break;
 
     case 32://spacebar
       if (playerShouldBePlayingBird)
       {
         flapUp();
+      } else if (playerShouldBePlayingJumper)
+      {
+        playerYCoordinate += -5;
       }
     break;
 
@@ -116,17 +141,27 @@ function keyUp(builtInDocumentEventObject)
   switch(builtInDocumentEventObject.keyCode)
   {
     case 37://left arrow
+    leftArrowIsBeingHeld = false;
     if (playerShouldBePlayingBird)
     {
-      leftArrowDown = false;
+
     }
     break;
 
+    case 38://up arrow
+    upArrowIsBeingHeld = false;
+    break;
+
     case 39://right arrow
+    rightArrowIsBeingHeld = false;
     if (playerShouldBePlayingBird)
     {
       rightArrowDown = false;
     }
+    break;
+
+    case 40://down arrow
+    downArrowIsBeingHeld = false;
     break;
   }
 }

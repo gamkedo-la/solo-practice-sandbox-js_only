@@ -10,6 +10,8 @@ var laneLetterColor = 'red';
 var laneBackButtonRectangleColor = 'Fuchsia';
 var laneBackButtonTextColor = 'yellow';
 
+var laneFrameRate = 1000/50;
+
 function drawCarPlayer()
 {
   console.log("inside drawCarPlayer");

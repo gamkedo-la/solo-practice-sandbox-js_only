@@ -49,11 +49,33 @@ This is where we trigger off the title screen boolean, trigger on your games boo
 on playerIsPlayingAnyGame (another check for the emulator), set the first correct letter choice, reset letter spawning if
 appropriate.
 
-Step 4: Copy/paste your game background draw function code into your game specific file. Label it drawYourGamesBackground.
+Step 4: Copy/paste your game background draw function code into your game specific file. Label it drawYourGamesBackground().
 
-Step 5: Implement the background code into the pattern in background.js.
+Step 5: Implement the background code into the pattern in background.js. You may want to contain other objects like platforms.
 
-Step 3: Put player controls in the input.js file.
+Step 6: Set initial values for the beginning of your game in initializeGameSettings.js. (player x/y coordinates,
+letter x/y coordinates, player speed if appropriate, letter speed if appropriate, etc.)
+
+Step 7: Add a boolean check for your game in drawGameSpecificPlayer() in player.js.
+
+Step 8: Put player controls in either a player specific function for the game update, the input.js file, or a combination of both.
+You can see how in the jumper game, I put the left, right, and down arrow controls in the jumperSpecifics to make a smooth movement
+feel while the key is being held. I defined the down arrow in input to help make sure the keystroke was only registered once.
+There are multiple ways to do this, I'm just helping realize your options within the framework.
+
 Check to see if the controls are already being used in the other games. If so, add a boolean check (playerShouldBePlayingYourGame)
 to the if/else if list inside the appropriate switch statement, and then add your games specific control logic (playerX += playerSpeed
  or whatever).
+
+Step 9: Add the letter logic and specifics. Choose a color for the letters that will look good against the background color,
+this might also be a good time to consider the 'back button' colors (the button to go back to the main menu), because sometimes
+the letters clash with the back button. You might want to consider the player color against the back button too. Add a color
+variable to your games specific javascript file. In letters.js, initialize the letter color in drawLetters().. change the
+fillStyle with a boolean check. Initialize the array of letters with appropriate x/y coordinates by writing a function and
+call it in titleScreen.js within the mouse click check for the cell. Add collision logic to handleCollisionsWithLetters()
+in letters.js. Be sure to include resetting letter positions if appropriate, check whether the letter was correct or incorrect,
+run calculateAccuracy().
+
+Step 10: Draw the back button. Go into backButton.js and add a color for the rectangle for the back button, then add a color for
+the text for the back button. Then make sure you switch the boolean for playerShouldBePlayingYourGame to false in the mouse click
+check handleBackButtonClick.
