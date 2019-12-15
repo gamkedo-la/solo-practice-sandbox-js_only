@@ -43,6 +43,9 @@ function gameSpecificUpdates()
   {
     moveYellowCenterDashes();
     handleDashArrayPopulation();
+  } else if (playerShouldBePlayingSpaceShooter)
+  {
+    moveSpaceShooterBullets();
   }
 }
 
@@ -63,6 +66,10 @@ function drawEverythingInTheGame()
   drawGameSpecificBackground();
   drawBackButton();
   drawGameSpecificPlayer();
+  if (playerShouldBePlayingSpaceShooter)
+  {
+    drawSpaceShooterBullets();
+  }
   drawLetters();
   drawStatsBackground();
   drawStats();

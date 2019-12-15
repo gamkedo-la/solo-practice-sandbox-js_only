@@ -39,9 +39,10 @@ function spawnALetterIfAppropriate()
   } else {
     name = 'n';
   }
-  if (playerShouldBePlayingBird)
+  if (playerShouldBePlayingBird || playerShouldBePlayingSpaceShooter)
   {
     arrayOfLetters.push({xCoordinate:640,yCoordinate:Math.random()*700, name:name, correctAnswer:false});
+    console.log(arrayOfLetters);
   } else if (playerShouldBePlayingLane)
   {
     let randomNumber2 = Math.random()*10;
@@ -59,7 +60,7 @@ function spawnALetterIfAppropriate()
 
 function moveLettersIfAppropriate()
 {
-  if (playerShouldBePlayingBird)
+  if (playerShouldBePlayingBird || playerShouldBePlayingSpaceShooter)
   {
     for (var letterIndex = 0; letterIndex < arrayOfLetters.length; letterIndex++)
     {
@@ -88,6 +89,9 @@ function drawLetters()
   } else if (playerShouldBePlayingJumper)
   {
     gameCanvasContext.fillStyle = jumperLetterColor;
+  } else if (playerShouldBePlayingSpaceShooter)
+  {
+    gameCanvasContext.fillStyle = spaceShooterLetterColor;
   }
   gameCanvasContext.font = '30px Helvetica';
   for (var letterIndex = 0; letterIndex < arrayOfLetters.length; letterIndex++)

@@ -127,12 +127,15 @@ function handleGameCellClicks()
       }
 
   //2nd row
-  else if (mouseCoordinates.mouseX > 20 && mouseCoordinates.mouseX < 120 &&
+  else if (mouseCoordinates.mouseX > 120 && mouseCoordinates.mouseX < 220 &&
            mouseCoordinates.mouseY > 250 && mouseCoordinates.mouseY < 350)
       {
-        playerShouldBePlayingShooter = true;
+        playerShouldBePlayingSpaceShooter = true;
         playerShouldSeeTitleScreen = false;
         playerIsPlayingAnyGame = true;
+        gameInterval.reset(spaceShooterFrameRate);
+        setOrResetCorrectLetter();
+        letterSpawnInterval.reset(spaceShooterLetterSpawnRate);
       }
   else if (mouseCoordinates.mouseX > 20 && mouseCoordinates.mouseX < 120 &&
            mouseCoordinates.mouseY > 250 && mouseCoordinates.mouseY < 350)

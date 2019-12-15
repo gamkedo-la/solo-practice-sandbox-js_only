@@ -15,6 +15,9 @@ function drawGameSpecificPlayer()
     drawCarPlayer();
   } else if (playerShouldBePlayingJumper){
     drawJumperPlayer();
+  } else if (playerShouldBePlayingSpaceShooter)
+  {
+    drawSpaceShooterPlayer();
   }
 }
 
@@ -29,5 +32,8 @@ function moveGameSpecificPlayer()
   } else if (playerShouldBePlayingJumper)
   {
     moveJumperPlayer();
+  } else if (playerShouldBePlayingSpaceShooter)
+  {
+    moveSpaceShooterPlayer();
   }
 }

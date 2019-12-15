@@ -4,7 +4,6 @@ var playerShouldBePlayingLane = false;
 var playerShouldBePlayingJumper = false;
 var playerShouldBePlayingFinder = false;
 var playerShouldBePlayingCatcher = false;
-var playerShouldBePlayingShooter = false;
 var playerShouldBePlayingSpaceShooter = false;
 
 var frameRate = 1000/30;
@@ -120,6 +119,9 @@ function keyDown(builtInDocumentEventObject)
       } else if (playerShouldBePlayingJumper)
       {
         playerYCoordinate += -5;
+      } else if (playerShouldBePlayingSpaceShooter)
+      {
+        arrayOfBullets.push({x:playerXCoordinate,y:playerYCoordinate});
       }
     break;
 

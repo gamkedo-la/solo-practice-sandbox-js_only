@@ -23,5 +23,9 @@ function initializeSpecificGameSettings()
   {
     playerXCoordinate = jumperStartingXCoordinate;
     playerYCoordinate = jumperStartingYCoordinate;
+  } else if (playerShouldBePlayingSpaceShooter)
+  {
+    playerXCoordinate = spaceShooterStartingXCoordinate;
+    playerYCoordinate = spaceShooterStartingYCoordinate;
   }
 }
