@@ -12,7 +12,7 @@ const PADDLE_THICKNESS = 10;
 
 var playerSP = 0;
 var compSP = 0;
-var winningScore = 11;
+var winningScore = 1;
 var isGameOver = false;
 var isGameStarted = false;
 
@@ -23,11 +23,7 @@ window.onload = function() {
 
   // Title screen, cheating by making it black on white text,
   // So when the game starts, it "disappears" into the background
-  canvasContext.font = "48px serif";
-  canvasContext.fillStyle = "black";
-  canvasContext.fillText("Welcome to Pong!", 200, 200);
-  canvasContext.font = "30px serif";
-  canvasContext.fillText("Click anywhere to start playing", 180, 250);
+  menu();
 
   canvas.addEventListener('click', function(e) {
     isGameStarted = true;
@@ -37,14 +33,14 @@ window.onload = function() {
     if (isGameStarted == true) {
       if (!isGameOver) {
         moveEverything();
-      }        
-  
+      }
+
       drawEverything();
     }
   }, 1000/framesPerSecond);
+
   canvas.addEventListener('mousemove', mousemoveHandler);
   canvas.addEventListener('dblclick', dblclickHandler);
-  
 }
 
 function calcMousePos(evt) {
@@ -57,6 +53,14 @@ function calcMousePos(evt) {
     x: mouseX,
     y: mouseY
   };
+}
+
+function menu() {
+  canvasContext.font = "48px serif";
+  canvasContext.fillStyle = "black";
+  canvasContext.fillText("Welcome to Pong!", 200, 200);
+  canvasContext.font = "30px serif";
+  canvasContext.fillText("Click anywhere to start playing", 180, 250);
 }
 
 function ballReset(isPlayerScore) {
@@ -129,12 +133,6 @@ function moveEverything() {
   ballY += ballSpeedY;
 }
 
-function drawStartScreen() {
-  colorRect(0, 0, canvas.width, canvas.height, 'green');
-  canvasContext.font = '36px serif';
-  canvasContext.fillText("Press ENTER to play PONG!", 275, 100);
-}
-
 function drawEverything() {
   // <-- background --> //
   // canvasContext.fillStyle = 'black';
@@ -177,6 +175,10 @@ function drawEverything() {
   if (isGameOver) {
     var gameOverMessage = playerSP > compSP ? 'Player won!!!' : 'Computer won... :(';
     canvasContext.font = '36px serif';
-    canvasContext.fillText(gameOverMessage, 275, 300);
+    canvasContext.fillText(gameOverMessage, 250, 250);
+    canvasContext.font = '24px serif';
+    canvasContext.fillText("Restart Game?", 310, 330);
+    canvasContext.font = '18px serif';
+    canvasContext.fillText("[Double Click] to restart", 290, 355);
   }
 }
