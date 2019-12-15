@@ -17,7 +17,7 @@
   var ballX;
   var ballY;
   var ballSpeedX = 6;
-  var ballSpeedY = 10;
+  var ballSpeedY = -10;
   
   var paddle1Score = 0;
   var paddle2Score = 0;
@@ -25,7 +25,7 @@
   var paddle2Y = 250; 
   var showingWinScreen = false;
   
-  var framesPerSecond = 2; // default 30
+  var framesPerSecond = 10; // default 30
   
   const BALL_RADIUS = 10;
   const PADDLE_HEIGHT = 100;
@@ -130,33 +130,38 @@
     //    ballSpeedX = -ballSpeedX;
     //}
 	
-	
-	if((ballX + BALL_RADIUS/2) <= 0) { // if ball has moved beyond the LEFT edge
-      if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
-        ballSpeedX *= -1; // reverse ball's horizontal direction
+	if((ballX - BALL_RADIUS/2) < (PADDLE_WIDTH)) { // if ball has moved beyond paddle1 width
+		if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
+        
+			ballSpeedX *= -1; // reverse ball's horizontal direction
 
-        var deltaY = ballY-(paddle1Y+PADDLE_HEIGHT/2);
-        ballSpeedY = deltaY * 0.35;
-      } else {
-        paddle2Score++;
-        ballReset();
-      }
+			var deltaY = ballY-(paddle1Y+PADDLE_HEIGHT/2);
+			ballSpeedY = deltaY * 0.35;
+        } else if ((ballX + BALL_RADIUS/2) <= 0) { // if ball has moved beyond the LEFT edge{
+			paddle2Score++;
+			ballReset();
+		}
     }
     
-    if((ballX - BALL_RADIUS/2) >= canvas.width) { // if ball has moved beyond the RIGHT edge
-      if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT) {
-        ballSpeedX *= -1; // reverse ball's horizontal direction
+	if((ballX + BALL_RADIUS/2) >= (canvas.width-PADDLE_WIDTH)) { // if ball has moved beyond paddle2 width
+		if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT) {
+        
+			ballSpeedX *= -1; // reverse ball's horizontal direction
 
-        var deltaY = ballY-(paddle2Y+PADDLE_HEIGHT/2);
-        ballSpeedY = deltaY * 0.35;
-      } else {
-        paddle1Score++;
-        ballReset();
-      }
+			var deltaY = ballY-(paddle2Y+PADDLE_HEIGHT/2);
+			ballSpeedY = deltaY * 0.35;
+		} else if((ballX - BALL_RADIUS/2) >= canvas.width) { // if ball has moved beyond the RIGHT edge {
+			paddle1Score++;
+			ballReset();
+		}
     }
 
-    if((ballY - (BALL_RADIUS+2)) <= EDGE_THICKNESS) { // if ball hits the TOP edge or goes beyond
-      ballSpeedY *= -1; // reverse ball's vertical direction
+    if((ballY - (BALL_RADIUS+5)) < EDGE_THICKNESS) { // if ball hits the TOP edge or goes beyond
+	  ballSpeedY *= -1; // reverse ball's vertical direction
+	  ballY = (EDGE_THICKNESS + BALL_RADIUS);
+	  ballSpeedY = 0;
+	  ballSpeedX = 0;
+      
     }
     
     if((ballY + BALL_RADIUS+2) >= canvas.height-EDGE_THICKNESS) { // if ball hits the BOTTOM edge or goes beyond
@@ -175,7 +180,7 @@
   function colorCircle(centerX, centerY, radius, fillColor) {
     canvasContext.fillStyle = fillColor;
     canvasContext.beginPath();
-    canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+    canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2);
     canvasContext.fill();
   }
   
@@ -230,8 +235,9 @@
 	  var ballSpeedYRnd = ballSpeedY.toFixed(2);
 	  colorText("ballspeedYRnd:  "+ballSpeedYRnd, canvas.width / 4,30,'yellow');
 	  colorText("ballspeedY:  "+ballSpeedY, canvas.width / 4,45,'yellow');
-	  colorText("ballY:  "+ballY, canvas.width / 4,60,'yellow');
-	  colorText("FPS:  "+framesPerSecond, canvas.width / 4,75,'yellow');
+	  colorText("ballX:  "+ballX, canvas.width / 4,60,'yellow');
+	  colorText("ballY:  "+ballY, canvas.width / 4,75,'yellow');
+	  colorText("FPS:  "+framesPerSecond, canvas.width / 4,90,'yellow');
     }
     // display text on screen - will be used for score
     colorText(paddle1Score,100,100,'white');
