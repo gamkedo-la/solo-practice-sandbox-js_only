@@ -25,7 +25,7 @@
   var paddle2Y = 250; 
   var showingWinScreen = false;
   
-  var framesPerSecond = 2; // default 30
+  var framesPerSecond = 10; // default 30
   
   const BALL_RADIUS = 10;
   const PADDLE_HEIGHT = 100;
@@ -130,29 +130,30 @@
     //    ballSpeedX = -ballSpeedX;
     //}
 	
-	
-	if((ballX + BALL_RADIUS/2) <= 0) { // if ball has moved beyond the LEFT edge
-      if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
-        ballSpeedX *= -1; // reverse ball's horizontal direction
+	if((ballX - BALL_RADIUS/2) < (PADDLE_WIDTH)) { // if ball has moved beyond paddle width
+		if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
+        
+			ballSpeedX *= -1; // reverse ball's horizontal direction
 
-        var deltaY = ballY-(paddle1Y+PADDLE_HEIGHT/2);
-        ballSpeedY = deltaY * 0.35;
-      } else {
-        paddle2Score++;
-        ballReset();
-      }
+			var deltaY = ballY-(paddle1Y+PADDLE_HEIGHT/2);
+			ballSpeedY = deltaY * 0.35;
+        } else if ((ballX + BALL_RADIUS/2) <= 0) { // if ball has moved beyond the LEFT edge{
+			paddle2Score++;
+			ballReset();
+		}
     }
     
-    if((ballX - BALL_RADIUS/2) >= canvas.width) { // if ball has moved beyond the RIGHT edge
-      if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT) {
-        ballSpeedX *= -1; // reverse ball's horizontal direction
+	if((ballX + BALL_RADIUS/2) >= (canvas.width-PADDLE_WIDTH)) { // if ball has moved beyond paddle width
+		if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT) {
+        
+			ballSpeedX *= -1; // reverse ball's horizontal direction
 
-        var deltaY = ballY-(paddle2Y+PADDLE_HEIGHT/2);
-        ballSpeedY = deltaY * 0.35;
-      } else {
-        paddle1Score++;
-        ballReset();
-      }
+			var deltaY = ballY-(paddle2Y+PADDLE_HEIGHT/2);
+			ballSpeedY = deltaY * 0.35;
+		} else if((ballX - BALL_RADIUS/2) >= canvas.width) { // if ball has moved beyond the RIGHT edge {
+			paddle1Score++;
+			ballReset();
+		}
     }
 
     if((ballY - (BALL_RADIUS+2)) <= EDGE_THICKNESS) { // if ball hits the TOP edge or goes beyond
@@ -175,7 +176,7 @@
   function colorCircle(centerX, centerY, radius, fillColor) {
     canvasContext.fillStyle = fillColor;
     canvasContext.beginPath();
-    canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+    canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2);
     canvasContext.fill();
   }
   
