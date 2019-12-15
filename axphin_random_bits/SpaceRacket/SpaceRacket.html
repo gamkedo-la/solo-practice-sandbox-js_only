@@ -131,13 +131,16 @@
     //    ballSpeedX = -ballSpeedX;
     //}
 	
-	if((ballX - BALL_RADIUS/2) < (PADDLE_WIDTH)) { // if ball has moved beyond paddle1 width
+	if((ballX - BALL_RADIUS/2) <= (PADDLE_WIDTH+PADDLE_GAP)) { // if ball has moved beyond paddle1 width
 		if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
         
-			ballSpeedX *= -1; // reverse ball's horizontal direction
+			//ballSpeedX *= -1; // reverse ball's horizontal direction
 
-			var deltaY = ballY-(paddle1Y+PADDLE_HEIGHT/2);
-			ballSpeedY = deltaY * 0.35;
+			//var deltaY = ballY-(paddle1Y+PADDLE_HEIGHT/2);
+			//ballSpeedY = deltaY * 0.35;
+			
+			ballSpeedY = 0; // DEBUG pause ball on collision
+			ballSpeedX = 0; // DEBUG pause ball on collision
         } else if ((ballX + BALL_RADIUS/2) <= 0) { // if ball has moved beyond the LEFT edge{
 			paddle2Score++;
 			ballReset();
@@ -160,8 +163,8 @@
     if((ballY - (BALL_RADIUS+5)) < EDGE_THICKNESS) { // if ball hits the TOP edge or goes beyond
 	  ballSpeedY *= -1; // reverse ball's vertical direction
 	  ballY = (EDGE_THICKNESS + BALL_RADIUS);
-	  ballSpeedY = 0;
-	  ballSpeedX = 0;
+	  //ballSpeedY = 0; // DEBUG pause ball on collision
+	  //ballSpeedX = 0; // DEBUG pause ball on collision
       
     }
     
