@@ -27,9 +27,10 @@
   
   var framesPerSecond = 10; // default 30
   
-  const BALL_RADIUS = 10;
+  const BALL_RADIUS = 10; // actually the diameter of the ball
   const PADDLE_HEIGHT = 100;
-  const PADDLE_WIDTH = 10;
+  const PADDLE_WIDTH = 15;
+  const PADDLE_GAP = 5;
   const WINNING_SCORE = 3;
   const EDGE_THICKNESS = 100;
   
@@ -184,9 +185,10 @@
     canvasContext.fill();
   }
   
-  function colorText(showWords, textX, textY, fillColor) {
+  function colorText(showWords, textX, textY, fillColor, textFont) {
     canvasContext.fillStyle = fillColor;
-	canvasContext.font = "12px arial"
+	//canvasContext.font = "12px arial"
+	canvasContext.font = textFont;
     canvasContext.fillText(showWords, textX, textY);
   }
   
@@ -202,12 +204,12 @@
 
     if(showingWinScreen) {
       if(paddle1Score >= WINNING_SCORE) {
-        colorText("LEFT PLAYER WINS!",canvas.width/2,canvas.height/2,'white');
+        colorText("LEFT PLAYER WINS!",canvas.width/2,canvas.height/2,'white',"12px arial");
       } else if(paddle2Score >= WINNING_SCORE) {
-        colorText("RIGHT PLAYER WINS!",canvas.width/2,canvas.height/2,'white');
+        colorText("RIGHT PLAYER WINS!",canvas.width/2,canvas.height/2,'white',"12px arial");
       } 
       colorText("-- click anywhere to begin a new match --",
-                  canvas.width/2,canvas.height-20,'white');
+                  canvas.width/2,canvas.height-20,'white',"12px arial");
     } else { 
 	
 	  // draw top edge
@@ -218,13 +220,15 @@
 	  
 	  
       // draw a white rectangle to use as the left player's paddle
-      colorRect(0, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'aqua');
-	  colorText(paddle1Y,PADDLE_WIDTH + 20,paddle1Y,'aqua');
+      //colorRect(0, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'aqua');
+	  //colorText(paddle1Y,PADDLE_WIDTH + 20,paddle1Y,'aqua');
+	  colorRect(PADDLE_GAP, paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, 'aqua');
+	  colorText(paddle1Y,PADDLE_WIDTH + 20,paddle1Y,'aqua',"12px arial");
   
       // draw a white rectangle to use as the right player's paddle 
-      colorRect(canvas.width-PADDLE_WIDTH, paddle2Y,   
+      colorRect(canvas.width-PADDLE_WIDTH-PADDLE_GAP, paddle2Y,   
                PADDLE_WIDTH, PADDLE_HEIGHT, 'orange'); 
-	  colorText(paddle2Y,canvas.width-PADDLE_WIDTH - 20,paddle2Y,'orange');
+	  colorText(paddle2Y,canvas.width-PADDLE_WIDTH - 20,paddle2Y,'orange',"12px arial");
       // draw net in the middle of the playfield
       drawNet();
       
@@ -233,15 +237,15 @@
 	  
 	  // draw debug text
 	  var ballSpeedYRnd = ballSpeedY.toFixed(2);
-	  colorText("ballspeedYRnd:  "+ballSpeedYRnd, canvas.width / 4,30,'yellow');
-	  colorText("ballspeedY:  "+ballSpeedY, canvas.width / 4,45,'yellow');
-	  colorText("ballX:  "+ballX, canvas.width / 4,60,'yellow');
-	  colorText("ballY:  "+ballY, canvas.width / 4,75,'yellow');
-	  colorText("FPS:  "+framesPerSecond, canvas.width / 4,90,'yellow');
+	  colorText("ballspeedYRnd:  "+ballSpeedYRnd, canvas.width / 4,30,'yellow',"12px arial");
+	  colorText("ballspeedY:  "+ballSpeedY, canvas.width / 4,45,'yellow',"12px arial");
+	  colorText("ballX:  "+ballX, canvas.width / 4,60,'yellow',"12px arial");
+	  colorText("ballY:  "+ballY, canvas.width / 4,75,'yellow',"12px arial");
+	  colorText("FPS:  "+framesPerSecond, canvas.width / 4,90,'yellow',"12px arial");
     }
     // display text on screen - will be used for score
-    colorText(paddle1Score,100,100,'white');
-    colorText(paddle2Score,canvas.width-100,100,'white');
+    colorText(paddle1Score,100,canvas.height-EDGE_THICKNESS/3,'white',"48px arial");
+    colorText(paddle2Score,canvas.width-100,canvas.height-EDGE_THICKNESS/3,'white',"48px arial");
 	
   }
 </script>
