@@ -17,7 +17,7 @@
   var ballX;
   var ballY;
   var ballSpeedX = 6;
-  var ballSpeedY = -10;
+  var ballSpeedY = 10;
   
   var paddle1Score = 0;
   var paddle2Score = 0;
@@ -95,9 +95,9 @@
     ballSpeedX = -ballSpeedX;
 	// reset ball speed to 8 and keep heading
 	if(ballSpeedY < 0) {
-		ballSpeedY = 8;
+		ballSpeedY = 10;
 	} else {
-		ballSpeedY = -8;
+		ballSpeedY = -10;
 	}
 	
   
@@ -131,36 +131,36 @@
     //    ballSpeedX = -ballSpeedX;
     //}
 	
-	if((ballX - BALL_RADIUS/2) <= (PADDLE_WIDTH+PADDLE_GAP)) { // if ball has moved beyond paddle1 width
+	if((ballX - BALL_RADIUS) <= (PADDLE_WIDTH+PADDLE_GAP)) { // if ball has moved beyond paddle1 width
 		if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
         
-			//ballSpeedX *= -1; // reverse ball's horizontal direction
+			ballSpeedX *= -1; // reverse ball's horizontal direction
 
-			//var deltaY = ballY-(paddle1Y+PADDLE_HEIGHT/2);
-			//ballSpeedY = deltaY * 0.35;
-			
-			ballSpeedY = 0; // DEBUG pause ball on collision
-			ballSpeedX = 0; // DEBUG pause ball on collision
-        } else if ((ballX + BALL_RADIUS/2) <= 0) { // if ball has moved beyond the LEFT edge{
+			var deltaY = ballY-(paddle1Y+PADDLE_HEIGHT/2);
+			ballSpeedY = deltaY * 0.35;
+
+			//ballSpeedY = 0; // DEBUG pause ball on collision
+			//ballSpeedX = 0; // DEBUG pause ball on collision
+        } else if ((ballX + BALL_RADIUS) <= 0) { // if ball has moved beyond the LEFT edge{
 			paddle2Score++;
 			ballReset();
 		}
     }
     
-	if((ballX + BALL_RADIUS/2) >= (canvas.width-PADDLE_WIDTH)) { // if ball has moved beyond paddle2 width
+	if((ballX + BALL_RADIUS) >= (canvas.width-(PADDLE_WIDTH+PADDLE_GAP))) { // if ball has moved beyond paddle2 width
 		if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT) {
         
 			ballSpeedX *= -1; // reverse ball's horizontal direction
 
 			var deltaY = ballY-(paddle2Y+PADDLE_HEIGHT/2);
 			ballSpeedY = deltaY * 0.35;
-		} else if((ballX - BALL_RADIUS/2) >= canvas.width) { // if ball has moved beyond the RIGHT edge {
+		} else if((ballX - BALL_RADIUS) >= canvas.width) { // if ball has moved beyond the RIGHT edge {
 			paddle1Score++;
 			ballReset();
 		}
     }
 
-    if((ballY - (BALL_RADIUS+5)) < EDGE_THICKNESS) { // if ball hits the TOP edge or goes beyond
+    if((ballY - BALL_RADIUS) <= EDGE_THICKNESS) { // if ball hits the TOP edge or goes beyond
 	  ballSpeedY *= -1; // reverse ball's vertical direction
 	  ballY = (EDGE_THICKNESS + BALL_RADIUS);
 	  //ballSpeedY = 0; // DEBUG pause ball on collision
@@ -168,7 +168,7 @@
       
     }
     
-    if((ballY + BALL_RADIUS+2) >= canvas.height-EDGE_THICKNESS) { // if ball hits the BOTTOM edge or goes beyond
+    if((ballY + BALL_RADIUS) >= canvas.height-EDGE_THICKNESS) { // if ball hits the BOTTOM edge or goes beyond
       ballSpeedY *= -1; // reverse ball's vertical direction
     }
   
@@ -207,9 +207,9 @@
 
     if(showingWinScreen) {
       if(paddle1Score >= WINNING_SCORE) {
-        colorText("LEFT PLAYER WINS!",canvas.width/2,canvas.height/2,'white',"12px arial");
+        colorText("LEFT PLAYER WINS!",canvas.width/2,canvas.height/2,'aqua',"48px arial");
       } else if(paddle2Score >= WINNING_SCORE) {
-        colorText("RIGHT PLAYER WINS!",canvas.width/2,canvas.height/2,'white',"12px arial");
+        colorText("RIGHT PLAYER WINS!",canvas.width/2,canvas.height/2,'orange',"48px arial");
       } 
       colorText("-- click anywhere to begin a new match --",
                   canvas.width/2,canvas.height-20,'white',"12px arial");
@@ -245,6 +245,8 @@
 	  colorText("ballX:  "+ballX, canvas.width / 4,60,'yellow',"12px arial");
 	  colorText("ballY:  "+ballY, canvas.width / 4,75,'yellow',"12px arial");
 	  colorText("FPS:  "+framesPerSecond, canvas.width / 4,90,'yellow',"12px arial");
+	  
+	  colorText("ballspeedYRnd:  "+ballSpeedYRnd, canvas.width / 4,30,'yellow',"12px arial");
     }
     // display text on screen - will be used for score
     colorText(paddle1Score,100,canvas.height-EDGE_THICKNESS/3,'white',"48px arial");
