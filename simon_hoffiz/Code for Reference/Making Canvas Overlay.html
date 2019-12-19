@@ -1,0 +1,24 @@
+<html>
+<div style="position: relative;">
+<canvas id = "gameCanvas01" width = "800" height = "600"  style="position: absolute; left: 0; top: 0; z-index: 0;"></canvas>
+<canvas id = "gameCanvas02" width = "800" height = "600"  style="position: absolute; left: 0; top: 0; z-index: 1;"></canvas>
+
+<script>
+var canvas1;
+var canvasContext1;
+var canvas2;
+var canvasContext2;
+
+	canvas1 = document.getElementById ("gameCanvas01");
+	canvasContext1 = canvas1.getContext ('2d');
+	canvasContext1.fillStyle = 'black';
+	canvasContext1.fillRect (0, 0, canvas1.width, canvas1.height);
+
+	canvas2 = document.getElementById ("gameCanvas02");
+	canvasContext2 = canvas2.getContext ('2d');
+	canvasContext2.fillStyle = "rgba(51, 255, 255, .25)";
+	canvasContext2.fillRect (canvas2.width/2 - canvas2.width/4, canvas2.height/2 - canvas2.height/4, canvas2.width/2, canvas2.height/2);
+
+</script>
+</div>
+</html>

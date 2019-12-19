@@ -1,0 +1,59 @@
+<html>
+
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+var c;
+var ctx;
+var posX = 0;
+var posY = 0;
+const ELEMENT_WIDTH = 50;
+const ELEMENT_HEIGHT = 50;
+
+window.onload = function() {
+	c = document.getElementById('gameCanvas');
+	ctx = c.getContext('2d');
+
+	var fps = 30;
+	setInterval(function() {
+			moveEverything();
+			drawEverything();	
+		}, 1000/fps);
+
+	c.addEventListener('mousemove',
+		function(evt) {
+			var mousePos = calculateMousePos(evt);
+			posX = mousePos.x;
+			posY = mousePos.y;
+			console.log(mousePos);
+		});
+}
+
+function drawEverything() {
+	drawRect(0, 0, c.width, c.height, 'black');
+	drawRect(posX - ELEMENT_WIDTH / 2, posY - ELEMENT_HEIGHT / 2, ELEMENT_WIDTH, ELEMENT_HEIGHT, 'white');
+	}
+
+function moveEverything() {
+	//posX = posX + 1;
+	}
+
+function calculateMousePos(evt) {
+	var rect = c.getBoundingClientRect();
+	var root = document.documentElement;
+	var mouseX = evt.clientX - rect.left - root.scrollLeft;
+	var mouseY = evt.clientY - rect.top - root.scrollTop;
+	return {
+		x:mouseX,
+		y:mouseY
+	};
+}
+
+function drawRect(leftX, topY, width, height, color) {
+	ctx.fillStyle = color;
+	ctx.fillRect (leftX, topY, width, height);
+	}
+
+
+</script>
+</html>

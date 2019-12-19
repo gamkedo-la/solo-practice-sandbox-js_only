@@ -1,0 +1,52 @@
+<html>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+var c, ctx;
+const BRICK_WIDTH = 100;
+const BRICK_HEIGHT = 50;
+const BRICK_GAP = 2;
+const BRICK_COUNT = 8;
+const BRICK_ROW = 6;
+var brickGrid = new Array(BRICK_COUNT); // new Array() sets an X amount of values to be filled. Putting BRICK_COUNT is telling the new Array it has 8 spots to fill. The function "brickArrayTrue" is filling those 8 slots created with "true" values. 
+
+window.onload = function() {
+	c = document.getElementById('gameCanvas');
+	ctx = c.getContext('2d');
+
+	var framesPerSecond = 30;
+	setInterval(drawAll, 1000/framesPerSecond);
+
+	brickArrayTrue(); //need to call this function here as we need it to define at start of game the values for the brickGrid array.
+}
+
+function drawAll() {
+	drawCanvas();
+	drawBricks();
+}
+
+function drawCanvas() {
+	ctx.fillStyle = 'black';
+	ctx.fillRect (0, 0, c.width, c.height);
+}
+
+function brickArrayTrue() {
+	for(var i = 0; i < BRICK_COUNT; i++) {
+		brickGrid[i] = true;
+	}
+}
+
+function drawBricks() { //for loop inside a for loop to create the rows and columns of bricks.
+	for(var eachRow = 0; eachRow < BRICK_ROW; eachRow++){ //eachRow is being defined as starting at "0", to keep counting up as long as its less than the value of BRICK_ROW, and to count up +1 each time.
+		for(var i = 0; i < BRICK_COUNT; i++) { // i is defined to start at "0', to keep counting up as long as its less than the value of BRICK_COUNT, and to count up +1 each time.
+			if (brickGrid[i]) { // the if statement always looks for a true result. if (brickGrid[0] = true) then do whatever is in {here}.
+				ctx.fillStyle = 'blue';
+				ctx.fillRect (BRICK_WIDTH * i, BRICK_HEIGHT * eachRow, BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT - BRICK_GAP);
+			}
+		}
+	}
+}
+
+
+</script>
+</html>

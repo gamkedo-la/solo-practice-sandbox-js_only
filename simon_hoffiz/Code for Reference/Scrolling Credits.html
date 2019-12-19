@@ -1,0 +1,68 @@
+<html>
+<canvas id="gameCanvas" width="800" height="600"> </canvas>
+
+<script>
+
+var c;
+var ctx;
+var fps = 30;
+var creditPosY = 500;
+//created a varriable that holds a list of values with brackets and divided by comas.
+const creditList = ["credit 01", 
+					"credit 02", 
+					"credit 03",
+					"credit 01", 
+					"credit 02", 
+					"credit 03",
+					"credit 01", 
+					"credit 02", 
+					"credit 03",
+					"credit 01", 
+					"credit 02", 
+					"credit 03",
+					"credit 01", 
+					"credit 02", 
+					"credit 03",
+					"credit 01", 
+					"credit 02", 
+					"credit 03"];
+
+	setInterval (function() {drawEverything(), moveEveryhting()}, 1000/fps);
+
+	window.onload = function() {
+		drawEverything();
+		moveEveryhting();
+	}
+
+function drawEverything() {
+		c = document.getElementById('gameCanvas');
+		ctx = c.getContext('2d');
+		ctx.fillStyle = 'black';
+		ctx.fillRect (0, 0, c.width, c.height);
+
+		drawCredits();
+}
+//this functions updates the Y position of the variable used for the text position
+function moveEveryhting() {
+	creditPosY = creditPosY - 1;
+}
+
+//function to create text and use creditList variable created a top to loop through the list and automate the text for credits.
+function drawCredits() {
+	for(var i=0; i<creditList.length; i++) {			//used a for loop to run through the different slots in the variable list of creditList
+		var yPos = creditPosY + i * 30;					//created an internal variable that is the sum of the original position of the text plus the slot in the list times 30 														pixel to create spacing between each line of the credits.
+		if(100 < yPos && yPos < 500) {					//if statement creating a limit as to when credits will disappear at the top and appear at the bottom as it scrolls		
+			colorText (creditList[i], c.width/2, yPos);	
+		}			
+	}	
+}
+
+function colorText (showWords, textX, textY) {
+	ctx.textAlign = "center";
+	ctx.font = "25px century gothic";
+	ctx.fillStyle = "white";
+	ctx.fillText (showWords, textX, textY);
+}
+
+</script>
+</html>

@@ -1,0 +1,35 @@
+<html>
+
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+const BRICK_W = 100;
+const BRICK_H = 50;
+const BRICK_COUNT = 8;
+var brickGrid = [true, true, false, true, true, true, true, true]; // This is an ARRAY.  FIrst argument is numbered as "0". For example in these brackets there are 4 statements starting with 0, 1, 2 & 3. Thisis how the [i] reads it.
+
+canvas = document.getElementById('gameCanvas');
+canvasContext = canvas.getContext('2d');
+
+colorRect(0, 0, canvas.width, canvas.height, 'black'); //drawing the canvas.
+drawBricks();
+
+////////////////////////////////////////////////////////////////////
+
+function drawBricks() {
+	for(var i=0; i<BRICK_COUNT; i++) {	//arguments explained: 1st:is defining variable "i" as 0. second its telling it to keep counting up until the value of BRICK_COUNT, in this case a total of 4 (0,1,2,& 3). third argument is telling it to add in intervals, in this case in intervals of 1.
+		if(brickGrid[i]) {										//the if() statements checks for boolean values as default. that is what it is doing.
+		colorRect(BRICK_W*i, 0, BRICK_W-2, BRICK_H, 'blue');
+		}			//this code keeps looping and replacing its "i" value with the array up to the number we specified it to stop, in this case BRICK_COUNT.
+	}
+}
+
+function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
+	canvasContext.fillStyle = fillColor;
+	canvasContext.fillRect(topLeftX,topLeftY, boxWidth,boxHeight);
+}
+
+
+</script>
+
+</html>

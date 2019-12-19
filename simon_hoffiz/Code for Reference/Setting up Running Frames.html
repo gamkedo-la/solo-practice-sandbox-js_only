@@ -1,0 +1,38 @@
+<html>
+
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+
+var c;
+var ctx;
+var fps = 30;
+
+var ballX = 0;
+
+	setInterval (function() {drawEverything(),moveEverything()},1000/fps);
+	
+	window.onload = function () {
+		drawEverything();
+		moveEverything();
+		
+		}
+
+function drawEverything() {
+	console.log ("working");
+
+	c = document.getElementById ('gameCanvas');
+	ctx = c.getContext ('2d');
+	ctx.fillStyle = 'black';
+	ctx.fillRect (0, 0, c.width, c.height);
+
+	ctx.fillStyle = 'white';
+	ctx.fillRect (ballX, 0, 10, 10);
+	}
+
+function moveEverything() {
+	ballX = ballX + 1;
+	}
+
+</script>
+</html>

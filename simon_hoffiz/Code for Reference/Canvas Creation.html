@@ -1,0 +1,22 @@
+<html> 
+
+<canvas id = "gameCanvas" width = "800" height = "600"> </canvas> <!--creates and defines boundaries where game is to be shown. The "id" label permits us to later on call this canvas in our js code to use it and siplay the game on it. -->
+
+<script> // inside holds all .js files that will be called out.
+
+var canvas; //handle for the information about the dimensions of the canvas. it is called as a global variable so we can later on use it across all code.
+var canvasContext; //handle the graphical information of that canvas. circles and squares drawn on it. it is called as a global variable so we can later on use it across all code.
+	
+	window.onload = function () { // "window.onload" makes sure that all the game's content.information is loaded before starting, this way the browser isn't showing tid and bits of your code reflected in the browser as it is being downloaded, rather it is nothing until everything is loaded and ready. 
+
+			canvas = document.getElementById('gameCanvas');
+			canvasContext = canvas.getContext ('2d');
+			canvasContext.fillStyle = 'black';
+			canvasContext.fillRect (0, 0, canvas.width, canvas.height); // first two arguments define origin on screen. third and fourth arguments determine dimensions from that origin point.
+	}
+
+</script>
+
+</html> <!-- holds all code to be called out in browser -->
+
+

@@ -1,0 +1,98 @@
+<html>
+​
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+​
+<script>
+var c;
+var ctx;
+var posX = 100;
+var posY = 100;
+var lastPosX = posX;
+var lastPosY = posY;
+const ELEMENT_WIDTH = 50;
+const ELEMENT_HEIGHT = 50;
+var mouseToDrag = false;
+var mousePos = {x:0, y:0};
+
+
+window.onload = function() {
+	c = document.getElementById('gameCanvas');
+	ctx = c.getContext('2d');
+
+	var fps = 30;
+	setInterval(function() {
+			moveEverything();
+			drawEverything();	
+		}, 1000/fps);
+
+	c.addEventListener('mousemove', mouseMovesObject);
+	c.addEventListener('mousedown', mouseDrag);
+	c.addEventListener('mouseup', noMouseDrag);
+}
+
+function drawEverything() {
+	drawRect(0, 0, c.width, c.height, 'black');
+	drawRect(lastPosX, lastPosY, ELEMENT_WIDTH, ELEMENT_HEIGHT, 'white');
+	}
+
+function moveEverything() {
+//not needed for now
+	}
+
+
+function mouseMovesObject(evt) {
+	if (mouseToDrag
+		&& mousePos.X >= lastPosX && mousePos.X <= lastPosX+ELEMENT_WIDTH
+		&& mousePos.Y >= lastPosY && mousePos.Y <= lastPosY+ELEMENT_HEIGHT
+		) {
+		console.log("drag");
+	
+		c.addEventListener('mousemove',
+		function(evt) {
+			mousePos = calculateMousePos(evt);
+			//console.log(mousePos);
+			
+			});
+		lastPosX = mousePos.x;
+			lastPosY = mousePos.y;
+
+		}
+		if (mouseToDrag == false) {
+		console.log("nodrag");
+		lastPosX = lastPosX ;
+		lastPosY = lastPosY;
+		//if you want the square to snap back to original position when mouse is not dragging:
+		//lastPosX = posX;
+		//lastPosY = posY;
+		 }
+	}
+	
+
+function noMouseDrag(evt) {
+	mouseToDrag = false;
+	}
+
+function mouseDrag(evt) {
+	mouseToDrag = true;
+	}
+
+function calculateMousePos(evt) {
+	var rect = c.getBoundingClientRect();
+	var root = document.documentElement;
+	var mouseX = evt.clientX - rect.left - root.scrollLeft;
+	var mouseY = evt.clientY - rect.top - root.scrollTop;
+	return {
+		x:mouseX,
+		y:mouseY
+	};
+}
+
+function drawRect(leftX, topY, width, height, color) {
+	ctx.fillStyle = color;
+	ctx.fillRect (leftX, topY, width, height);
+	}
+
+
+</script>
+</html>
+

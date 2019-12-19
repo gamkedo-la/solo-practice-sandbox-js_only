@@ -1,0 +1,36 @@
+<html>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+
+var mouseX, mouseY; //moved variables defined in updateMousePos function to be global.
+
+canvas = document.getElementById('gameCanvas');
+canvasContext = canvas.getContext('2d');
+
+var framesPerSecond = 30;
+setInterval(drawAll, 1000/framesPerSecond);
+
+canvas.addEventListener('mousemove', updateMousePos); // first argument is built into js that is listening everytime the mouse moves. second argument is a function to update its location within the gameCanvas perimeter only.
+
+function updateMousePos(evt) {
+	var rect = canvas.getBoundingClientRect();
+	var root = document.documentElement;
+
+	mouseX = evt.clientX - rect.left - root.scrollLeft;
+	mouseY = evt.clientY - rect.top - root.scrollTop;
+}
+
+	
+ function drawAll() {
+
+ canvasContext.fillStyle = 'black';								//painting the canvas black.
+ canvasContext.fillRect (0, 0, canvas.width, canvas.height);
+
+ canvasContext.fillStyle = 'yellow';							//displaying text for mouse coordinates.
+ canvasContext.fillText (mouseX+ "," +mouseY, mouseX, mouseY);
+}
+
+
+</script>
+</html>
