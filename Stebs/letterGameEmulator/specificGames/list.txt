@@ -1,0 +1,41 @@
+1. Bird
+2. Jumper
+3. Lane
+4. Snake
+5. Space Shooter
+6. Shuffle/Memory - letters are assigned a randomized color, then they change into squares of the 
+same color and are shuffled, player has to remember the color of the correct letter and choose it
+7. Maze - navigate a maze towards the correct letter, procedurally generated?, pac-man elements?
+8. Infinite Side Scrolling platformer - platfroms automatically move towards player
+9. Infinite Swimmer - variation of Lane
+10. Frogger - letters on correct lily pads
+11. Pass or Block - raining letters
+12. Mahjong Match - only clears correct letters
+13. Word finisher - pictures of what words mean, like a picture of ham and the player sees ha_, need
+to pick the correct letter to fill in the blank
+14. Feed the baby - baby only wants to eat correct letters
+15. Fork in the road - choose which direction to get to your destination
+16. Whack a letter on a wheel - left/right arrows spin the wheel, line up a correct letter under a 
+hammer and smash with space bar
+17. Phlying Phonics - previous hometeam game, use same basic mechanic/idea, balloons pop? popcorn pops?
+18. Grabber - prize machine game, correct letters are given as prizes, incorrect letters are dropped or
+slip out of grip
+19. Eel - Snake except you're in the sea
+20. Plane/Drone - Bird except now you're a vehicle, switch up mechanic if desired, keep it simple
+21. Pinata - player breaks a pinata and letter 'particles' explode out, collect the correct letters
+22. Limbo letter - party background, either jump over or limbo under a horizontal pole to collect the
+correct letter
+23. Wall Crack - player can only pass an obstruction through a correct letter 'crack in the wall'
+24. Server - customer orders a letter and the player has to bring it to them
+25. Instrument - player has to touch the right string/key/etc marked buy a letter, slowly building a 
+song that plays when the level is complete
+26. Dance Moves - choose the movement based on letter position, dance moves and choices don't need to 
+be in rhythm
+27. Instrumentsss - players choose the correct instrument which is marked by a letter, correct choices
+sound like a song, incorrect choices sound like garbage
+28. Soccer - kicking the ball towards the correct letter choice scores a goal, incorrect choice gets 
+blocked
+29. Basketball - passing the ball to the correct teammate leads to scoring points, incorrect leads to 
+the ball being stolen
+30. Football - choose to pass or run, correct choice leads to a touchdown animation, incorrect leads to
+fumble/interception 
