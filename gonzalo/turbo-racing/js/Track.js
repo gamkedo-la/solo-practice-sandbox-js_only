@@ -4,21 +4,21 @@ const track = new (function() {
 	const COLS = 20;
 	const ROWS = 15;
 	const GRID = [
-		4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, ////
-		4, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, ////
-		1, 1, 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, ////
-		1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, ////
-		7, 0, 6, 0, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 1, ////
-		7, 0, 0, 1, 1, 0, 0, 1, 4, 4, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1, ////
-		7, 0, 0, 1, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, ////
-		7, 0, 6, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, ////
-		7, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1, 0, 0, 1, ////
-		1, 0, 0, 1, 0, 0, 5, 0, 0, 0, 5, 0, 0, 1, 0, 0, 1, 0, 0, 1, ////
-		1, 2, 2, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1, ////
-		1, 1, 1, 5, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, ////
-		1, 0, 3, 0, 0, 0, 1, 4, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, ////
-		1, 0, 3, 0, 0, 0, 1, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, ////
-		1, 1, 1, 5, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1
+		 4,  4, 10,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  1,  9,  4, ////
+		 4, 10, 11,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0, 12,  9, ////
+		10, 11,  0,  0,  0,  0,  0,  0,  6,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  8, ////
+		11,  0,  0,  0,  0, 10,  1,  1,  1,  1,  1,  1,  1,  1,  1,  9,  0,  0,  0,  8, ////
+		 7,  0,  6,  0, 10,  9,  7,  4,  4,  4,  4,  4,  4,  4,  4, 12,  9,  0,  0,  8, ////
+	  	 7,  0,  0, 10, 11, 12,  1,  1,  9,  4, 10, 16,  0,  0,  0,  0,  8,  0,  0,  8, ////
+		 7,  0,  0,  8,  0,  0,  0,  0,  8,  4,  8,  0,  0,  0,  0,  0,  8,  0,  0,  8, ////
+		 7,  0,  6,  8,  0,  0,  0,  0, 12,  1,  9,  0,  0,  0,  0,  0,  8,  0,  0,  8, ////
+		 7,  0,  0,  8,  0,  0,  0,  0,  0,  0,  1,  0,  0,  5,  0,  0,  8,  0,  0,  8, ////
+		 8,  0,  0,  8,  0,  0,  5,  0,  0,  0,  5,  0,  0,  1,  0,  0,  8,  0,  0,  8, ////
+		 8,  2,  2,  8,  0,  0, 10,  9,  0,  0,  0,  0,  0,  1,  0,  0,  5,  0,  0,  8, ////
+		13,  1,  1,  5,  0,  0,  8,  8,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0,  8, ////
+		 8,  0,  3,  0,  0,  0,  8,  4,  1,  0,  0,  0,  1,  1,  0,  0,  0,  0,  0,  1, ////
+		 8,  0,  3,  0,  0,  0,  8,  4,  4,  1,  1,  1,  1,  1,  1,  0,  0,  0,  1,  1, ////
+		12,  1,  1,  5,  1,  1, 11,  4,  4,  4,  4,  4,  4,  1,  1,  1,  1,  1,  1,  1
 	];
 	const TILE_INDEX = {
 		_default: Number.MAX_SAFE_INTEGER,
@@ -29,7 +29,16 @@ const track = new (function() {
 		tree: 4,
 		flag: 5,
 		oil: 6,
-		grass: 7
+		grass: 7,
+		wallSide: 8,
+		wallCornerNE: 9,
+		wallCornerNW: 10,
+		wallCornerSE: 11,
+		wallCornerSW: 12,
+		wallJoin: 13,
+		pillar: 14,
+		pillarE: 15,
+		pillarW: 16
 	};
 	const TILE_TYPES = {
 		[TILE_INDEX.road]: {
@@ -75,6 +84,51 @@ const track = new (function() {
 			imageId: 'TRACK_GRASS',
 			driveable: true,
 			onDrive: (car) => {car.carSpeed /= 2}
+		},
+		[TILE_INDEX.wallSide]: {
+			imageId: 'TRACK_WALL_SIDE',
+			driveable: false,
+			onDrive: ()=>{}
+		},
+		[TILE_INDEX.wallCornerNE]: {
+			imageId: 'TRACK_WALL_NE',
+			driveable: false,
+			onDrive: ()=>{},
+		},
+		[TILE_INDEX.wallCornerNW]: {
+			imageId: 'TRACK_WALL_NW',
+			driveable: false,
+			onDrive: ()=>{}
+		},
+		[TILE_INDEX.wallCornerSE]: {
+			imageId: 'TRACK_WALL_SE',
+			driveable: false,
+			onDrive: ()=>{},
+		},
+		[TILE_INDEX.wallCornerSW]: {
+			imageId: 'TRACK_WALL_SW',
+			driveable: false,
+			onDrive: ()=>{},
+		},
+		[TILE_INDEX.wallJoin]: {
+			imageId: 'TRACK_WALL_JOIN',
+			driveable: false,
+			onDrive: ()=>{},
+		},
+		[TILE_INDEX.pillar]: {
+			imageId: 'TRACK_PILLAR',
+			driveable: false,
+			onDrive: ()=>{},
+		},
+		[TILE_INDEX.pillarE]: {
+			imageId: 'TRACK_PILLAR_E',
+			driveable: false,
+			onDrive: ()=>{},
+		},
+		[TILE_INDEX.pillarW]: {
+			imageId: 'TRACK_PILLAR_W',
+			driveable: false,
+			onDrive: ()=>{},
 		},
 		[TILE_INDEX._default]: {
 			imageId: 'TRACK_WALL',
