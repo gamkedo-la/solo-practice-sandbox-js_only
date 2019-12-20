@@ -1,0 +1,76 @@
+#+TITLE: Hands-On Intro to Game Programming progress tracking
+
+NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion exercises
+* Game 3: Turbo Racing Completion Exercises
+
+** DONE Exercise 1, new tile types: grass and oil slick              :warmup:
+
+   So, I went a little overboard on this one and went ahead and also redid a few more tile types:
+   - Grass :: [[./turbo-racing/images/track_grass.png]]
+   - Road :: [[./turbo-racing/images/track_road.png]]
+   - Tree :: [[./turbo-racing/images/track_tree.png]]
+   - Oil slick :: [[./turbo-racing/images/track_oil.png]]
+   - Goal :: [[./turbo-racing/images/track_goal.png]]
+   - Wall :: [[./turbo-racing/images/track_wall.png]] (inspired by /Zombies Ate my Neighbours/ walls)
+
+   I used the NES palette to try and give it a retro look.
+
+** TODO Extra: moar graphics                                          :extra:
+
+*** DONE East/West wall tiles
+
+	Going to need "join" tiles as well
+
+**** DONE integrate to game code
+
+***** DONE Fix bug with wallCornerSW
+
+	  +Need a better understanding of [[https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/translate][~CanvasRenderingContext2D.translate~]]+
+	  For some reason wall corners are not pointing to the cardinal point I expect them to?
+	  In any case, it'll be better to draw each corner (or maybe the vertical flips) so they can connect properly.
+
+*** DONE N/S/E/W wall join tiles
+
+*** DONE wall side terminators
+*** TODO Flag tile
+
+*** TODO Car sprites
+
+*** TODO road-meets-grass tiles (also trees)
+
+** TODO Extra: implement layered track
+
+   Create a base layer for the /ground/ tiles (grass, desert, and road, currently) and a layer on top of it where /object/ tiles exist (wall, trees, flags, oil, goal, etc.)
+
+** TODO Extra: move wall tiles (or all tiles) into single spritesheet :extra:
+
+** TODO Exercise 2, day/night or theme tile sets                     :warmup:
+
+** TODO Exercise 3, basic car-to-car collision                       :practice:
+
+** TODO Exercise 4, terrible computer controlled car               :practice:
+
+** TODO Exercise 5, keep and show true racing time                 :practice:
+
+** TODO Exercise 6, nitro boost                                    :practice:
+
+** TODO Exercise 7, support multiple tracks                        :practice:
+
+** TODO Exercise 8, ramp tiles and airborne cars                   :practice:
+
+** TODO Exercise 9, sound effects (advanced!)                      :practice:
+
+** TODO Exercise 10, in-game track editor GUI                      :practice:
+
+** TODO Exercise 11, laps with checkpoints                        :challenge:
+
+** TODO Exercise 12, collision at front and rear of car           :challenge:
+
+** TODO Exercise 13, larger scrolling track (one player)          :challenge:
+
+** TODO Exercise 14, better computer driver                       :challenge:
+
+** TODO Exercise 15, weather effects (visual + steering)          :challenge:
+
+** TODO Exercise 16, zoom camera for two player big map           :challenge:
+
