@@ -16,8 +16,8 @@
   // variables to keep track of ball position
   var ballX;
   var ballY;
-  var ballSpeedX = 6;
-  var ballSpeedY = 10;
+  var ballSpeedX = -5;
+  var ballSpeedY = -10;
   
   var paddle1Score = 0;
   var paddle2Score = 0;
@@ -131,7 +131,7 @@
     //    ballSpeedX = -ballSpeedX;
     //}
 	
-	if((ballX - BALL_RADIUS) <= (PADDLE_WIDTH+PADDLE_GAP)) { // if ball has moved beyond paddle1 width
+	if((ballX - (BALL_RADIUS)) <= (PADDLE_WIDTH+PADDLE_GAP)) { // if ball has moved beyond paddle1 width
 		if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
         
 			ballSpeedX *= -1; // reverse ball's horizontal direction
