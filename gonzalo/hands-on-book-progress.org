@@ -34,7 +34,10 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 *** DONE wall side terminators
 *** DONE Flag tile
 
-*** TODO Car sprites
+*** DONE Car sprites
+	Replaced them with tank sprites.
+	They can surely use more work, and I'd love different tanks, but they're pretty
+	good for now.
 
 *** TODO road-meets-grass tiles (also trees)
 
