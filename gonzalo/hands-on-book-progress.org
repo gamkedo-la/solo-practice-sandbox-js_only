@@ -32,7 +32,7 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 *** DONE N/S/E/W wall join tiles
 
 *** DONE wall side terminators
-*** TODO Flag tile
+*** DONE Flag tile
 
 *** TODO Car sprites
 
