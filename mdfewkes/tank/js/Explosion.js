@@ -4,6 +4,7 @@ function basicExplosionClass() {
 	this.size = 0;
 	this.damage = 0;
 	this.color = "White";
+	this.tank;
 	this.countDown = 0.5;
 
 	var damageDone = false;
@@ -14,7 +15,9 @@ function basicExplosionClass() {
 		if (this.active) {
 			if (!damageDone) {
 				for (var i = 0; i < numberOfPlayers; i++) {
-					this.calculateDamage(arrayOfPlayers[i]);
+					if (this.tank != arrayOfPlayers[i]) {
+						this.calculateDamage(arrayOfPlayers[i]);
+					}
 				}
 				damageDone = true;
 			}

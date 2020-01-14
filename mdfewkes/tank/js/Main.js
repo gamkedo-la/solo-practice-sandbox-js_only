@@ -18,7 +18,8 @@ var now;
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
-	debugText = document.getElementById('debugText');
+	stats = document.getElementById('stats');
+	weapon = document.getElementById('weapon');
 
 	gameStart();
 }
@@ -61,7 +62,8 @@ function update(frameTime) {
 	colorRect(0, 0, canvas.width, canvas.height, "LightGrey");	
 	colorRect(0, canvas.height - 100, canvas.width, canvas.height, "Grey");
 
-	debugText.innerHTML = "Player " + pad(playerTurn+1, 2) + " Angle "  + pad(Math.round(arrayOfPlayers[playerTurn].angle), 3) + " Power " + pad(Math.round(arrayOfPlayers[playerTurn].power), 3) + " Health " + pad(Math.round(arrayOfPlayers[playerTurn].health), 3);
+	stats.innerHTML = "Player " + pad(playerTurn+1, 2) + " Angle "  + pad(Math.round(arrayOfPlayers[playerTurn].angle), 3) + " Power " + pad(Math.round(arrayOfPlayers[playerTurn].power), 3) + " Health " + pad(Math.round(arrayOfPlayers[playerTurn].health), 3);
+	weapon.innerHTML = arrayOfPlayers[playerTurn].weapon;
 
 	for (var i = 0; i < numberOfPlayers; i++) {
 		arrayOfPlayers[i].update(frameTime);

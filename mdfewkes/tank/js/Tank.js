@@ -6,6 +6,7 @@ function tankClass() {
 	this.health = 100;
 	this.color = "White";
 	this.player = "Player";
+	this.weapon = 0;
 
 	var w = 20;
 	var h = 10;
@@ -17,7 +18,15 @@ function tankClass() {
 		if (this.myTurn) {
 			if (this.active) {
 				if (Key.isJustPressed(Key.SPACE)){
-					var newProjectile = new basicShotClass();
+					var newProjectile;
+					switch (this.weapon) {
+						case 0:
+							newProjectile = new basicShotClass();
+							break;
+						case 1:
+							newProjectile = new threeShotClass();
+							break;
+					}
 					newProjectile.x = this.x;
 					newProjectile.y = this.y - 10;
 					newProjectile.tank = this;
@@ -38,6 +47,12 @@ function tankClass() {
 				if (Key.isDown(Key.DOWN)){
 					this.power -= 20 * frameTime;
 				}
+				if (Key.isJustPressed(Key.COMMA)){
+					this.weapon--;
+				}
+				if (Key.isJustPressed(Key.PERIOD)){
+					this.weapon++;
+				}
 
 				if (this.angle >= 360) {
 					this.angle -= 360;
@@ -50,6 +65,13 @@ function tankClass() {
 				} else if (this.power < 1) {
 					this.power = 1;
 				}
+
+				if (this.weapon > 1) {
+					this.weapon = 0;
+				} else if (this.weapon < 0) {
+					this.weapon = 1;
+				}
+
 			} else {
 				incrementTurn = true;
 			}
