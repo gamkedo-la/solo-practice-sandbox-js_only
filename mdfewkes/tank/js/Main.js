@@ -17,7 +17,7 @@ var now;
 
 const GAME_MODE = 0;
 const TITLE_SCREEN = 1;
-var mode = TITLE_SCREEN;
+var mode = GAME_MODE;
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -61,7 +61,7 @@ function frameLoop() {
 	window.requestAnimationFrame(frameLoop);
 }
 
-function update(frameTime) {
+function update(frameTime) {	
 	switch (mode) {
 		case GAME_MODE:
 			modeGame(frameTime);
@@ -70,7 +70,7 @@ function update(frameTime) {
 			modeTitle(frameTime);
 			break;
 	}
-	
+	Key.update();
 }
 
 function modeGame(frameTime) {
@@ -93,7 +93,6 @@ function modeGame(frameTime) {
 		arrayOfExplosions[i].draw(frameTime);
 	}
 
-	Key.update();
 	cleanLists();
 	nextTurn()
 }
@@ -106,8 +105,6 @@ function modeTitle(frameTime) {
 	if (Key.isJustPressed(Key.SPACE)){
 		mode = GAME_MODE;
 	}
-
-	Key.update();
 }
 
 function nextTurn() {

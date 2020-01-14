@@ -2,7 +2,7 @@ function tankClass() {
 	this.x = 400;
 	this.y = 300;
 	this.angle = 90;
-	this.power = 100;
+	this.power = 75;
 	this.health = 100;
 	this.color = "White";
 	this.player = "Player";
@@ -26,11 +26,14 @@ function tankClass() {
 						case 1:
 							newProjectile = new threeShotClass();
 							break;
+						case 2:
+							newProjectile = new sniperShotClass();
+							break;
 					}
 					newProjectile.x = this.x;
 					newProjectile.y = this.y - 10;
 					newProjectile.tank = this;
-					newProjectile.launch(this.angle, this.power*2);
+					newProjectile.launch(this.angle, this.power*2.65);
 					arrayOfProjectiles.push(newProjectile);
 
 					this.myTurn = false;
@@ -66,10 +69,10 @@ function tankClass() {
 					this.power = 1;
 				}
 
-				if (this.weapon > 1) {
+				if (this.weapon > 2) {
 					this.weapon = 0;
 				} else if (this.weapon < 0) {
-					this.weapon = 1;
+					this.weapon = 2;
 				}
 
 			} else {
@@ -106,8 +109,10 @@ function tankClass() {
 	}
 
 	this.destroy = function destroy() {
-		this.color = "Black"
-		this.active = false;
-		console.log("Destroy Player " + (playerTurn+1));
+		if (this.active) {
+			this.color = "Black"
+			this.active = false;
+			console.log("Destroy Player " + (playerTurn+1));
+		}
 	}
 }
