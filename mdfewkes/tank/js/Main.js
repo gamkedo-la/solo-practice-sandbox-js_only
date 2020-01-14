@@ -10,7 +10,7 @@ var playerTurn = 0;
 var incrementTurn = false;
 
 var deltaTime = 0;
-var lastFrameTime = Date.now();
+var lastFrameTime = window.performance.now();
 var elapsed = 0;
 var frameStepSize = 1/60;
 var now;
@@ -46,7 +46,7 @@ function gameStart() {
 
 function frameLoop() {
 
-	now = Date.now();
+	now = window.performance.now();
 
 	deltaTime = deltaTime + Math.min(1, (now-lastFrameTime) / 1000);
 
@@ -103,9 +103,11 @@ function modeTitle(frameTime) {
 	colorRect(100, 100, canvas.width-200, canvas.height-200, "Grey");
 	colorText("Tank Game", canvas.width/2 - 125, canvas.height/2, "White", "50px Arial");
 
-	if (Key.isJustPressed(Key.ENTER)){
+	if (Key.isJustPressed(Key.SPACE)){
 		mode = GAME_MODE;
 	}
+
+	Key.update();
 }
 
 function nextTurn() {
