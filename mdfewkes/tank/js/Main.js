@@ -15,6 +15,10 @@ var elapsed = 0;
 var frameStepSize = 1/60;
 var now;
 
+const GAME_MODE = 0;
+const TITLE_SCREEN = 1;
+var mode = TITLE_SCREEN;
+
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
@@ -58,7 +62,18 @@ function frameLoop() {
 }
 
 function update(frameTime) {
+	switch (mode) {
+		case GAME_MODE:
+			modeGame(frameTime);
+			break;
+		case TITLE_SCREEN:
+			modeTitle(frameTime);
+			break;
+	}
+	
+}
 
+function modeGame(frameTime) {
 	colorRect(0, 0, canvas.width, canvas.height, "LightGrey");	
 	colorRect(0, canvas.height - 100, canvas.width, canvas.height, "Grey");
 
@@ -81,6 +96,16 @@ function update(frameTime) {
 	Key.update();
 	cleanLists();
 	nextTurn()
+}
+
+function modeTitle(frameTime) {
+	colorRect(0, 0, canvas.width, canvas.height, "LightGrey");	
+	colorRect(100, 100, canvas.width-200, canvas.height-200, "Grey");
+	colorText("Tank Game", canvas.width/2 - 125, canvas.height/2, "White", "50px Arial");
+
+	if (Key.isJustPressed(Key.ENTER)){
+		mode = GAME_MODE;
+	}
 }
 
 function nextTurn() {

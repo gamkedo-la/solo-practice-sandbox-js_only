@@ -14,6 +14,7 @@ const Key = {
 	SPACE: 32,
 	CTRL: 17,
 	ALT: 18,
+	ENTER: 13,
 	ONE: 49,
 	TWO: 50,
 	THREE: 51,
