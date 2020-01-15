@@ -70,6 +70,15 @@ function update(frameTime) {
 			modeTitle(frameTime);
 			break;
 	}
+
+	if (Key.isJustPressed(Key.BRACKET_LEFT)){
+		turnVolumeDown()
+	}
+	if (Key.isJustPressed(Key.BRACKET_RIGHT)){
+		turnVolumeUp();
+	}
+
+	backgroundMusic.updateMusic(frameTime);
 	Key.update();
 }
 
