@@ -17,7 +17,7 @@ var now;
 
 const GAME_MODE = 0;
 const TITLE_SCREEN = 1;
-var mode = GAME_MODE;
+var mode = TITLE_SCREEN;
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');

@@ -4,7 +4,9 @@ var soundMouseClick = new SoundOverlapsClass("./audio/mouseClick.mp3");
 
 var backgroundMusic = new backgroundMusicClass();
 
-var musicTitle = "./audio/title.mp3";
+var musicTest1 = "./audio/Tester.mp3";
+var musicTest2 = "./audio/Teste2.mp3";
+
 
 
 var musicVolume = localStorage.getItem("musicVolume");
@@ -20,7 +22,6 @@ if(effectsVolume === null){
 var isMuted = false;
 const VOLUME_INCREMENT = 0.05;
 
-
 function backgroundMusicClass() {
 
 	var musicSound = null;
@@ -29,7 +30,6 @@ function backgroundMusicClass() {
 	this.loopSong = function(filenameWithPath) {
 
 		if (musicSound != null) {
-			musicSound.pause();
 			fadeTrack = musicSound;
 			musicSound = null;
 		}
@@ -60,7 +60,15 @@ function backgroundMusicClass() {
 
 	this.updateMusic = function(frameTime) {
 		if (fadeTrack != null) {
-			fadeTrack.volume -= 0.5 * frameTime;
+			var newVolume = fadeTrack.volume - (1 * frameTime);
+
+			if(newVolume > 1.0) {
+				newVolume = 1.0;
+			} else if (newVolume < 0.0) {
+				newVolume = 0.0;
+			}
+
+			fadeTrack.volume -= newVolume;
 
 			if (fadeTrack.volume <= 0) {
 				fadeTrack.pause();
