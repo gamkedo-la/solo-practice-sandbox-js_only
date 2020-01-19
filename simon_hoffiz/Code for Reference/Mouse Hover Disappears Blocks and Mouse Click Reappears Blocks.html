@@ -1,0 +1,79 @@
+<html>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+
+var mouseX, mouseY; //moved variables defined in updateMousePos function to be global.
+
+var whiteCube = true;
+var whiteCube_POSX = 100;
+var whiteCube_POSY = 100;
+var whiteCube_W = 50;
+var whiteCube_H = 50;
+
+var greenCube = true;
+var greenCube_POSX = 300;
+var greenCube_POSY = 300;
+var greenCube_W = 50;
+var greenCube_H = 50;
+
+c = document.getElementById('gameCanvas');
+ctx = c.getContext('2d');
+
+var framesPerSecond = 30;
+setInterval(drawAll, 1000/framesPerSecond);
+
+c.addEventListener('mousemove', updateMousePos); // first argument is built into js that is listening everytime the mouse moves. second argument is a function to update its location within the gameCanvas perimeter only.
+c.addEventListener('mousedown', restoreCubes);
+
+function updateMousePos(evt) {
+	var rect = c.getBoundingClientRect();
+	var root = document.documentElement;
+
+	mouseX = evt.clientX - rect.left - root.scrollLeft;
+	mouseY = evt.clientY - rect.top - root.scrollTop;
+}
+
+function restoreCubes (evt) {
+	whiteCube = true;
+	greenCube = true;
+}
+	
+function drawAll() {
+
+ctx.fillStyle = 'black';								//painting the canvas black.
+ctx.fillRect (0, 0, c.width, c.height);
+
+ctx.fillStyle = 'yellow';							//displaying text for mouse coordinates.
+ctx.fillText (mouseX+ "," +mouseY, mouseX, mouseY);
+
+if (whiteCube) {
+colorRect(whiteCube_POSX,whiteCube_POSY, whiteCube_W,whiteCube_H, 'white');
+	}
+if (greenCube) {
+colorRect(greenCube_POSX,greenCube_POSY, greenCube_W,greenCube_H, 'green');
+	}
+
+cubeOff();
+}
+
+function cubeOff() {
+	if(mouseX >= whiteCube_POSX && mouseX < whiteCube_POSX+whiteCube_W && 
+	   mouseY >= whiteCube_POSY && mouseY < whiteCube_POSY+whiteCube_H) {
+		whiteCube = false;
+	}
+
+	if(mouseX >= greenCube_POSX && mouseX < greenCube_POSX+greenCube_W && 
+   	mouseY >= greenCube_POSY && mouseY < greenCube_POSY+greenCube_H) {
+	greenCube = false;
+}
+}
+
+function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
+	ctx.fillStyle = fillColor;
+	ctx.fillRect(topLeftX,topLeftY, boxWidth,boxHeight);
+}
+
+
+</script>
+</html>
