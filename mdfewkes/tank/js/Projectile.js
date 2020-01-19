@@ -25,8 +25,13 @@ function basicShotClass() {
 				}
 			}
 
-			if (this.y >= canvas.height - 100) {
+			if (this.y >= canvas.height - UI_HEIGHT - map.getHeightAtX(this.x)) {
 				this.hit();
+			} else if (this.y >= canvas.height - UI_HEIGHT) {
+				this.hit();
+			} else if (this.x < 0 || this.x > canvas.width) {
+				this.active = false;
+				incrementTurn = true;
 			}
 		}
 	}
@@ -137,8 +142,13 @@ function sniperShotClass() {
 				}
 			}
 
-			if (this.y >= canvas.height - 100) {
+			if (this.y >= canvas.height - UI_HEIGHT - map.getHeightAtX(this.x)) {
 				this.hit();
+			} else if (this.y >= canvas.height - UI_HEIGHT) {
+				this.hit();
+			} else if (this.x < 0 || this.x > canvas.width) {
+				this.active = false;
+				incrementTurn = true;
 			}
 		}
 	}
