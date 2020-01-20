@@ -1,7 +1,7 @@
 var canvas, canvasContext, debugText;
 var framesPerSecond = 30;
 
-var numberOfPlayers = 5;
+var numberOfPlayers = 2;
 var arrayOfPlayers = [];
 var arrayOfProjectiles = [];
 var arrayOfExplosions = [];
@@ -57,7 +57,6 @@ function frameLoop() {
 		deltaTime = deltaTime - frameStepSize;
 		update(frameStepSize);
 	}
-
 
 	lastFrameTime = now;
 
