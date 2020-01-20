@@ -86,7 +86,7 @@ function update(frameTime) {
 }
 
 function modeGame(frameTime) {
-	colorRect(0, 0, canvas.width, canvas.height, "LightGrey");	
+	colorRect(0, 0, canvas.width, canvas.height, "LightBlue");	
 	colorRect(0, canvas.height - UI_HEIGHT, canvas.width, canvas.height, "Grey");
 	
 	colorRect(100, canvas.height - UI_HEIGHT + 20, canvas.width - 200, 20, "White");
