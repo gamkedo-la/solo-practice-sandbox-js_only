@@ -5,15 +5,18 @@ function terrain() {
 	this.init = function(width, height) {
 		maxHeight = height;
 
-		var rand = rndInt(-50, 100);
+		var oldRand = rndInt(-50, 100);
+		var newRand = rndInt(-50, 100);
 		for (var i = 0; i < width; i++) {
-			var value = 100 + rand;
+			if (i%50 == 0) {
+				oldRand = newRand;
+				newRand = rndInt(-50, 100);
+			}
+			
+			var value = 100 + lerp(oldRand, newRand, i%50/50);
 
 			heightMap[i] = value;
 
-			if (i%50 == 0) {
-				rand = rndInt(-50, 100);
-			}
 		}
 	}
 
@@ -52,7 +55,7 @@ function terrain() {
 
 	this.draw = function() {
 		for (var i = 0; i < heightMap.length; i++) {
-			colorLine(i, canvas.height - UI_HEIGHT, i, canvas.height - 100 - heightMap[i], 1, "#FFFFFF");
+			colorLine(i, canvas.height - UI_HEIGHT, i, canvas.height - 100 - heightMap[i], 1, "Brown");
 		}
 	}
 }

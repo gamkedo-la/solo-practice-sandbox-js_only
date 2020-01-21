@@ -1,7 +1,7 @@
 var canvas, canvasContext, debugText;
 var framesPerSecond = 30;
 
-var numberOfPlayers = 5;
+var numberOfPlayers = 2;
 var arrayOfPlayers = [];
 var arrayOfProjectiles = [];
 var arrayOfExplosions = [];
@@ -58,7 +58,6 @@ function frameLoop() {
 		update(frameStepSize);
 	}
 
-
 	lastFrameTime = now;
 
 	window.requestAnimationFrame(frameLoop);
@@ -86,7 +85,7 @@ function update(frameTime) {
 }
 
 function modeGame(frameTime) {
-	colorRect(0, 0, canvas.width, canvas.height, "LightGrey");	
+	colorRect(0, 0, canvas.width, canvas.height, "LightBlue");	
 	colorRect(0, canvas.height - UI_HEIGHT, canvas.width, canvas.height, "Grey");
 	
 	colorRect(100, canvas.height - UI_HEIGHT + 20, canvas.width - 200, 20, "White");
