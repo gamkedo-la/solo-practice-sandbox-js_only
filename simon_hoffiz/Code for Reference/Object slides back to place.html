@@ -1,0 +1,101 @@
+<html>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+<script>
+var c;
+var ctx;
+var posX = 100;
+var posY = 100;
+var mousePos = {};
+var mouseToDrag = false;
+var elementColor = 'white';
+const ELEMENT_WIDTH = 50;
+const ELEMENT_HEIGHT = 50;
+window.onload = function() {
+	c = document.getElementById('gameCanvas');
+	ctx = c.getContext('2d');
+	var fps = 30;
+	setInterval(function() {
+			moveEverything();
+			drawEverything();	
+		}, 1000/fps);
+	c.addEventListener('mousemove', updateMouse);
+	c.addEventListener('mousedown', mouseDragsObject);
+	c.addEventListener('mouseup', mouseNotDrag);
+}
+function mouseNotDrag(evt) {
+	mouseToDrag = false;
+}
+function mouseDragsObject(evt) {
+	if (mousePos.x >= posX - ELEMENT_WIDTH / 2 && mousePos.x <= posX+ELEMENT_WIDTH
+	    && mousePos.y >= posY - ELEMENT_HEIGHT / 2 && mousePos.y <= posY+ELEMENT_HEIGHT) {
+			mouseToDrag = true;
+			console.log('clicked on white square');
+	}	
+}
+function updateMouse(evt){
+	mousePos = calculateMousePos(evt);
+}
+function slidingElement() {
+	if(mouseToDrag == false) {
+		if(posX > 100) {
+			posX = posX - 1;
+		}
+		if(posX < 100) {
+			posX = posX + 1;
+		}
+		if(posY > 100) {
+			posY = posY - 1;
+		}
+		if(posY < 100) {
+			posY = posY + 1;
+		}
+	}
+}
+function elementColors() {
+	if(mouseToDrag == false) {
+		if(posX !== 100 && posY !== 100) {
+			elementColor = 'red';
+		}
+		if (posX == 100 && posY == 100) {
+			elementColor = 'white';
+		}
+	}
+	if(mouseToDrag) {
+		elementColor = "green";
+	}
+}
+function moveObject(evt) {
+	if(mouseToDrag) {
+		posX = mousePos.x;
+		posY = mousePos.y;
+	}
+}
+function drawEverything() {
+	drawRect(0, 0, c.width, c.height, 'black');
+	drawRect(100 - ELEMENT_WIDTH / 2, 100 - ELEMENT_HEIGHT / 2, ELEMENT_WIDTH, ELEMENT_HEIGHT, "grey");
+	drawRect(100 - ELEMENT_WIDTH/2 + 2, 100 - ELEMENT_HEIGHT/2 + 2, 46, 46, 'black');
+	drawRect(posX - ELEMENT_WIDTH / 2, posY - ELEMENT_HEIGHT / 2, ELEMENT_WIDTH, ELEMENT_HEIGHT, elementColor);
+	elementColors();
+	}
+function moveEverything() {
+	moveObject();
+	slidingElement();
+	}
+function calculateMousePos(evt) {
+	var rect = c.getBoundingClientRect();
+	var root = document.documentElement;
+	var mouseX = evt.clientX - rect.left - root.scrollLeft;
+	var mouseY = evt.clientY - rect.top - root.scrollTop;
+	//console.log(mouseX, mouseY)
+	return {
+		x:mouseX,
+		y:mouseY
+	};
+}
+function drawRect(leftX, topY, width, height, color) {
+	ctx.fillStyle = color;
+	ctx.fillRect (leftX, topY, width, height);
+	}
+</script>
+</html>
+
