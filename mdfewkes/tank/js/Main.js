@@ -1,7 +1,7 @@
 var canvas, canvasContext, debugText;
 var framesPerSecond = 30;
 
-var numberOfPlayers = 2;
+var numberOfPlayers = 4;
 var arrayOfPlayers = [];
 var arrayOfProjectiles = [];
 var arrayOfExplosions = [];
@@ -18,6 +18,11 @@ var now;
 const GAME_MODE = 0;
 const TITLE_SCREEN = 1;
 var mode = GAME_MODE;
+
+var skyColor = fullColorHex(rndInt(0,255), rndInt(0,255), rndInt(0,255));
+var skyColorGradient = fullColorHex(rndInt(0,255), rndInt(0,255), rndInt(0,255));
+var groundColor = fullColorHex(rndInt(0,255), rndInt(0,255), rndInt(0,255));
+var groundColorGradient = fullColorHex(rndInt(0,255), rndInt(0,255), rndInt(0,255));
 
 const UI_HEIGHT = 100
 
@@ -85,7 +90,12 @@ function update(frameTime) {
 }
 
 function modeGame(frameTime) {
-	colorRect(0, 0, canvas.width, canvas.height, "LightBlue");	
+	// colorRect(0, 0, canvas.width, canvas.height, skyColor);	
+	var gradient = canvasContext.createLinearGradient(0,0,0,canvas.height - UI_HEIGHT);
+	gradient.addColorStop(0, skyColor);
+	gradient.addColorStop(1, skyColorGradient);
+	colorRect(0, 0, canvas.width, canvas.height, gradient);
+
 	colorRect(0, canvas.height - UI_HEIGHT, canvas.width, canvas.height, "Grey");
 	
 	colorRect(100, canvas.height - UI_HEIGHT + 20, canvas.width - 200, 20, "White");

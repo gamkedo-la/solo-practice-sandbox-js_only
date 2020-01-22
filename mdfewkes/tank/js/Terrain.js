@@ -55,7 +55,11 @@ function terrain() {
 
 	this.draw = function() {
 		for (var i = 0; i < heightMap.length; i++) {
-			colorLine(i, canvas.height - UI_HEIGHT, i, canvas.height - 100 - heightMap[i], 1, "Brown");
+			// colorLine(i, canvas.height - UI_HEIGHT, i, canvas.height - 100 - heightMap[i], 1, groundColor);
+			var gradient = canvasContext.createLinearGradient(0,canvas.height - 100 - heightMap[i],0,canvas.height - UI_HEIGHT);
+			gradient.addColorStop(0, groundColor);
+			gradient.addColorStop(1, groundColorGradient);
+			colorRect(i, canvas.height - 100 - heightMap[i], 1, heightMap[i], gradient);
 		}
 	}
 }
