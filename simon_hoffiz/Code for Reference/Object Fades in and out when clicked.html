@@ -1,0 +1,91 @@
+<html>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+<script>
+var c;
+var ctx;
+var posX = 400;
+var posY = 300;
+var mousePos = {};
+var cubeToFade = false;
+const ELEMENT_WIDTH = 50;
+const ELEMENT_HEIGHT = 50;
+
+var fadingPosX = 0;
+var fadingPosY = 0;
+var fadingElementWidth = 0;
+var fadingElementHeight = 0;
+var fadeVariable = 1.0;
+
+window.onload = function() {
+	c = document.getElementById('gameCanvas');
+	ctx = c.getContext('2d');
+	var fps = 30;
+	setInterval(function() {
+			moveEverything();
+			drawEverything();	
+		}, 1000/fps);
+
+	c.addEventListener('mousemove', updateMouse);
+	c.addEventListener('click', mouseDragsObject);
+}
+
+function mouseDragsObject(evt) {
+	if (mousePos.x >= posX - ELEMENT_WIDTH / 2 && mousePos.x <= posX+ELEMENT_WIDTH
+	    && mousePos.y >= posY - ELEMENT_HEIGHT / 2 && mousePos.y <= posY+ELEMENT_HEIGHT) {
+			cubeToFade = true;
+	}	
+}
+function updateMouse(evt){
+	mousePos = calculateMousePos(evt);
+}
+
+function drawEverything() {
+	drawRect(0, 0, c.width, c.height, 'black'); // canvas
+	drawRect(posX - ELEMENT_WIDTH / 2, posY - ELEMENT_HEIGHT / 2, ELEMENT_WIDTH, ELEMENT_HEIGHT, 'white'); //square in middle of canvas
+	drawRect(fadingPosX, fadingPosY, fadingElementWidth, fadingElementHeight, `rgba(255,0,0,${fadeVariable})` ); // fading moving square
+	}
+
+function moveEverything() {
+	if(cubeToFade) {
+			fadingPosX += 10;
+			fadingPosY += 10;
+			fadingElementWidth += 10;
+			fadingElementHeight += 10;
+			fadeVariable -= 0.03;
+	}
+	if (fadingPosX == 300 && fadingPosY == 300 && fadingElementWidth == 300 && fadingElementHeight == 300) {
+			fadingPosX = 0;
+			fadingPosY  = 0;
+			fadingElementWidth  = 0;
+			fadingElementHeight  = 0;
+			cubeToFade = false;
+			fadeVariable = 1.0;
+	}
+
+}
+
+function calculateMousePos(evt) {
+	var rect = c.getBoundingClientRect();
+	var root = document.documentElement;
+	var mouseX = evt.clientX - rect.left - root.scrollLeft;
+	var mouseY = evt.clientY - rect.top - root.scrollTop;
+	//console.log(mouseX, mouseY)
+	return {
+		x:mouseX,
+		y:mouseY
+	};
+}
+
+function drawRect(leftX, topY, width, height, color) {
+	ctx.fillStyle = color;
+	ctx.fillRect (leftX, topY, width, height);
+	}
+
+</script>
+</html>
+
+
+
+
+
+
