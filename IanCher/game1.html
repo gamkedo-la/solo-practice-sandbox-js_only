@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">    
+</head>
+
+<body>
+<canvas id="gameCanvas" width=800 height="600"></canvas>
+
+<script>
+    var canvas;
+    var canvasContext;
+
+    var rect;
+    var root;
+
+    var mouseX;
+    var mouseY;
+
+    var mouseLastX;
+    var mouseSpeedX;
+    
+    var FPS = 30;
+
+    const PADDLE_HEIGHT = 10;
+    const PADDLE_WIDTH = 100;
+
+    var paddleX = 0;
+    var paddleAngle = 0;
+
+    var paddleAngleSpeed = 36 / FPS; // degrees per frame
+
+
+    window.onload = function(){
+
+        startAll();
+
+        setInterval(updateAll, 1000/FPS);
+
+        canvas.addEventListener(
+            "mousemove", function(evt) {
+                getMousePosition(evt);
+            }
+        )
+    }
+
+    function startAll() {
+        canvas = document.getElementById("gameCanvas");
+        canvasContext = canvas.getContext("2d");
+        rect = canvas.getBoundingClientRect() ;
+        root = document.documentElement;
+
+        mouseLastX = 0;
+        mouseX = 0;
+        mouseSpeedX = 0;
+
+        paddleAngleSpeed = 10;
+        paddleAngle = 0;
+    } 
+
+    function updateAll() {
+        drawEverything();
+        movePaddle();
+        showMousePosition("yellow");
+    }
+
+    function getMousePosition(evt){
+        mouseX = evt.clientX - rect.left - root.scrollLeft;       
+        mouseY = evt.clientY - rect.top - root.scrollTop;
+    }
+
+    function getMouseSpeedX() {
+        mouseSpeedX = (mouseX - mouseLastX) ;//* FPS / 1000;
+        mouseLastX = mouseX;
+    }
+
+    /** *** Drawing functions *** **/
+     
+    function drawEverything () {
+
+        // Red Background
+        drawRectangle(0, 0, canvas.width, canvas.height, "red");
+
+        // Black Playground
+        drawCircle(
+            canvas.width/2, canvas.height/2,
+            Math.min(canvas.width, canvas.height) / 2,"black"
+        );
+
+        // White Paddle
+        drawRotatedRect(
+            canvas.width/2, canvas.height/2,
+            (canvas.height - PADDLE_HEIGHT)/ 2 - 10, 
+            PADDLE_WIDTH, PADDLE_HEIGHT, paddleAngle, "gold"
+        );
+
+        // White ball
+        drawCircle(
+            canvas.width/2, canvas.height/2, 10, "white"
+        );
+    }
+
+    function drawRectangle(originLeft, originTop, width, height, color){
+        canvasContext.fillStyle = color;
+        canvasContext.fillRect(originLeft, originTop, width, height);
+    }
+
+    function drawCircle(centerX, centerY, radius, color) {
+        canvasContext.fillStyle = color;
+        canvasContext.beginPath();
+        canvasContext.arc(centerX, centerY, radius, 0, 2*Math.PI, true);
+        canvasContext.fill();
+    }
+
+    function drawRotatedRect(
+        rotCenterX, rotCenterY, distToRotCenter, 
+        width, height, angle, color
+        ){
+        
+        // first save the untranslated/unrotated context
+        canvasContext.save();
+
+        // move the rotation point to the center of the canvas
+        canvasContext.translate(rotCenterX, rotCenterY);
+
+        // rotate the canvas context
+        canvasContext.rotate(angle*Math.PI/180);
+
+        // draw the rect on the transformed context
+        // Note: after transforming [0,0] is visually [rotCenterX, rotCenterY]
+        // so the rect X position needs to be offset accordingly when drawn
+        drawRectangle(
+            -width/2, distToRotCenter, width, height, color
+        );
+
+        // restore the context to its untranslated/unrotated state
+        canvasContext.restore();
+    }
+
+    function showMousePosition(color) {
+        canvasContext.fillStyle = color;
+        canvasContext.fillText(
+            mouseX + " , " + mouseY,
+            mouseX, mouseY
+        )
+    }
+
+    function movePaddle() {
+        getMouseSpeedX();
+
+        paddleAngle += mouseSpeedX * (-360/400); // when the mouse moves by 400 pix, a full rotation is done
+        if (!(paddleAngle % 360)){
+            paddleAngle = 0;
+        }
+    }
+
+    
+
+
+
+</script>
+</body>
+
+</html>
