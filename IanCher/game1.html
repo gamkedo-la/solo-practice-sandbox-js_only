@@ -35,9 +35,10 @@
     const PADDLE_HEIGHT = 10;
     const PADDLE_WIDTH = 100;
 
-
-    var paddleX = 0;
     var paddleAngle = 0;
+
+    var paddleX;
+    var paddleY;
 
     // Ball Variables
     const BALL_RADIUS = 10;
@@ -88,7 +89,7 @@
         ballX = canvas.width/2;
         ballY = distToPlayfieldCenterMax;
 
-        ballSpeedInit = 10;
+        ballSpeedInit = 5;
         ballSpeedX = 10;
         ballSpeedY = 10;
 
@@ -190,16 +191,26 @@
     function moveEverything() {
         movePaddle();
         moveBall();
-        detectBallExitPlayfield();
+
+        if (!detectBallPaddleCollision()) {
+            detectBallExitPlayfield();
+        }
     }
 
     function movePaddle() {
         getMouseSpeedX();
 
         paddleAngle += mouseSpeedX * (-360/400); // when the mouse moves by 400 pix, a full rotation is done
-        if (!(paddleAngle % 360)){
+        if (!(paddleAngle % 360)){ // when full rotation is done, reset angle to 0
             paddleAngle = 0;
         }
+
+        getPaddlePosition(); // keep track of paddle position in cartesian coordinates
+    }
+
+    function getPaddlePosition(){
+        paddleX = canvas.width/2 + distToPlayfieldCenterMax * Math.cos((paddleAngle+90)*Math.PI/180);
+        paddleY = canvas.height/2 + distToPlayfieldCenterMax * Math.sin((paddleAngle+90)*Math.PI/180);
     }
 
     function moveBall() {
@@ -208,49 +219,65 @@
             ballY += ballSpeedY;
         }
         else {
-            ballX = canvas.width/2 + distToPlayfieldCenterMax * Math.cos((paddleAngle+90)*Math.PI/180);
-            ballY = canvas.height/2 + distToPlayfieldCenterMax * Math.sin((paddleAngle+90)*Math.PI/180);
+            ballX = paddleX;
+            ballY = paddleY;
 
-            var speedDir = getSpeedDirection(ballX, ballY, canvas.width/2, canvas.height/2)
-            ballSpeedX = ballSpeedInit * speedDir.x; //getSpeedDirection(canvas.width/2 , ballX);
-            ballSpeedY = ballSpeedInit * speedDir.y; //getSpeedDirection(ballY, canvas.height/2);
+            var speedDir = directionBetweenTwoPoints(ballX, ballY, canvas.width/2, canvas.height/2)
+            ballSpeedX = ballSpeedInit * speedDir.x;
+            ballSpeedY = ballSpeedInit * speedDir.y;
         }
-    }
-
-    function getSpeedDirection(originX, originY, targetX, targetY){
-        var dirX = 1;
-        var dirY = 1;
-
-        if (originX > targetX) {
-            dirX = -1;
-        }
-
-        if (originY > targetY) {
-            dirY= -1;
-        }
-        return {
-            x: dirX,
-            y: dirY
-        };
     }
 
     // Collisions
     function detectBallExitPlayfield() {
         var distBallToPlayfieldCenter = distBetweenTwoPoints(
             ballX, ballY, canvas.width/2, canvas.height/2
-        )
+        );
 
-        if (distBallToPlayfieldCenter > distToPlayfieldCenterMax){
+        if (distBallToPlayfieldCenter > distToPlayfieldCenterMax + BALL_RADIUS){
             restartGame();
         }
     }
 
-    function distBetweenTwoPoints(point1X, point1Y, point2X, point2Y) {
-        return Math.sqrt(
-            (point1X - point2X) * (point1X - point2X) + (point1Y - point2Y) * (point1Y - point2Y)
-        )
+    function detectBallPaddleCollision() {
+        distBallToPaddle = (ballX - paddleX) * (canvas.width/2 - paddleX) + (ballY - paddleY) * (canvas.height/2 - paddleY);
+        distBallToPaddle/= distToPlayfieldCenterMax - PADDLE_HEIGHT/ 2; // normalize by distance of paddle center to playfield center
+
+        if (distBallToPaddle <= 0){
+            var distBallToPaddleCenter = distBetweenTwoPoints(ballX, ballY, paddleX, paddleY);
+
+            if (distBallToPaddleCenter <= PADDLE_WIDTH/2){
+                console.log("bounce");
+                var speedDir = directionBetweenTwoPoints(ballX, ballY, canvas.width/2, canvas.height/2)
+                ballSpeedX = ballSpeedInit * speedDir.x; 
+                ballSpeedY = ballSpeedInit * speedDir.y; 
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
+    // Math and geometry
+    function normOfVector(vecX, vecY){
+        return Math.sqrt(vecX*vecX + vecY*vecY);
+    }
+
+    function distBetweenTwoPoints(originX, originY, targetX, targetY) {
+        return normOfVector(targetX - originX, targetY - originY);
+    }
+
+    function directionBetweenTwoPoints(originX, originY, targetX, targetY){
+        var dist = distBetweenTwoPoints(originX, originY, targetX, targetY);
+        
+        return {
+            x: (targetX - originX) / dist,
+            y: (targetY - originY) / dist,
+        }
+    }
+
+    
 
     
 
