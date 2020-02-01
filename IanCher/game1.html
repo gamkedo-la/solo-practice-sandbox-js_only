@@ -24,14 +24,30 @@
     
     var FPS = 30;
 
+    var isGameStarted = false;
+
+    // Parameters relative to position of objects 
+    // in the circular playfield 
+    const DIST_TO_CENTER_OFFSET = 10;
+    var distToPlayfieldCenterMax;
+
+    // Paddle variables
     const PADDLE_HEIGHT = 10;
     const PADDLE_WIDTH = 100;
+
 
     var paddleX = 0;
     var paddleAngle = 0;
 
-    var paddleAngleSpeed = 36 / FPS; // degrees per frame
+    // Ball Variables
+    const BALL_RADIUS = 10;
 
+    var ballX;
+    var ballY;
+
+    var ballSpeedInit;
+    var ballSpeedX;
+    var ballSpeedY;
 
     window.onload = function(){
 
@@ -44,9 +60,18 @@
                 getMousePosition(evt);
             }
         )
+
+        canvas.addEventListener(
+            "mousedown", function(evt) {
+                if (!isGameStarted) {
+                    isGameStarted = true;
+                }
+            }
+        )
     }
 
     function startAll() {
+        console.log("Start");
         canvas = document.getElementById("gameCanvas");
         canvasContext = canvas.getContext("2d");
         rect = canvas.getBoundingClientRect() ;
@@ -56,13 +81,23 @@
         mouseX = 0;
         mouseSpeedX = 0;
 
-        paddleAngleSpeed = 10;
+        distToPlayfieldCenterMax = canvas.height/2 - DIST_TO_CENTER_OFFSET
+
         paddleAngle = 0;
+
+        ballX = canvas.width/2;
+        ballY = distToPlayfieldCenterMax;
+
+        ballSpeedInit = 10;
+        ballSpeedX = 10;
+        ballSpeedY = 10;
+
+        isGameStarted = false
     } 
 
     function updateAll() {
         drawEverything();
-        movePaddle();
+        moveEverything();
         showMousePosition("yellow");
     }
 
@@ -76,12 +111,16 @@
         mouseLastX = mouseX;
     }
 
+    function restartGame() {
+        isGameStarted = false;
+    }
+
     /** *** Drawing functions *** **/
      
     function drawEverything () {
 
         // Red Background
-        drawRectangle(0, 0, canvas.width, canvas.height, "red");
+        drawRectangle(0, 0, canvas.width, canvas.height, "purple");
 
         // Black Playground
         drawCircle(
@@ -92,13 +131,13 @@
         // White Paddle
         drawRotatedRect(
             canvas.width/2, canvas.height/2,
-            (canvas.height - PADDLE_HEIGHT)/ 2 - 10, 
-            PADDLE_WIDTH, PADDLE_HEIGHT, paddleAngle, "gold"
+            distToPlayfieldCenterMax - PADDLE_HEIGHT/ 2, // we take the distance of the center of the paddle to the center of the playfield
+            PADDLE_WIDTH, PADDLE_HEIGHT, paddleAngle, "white"
         );
 
         // White ball
         drawCircle(
-            canvas.width/2, canvas.height/2, 10, "white"
+            ballX, ballY, BALL_RADIUS, "white"
         );
     }
 
@@ -147,6 +186,13 @@
         )
     }
 
+    // Function movement functions
+    function moveEverything() {
+        movePaddle();
+        moveBall();
+        detectBallExitPlayfield();
+    }
+
     function movePaddle() {
         getMouseSpeedX();
 
@@ -155,6 +201,56 @@
             paddleAngle = 0;
         }
     }
+
+    function moveBall() {
+        if (isGameStarted) {
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+        }
+        else {
+            ballX = canvas.width/2 + distToPlayfieldCenterMax * Math.cos((paddleAngle+90)*Math.PI/180);
+            ballY = canvas.height/2 + distToPlayfieldCenterMax * Math.sin((paddleAngle+90)*Math.PI/180);
+
+            var speedDir = getSpeedDirection(ballX, ballY, canvas.width/2, canvas.height/2)
+            ballSpeedX = ballSpeedInit * speedDir.x; //getSpeedDirection(canvas.width/2 , ballX);
+            ballSpeedY = ballSpeedInit * speedDir.y; //getSpeedDirection(ballY, canvas.height/2);
+        }
+    }
+
+    function getSpeedDirection(originX, originY, targetX, targetY){
+        var dirX = 1;
+        var dirY = 1;
+
+        if (originX > targetX) {
+            dirX = -1;
+        }
+
+        if (originY > targetY) {
+            dirY= -1;
+        }
+        return {
+            x: dirX,
+            y: dirY
+        };
+    }
+
+    // Collisions
+    function detectBallExitPlayfield() {
+        var distBallToPlayfieldCenter = distBetweenTwoPoints(
+            ballX, ballY, canvas.width/2, canvas.height/2
+        )
+
+        if (distBallToPlayfieldCenter > distToPlayfieldCenterMax){
+            restartGame();
+        }
+    }
+
+    function distBetweenTwoPoints(point1X, point1Y, point2X, point2Y) {
+        return Math.sqrt(
+            (point1X - point2X) * (point1X - point2X) + (point1Y - point2Y) * (point1Y - point2Y)
+        )
+    }
+
 
     
 
