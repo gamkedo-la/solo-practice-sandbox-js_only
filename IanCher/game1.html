@@ -58,6 +58,10 @@
     var ballSpeedX;
     var ballSpeedY;
 
+    // Score
+    var playerScore;
+    var maxScore;
+
     window.onload = function(){
 
         startAll();
@@ -102,12 +106,14 @@
         ballSpeedY = 10;
 
         isGameStarted = false
+
+        maxScore = 0;
+        playerScore = 0;
     } 
 
     function updateAll() {
         drawEverything();
         moveEverything();
-        showMousePosition("yellow");
     }
 
     function getMousePosition(evt){
@@ -121,6 +127,7 @@
     }
 
     function restartGame() {
+        playerScore = 0;
         isGameStarted = false;
     }
 
@@ -128,7 +135,7 @@
      
     function drawEverything () {
 
-        // Red Background
+        // Background
         drawRectangle(0, 0, canvas.width, canvas.height, "purple");
 
         // Black Playground
@@ -148,6 +155,12 @@
         drawCircle(
             ballX, ballY, BALL_RADIUS, "white"
         );
+
+        // Display score
+        canvasContext.fillStyle = "white";
+        canvasContext.font = "30px Verdana";
+        canvasContext.fillText("Score: " + playerScore, 20, 50);
+        canvasContext.fillText("Max  : " + maxScore, 20, 100);
     }
 
     function drawRectangle(originLeft, originTop, width, height, color){
@@ -274,6 +287,8 @@
                 ballSpeedX = ballSpeedInit * speedDir.x; 
                 ballSpeedY = ballSpeedInit * speedDir.y; 
 
+                updateScore();
+
                 return true;
             }
         }
@@ -303,6 +318,15 @@
             x: bouncingDirX,
             y: bouncingDirY
         };
+    }
+
+    function updateScore() {
+        if (isGameStarted){      
+            playerScore += 1;
+            if (playerScore > maxScore){
+                maxScore = playerScore;
+            } 
+        }
     }
 
     // Math and geometry
