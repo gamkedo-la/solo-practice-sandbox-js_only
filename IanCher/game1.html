@@ -58,6 +58,8 @@
     var ballSpeedX;
     var ballSpeedY;
 
+    var isBouncing;
+
     // Score
     var playerScore;
     var maxScore;
@@ -104,6 +106,8 @@
         ballSpeedInit = 10;
         ballSpeedX = 10;
         ballSpeedY = 10;
+
+        isBouncing = false;
 
         isGameStarted = false
 
@@ -283,14 +287,24 @@
 
             if (distBallToPaddleCenter <= PADDLE_WIDTH/2){
 
-                var speedDir = getBouncingDirection(distBallToPaddleCenter);
-                ballSpeedX = ballSpeedInit * speedDir.x; 
-                ballSpeedY = ballSpeedInit * speedDir.y; 
+                if (!isBouncing){
+                    isBouncing = true;
+                    var speedDir = getBouncingDirection(distBallToPaddleCenter);
+                    ballSpeedX = ballSpeedInit * speedDir.x; 
+                    ballSpeedY = ballSpeedInit * speedDir.y; 
 
-                updateScore();
+                    updateScore();
+                }
 
                 return true;
             }
+            else if (isBouncing){ // ball goes out of bouncing area
+                isBouncing = false;
+            }
+            
+        }
+        else if (isBouncing){ // ball goes out of bouncing area
+            isBouncing = false;
         }
 
         return false;
