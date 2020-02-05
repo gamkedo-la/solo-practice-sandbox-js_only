@@ -40,6 +40,14 @@
     var paddleX;
     var paddleY;
 
+    var paddleNormalX;
+    var paddleNormalY;
+
+    var paddleDirX; // considering direction from center to right border
+    var paddleDirY;
+
+    const MAX_ANGLE_BOUNCE = 60; // maximum angle that the ball takes when bouncing at the tip of the paddle
+
     // Ball Variables
     const BALL_RADIUS = 10;
 
@@ -89,7 +97,7 @@
         ballX = canvas.width/2;
         ballY = distToPlayfieldCenterMax;
 
-        ballSpeedInit = 5;
+        ballSpeedInit = 10;
         ballSpeedX = 10;
         ballSpeedY = 10;
 
@@ -206,11 +214,25 @@
         }
 
         getPaddlePosition(); // keep track of paddle position in cartesian coordinates
+        getPaddleDirection();
     }
 
     function getPaddlePosition(){
         paddleX = canvas.width/2 + distToPlayfieldCenterMax * Math.cos((paddleAngle+90)*Math.PI/180);
         paddleY = canvas.height/2 + distToPlayfieldCenterMax * Math.sin((paddleAngle+90)*Math.PI/180);
+    }
+
+    function getPaddleDirection() {
+        paddleNormalX = paddleX - canvas.width/2;
+        paddleNormalY = paddleY - canvas.height/2;
+
+        var paddleNormalNorm = normOfVector(paddleNormalX, paddleNormalY);
+
+        paddleNormalX /= paddleNormalNorm;
+        paddleNormalY /= paddleNormalNorm;
+
+        paddleDirX = paddleNormalY;
+        paddleDirY = -paddleNormalX;
     }
 
     function moveBall() {
@@ -247,8 +269,8 @@
             var distBallToPaddleCenter = distBetweenTwoPoints(ballX, ballY, paddleX, paddleY);
 
             if (distBallToPaddleCenter <= PADDLE_WIDTH/2){
-                console.log("bounce");
-                var speedDir = directionBetweenTwoPoints(ballX, ballY, canvas.width/2, canvas.height/2)
+
+                var speedDir = getBouncingDirection(distBallToPaddleCenter);
                 ballSpeedX = ballSpeedInit * speedDir.x; 
                 ballSpeedY = ballSpeedInit * speedDir.y; 
 
@@ -257,6 +279,30 @@
         }
 
         return false;
+    }
+
+    function getBouncingDirection(distBallToPaddleCenter) {
+        var isLeftOrRightSideOfPaddle; // 1 if the ball hit the right side, -1 if it hits the left side
+        if (scalarProduct(ballX - paddleX, ballY - paddleY, paddleDirX, paddleDirY) > 0){
+            isLeftOrRightSideOfPaddle = 1;
+        }
+        else{
+            isLeftOrRightSideOfPaddle = -1;
+        }
+
+        var bouncingDirAngle = 2 * MAX_ANGLE_BOUNCE / PADDLE_WIDTH * distBallToPaddleCenter * isLeftOrRightSideOfPaddle;
+
+        // Rotate the normal of the paddle to get bouncing direction
+        var cosBouncing = Math.cos(bouncingDirAngle*Math.PI/180);
+        var sinBouncing = Math.sin(bouncingDirAngle*Math.PI/180);
+
+        var bouncingDirX = -paddleNormalX*cosBouncing + paddleNormalY*sinBouncing;
+        var bouncingDirY = -paddleNormalX*sinBouncing - paddleNormalY*cosBouncing;
+
+        return {
+            x: bouncingDirX,
+            y: bouncingDirY
+        };
     }
 
     // Math and geometry
@@ -275,6 +321,10 @@
             x: (targetX - originX) / dist,
             y: (targetY - originY) / dist,
         }
+    }
+
+    function scalarProduct(vec1X, vec1Y, vec2X, vec2Y){
+        return vec1X*vec2X + vec1Y*vec2Y;
     }
 
     
