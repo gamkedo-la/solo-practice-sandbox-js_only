@@ -15,7 +15,7 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 
    I used the NES palette to try and give it a retro look.
 
-** TODO Extra: moar graphics                                          :extra:
+** DONE Extra: moar graphics                                          :extra:
 
 *** DONE East/West wall tiles
 
@@ -41,7 +41,7 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 
 *** DONE grass-meets-wall tile (shade on grass)
 
-*** TODO road-meets-grass tiles (also trees)
+*** DONE road-meets-grass tiles (also trees)
 
 ** TODO Extra: implement layered track
 
