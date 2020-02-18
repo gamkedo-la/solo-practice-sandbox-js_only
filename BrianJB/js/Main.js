@@ -35,6 +35,9 @@ function moveEverything() {
 
 function drawEverything() {
 
+    // clear the game view by filling it with white
+    colorRect(0, 0, canvas.width, canvas.height, 'white');
+
     grid.draw();
     player.draw();
 

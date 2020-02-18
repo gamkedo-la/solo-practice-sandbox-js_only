@@ -11,18 +11,49 @@ class Player {
         this.keyHeld_TurnRight = false;
         this.rotationAngle = Math.PI / 2;
         this.moveSpeed = 3.0;
-        this.rotationSpeed = 3 * (Math.Pi / 180);
+        this.rotationSpeed = 3 * (Math.PI / 180);
     }
 
     update() {
-      
+
+        //if (isWallTileAtPixelCoord(this.x, this.y)){
+        //    return;
+        //} else {
+            this.updatePosition();
+        //}
+         
     }
 
-    draw(){
+    updatePosition(){
+
+        if (this.keyHeld_TurnLeft) {
+            this.rotationAngle -= this.rotationSpeed;
+        }
+
+        if (this.keyHeld_TurnRight) {
+            this.rotationAngle += this.rotationSpeed;
+        }
+
+        if (this.keyHeld_Forward) {
+            console.log("forward");
+            var newPos = getPixelCoordFromAngleAndSpeed(this.x, this.y, this.rotationAngle, this.moveSpeed)
+            this.x = newPos[0];
+            this.y = newPos[1];
+        }
+
+        if (this.keyHeld_Backward) {
+            var newPos = getPixelCoordFromAngleAndSpeed(this.x, this.y, this.rotationAngle, -this.moveSpeed)
+            this.x = newPos[0];
+            this.y = newPos[1];
+        }
+    }
+
+    draw() {
         colorCircle(this.x, this.y, this.radius, 'red');
+        colorLineAtAngle(this.x, this.y, this.rotationAngle, 20, "red");
     }
 
-    setupControls(forwardKey,backKey,leftKey,rightKey) {
+    setupControls(forwardKey, backKey, leftKey, rightKey) {
         this.controlKeyForForward = forwardKey;
         this.controlKeyForBackward = backKey;
         this.controlKeyForTurnLeft = leftKey;
