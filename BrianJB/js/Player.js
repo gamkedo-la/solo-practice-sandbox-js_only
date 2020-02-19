@@ -16,15 +16,11 @@ class Player {
 
     update() {
 
-        //if (isWallTileAtPixelCoord(this.x, this.y)){
-        //    return;
-        //} else {
-            this.updatePosition();
-        //}
-         
+        this.updatePosition();
+
     }
 
-    updatePosition(){
+    updatePosition() {
 
         if (this.keyHeld_TurnLeft) {
             this.rotationAngle -= this.rotationSpeed;
@@ -35,14 +31,24 @@ class Player {
         }
 
         if (this.keyHeld_Forward) {
-            console.log("forward");
+
             var newPos = getPixelCoordFromAngleAndSpeed(this.x, this.y, this.rotationAngle, this.moveSpeed)
+
+            if (isWallTileAtPixelCoord(newPos[0], newPos[1])) {
+                return;
+            }
+
             this.x = newPos[0];
             this.y = newPos[1];
         }
 
         if (this.keyHeld_Backward) {
             var newPos = getPixelCoordFromAngleAndSpeed(this.x, this.y, this.rotationAngle, -this.moveSpeed)
+
+            if (isWallTileAtPixelCoord(newPos[0], newPos[1])) {
+                return;
+            }
+
             this.x = newPos[0];
             this.y = newPos[1];
         }
