@@ -1,8 +1,17 @@
+const PROJECTION_PLANE_WIDTH = 320;
+const PROJECTION_PLANE_HEIGHT = 200;
+const FOV_DEGREES = 60;
+const FOV_RADS = FOV_DEGREES * (Math.PI /180);
+const RAY_INCREMENT_WIDTH = 50;
+const NUM_OF_RAYS = PROJECTION_PLANE_WIDTH / RAY_INCREMENT_WIDTH;
+const RAY_ANGLE_INCREMENT = FOV_RADS / NUM_OF_RAYS;
+
 var canvas;
 var canvasContext;
 
 var player;
 var grid;
+var rays = [];
 
 window.onload = function () {
 
@@ -31,6 +40,7 @@ function initRenderLoop() {
 
 function moveEverything() {
     player.update();
+    castAllRays();
 }
 
 function drawEverything() {
@@ -39,6 +49,25 @@ function drawEverything() {
     colorRect(0, 0, canvas.width, canvas.height, 'white');
 
     grid.draw();
+
+    rays.forEach(element => element.draw());
+    
     player.draw();
 
+}
+
+function castAllRays(){
+    columnID = 0;
+
+    var rayAngle = player.rotationAngle - (FOV_RADS / 2);
+    rays = [];
+
+    for (var i = 0; i < NUM_OF_RAYS; i++){
+        var ray = new Ray(rayAngle);
+        //ray.cast(columnID);
+        rays.push(ray);
+
+        rayAngle += RAY_ANGLE_INCREMENT;
+        columnID++;
+    }
 }
