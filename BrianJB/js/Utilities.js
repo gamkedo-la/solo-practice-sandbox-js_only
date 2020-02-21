@@ -32,3 +32,11 @@ function isWallTileAtLevelTileCoord(levelTileCol, levelTileRow) {
 function levelTileIndexAtColRowCoord(tileCol, tileRow) {
     return (tileCol + MAP_NUM_COLS * tileRow);
 }
+
+function normalizeAngle(angle){
+    angle = angle % (2 * Math.PI);
+    if (angle < 0){
+        angle += (2 * Math.PI);
+    }
+    return angle;
+}
