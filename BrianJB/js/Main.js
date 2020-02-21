@@ -11,7 +11,7 @@ var canvasContext;
 
 var player;
 var grid;
-var rays = [];
+
 
 window.onload = function () {
 
@@ -40,7 +40,6 @@ function initRenderLoop() {
 
 function moveEverything() {
     player.update();
-    castAllRays();
 }
 
 function drawEverything() {
@@ -49,25 +48,7 @@ function drawEverything() {
     colorRect(0, 0, canvas.width, canvas.height, 'white');
 
     grid.draw();
-
-    rays.forEach(element => element.draw());
     
     player.draw();
 
-}
-
-function castAllRays(){
-    columnID = 0;
-
-    var rayAngle = player.rotationAngle - (FOV_RADS / 2);
-    rays = [];
-
-    for (var i = 0; i < NUM_OF_RAYS; i++){
-        var ray = new Ray(rayAngle);
-        //ray.cast(columnID);
-        rays.push(ray);
-
-        rayAngle += RAY_ANGLE_INCREMENT;
-        columnID++;
-    }
 }

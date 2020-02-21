@@ -12,11 +12,13 @@ class Player {
         this.rotationAngle = Math.PI / 2;
         this.moveSpeed = 3.0;
         this.rotationSpeed = 3 * (Math.PI / 180);
+        this.rays = [];
     }
 
     update() {
 
         this.updatePosition();
+        this.castAllRays();
 
     }
 
@@ -55,6 +57,7 @@ class Player {
     }
 
     draw() {
+        this.rays.forEach(element => element.draw());
         colorCircle(this.x, this.y, this.radius, 'red');
         colorLineAtAngle(this.x, this.y, this.rotationAngle, 20, "red");
     }
@@ -64,5 +67,20 @@ class Player {
         this.controlKeyForBackward = backKey;
         this.controlKeyForTurnLeft = leftKey;
         this.controlKeyForTurnRight = rightKey;
+    }
+
+    castAllRays(){
+        //columnID = 0;
+    
+        var rayAngle = this.rotationAngle - (FOV_RADS / 2);
+        this.rays = [];
+    
+        for (var i = 0; i < NUM_OF_RAYS; i++){
+            var ray = new Ray(rayAngle);
+            this.rays.push(ray);
+    
+            rayAngle += RAY_ANGLE_INCREMENT;
+            //columnID++;
+        }
     }
 }

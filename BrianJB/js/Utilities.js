@@ -1,5 +1,4 @@
 function getPixelCoordFromAngleAndSpeed(startingX, startingY, angle, speed) {
-    console.log("getCoord");
     var newX = startingX + Math.cos(angle) * speed;
     var newY = startingY + Math.sin(angle) * speed;
     return [newX, newY];
