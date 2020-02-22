@@ -1,4 +1,4 @@
-const TILE_SIZE = 32;
+const TILE_SIZE = 64;
 const MAP_NUM_ROWS = 11;
 const MAP_NUM_COLS = 15;
 
@@ -27,7 +27,7 @@ class Map {
             for (var eachCol = 0; eachCol < MAP_NUM_COLS; eachCol++) {
 
                 if (grid.grid[mapTileToIndex(eachCol, eachRow)]) {
-                    colorRect(eachCol * TILE_SIZE, eachRow * TILE_SIZE, TILE_SIZE, TILE_SIZE, 'black');
+                    colorRect(MINIMAP_SCALE_FACTOR * eachCol * TILE_SIZE, MINIMAP_SCALE_FACTOR * eachRow * TILE_SIZE, MINIMAP_SCALE_FACTOR * TILE_SIZE, MINIMAP_SCALE_FACTOR * TILE_SIZE, 'black');
                 }
 
             }

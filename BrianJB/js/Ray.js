@@ -24,8 +24,8 @@ class Ray {
 
         //Horizonal Ray Grid Intersection
         var foundHorWallHit = false;
-        this.wallHitHorX = 0;
-        this.wallHitHorX = 0;
+        this.wallHitHorX = -1000;
+        this.wallHitHorX = -1000;
 
         //Find the y-Coord of the closest horizontal grid intersection
         yHorIntercept = Math.floor(player.y / TILE_SIZE) * TILE_SIZE;
@@ -73,8 +73,8 @@ class Ray {
 
         //Vertical Intercept
         var foundVertWallHit = false;
-        this.wallHotVertX = 0;
-        this.wallHitVertY = 0;
+        this.wallHotVertX = -1000;
+        this.wallHitVertY = -1000;
 
         //Find the x-Coord of the closest vertical grid intersection
         xVertIntercept = Math.floor(player.x / TILE_SIZE) * TILE_SIZE;
@@ -140,7 +140,7 @@ class Ray {
     }
 
     draw() {
-        colorLine(player.x, player.y, this.wallHitX, this.wallHitY, "red");
+        colorLine(player.x * MINIMAP_SCALE_FACTOR, player.y * MINIMAP_SCALE_FACTOR, this.wallHitX * MINIMAP_SCALE_FACTOR, this.wallHitY * MINIMAP_SCALE_FACTOR, "red");
     }
 
 

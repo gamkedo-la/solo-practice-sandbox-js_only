@@ -58,8 +58,8 @@ class Player {
 
     draw() {
         this.rays.forEach(element => element.draw());
-        colorCircle(this.x, this.y, this.radius, 'red');
-        colorLineAtAngle(this.x, this.y, this.rotationAngle, 20, "red");
+        colorCircle(this.x * MINIMAP_SCALE_FACTOR, this.y * MINIMAP_SCALE_FACTOR, this.radius * MINIMAP_SCALE_FACTOR, 'red');
+        //colorLineAtAngle(this.x, this.y, this.rotationAngle, 20, "red");
     }
 
     setupControls(forwardKey, backKey, leftKey, rightKey) {
@@ -77,7 +77,7 @@ class Player {
 
         
         //for (var i = 0; i < NUM_OF_RAYS; i++){
-        for (var i = 0; i < 1; i++){ //temp for testing
+        for (var i = 0; i < NUM_OF_RAYS; i++){ //temp for testing
             var ray = new Ray(rayAngle);
             ray.cast(columnID);
             this.rays.push(ray);
