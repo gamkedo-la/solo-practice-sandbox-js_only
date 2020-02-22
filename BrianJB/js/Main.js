@@ -59,13 +59,12 @@ function drawEverything() {
 function render3DProjectedWalls(){
     for (var i = 0; i < NUM_OF_RAYS; i++){
         var ray = player.rays[i];
-        var rayDistance = ray.distance;
-
+        var correctedWallDistance = ray.distance * Math.cos(ray.angle - player.rotationAngle);
         //calculate distance to the projection plane
-        var distanceProjectionPlane = (canvas.width / 2) / Math.tan(FOV_RADS /2);
+        var distanceProjectionPlane = (canvas.width / 2) / Math.tan(FOV_RADS / 2);
 
         //projected wall height
-        var wallStripHeight = (TILE_SIZE / rayDistance ) * distanceProjectionPlane;
+        var wallStripHeight = (TILE_SIZE / correctedWallDistance ) * distanceProjectionPlane;
 
         colorRect(i * RAY_INCREMENT_WIDTH, (canvas.height /2) - (wallStripHeight /2), RAY_INCREMENT_WIDTH, wallStripHeight, 'gray');
     }
