@@ -29,7 +29,7 @@ window.onload = function () {
 }
 
 function initRenderLoop() {
-    var framesPerSecond = 30;
+    var framesPerSecond = 60;
     setInterval(function () {
 
         moveEverything();
@@ -46,7 +46,8 @@ function moveEverything() {
 function drawEverything() {
 
     // clear the game view by filling it with white
-    colorRect(0, 0, canvas.width, canvas.height, 'brown');
+    colorRect(0, 0, canvas.width, canvas.height, 'SlateGrey'); //Ceiling/Sky Color
+    colorRect(0, canvas.height /2, canvas.width, canvas.height, 'DarkGrey'); //Floor Color
 
     render3DProjectedWalls();
     
@@ -66,6 +67,6 @@ function render3DProjectedWalls(){
         //projected wall height
         var wallStripHeight = (TILE_SIZE / correctedWallDistance ) * distanceProjectionPlane;
 
-        colorRect(i * RAY_INCREMENT_WIDTH, (canvas.height /2) - (wallStripHeight /2), RAY_INCREMENT_WIDTH, wallStripHeight, 'gray');
+        colorRect(i * RAY_INCREMENT_WIDTH, (canvas.height /2) - (wallStripHeight /2), RAY_INCREMENT_WIDTH, wallStripHeight, rgb(100,100, (255 - Math.min( 0.5 * correctedWallDistance, 255)))) ;
     }
 }

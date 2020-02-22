@@ -10,7 +10,7 @@ class Player {
         this.keyHeld_TurnLeft = false;
         this.keyHeld_TurnRight = false;
         this.rotationAngle = Math.PI / 2;
-        this.moveSpeed = 3.0;
+        this.moveSpeed = 4.0;
         this.rotationSpeed = 3 * (Math.PI / 180);
         this.rays = [];
     }
@@ -70,7 +70,6 @@ class Player {
     }
 
     castAllRays(){
-        var columnID = 0;
     
         var rayAngle = this.rotationAngle - (FOV_RADS / 2);
         this.rays = [];
@@ -79,11 +78,10 @@ class Player {
         //for (var i = 0; i < NUM_OF_RAYS; i++){
         for (var i = 0; i < NUM_OF_RAYS; i++){ //temp for testing
             var ray = new Ray(rayAngle);
-            ray.cast(columnID);
+            ray.cast();
             this.rays.push(ray);
             
             rayAngle += RAY_ANGLE_INCREMENT;
-            columnID++;
         }
     }
 }

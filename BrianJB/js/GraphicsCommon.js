@@ -25,3 +25,7 @@ function colorLineAtAngle(x, y, angle, length, color){
     canvasContext.lineTo(x + Math.cos(angle) * length, y + Math.sin(angle) * length);
     canvasContext.stroke();
 }
+
+function rgb(r, g, b){
+    return "rgb("+r+","+g+","+b+")";
+  }
