@@ -40,3 +40,8 @@ function normalizeAngle(angle){
     }
     return angle;
 }
+
+function DistanceBetweenTwoPixelCoords(x1, y1, x2, y2) {
+    distance = Math.floor(Math.hypot(Math.floor(x1) - Math.floor(x2), Math.floor(y1) - Math.floor(y2)))
+    return distance;
+}

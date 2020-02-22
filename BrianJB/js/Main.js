@@ -39,7 +39,7 @@ function initRenderLoop() {
 }
 
 function moveEverything() {
-    
+    player.update();
 }
 
 function drawEverything() {
@@ -50,6 +50,5 @@ function drawEverything() {
     grid.draw();
     
     player.draw();
-    player.update();
 
 }

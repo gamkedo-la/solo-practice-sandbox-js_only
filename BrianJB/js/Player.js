@@ -74,13 +74,14 @@ class Player {
     
         var rayAngle = this.rotationAngle - (FOV_RADS / 2);
         this.rays = [];
-    
+
+        
         //for (var i = 0; i < NUM_OF_RAYS; i++){
         for (var i = 0; i < 1; i++){ //temp for testing
             var ray = new Ray(rayAngle);
             ray.cast(columnID);
             this.rays.push(ray);
-    
+            
             rayAngle += RAY_ANGLE_INCREMENT;
             columnID++;
         }
