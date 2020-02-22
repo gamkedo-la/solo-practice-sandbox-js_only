@@ -17,14 +17,10 @@ class Ray {
 
     cast(columnID) {
 
-
-        //console.log(this.angle);
-        //console.log("Facing Right? " + this.isFacingRight);
-        //console. log("Facing Down? " + this.isFacingDown);
-
         var xHorIntercept, yHorIntercept;
         var xVertIntercept, yVertIntercept;
-        var xStep, yStep;
+        var xStep = 0;
+        var yStep = 0;
 
         //Horizonal Ray Grid Intersection
         var foundHorWallHit = false;
@@ -37,10 +33,7 @@ class Ray {
             yHorIntercept += TILE_SIZE;
         }
         //Find the x-Coord of the closest horizontal grid intersection
-        xHorIntercept = player.x + ((player.y - yHorIntercept) / Math.tan(this.angle));
-
-
-        //console.log(xHorIntercept + ", " + yHorIntercept);
+        xHorIntercept = player.x + ((yHorIntercept - player.y) / Math.tan(this.angle));
 
         //calc the increment xStep and yStep
         yStep = TILE_SIZE;
@@ -55,7 +48,6 @@ class Ray {
         if (this.isFacingRight && xStep < 0) {
             xStep *= -1;
         }
-        //console.log(xStep);
 
         var nextHorTouchX = xHorIntercept;
         var nextHorTouchY = yHorIntercept;
@@ -71,9 +63,6 @@ class Ray {
                 foundHorWallHit = true;
                 this.wallHitHorX = nextHorTouchX;
                 this.wallHitHorY = nextHorTouchY;
-
-                //colorLine(player.x, player.y, this.wallHitHorX, this.wallHitHorX, "red");
-
                 break;
             } else {
                 nextHorTouchX += xStep;
@@ -97,11 +86,9 @@ class Ray {
         //Find the y-Coord of the closest vertical grid intersection
         yVertIntercept = player.y + ((xVertIntercept - player.x) * Math.tan(this.angle));
 
-        console.log(xVertIntercept + ", " + yVertIntercept);
-
         //calc the increment xStep and yStep
         xStep = TILE_SIZE;
-        if (this.isFacingUp) {
+        if (this.isFacingLeft) {
             xStep *= -1;
         }
 
@@ -112,7 +99,6 @@ class Ray {
         if (this.isFacingDown && yStep < 0) {
             yStep *= -1;
         }
-        //console.log(xStep);
 
         var nextVertTouchX = xVertIntercept;
         var nextVertTouchY = yVertIntercept;
@@ -128,9 +114,6 @@ class Ray {
                 foundVertWallHit = true;
                 this.wallHitVertX = nextVertTouchX;
                 this.wallHitVertY = nextVertTouchY;
-
-                //colorLine(player.x, player.y, this.wallHitVertX, this.wallHitVertX, "red");
-
                 break;
             } else {
                 nextVertTouchX += xStep;
@@ -157,7 +140,6 @@ class Ray {
     }
 
     draw() {
-        //colorLineAtAngle(player.x, player.y, this.angle, 40, "yellow");
         colorLine(player.x, player.y, this.wallHitX, this.wallHitY, "red");
     }
 

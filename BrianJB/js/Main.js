@@ -28,7 +28,7 @@ window.onload = function () {
 }
 
 function initRenderLoop() {
-    var framesPerSecond = 60;
+    var framesPerSecond = 30;
     setInterval(function () {
 
         moveEverything();
