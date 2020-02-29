@@ -54,12 +54,11 @@ function carClass() {
 		}
 		let nextX = this.carX + Math.cos(this.carAng) * this.carSpeed * dt;
 		let nextY = this.carY + Math.sin(this.carAng) * this.carSpeed * dt;
-		let tile = track.getTileAtPixelCoord(nextX, nextY);
-		if (tile.driveable) {
+    	if (track.isDriveableCoord(nextX, nextY)) {
 			this.carX = nextX;
 			this.carY = nextY;
-			this.carSpeed *= GROUNDSPEED_DECAY_MULT;
-			tile.onDrive(this);
+		    this.carSpeed *= GROUNDSPEED_DECAY_MULT;
+     		track.onDrive(this);
 		} else {
 			this.carSpeed = 0.0;
 		}

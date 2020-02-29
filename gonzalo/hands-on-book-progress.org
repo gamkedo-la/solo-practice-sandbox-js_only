@@ -43,7 +43,7 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 
 *** DONE road-meets-grass tiles (also trees)
 
-** TODO Extra: implement layered track
+** DONE Extra: implement layered track
 
    Create a base layer for the /ground/ tiles (grass, desert, and road, currently) and a layer on top of it where /object/ tiles exist (wall, trees, flags, oil, goal, etc.)
 
