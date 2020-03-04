@@ -1,8 +1,8 @@
 const track = new (function() {
-	const TILE_WIDTH = 40;
-	const TILE_HEIGHT = 40;
-	const COLS = 20;
-	const ROWS = 15;
+  const TILE_WIDTH = 40;
+  const TILE_HEIGHT = 40;
+  const COLS = 20;
+  const ROWS = 15;
   const GROUND_GRID = [
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ////
 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, ////
@@ -21,20 +21,20 @@ const track = new (function() {
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
   ];
   const OBJECT_GRID = [
-	 4,  4, 10,  1,  1,  1, 1,  1,  1,  1, 1, 1,  1, 1, 1, 1, 1, 1, 9, 4, ////
-	 4, 10, 11,  0,  6,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0,12, 9, ////
+	4,  4, 10,  1,  1,  1, 1,  1,  1,  1, 1, 1,  1, 1, 1, 1, 1, 1, 9, 4, ////
+	4, 10, 11,  0,  6,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0,12, 9, ////
 	10, 11,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
 	11,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
-	 0,  0,  0,  0,  0, 10, 1,  1,  1,  1, 1, 1,  1, 1, 1, 9, 0, 0, 0, 8, ////
-	 0,  0,  0, 10,  1,  9, 0,  4,  4,  4, 4, 4,  4, 4, 4,10, 9, 0, 0, 8, ////
-	 0,  0,  0,  8,  0, 12, 1,  1,  9,  4,10, 1,  1, 1, 1,11, 8, 0, 0, 8, ////
-	 0,  0,  6,  8,  0,  0, 0,  0,  8,  4, 8, 0,  0, 0, 0, 0, 8, 0, 0, 8, ////
-	 5,  0,  0,  5,  0,  0, 0,  0, 12,  1, 9, 0,  0, 0, 0, 0, 8, 0, 0, 8, ////
-	 8,  0,  0,  8,  0,  0, 5,  0,  0,  0,14, 0,  0, 5, 0, 0, 8, 0, 0, 8, ////
-	 8,  2,  2,  8,  0, 10, 1,  9,  0,  0, 0, 0,  0, 8, 0, 0, 5, 0, 0, 8, ////
+	0,  0,  0,  0,  0, 10, 1,  1,  1,  1, 1, 1,  1, 1, 1, 9, 0, 0, 0, 8, ////
+	0,  0,  0, 10,  1,  9, 0,  4,  4,  4, 4, 4,  4, 4, 4,10, 9, 0, 0, 8, ////
+	0,  0,  0,  8,  0, 12, 1,  1,  9,  4,10, 1,  1, 1, 1,11, 8, 0, 0, 8, ////
+	0,  0,  6,  8,  0,  0, 0,  0,  8,  4, 8, 0,  0, 0, 0, 0, 8, 0, 0, 8, ////
+	5,  0,  0,  5,  0,  0, 0,  0, 12,  1, 9, 0,  0, 0, 0, 0, 8, 0, 0, 8, ////
+	8,  0,  0,  8,  0,  0, 5,  0,  0,  0,14, 0,  0, 5, 0, 0, 8, 0, 0, 8, ////
+	8,  2,  2,  8,  0, 10, 1,  9,  0,  0, 0, 0,  0, 8, 0, 0, 5, 0, 0, 8, ////
 	13,  1,  1,  5,  0,  8, 0,  8,  0,  0, 0, 6,  0, 8, 0, 0, 0, 0, 0, 8, ////
-	 8,  0,  0,  0,  0,  8, 4, 12,  1,  9, 0, 0, 10, 9, 0, 0, 0, 0, 0, 8, ////
-	 8,  0,  0,  0,  0,  8, 0,  4,  0, 12, 1, 1, 11,12, 9, 0, 0, 0,10,11, ////
+	8,  0,  0,  0,  0,  8, 4, 12,  1,  9, 0, 0, 10, 9, 0, 0, 0, 0, 0, 8, ////
+	8,  0,  0,  0,  0,  8, 0,  4,  0, 12, 1, 1, 11,12, 9, 0, 0, 0,10,11, ////
 	12,  1,  1,  5,  1, 11, 4,  0,  4,  4, 0, 4,  4, 4,12, 1, 1, 1,11, 0
   ];
   const GROUND_INDEX = {
@@ -170,7 +170,7 @@ const track = new (function() {
 	  onDrive: ()=>{}
 	}
   };
-	const takenPlayerTiles = [];
+  const takenPlayerTiles = [];
 
   this.isDriveableCoord = function(X, Y) {
 	const tileCol = Math.floor(X / TILE_WIDTH);
@@ -198,46 +198,46 @@ const track = new (function() {
 	}
   };
 
-	this.trackToTileIndex = function(tileCol, tileRow) {
-		return tileCol + COLS * tileRow;
-	};
+  this.trackToTileIndex = function(tileCol, tileRow) {
+	return tileCol + COLS * tileRow;
+  };
 
-	this.draw = function() {
-		let trackIndex = 0;
-		let trackLeftEdgeX = 0;
-		let trackTopEdgeY = 0;
-		for (let eachRow=0; eachRow<ROWS; eachRow++) {
-		  trackLeftEdgeX = 0;
-		  for (let eachCol=0; eachCol<COLS; eachCol++) {
-			let groundTileHere = GROUND_TYPES[GROUND_GRID[trackIndex]];
-			if (groundTileHere.imageId) {
-			  let image = imageLoader.getImage(groundTileHere.imageId);
-			  canvasContext.drawImage(image, trackLeftEdgeX, trackTopEdgeY);
-			}
-			let objectHere = OBJECT_TYPES[OBJECT_GRID[trackIndex]];
-			if (objectHere.imageId) {
-			  let image = imageLoader.getImage(objectHere.imageId);
-			  canvasContext.drawImage(image, trackLeftEdgeX, trackTopEdgeY);
-			}
-			trackIndex++;
-			trackLeftEdgeX += TILE_WIDTH;
-		  }
-		  trackTopEdgeY += TILE_HEIGHT;
+  this.draw = function() {
+	let trackIndex = 0;
+	let trackLeftEdgeX = 0;
+	let trackTopEdgeY = 0;
+	for (let eachRow=0; eachRow<ROWS; eachRow++) {
+	  trackLeftEdgeX = 0;
+	  for (let eachCol=0; eachCol<COLS; eachCol++) {
+		let groundTileHere = GROUND_TYPES[GROUND_GRID[trackIndex]];
+		if (groundTileHere.imageId) {
+		  let image = imageLoader.getImage(groundTileHere.imageId);
+		  canvasContext.drawImage(image, trackLeftEdgeX, trackTopEdgeY);
 		}
-	};
+		let objectHere = OBJECT_TYPES[OBJECT_GRID[trackIndex]];
+		if (objectHere.imageId) {
+		  let image = imageLoader.getImage(objectHere.imageId);
+		  canvasContext.drawImage(image, trackLeftEdgeX, trackTopEdgeY);
+		}
+		trackIndex++;
+		trackLeftEdgeX += TILE_WIDTH;
+	  }
+	  trackTopEdgeY += TILE_HEIGHT;
+	}
+  };
 
-	this.getFreePlayerTileCoord = function() {
-		for(let i=0; i<OBJECT_GRID.length; i++){
-			let tileKey = OBJECT_GRID[i];
-			if(tileKey == OBJECT_INDEX.playerStart && !takenPlayerTiles.includes(i)) {
-				let tileRow = Math.floor(i/COLS);
-				let tileCol = i % COLS;
-				let homeX = tileCol * TILE_WIDTH + 0.5*TILE_WIDTH;
-				let homeY = tileRow * TILE_HEIGHT + 0.5*TILE_HEIGHT;
-				takenPlayerTiles.push(i);
-				return [homeX, homeY];
-			}
-		}
-		return [-1, -1];
-	};
+  this.getFreePlayerTileCoord = function() {
+	for(let i=0; i<OBJECT_GRID.length; i++){
+	  let tileKey = OBJECT_GRID[i];
+	  if(tileKey == OBJECT_INDEX.playerStart && !takenPlayerTiles.includes(i)) {
+		let tileRow = Math.floor(i/COLS);
+		let tileCol = i % COLS;
+		let homeX = tileCol * TILE_WIDTH + 0.5*TILE_WIDTH;
+		let homeY = tileRow * TILE_HEIGHT + 0.5*TILE_HEIGHT;
+		takenPlayerTiles.push(i);
+		return [homeX, homeY];
+	  }
+	}
+	return [-1, -1];
+  };
 })();
