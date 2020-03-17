@@ -6,7 +6,50 @@
     <title>Tic Tac Toe</title>
 </head>
 <body>
-    <canvas id="canvas" style="width: 800px; height: 600px; background-color: #000;"></canvas>
+
+    <style>
+        .container {
+            background-color: #000;
+            width: 800px; 
+            height: 600px; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #board-container {
+            width: 200px; 
+            height: 200px; 
+            border: 1px solid red;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            justify-items: center;
+            align-items: center;
+        }
+
+        #piece {
+            width: 40px; 
+            height: 40px; 
+            background-color: #fff;
+            cursor: pointer;
+        }
+    </style>
+
+    <!-- <canvas id="canvas" style="width: 800px; height: 600px; background-color: #000;"> -->
+    <div class="container">
+        <div id="board-container">
+            <div id="piece" data-index='0'></div>
+            <div id="piece" data-index='1'></div>
+            <div id="piece" data-index='2'></div>
+            <div id="piece" data-index='3'></div>
+            <div id="piece" data-index='4'></div>
+            <div id="piece" data-index='5'></div>
+            <div id="piece" data-index='6'></div>
+            <div id="piece" data-index='7'></div>
+            <div id="piece" data-index='8'></div>
+        </div>
+    </div>
+    <!-- </canvas> -->
     <script src="js/main.js"></script>
 </body>
 </html>

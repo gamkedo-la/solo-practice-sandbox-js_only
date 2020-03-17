@@ -1,56 +1,53 @@
-let canvas, canvasCtx;
+let pieces = document.querySelectorAll('#piece');
+
 let board = [];
-
-const BOARD_PIECES = 9;
-const BOARD_PIECE_WIDTH = 20;
-const BOARD_PIECE_HEIGHT = 15;
-const BOARD_GAP = 5;
-const BOARD_PIECE_COLOR = 'white';
-const BOARD_ROWS = 3;
-const BOARD_COLUMNS = 3;
-const offsetX = 130;
-const offsetY = 50;
-
-function colorRect(leftX, topY, width, height, drawColor) {
-	canvasCtx.fillStyle = drawColor;
-	canvasCtx.fillRect(leftX, topY, width, height);
-}
+const BOARD_LENGTH = 9;
 
 window.onload = function() {
-    canvas = document.querySelector('#canvas');
-    canvasCtx = canvas.getContext('2d');
-
-    // Create the board pieces -> each piece is an object with its own state
+    // Create the board pieces
     createBoardPieces();
-
-    // Draw Board
-    drawBoard();
-
-    // Listen for a click on the board -> base of the game
-    // Check if the piece is empty -> if it's, add X/O
-    // If isn't empty, warn the player and tell to choose again
-    // Check for end of the game -> who won? was a tie?
+    
+    pieces.forEach(piece => piece.addEventListener('click', handleClick));
 }
 
 function createBoardPieces() {
-    for(let i = 0; i < BOARD_PIECES; i++) {
+    for(let i = 0; i < BOARD_LENGTH; i++) {
         board[i] = {
-            occupied: false,
+            // Connect the array with the elements on the screen through the index
+            index: i,
             content: '',
-            index: i
+            occupied: false
         };
     }
 }
 
-function drawBoard() {
-    for(let row = 0; row < BOARD_ROWS; row++) {
-        for(let col = 0; col < BOARD_COLUMNS; col++) {
-            colorRect(
-                BOARD_PIECE_WIDTH * col + offsetX,
-                BOARD_PIECE_HEIGHT * row + offsetY,
-                BOARD_PIECE_WIDTH - BOARD_GAP,
-                BOARD_PIECE_HEIGHT - BOARD_GAP,
-                BOARD_PIECE_COLOR);
-        }
+function handleClick(e) {
+    const pieceElement = e.target;
+    const pieceIndex = this.dataset.index;
+    const boardPiece = board[pieceIndex];
+
+    // Check if the piece is available, if it is, place the 'X' there
+    // If it isn't warn the player
+    if(isPieceAvailable(boardPiece)) {
+        boardPiece.content = 'X';
+        boardPiece.occupied = true;
+        pieceElement.innerHTML = 'X';
+    } else {
+        console.log('Place is taken. Choose again');
     }
+
+    // Check end of the game
+
+    // Computer move
+    computerMove();
+    
+    console.log(e.target)
+}
+
+function isPieceAvailable(piece) {
+    return piece.occupied == false ? true : false;
+}
+
+function randomRange(min, max) {
+    return Math.floor(Math.random() * (max - min)) + min;
 }
