@@ -65,12 +65,12 @@ const track = new (function() {
   };
   const GROUND_TYPES = {
 	[GROUND_INDEX.road]: {
-	  imageId: 'TRACK_ROAD',
+	  tileOffset: {x: 0, y: 1},
 	  driveable: true,
 	  onDrive: (car)=>{car.canSteer = true;}
 	},
 	[GROUND_INDEX.goal]: {
-	  imageId: 'TRACK_GOAL',
+	  tileOffset: {x: 6, y: 1},
 	  driveable: true,
 	  onDrive: function(car) {
 		document.getElementById("debugText").innerHTML = car.myName + " hit the goal line";
@@ -80,12 +80,12 @@ const track = new (function() {
 	  }
 	},
 	[GROUND_INDEX.offroad]: {
-	  imageId: 'TRACK_GRASS',
+	  tileOffset: {x: 0, y: 0},
 	  driveable: true,
 	  onDrive: (car) => {car.carSpeed /= 2;}
 	},
 	[GROUND_INDEX._default]: {
-	  imageId: 'TRACK_ROAD',
+	  tileOffset: {x: 0, y: 1},
 	  driveable: false,
 	  onDrive: ()=>{}
 	}
@@ -206,14 +206,19 @@ const track = new (function() {
 	let trackIndex = 0;
 	let trackLeftEdgeX = 0;
 	let trackTopEdgeY = 0;
+	const groundTileSheet = imageLoader.getImage("GROUND_TILES_DEFAULT");
 	for (let eachRow=0; eachRow<ROWS; eachRow++) {
 	  trackLeftEdgeX = 0;
 	  for (let eachCol=0; eachCol<COLS; eachCol++) {
 		let groundTileHere = GROUND_TYPES[GROUND_GRID[trackIndex]];
-		if (groundTileHere.imageId) {
-		  let image = imageLoader.getImage(groundTileHere.imageId);
-		  canvasContext.drawImage(image, trackLeftEdgeX, trackTopEdgeY);
-		}
+		canvasContext.drawImage(
+		  groundTileSheet,
+		  groundTileHere.tileOffset.x*TILE_WIDTH,
+		  groundTileHere.tileOffset.y*TILE_HEIGHT,
+		  TILE_WIDTH, TILE_HEIGHT,
+		  trackLeftEdgeX, trackTopEdgeY,
+		  TILE_WIDTH, TILE_HEIGHT
+		);
 		let objectHere = OBJECT_TYPES[OBJECT_GRID[trackIndex]];
 		if (objectHere.imageId) {
 		  let image = imageLoader.getImage(objectHere.imageId);

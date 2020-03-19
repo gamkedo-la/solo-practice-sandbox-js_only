@@ -2,7 +2,7 @@ const imageLoader = new (function() {
   const IMAGE_DEFS = [
 	{id: "carPic", src: "./images/player1.png"},
 	{id: "car2Pic", src: "./images/player2.png"},
-	{id: "TRACK_ROAD", src: "./images/track_road.png"},
+	{id: "GROUND_TILES_DEFAULT", src: "./images/ground_tiles_default.png"},
 	{id: "TRACK_WALL", src: "./images/track_wall.png"},
 	{id: "TRACK_WALL_SIDE", src: "./images/track_wall_side.png"},
 	{id: "TRACK_WALL_SE", src: "./images/track_wall_SE.png"},
@@ -10,10 +10,8 @@ const imageLoader = new (function() {
 	{id: "TRACK_WALL_NE", src: "./images/track_wall_NE.png"},
 	{id: "TRACK_WALL_NW", src: "./images/track_wall_NW.png"},
 	{id: "TRACK_WALL_JOIN", src: "./images/wall_join_N.png"},
-	{id: "TRACK_GOAL", src: "./images/track_goal.png"},
 	{id: "TRACK_TREE", src: "./images/track_tree.png"},
 	{id: "TRACK_FLAG", src: "./images/track_flag.png"},
-	{id: "TRACK_GRASS", src: "./images/track_grass.png"},
 	{id: "TRACK_OIL", src: "./images/track_oil.png"},
 	{id: "TRACK_PILLAR", src: "./images/track_pillar.png"},
 	{id: "TRACK_PILLAR_E", src: "./images/track_pillar_e.png"},
@@ -27,10 +25,10 @@ const imageLoader = new (function() {
 		const image = new Image();
 		image.onload = function() {
 		  resolve({id: imageDef.id, image: image});
-		}
+		};
 		image.onerror = function() {
 		  reject(image);
-		}
+		};
 		image.src = imageDef.src;
 	  });
 	})).then(function(values) {
