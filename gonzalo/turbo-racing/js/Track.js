@@ -6,18 +6,18 @@ const track = new (function() {
   const GROUND_GRID = [
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ////
 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, ////
-	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, ////
-	1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, ////
-	1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, ////
-	1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, ////
-	1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, ////
-	1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, ////
-	1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, ////
-	1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, ////
-	1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, ////
-	1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, ////
-	1, 0, 2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, ////
-	1, 0, 2, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, ////
+	1, 0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 0, 4, 1, ////
+	1, 3, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 4, 1, ////
+	1, 3, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 4, 1, ////
+	1, 3, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 4, 1, ////
+	1, 3, 4, 1, 3, 0, 0, 0, 1, 1, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
+	1, 3, 4, 1, 3, 0, 0, 4, 1, 1, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
+	1, 3, 4, 1, 3, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
+	1, 3, 4, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, 3, 4, 1, ////
+	1, 3, 4, 1, 3, 0, 1, 1, 3, 0, 0, 0, 4, 1, 3, 0, 5, 0, 4, 1, ////
+	1, 1, 1, 1, 3, 0, 1, 1, 3, 0, 0, 0, 4, 1, 3, 0, 0, 0, 4, 1, ////
+	1, 3, 2, 5, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 3, 0, 0, 0, 4, 1, ////
+	1, 3, 2, 6, 6, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, ////
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
   ];
   const OBJECT_GRID = [
@@ -41,6 +41,10 @@ const track = new (function() {
 	road: 0,
 	offroad: 1, // grass, sand, etc. depending on skin
 	goal: 2,
+	roadLeftSide: 3,
+	roadRightSide: 4,
+	roadTopSide: 5,
+	roadBottomSide: 6,
 	_default: Number.MAX_SAFE_INTEGER
   };
   const OBJECT_INDEX = {
@@ -66,6 +70,31 @@ const track = new (function() {
   const GROUND_TYPES = {
 	[GROUND_INDEX.road]: {
 	  tileOffset: {x: 0, y: 1},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.road]: {
+	  tileOffset: {x: 0, y: 1},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.roadLeftSide]: {
+	  tileOffset: {x: 4, y: 1},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.roadRightSide]: {
+	  tileOffset: {x: 2, y: 1},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.roadTopSide]: {
+	  tileOffset: {x: 3, y: 1},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.roadBottomSide]: {
+	  tileOffset: {x: 5, y: 1},
 	  driveable: true,
 	  onDrive: (car)=>{car.canSteer = true;}
 	},
