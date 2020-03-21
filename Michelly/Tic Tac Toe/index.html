@@ -13,30 +13,64 @@
             width: 800px; 
             height: 600px; 
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
+        #display-info {
+            color: #fff;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            position: absolute;
+            left: 20px;
+            top: 5px;
+        }
+
+        #msg {
+            color: #fff;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
         #board-container {
-            width: 200px; 
-            height: 200px; 
-            border: 1px solid red;
+            width: 150px; 
+            height: 150px; 
             display: grid;
             grid-template-columns: repeat(3, 1fr);
+            grid-gap: 5px;
             justify-items: center;
             align-items: center;
+            background-color: #fff;
         }
 
         #piece {
-            width: 40px; 
-            height: 40px; 
-            background-color: #fff;
+            width: 46px; 
+            height: 46px; 
+            background-color: #000;
             cursor: pointer;
+            color: #fff;
+            text-align: center;
+            font-size: 1.5rem;
+            line-height: 46px;
+        }
+
+        #restart {
+            display: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #000;
+            background: #f4f4f4;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            bottom: 70px;
         }
     </style>
 
-    <!-- <canvas id="canvas" style="width: 800px; height: 600px; background-color: #000;"> -->
     <div class="container">
+        <p id="display-info">Click to choose a place</p>
+        <p id="msg"></p>
         <div id="board-container">
             <div id="piece" data-index='0'></div>
             <div id="piece" data-index='1'></div>
@@ -48,8 +82,9 @@
             <div id="piece" data-index='7'></div>
             <div id="piece" data-index='8'></div>
         </div>
+        <button id="restart">Click to restart</button>
     </div>
-    <!-- </canvas> -->
+
     <script src="js/main.js"></script>
 </body>
 </html>
