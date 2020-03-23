@@ -12,7 +12,7 @@ const PADDLE_THICKNESS = 10;
 
 var playerSP = 0;
 var compSP = 0;
-var winningScore = 1;
+var winningScore = 3;
 var isGameOver = false;
 var isGameStarted = false;
 

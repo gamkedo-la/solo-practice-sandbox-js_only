@@ -14,7 +14,7 @@ canvas.addEventListener('touchforcechange', e => {
 }, { passive: false } );
 canvas.addEventListener('touchmove', e => {
     e.preventDefault();
-    inputMouse.update(e);
+    inputMouse.move(e);
 }, { passive: false } );
 canvas.addEventListener('touchstart', e => {
     e.preventDefault();
@@ -27,7 +27,7 @@ canvas.addEventListener('touchend', e => {
 
 canvas.addEventListener('mousemove', e => {
     e.preventDefault();
-    inputMouse.update(e);
+    inputMouse.move(e);
 });
 canvas.addEventListener('mousedown', e => {
     inputMouse.mousedown(e);
@@ -48,53 +48,18 @@ canvas.addEventListener('keyup', e => {
 
 });
 
-let drawX = 0;
-let drawY = 0;
-let isDrawing = false;
-let points = [];
-
 let reset = () => {
 
 };
-let update = (dt) => {
-    if (inputMouse.isDown) {
-        drawX = inputMouse.x;
-        drawY = inputMouse.y;
-        points.push({ 'x': drawX, 'y': drawY, 'isDrawing': isDrawing });
-        isDrawing = true;
-    }
-    
-    if (isDrawing) {
-        if (inputMouse.isMoving) {
-            drawX = inputMouse.x;
-            drawY = inputMouse.y;
-            points.push({ 'x': drawX, 'y': drawY, 'isDrawing': isDrawing });
-        }
-
-        if (!inputMouse.isDown) {            
-            isDrawing =  false;
-            points.push({ 'x': drawX, 'y': drawY, 'isDrawing': isDrawing });
-        }
-    }
-
+let update = (dt) => {    
+    let stroke = StrokeTool.stroke(inputMouse);
+    console.log(stroke.x1 + " " + stroke.y1 + " to " + stroke.x2 + " " + stroke.y2);
 };
 let render = (dt) => {
     ctx.fillStyle = 'white';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
      
-    Draw.colorCircle(inputMouse.x, inputMouse.y, 5, 'black');    
-    for (let i = 0; i < points.length; i++) { 
-        if (i > 0) {
-            drawX = points[i-1].x;
-            drawY = points[i-1].y;            
-        }
-
-        if (points[i].isDrawing) {
-            Draw.follow(drawX, drawY, points[i].x, points[i].y, getRandomColor());
-        }
-        drawX = points[i].x;
-        drawY = points[i].y;
-    }
+    StrokeTool.render(inputMouse);
 };
 let getRandomColor = () => {
     let letters = '0123456789ABCDEF';

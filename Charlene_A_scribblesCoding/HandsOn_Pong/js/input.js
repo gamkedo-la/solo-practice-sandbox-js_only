@@ -7,20 +7,23 @@ function mousemoveHandler(evt) {
 }
 
 function dblclickHandler() {
-    if (isGameOver) {
-      if (playerSP > compSP) {
-        ballSpeedX = 6;
-        ballSpeedY = 6;            
-      } else {
-        ballSpeedX = -6;
-        ballSpeedY = -6;
-      }
-
-      playerSP = 0;
-      compSP = 0;
-      paddle1Y = 250;
-      paddle2Y = 250;         
-      
-      isGameOver = false;
+  if (isGameOver) {
+    if (playerSP > compSP) {
+      ballSpeedX = 6;
+      ballSpeedY = 6;            
+    } else {
+      ballSpeedX = -6;
+      ballSpeedY = -6;
     }
+
+    playerSP = 0;
+    compSP = 0;
+    paddle1Y = 250;
+    paddle2Y = 250;         
+    
+    isGameOver = false;
+    console.log("it's double clicked!");
+    console.log("GameStarted = " + isGameStarted);
+    console.log("isGameOver = " + isGameOver);
+  }
 }

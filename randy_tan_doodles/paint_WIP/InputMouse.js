@@ -4,7 +4,7 @@ let InputMouse = function (cvs = canvas) {
     this.isDown = false;
     this.isMoving = false;
 
-    this.update = e => {
+    this.move = e => {
         this.isMoving = true;
         this.getXY(e);
     };

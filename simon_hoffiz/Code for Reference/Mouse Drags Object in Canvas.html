@@ -1,19 +1,16 @@
 <html>
-​
+
 <canvas id="gameCanvas" width="800" height="600"></canvas>
-​
+
 <script>
 var c;
 var ctx;
 var posX = 100;
 var posY = 100;
-var lastPosX = posX;
-var lastPosY = posY;
+var mousePos = {};
+var mouseToDrag = false;
 const ELEMENT_WIDTH = 50;
 const ELEMENT_HEIGHT = 50;
-var mouseToDrag = false;
-var mousePos = {x:0, y:0};
-
 
 window.onload = function() {
 	c = document.getElementById('gameCanvas');
@@ -25,55 +22,46 @@ window.onload = function() {
 			drawEverything();	
 		}, 1000/fps);
 
-	c.addEventListener('mousemove', mouseMovesObject);
-	c.addEventListener('mousedown', mouseDrag);
-	c.addEventListener('mouseup', noMouseDrag);
+	c.addEventListener('mousemove', updateMouse);
+	c.addEventListener('mousedown', mouseDragsObject);
+	c.addEventListener('mouseup', mouseNotDrag);
+
+}
+
+
+function updateMouse(evt){
+	mousePos = calculateMousePos(evt);
+}
+
+function mouseNotDrag(evt) {
+	mouseToDrag = false;
+	//posX = 100;
+	//posY = 100;
+}
+
+function mouseDragsObject(evt) {
+	if (mousePos.x >= posX-ELEMENT_WIDTH/2  && mousePos.x <= posX+ELEMENT_WIDTH/2
+		&& mousePos.y >= posY-ELEMENT_HEIGHT/2 && mousePos.y <= posY+ELEMENT_HEIGHT/2) {
+
+			mouseToDrag = true;
+			console.log ("working?");
+	}
+}
+
+function moveObject(evt) {	
+	if(mouseToDrag) {
+		posX = mousePos.x;
+		posY = mousePos.y;
+	}
 }
 
 function drawEverything() {
 	drawRect(0, 0, c.width, c.height, 'black');
-	drawRect(lastPosX, lastPosY, ELEMENT_WIDTH, ELEMENT_HEIGHT, 'white');
+	drawRect(posX-ELEMENT_WIDTH/2, posY-ELEMENT_HEIGHT/2 , ELEMENT_WIDTH, ELEMENT_HEIGHT, 'white');
 	}
 
 function moveEverything() {
-//not needed for now
-	}
-
-
-function mouseMovesObject(evt) {
-	if (mouseToDrag
-		&& mousePos.X >= lastPosX && mousePos.X <= lastPosX+ELEMENT_WIDTH
-		&& mousePos.Y >= lastPosY && mousePos.Y <= lastPosY+ELEMENT_HEIGHT
-		) {
-		console.log("drag");
-	
-		c.addEventListener('mousemove',
-		function(evt) {
-			mousePos = calculateMousePos(evt);
-			//console.log(mousePos);
-			
-			});
-		lastPosX = mousePos.x;
-			lastPosY = mousePos.y;
-
-		}
-		if (mouseToDrag == false) {
-		console.log("nodrag");
-		lastPosX = lastPosX ;
-		lastPosY = lastPosY;
-		//if you want the square to snap back to original position when mouse is not dragging:
-		//lastPosX = posX;
-		//lastPosY = posY;
-		 }
-	}
-	
-
-function noMouseDrag(evt) {
-	mouseToDrag = false;
-	}
-
-function mouseDrag(evt) {
-	mouseToDrag = true;
+	moveObject();
 	}
 
 function calculateMousePos(evt) {
@@ -95,4 +83,3 @@ function drawRect(leftX, topY, width, height, color) {
 
 </script>
 </html>
-

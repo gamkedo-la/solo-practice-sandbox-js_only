@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+</head>
+<body>
+
+    <style>
+        .container {
+            background-color: #000;
+            width: 800px; 
+            height: 600px; 
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #display-info {
+            color: #fff;
+            font-size: 1rem;
+            letter-spacing: 2px;
+            position: absolute;
+            left: 20px;
+            top: 5px;
+        }
+
+        #msg {
+            color: #fff;
+            font-size: 2rem;
+            letter-spacing: 2px;
+        }
+
+        #board-container {
+            width: 150px; 
+            height: 150px; 
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 5px;
+            justify-items: center;
+            align-items: center;
+            background-color: #fff;
+        }
+
+        #piece {
+            width: 46px; 
+            height: 46px; 
+            background-color: #000;
+            cursor: pointer;
+            color: #fff;
+            text-align: center;
+            font-size: 1.5rem;
+            line-height: 46px;
+        }
+
+        #restart {
+            display: none;
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #000;
+            background: #f4f4f4;
+            border: none;
+            cursor: pointer;
+            position: absolute;
+            bottom: 70px;
+        }
+    </style>
+
+    <div class="container">
+        <p id="display-info">Click to choose a place</p>
+        <p id="msg"></p>
+        <div id="board-container">
+            <div id="piece" data-index='0'></div>
+            <div id="piece" data-index='1'></div>
+            <div id="piece" data-index='2'></div>
+            <div id="piece" data-index='3'></div>
+            <div id="piece" data-index='4'></div>
+            <div id="piece" data-index='5'></div>
+            <div id="piece" data-index='6'></div>
+            <div id="piece" data-index='7'></div>
+            <div id="piece" data-index='8'></div>
+        </div>
+        <button id="restart">Click to restart</button>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

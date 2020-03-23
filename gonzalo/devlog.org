@@ -1,0 +1,21 @@
+#+TITLE: Gonzalo's Devlog
+
+I'll try keeping a (public) journal of my gamedev activities (and related
+stuff, like pixel art) here.
+This is mainly for my own, to keep record of my journey as I learn and
+create my own things, but I also hope it helps whoever reads it :)
+
+* 2020
+** 2020-03 marzo
+*** 2020-03-12 jueves
+	- <2020-03-12 jue 11:31> Worked a bit on "Bundle of 30 Language
+      Games" this morning, moving game objects into an array and
+      changing the title screen code to pull data from the game
+      objects for drawing the game selection grid. Next time I'll work
+      on refactoring ~handleGameCellClicks~ itself.
+*** 2020-03-17 martes
+- <2020-03-17 mar 09:43> Did some minor clean-up on "Bundle of 30
+  Language Games", and found another good place to refactor:
+  ~defineXAndYCoordinatesForTargets~ in
+  PromptAndAnswerManager.js. Also made the shooter game load again,
+  but it doesn't seem to run as it should.

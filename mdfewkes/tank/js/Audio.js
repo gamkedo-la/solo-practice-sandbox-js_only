@@ -1,13 +1,12 @@
 
 
-var soundMouseClick = new SoundOverlapsClass("./audio/mouseClick.mp3");
+var soundTest = new SoundOverlapsClass("./audio/threeSecondsOfSilence.mp3");
 
 var backgroundMusic = new backgroundMusicClass();
 
 var musicTest1 = "./audio/Tester.mp3";
 var musicTest2 = "./audio/Teste2.mp3";
-
-
+var musicTestSilence = "./audio/threeSecondsOfSilence.mp3";
 
 var musicVolume = localStorage.getItem("musicVolume");
 var effectsVolume = localStorage.getItem("effectsVolume");
@@ -40,6 +39,8 @@ function backgroundMusicClass() {
 
 	this.pauseSound = function() {
 		musicSound.pause();
+		fadeTrack.pause();
+		fadeTrack = null;
 	}
 
 	this.resumeSound = function() {
@@ -60,7 +61,7 @@ function backgroundMusicClass() {
 
 	this.updateMusic = function(frameTime) {
 		if (fadeTrack != null) {
-			var newVolume = fadeTrack.volume - (1 * frameTime);
+			var newVolume = fadeTrack.volume - frameTime*2;
 
 			if(newVolume > 1.0) {
 				newVolume = 1.0;
@@ -68,15 +69,14 @@ function backgroundMusicClass() {
 				newVolume = 0.0;
 			}
 
-			fadeTrack.volume -= newVolume;
+			fadeTrack.volume = newVolume;
 
-			if (fadeTrack.volume <= 0) {
+			if (fadeTrack.volume <= 0.017) {
 				fadeTrack.pause();
 				fadeTrack = null;
 			}
 		}
 	}
-
 }
 
 function SoundOverlapsClass(filenameWithPath) {
@@ -87,7 +87,7 @@ function SoundOverlapsClass(filenameWithPath) {
 
 	this.play = function() {
 		if(!sounds[soundIndex].paused) {
-			sounds.splice(soundIndex, 0, new Audio(fullFilename + audioFormat));
+			sounds.splice(soundIndex, 0, new Audio(fullFilename));
 		}
 
 		sounds[soundIndex].currentTime = 0;

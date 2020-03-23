@@ -15,6 +15,8 @@ function tankClass() {
 	this.active = true;
 
 	this.update = function update(frameTime) {
+		this.y = canvas.height - UI_HEIGHT - map.getHeightAtX(this.x);
+
 		if (this.myTurn) {
 			if (this.active) {
 				if (Key.isJustPressed(Key.SPACE)){

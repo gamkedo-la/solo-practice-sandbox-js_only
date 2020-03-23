@@ -15,7 +15,7 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 
    I used the NES palette to try and give it a retro look.
 
-** TODO Extra: moar graphics                                          :extra:
+** DONE Extra: moar graphics                                          :extra:
 
 *** DONE East/West wall tiles
 
@@ -39,9 +39,11 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 	They can surely use more work, and I'd love different tanks, but they're pretty
 	good for now.
 
-*** TODO road-meets-grass tiles (also trees)
+*** DONE grass-meets-wall tile (shade on grass)
 
-** TODO Extra: implement layered track
+*** DONE road-meets-grass tiles (also trees)
+
+** DONE Extra: implement layered track
 
    Create a base layer for the /ground/ tiles (grass, desert, and road, currently) and a layer on top of it where /object/ tiles exist (wall, trees, flags, oil, goal, etc.)
 

@@ -9,6 +9,7 @@ function basicShotClass() {
 	var yVel = 0;
 
 	this.active = false;
+	this.primary = true;
 
 	this.update = function update(frameTime) {
 		if (this.active) {
@@ -25,8 +26,13 @@ function basicShotClass() {
 				}
 			}
 
-			if (this.y >= canvas.height - 100) {
+			if (this.y >= canvas.height - UI_HEIGHT - map.getHeightAtX(this.x)) {
 				this.hit();
+			} else if (this.y >= canvas.height - UI_HEIGHT) {
+				this.hit();
+			} else if (this.x < 0 || this.x > canvas.width) {
+				this.active = false;
+				if (this.primary) {incrementTurn = true;}
 			}
 		}
 	}
@@ -45,8 +51,8 @@ function basicShotClass() {
 	this.hit = function hit() {
 		yVel = 0;
 					
-		incrementTurn = true;
 		this.active = false;
+		if (this.primary) {incrementTurn = true;}
 
 		var newExplosion = new basicExplosionClass();
 		newExplosion.x = this.x;
@@ -63,7 +69,7 @@ function basicShotClass() {
 function threeShotClass() {
 	this.x = 0;
 	this.y = 0;
-	this.size = 20;
+	this.size = 10;
 	this.damage = 10;
 	this.tank;
 
@@ -87,24 +93,26 @@ function threeShotClass() {
 		newProjectileC.x = this.x;
 		newProjectileC.y = this.y - 10;
 		newProjectileC.size = this.size;
-		newProjectileC.tank = this;
+		newProjectileC.tank = this.tank;
 		newProjectileC.launch(angle, power);
 		arrayOfProjectiles.push(newProjectileC);
 
 		var newProjectileL = new basicShotClass();
 		newProjectileL.x = this.x;
 		newProjectileL.y = this.y - 10;
-		newProjectileL.size = this.size/2;
-		newProjectileL.tank = this;
-		newProjectileL.launch(angle+2, power);
+		newProjectileL.size = this.size;
+		newProjectileL.tank = this.tank;
+		newProjectileL.primary = false;
+		newProjectileL.launch(angle+5, power);
 		arrayOfProjectiles.push(newProjectileL);
 
 		var newProjectileR = new basicShotClass();
 		newProjectileR.x = this.x;
 		newProjectileR.y = this.y - 10;
-		newProjectileR.size = this.size/2;
-		newProjectileR.tank = this;
-		newProjectileR.launch(angle-2, power);
+		newProjectileR.size = this.size;
+		newProjectileR.tank = this.tank;
+		newProjectileR.primary = false;
+		newProjectileR.launch(angle-5, power);
 		arrayOfProjectiles.push(newProjectileR);
 	}
 }
@@ -120,6 +128,7 @@ function sniperShotClass() {
 	var yVel = 0;
 
 	this.active = false;
+	this.primary = true;
 
 	this.update = function update(frameTime) {
 		if (this.active) {
@@ -137,8 +146,13 @@ function sniperShotClass() {
 				}
 			}
 
-			if (this.y >= canvas.height - 100) {
+			if (this.y >= canvas.height - UI_HEIGHT - map.getHeightAtX(this.x)) {
 				this.hit();
+			} else if (this.y >= canvas.height - UI_HEIGHT) {
+				this.hit();
+			} else if (this.x < 0 || this.x > canvas.width) {
+				this.active = false;
+				incrementTurn = true;
 			}
 		}
 	}

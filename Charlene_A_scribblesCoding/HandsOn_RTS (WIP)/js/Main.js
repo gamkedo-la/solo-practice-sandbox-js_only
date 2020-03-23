@@ -1,13 +1,28 @@
 var canvas, canvasContext;
+var isGameStarted = false;
 
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');
-    canvasContext = canvas.getContext('2d');      
+    canvasContext = canvas.getContext('2d');
+    
+    canvasContext.font = "48px serif";
+    canvasContext.fillStyle = "black";
+    canvasContext.fillText("Welcome to RTS!", 100, 200);
+    canvasContext.font = "30px serif";
+    canvasContext.fillText("Click anywhere to start playing", 180, 250);
   
+    canvas.addEventListener('dblclick', function(e) {
+        isGameStarted = true;
+        document.getElementById("debugText").innerHTML = "isGameStarted = " + isGameStarted;
+    });
+
     var framesPerSecond = 30;
+    
     setInterval(function() {
-        moveEverything();    
-        drawEverything();
+        if (isGameStarted) {
+            moveEverything();    
+            drawEverything();
+        }
     }, 1000/framesPerSecond);
 
     //canvas.addEventListener('click', function(evt) {

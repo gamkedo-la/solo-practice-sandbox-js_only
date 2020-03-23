@@ -19,6 +19,7 @@ function basicExplosionClass() {
 						this.calculateDamage(arrayOfPlayers[i]);
 					}
 				}
+				map.createImpactAtXandY(this.x, this.y, this.size);
 				damageDone = true;
 			}
 			if (this.countDown >= 0) {

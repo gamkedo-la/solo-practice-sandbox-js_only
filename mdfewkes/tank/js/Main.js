@@ -1,7 +1,7 @@
 var canvas, canvasContext, debugText;
 var framesPerSecond = 30;
 
-var numberOfPlayers = 2;
+var numberOfPlayers = 4;
 var arrayOfPlayers = [];
 var arrayOfProjectiles = [];
 var arrayOfExplosions = [];
@@ -17,23 +17,31 @@ var now;
 
 const GAME_MODE = 0;
 const TITLE_SCREEN = 1;
-var mode = TITLE_SCREEN;
+var mode = GAME_MODE;
+
+var skyColor = fullColorHex(rndInt(0,255), rndInt(0,255), rndInt(0,255));
+var skyColorGradient = fullColorHex(rndInt(0,255), rndInt(0,255), rndInt(0,255));
+var groundColor = fullColorHex(rndInt(0,255), rndInt(0,255), rndInt(0,255));
+var groundColorGradient = fullColorHex(rndInt(0,255), rndInt(0,255), rndInt(0,255));
+
+const UI_HEIGHT = 100
+
+var map = new terrain();
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
-	stats = document.getElementById('stats');
-	weapon = document.getElementById('weapon');
 
 	gameStart();
 }
 
 function gameStart() {
+	map.init(canvas.width, canvas.height-UI_HEIGHT);
+
 	for (var i = 0; i < numberOfPlayers; i++) {
 		arrayOfPlayers[i] = new tankClass();
 
 		arrayOfPlayers[i].x = lerp(0, canvas.width, (i+1)/(numberOfPlayers+1));
-		arrayOfPlayers[i].y = canvas.height - 100;
 		arrayOfPlayers[i].angle = lerp(45, 135, i/(numberOfPlayers-1)); 
 		arrayOfPlayers[i].color = fullColorHex(rndInt(0,255), rndInt(0,255), rndInt(0,255));
 
@@ -54,7 +62,6 @@ function frameLoop() {
 		deltaTime = deltaTime - frameStepSize;
 		update(frameStepSize);
 	}
-
 
 	lastFrameTime = now;
 
@@ -83,11 +90,26 @@ function update(frameTime) {
 }
 
 function modeGame(frameTime) {
-	colorRect(0, 0, canvas.width, canvas.height, "LightGrey");	
-	colorRect(0, canvas.height - 100, canvas.width, canvas.height, "Grey");
+	// colorRect(0, 0, canvas.width, canvas.height, skyColor);	
+	var gradient = canvasContext.createLinearGradient(0,0,0,canvas.height - UI_HEIGHT);
+	gradient.addColorStop(0, skyColor);
+	gradient.addColorStop(1, skyColorGradient);
+	colorRect(0, 0, canvas.width, canvas.height, gradient);
 
-	stats.innerHTML = "Player " + pad(playerTurn+1, 2) + " Angle "  + pad(Math.round(arrayOfPlayers[playerTurn].angle), 3) + " Power " + pad(Math.round(arrayOfPlayers[playerTurn].power), 3) + " Health " + pad(Math.round(arrayOfPlayers[playerTurn].health), 3);
-	weapon.innerHTML = arrayOfPlayers[playerTurn].weapon;
+	colorRect(0, canvas.height - UI_HEIGHT, canvas.width, canvas.height, "Grey");
+	
+	colorRect(100, canvas.height - UI_HEIGHT + 20, canvas.width - 200, 20, "White");
+	colorText("Player " + pad(playerTurn+1, 2) + 
+		" Angle "  + pad(Math.round(arrayOfPlayers[playerTurn].angle), 3) + 
+		" Power " + pad(Math.round(arrayOfPlayers[playerTurn].power), 3) + 
+		" Health " + pad(Math.round(arrayOfPlayers[playerTurn].health), 3),
+		250, canvas.height - UI_HEIGHT + 35, "Black", "15px Arial")
+
+
+	colorRect(100, canvas.height - UI_HEIGHT + 60, canvas.width - 200, 20, "White");
+	colorText(arrayOfPlayers[playerTurn].weapon, 400, canvas.height - UI_HEIGHT + 75, "Black", "15px Arial") 
+
+	map.draw();
 
 	for (var i = 0; i < numberOfPlayers; i++) {
 		arrayOfPlayers[i].update(frameTime);

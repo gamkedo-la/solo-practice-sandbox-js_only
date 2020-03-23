@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">    
+</head>
+
+<canvas id="gameCanvas" width=800 height="600"></canvas>
+<script>
+
+var canvas;
+var canvasContext;
+var rect;
+var root;
+
+var mouseX = 0;
+var mouseY = 0;
+
+var ballX;
+var ballY;
+var ballSpeed;
+const BALL_RADIUS = 10;
+const BALL_MOVE_RESISTANCE = 2;
+
+var aimAngle;
+const AIM_VISUAL_LENGTH = 100;
+
+var caneDistToBall;
+var caneX;
+var caneY;
+var caneHitSpeed = 30;
+
+var isBallBeingHit;
+var isBallMoving;
+var isCaneHitting;
+
+window.onload = function() {
+
+    canvas = document.getElementById("gameCanvas");
+    canvasContext = canvas.getContext("2d")
+    rect = canvas.getBoundingClientRect() ;
+    root = document.documentElement;
+
+    document.addEventListener("mousemove", trackMousePosition)
+    document.addEventListener("mousedown", handleClick)
+
+    start();
+    setInterval(updateAll, 1000/30);
+}
+
+function start(){
+    ballX = canvas.width / 2
+    ballY = 3*canvas.height/4;
+
+    aimAngle = 0;
+
+    resetGame();
+}
+
+function resetGame(){
+    caneX = ballX;
+    caneY = ballY;
+
+    caneDistToBall = 50;
+
+    isBallBeingHit = false;
+    isCaneHitting = false;
+    isBallMoving = false;
+}
+
+function updateAll(){
+    moveAll();
+    drawAll();
+}
+
+function moveAll(){
+    updateAimAngle();
+    if (isCaneHitting){
+        moveCaneToHitBall();
+    }
+    if (isBallMoving){
+        moveBall();
+    }
+}
+
+function moveBall(){
+    ballX += ballSpeed * Math.cos(aimAngle);
+    ballY += ballSpeed * Math.sin(aimAngle);
+    ballSpeed -= BALL_MOVE_RESISTANCE;
+
+    if (ballSpeed <= 0){
+        resetGame();
+    }
+}
+
+function moveCaneToHitBall() {
+    caneDistToBall -= caneHitSpeed;
+    if (caneDistToBall <= 0){
+        isCaneHitting = false;
+        isBallMoving = true;
+        ballSpeed = caneHitSpeed;
+    }
+}
+
+function updateAimAngle(){
+    if (!isBallBeingHit){
+        var ballX2MouseX = mouseX - ballX;
+        var ballY2MouseY = mouseY - ballY;
+
+        var tangeant = ballY2MouseY / ballX2MouseX;
+
+        if (ballX2MouseX < 0){
+            aimAngle = Math.atan(tangeant) + Math.PI;
+        }
+        else{
+            aimAngle = Math.atan(tangeant);
+        }
+    }
+}
+
+function drawAll(){
+    drawRect(0, 0, canvas.width, canvas.height, "green")
+    drawOrientedRectangle(
+        caneX, caneY, AIM_VISUAL_LENGTH, 10, aimAngle, "orange"
+    )
+    drawCircle(ballX, ballY, BALL_RADIUS, "white");
+
+    drawCircle(3*canvas.width / 4, canvas.height / 5, 10, "black");
+}
+
+function drawRect(x, y, width, height, color){
+    canvasContext.fillStyle = color;
+    canvasContext.fillRect(x, y, width, height);
+}
+
+function drawCircle(centerX, centerY, radius, color){
+    canvasContext.fillStyle = color;
+    canvasContext.beginPath();
+    canvasContext.arc(centerX, centerY, radius, 0, 2*Math.PI, true);
+    canvasContext.fill();
+}
+
+function drawOrientedRectangle(x, y, width, height, angle, color){
+    canvasContext.save();
+    canvasContext.translate(x, y);
+    canvasContext.rotate(angle);
+    drawRect(-width - caneDistToBall, -height/2, width, height, color);
+    canvasContext.restore();
+}
+
+function trackMousePosition(evt){
+    mouseX = evt.clientX - rect.left - root.scrollLeft;       
+    mouseY = evt.clientY - rect.top - root.scrollTop;
+}
+
+function handleClick(evt){
+    hitBallWithCane();
+}
+
+function hitBallWithCane(){
+    isBallBeingHit = true;
+    isCaneHitting = true;
+}
+
+
+
+</script>
+</html>
