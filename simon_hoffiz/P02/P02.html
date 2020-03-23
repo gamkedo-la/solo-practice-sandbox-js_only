@@ -1,0 +1,140 @@
+<html>
+
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+
+var c;
+var ctx;
+var fps = 30;
+
+//player ship variables
+var spaceShipPosX = 400;
+var spaceShipPosY = 500;
+const PLAYER_SHIP_WIDTH = 30;
+const PLAYER_SHIP_HEIGHT = 40;
+
+const KEY_LEFT_ARROW = 37;
+const KEY_UP_ARROW = 38;
+const KEY_RIGHT_ARROW = 39;
+const KEY_DOWN_ARROW = 40;
+const KEY_BACKSPACE = 32;
+
+var shotActive = false;
+var shotY;
+var shotX;
+const PLAYER_SHOT_SPEED = 7;
+
+//enemy variables
+var alienPosX = 100;
+var alienPosY = 100;
+const ALINE_WIDTH = 100;
+const ALIEN_HEIGHT = 30;
+
+	setInterval (function() {drawEverything(),moveEverything()},1000/fps);
+
+	document.addEventListener('keydown', keyPressed);
+	document.addEventListener('keyup', keyReleased);
+	
+	window.onload = function () {
+		drawEverything();
+		moveEverything();
+		
+		}
+
+function drawEverything() {
+	//canvas
+	c = document.getElementById ('gameCanvas');
+	ctx = c.getContext ('2d');
+	ctx.fillStyle = 'black';
+	ctx.fillRect (0, 0, c.width, c.height);
+
+	//space ship
+	colorRect(spaceShipPosX, spaceShipPosY, PLAYER_SHIP_WIDTH, PLAYER_SHIP_HEIGHT, 'white')
+
+	//player shot
+	if(shotActive) {
+		colorRect(shotX, shotY, 4, 10,'white');
+	}
+
+	//alien
+	colorRect(alienPosX, alienPosY, ALINE_WIDTH, ALIEN_HEIGHT, 'green');
+}
+
+function moveEverything() {
+	moveShot();
+}
+
+
+function keyPressed(evt) {
+	console.log("Key pressed: " + evt.keyCode);
+	if (evt.keyCode == KEY_LEFT_ARROW) {
+		spaceShipPosX -= 5;
+	}
+
+	if (evt.keyCode == KEY_RIGHT_ARROW) {
+		spaceShipPosX += 5;
+	}
+
+	if (evt.keyCode == KEY_UP_ARROW) {
+		spaceShipPosY -= 5;
+	}
+
+	if (evt.keyCode == KEY_DOWN_ARROW) {
+		spaceShipPosY += 5;
+	}
+
+	if(evt.keyCode == KEY_BACKSPACE) {
+		playerReload();
+	}
+
+	evt.preventDefault(); // this is to prevent arrow keys from scrolling the page.
+}
+
+function keyReleased(evt) {
+	//console.log("Key released: " + evt.keyCode);
+	if(evt.keyCode == KEY_BACKSPACE) {
+		
+	}
+}
+
+function playerReload() {
+	if(shotActive == false) {
+		shotX = spaceShipPosX + (PLAYER_SHIP_WIDTH/2);
+		shotY = spaceShipPosY;
+		shotActive = true;
+	}
+}
+
+function moveShot() {
+	if(shotActive) {
+		shotY -= PLAYER_SHOT_SPEED;
+		playerShotCheck();
+	}
+}
+
+function playerShotCheck() {
+	if(shotY <= alienPosY ) {
+		shotActive = false;
+		console.log("alien destroyed");
+	}
+	if(shotY < 0) {
+		shotActive = false;
+	}
+}
+
+//Common Graphics Functions
+function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
+	ctx.fillStyle = fillColor;
+	ctx.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+}
+
+function colorCircle(centerX, centerY, radius, fillColor) {
+    ctx.fillStyle = fillColor;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+    ctx.fill();
+}
+
+</script>
+</html>
