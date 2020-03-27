@@ -19,3 +19,9 @@ create my own things, but I also hope it helps whoever reads it :)
   ~defineXAndYCoordinatesForTargets~ in
   PromptAndAnswerManager.js. Also made the shooter game load again,
   but it doesn't seem to run as it should.
+*** 2020-03-27 viernes
+- <2020-03-27 vie 19:11> Finished the (basic) tilesheet work on Turbo
+  Racing. This allows me to move forward with the actual book
+  exercises! I'll probably spend some time doing a couple of themes,
+  rather than just the day/night tile sets suggested in the book, to
+  get more pixel art practice.
