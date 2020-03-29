@@ -129,73 +129,73 @@ const track = new (function() {
 	  onDrive: ()=>{}
 	},
 	[OBJECT_INDEX.tree]: {
-	  imageId: 'TRACK_TREE',
+	  tileOffset: {x: 2, y: 0},
 	  driveable: false,
 	  onDrive: ()=>{}
 	},
 	[OBJECT_INDEX.flag]: {
-	  imageId: 'TRACK_FLAG',
+	  tileOffset: {x: 0, y: 0},
 	  driveable: false,
 	  onDrive: ()=>{}
 	},
 	[OBJECT_INDEX.oil]: {
-	  imageId: 'TRACK_OIL',
+	  tileOffset: {x: 1, y: 0},
 	  driveable: true,
 	  onDrive: (car) => {car.canSteer = false;}
 	},
 	[OBJECT_INDEX.wall]: {
-	  imageId: 'TRACK_WALL',
+	  tileOffset: {x: 1, y: 1},
 	  driveable: false,
 	  onDrive: ()=>{}
 	},
 	[OBJECT_INDEX.wallSide]: {
-	  imageId: 'TRACK_WALL_SIDE',
+	  tileOffset: {x: 4, y: 1},
 	  driveable: false,
 	  onDrive: ()=>{}
 	},
 	[OBJECT_INDEX.wallCornerNE]: {
-	  imageId: 'TRACK_WALL_NE',
+	  tileOffset: {x: 3, y: 1},
 	  driveable: false,
 	  onDrive: ()=>{},
 	},
 	[OBJECT_INDEX.wallCornerNW]: {
-	  imageId: 'TRACK_WALL_NW',
+	  tileOffset: {x: 0, y: 1},
 	  driveable: false,
 	  onDrive: ()=>{}
 	},
 	[OBJECT_INDEX.wallCornerSE]: {
-	  imageId: 'TRACK_WALL_SE',
+	  tileOffset: {x: 3, y: 2},
 	  driveable: false,
 	  onDrive: ()=>{},
 	},
 	[OBJECT_INDEX.wallCornerSW]: {
-	  imageId: 'TRACK_WALL_SW',
+	  tileOffset: {x: 0, y: 2},
 	  driveable: false,
 	  onDrive: ()=>{},
 	},
 	[OBJECT_INDEX.wallJoin]: {
-	  imageId: 'TRACK_WALL_JOIN',
+	  tileOffset: {x: 2, y: 1},
 	  driveable: false,
 	  onDrive: ()=>{},
 	},
 	[OBJECT_INDEX.pillar]: {
-	  imageId: 'TRACK_PILLAR',
+	  tileOffset: {x: 4, y: 2},
 	  driveable: false,
 	  onDrive: ()=>{},
 	},
 	[OBJECT_INDEX.pillarE]: {
-	  imageId: 'TRACK_PILLAR_E',
+	  tileOffset: {x: 2, y: 2},
 	  driveable: false,
 	  onDrive: ()=>{},
 	},
 	[OBJECT_INDEX.pillarW]: {
-	  imageId: 'TRACK_PILLAR_W',
+	  tileOffset: {x: 2, y: 1},
 	  driveable: false,
 	  onDrive: ()=>{},
 	},
 	[OBJECT_INDEX._default]: {
 	  imageId: 'TRACK_WALL',
-	  driveable: false,
+	  driveable: true,
 	  onDrive: ()=>{}
 	}
   };
@@ -236,6 +236,7 @@ const track = new (function() {
 	let trackLeftEdgeX = 0;
 	let trackTopEdgeY = 0;
 	const groundTileSheet = imageLoader.getImage("GROUND_TILES_DEFAULT");
+	const objectTileSheet = imageLoader.getImage("OBJECT_TILES_DEFAULT");
 	for (let eachRow=0; eachRow<ROWS; eachRow++) {
 	  trackLeftEdgeX = 0;
 	  for (let eachCol=0; eachCol<COLS; eachCol++) {
@@ -248,10 +249,16 @@ const track = new (function() {
 		  trackLeftEdgeX, trackTopEdgeY,
 		  TILE_WIDTH, TILE_HEIGHT
 		);
-		let objectHere = OBJECT_TYPES[OBJECT_GRID[trackIndex]];
-		if (objectHere.imageId) {
-		  let image = imageLoader.getImage(objectHere.imageId);
-		  canvasContext.drawImage(image, trackLeftEdgeX, trackTopEdgeY);
+		if (!(OBJECT_GRID[trackIndex] == OBJECT_INDEX.nothing || OBJECT_GRID[trackIndex] == OBJECT_INDEX.playerStart || OBJECT_GRID[trackIndex] == OBJECT_INDEX.goal || OBJECT_GRID[trackIndex] == OBJECT_INDEX._default)) {
+		  let objectHere = OBJECT_TYPES[OBJECT_GRID[trackIndex]];
+		  canvasContext.drawImage(
+			objectTileSheet,
+			objectHere.tileOffset.x*TILE_WIDTH,
+			objectHere.tileOffset.y*TILE_HEIGHT,
+			TILE_WIDTH, TILE_HEIGHT,
+			trackLeftEdgeX, trackTopEdgeY,
+			TILE_WIDTH, TILE_HEIGHT
+		  );
 		}
 		trackIndex++;
 		trackLeftEdgeX += TILE_WIDTH;
