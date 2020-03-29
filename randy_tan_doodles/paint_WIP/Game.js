@@ -12,27 +12,27 @@ window.addEventListener('focus', e => {
 canvas.addEventListener('touchforcechange', e => {
     e.preventDefault();
 }, { passive: false } );
-canvas.addEventListener('touchmove', e => {
+window.addEventListener('touchmove', e => {
     e.preventDefault();
     inputMouse.move(e);
 }, { passive: false } );
-canvas.addEventListener('touchstart', e => {
+window.addEventListener('touchstart', e => {
     e.preventDefault();
     inputMouse.mousedown(e);
 } );
-canvas.addEventListener('touchend', e => {
+window.addEventListener('touchend', e => {
     e.preventDefault();
     inputMouse.mouseup(e);
 } );
 
-canvas.addEventListener('mousemove', e => {
+window.addEventListener('pointermove', e => {
     e.preventDefault();
     inputMouse.move(e);
 });
-canvas.addEventListener('mousedown', e => {
+window.addEventListener('pointerdown', e => {
     inputMouse.mousedown(e);
 });
-canvas.addEventListener('mouseup', e => {
+window.addEventListener('pointerup', e => {
     inputMouse.mouseup(e);
 });
 canvas.addEventListener('wheel', e => {
@@ -48,17 +48,21 @@ canvas.addEventListener('keyup', e => {
 
 });
 
+let rock = new Rock();
+
 let reset = () => {
 
 };
-let update = (dt) => {    
-    let stroke = StrokeTool.stroke(inputMouse);
-    console.log(stroke.x1 + " " + stroke.y1 + " to " + stroke.x2 + " " + stroke.y2);
+let update = dt => {
+    rock.update(dt);
+    let stroke = StrokeTool.update(inputMouse);
+    // console.log(stroke.x1 + " " + stroke.y1 + " to " + stroke.x2 + " " + stroke.y2);
 };
-let render = (dt) => {
-    ctx.fillStyle = 'white';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+let render = dt => {
+    canvasContext.fillStyle = 'white';
+    canvasContext.fillRect(0, 0, canvas.width, canvas.height);
      
+    rock.render(dt);
     StrokeTool.render(inputMouse);
 };
 let getRandomColor = () => {

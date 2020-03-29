@@ -1,6 +1,6 @@
 let canvas = document.createElement("canvas");
 canvas.id = "gameCanvas";
-let ctx = canvas.getContext("2d");
+let canvasContext = canvas.getContext("2d");
 canvas.width = 600;
 canvas.height = 600;
 document.body.appendChild(canvas);
