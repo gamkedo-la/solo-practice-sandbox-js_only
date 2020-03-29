@@ -2,7 +2,7 @@ let Draw = new function () {
     this.rect = (x, y, w, h, bgColor, ctx = canvasContext) => {
         ctx.fillStyle = bgColor;
         ctx.fillRect(x, y, w, h);
-    };    
+    };
     this.colorCircle = (cx, cy, r, fillColor, ctx = canvasContext) => {
         ctx.fillStyle = fillColor;
         ctx.beginPath();

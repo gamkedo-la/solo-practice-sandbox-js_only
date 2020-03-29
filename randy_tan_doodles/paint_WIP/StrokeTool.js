@@ -1,4 +1,4 @@
-let StrokeTool = new function() {
+let StrokeTool = function() {
     this.drawX = 0;
     this.drawY = 0;
     this.isDrawing = false;
@@ -22,7 +22,7 @@ let StrokeTool = new function() {
             if (input.isMoving) {
                 this.drawX = input.x;
                 this.drawY = input.y;
-                this.points.push({ 'x': this.drawX, 'y': this.drawY, 'isDrawing': this.isDrawing });
+                this.points.push({ 'x': this.drawX, 'y': this.drawY, 'isDrawing': this.isDrawing });                
                 x2 = this.points[this.points.length - 1].x;
                 y2 = this.points[this.points.length - 1].y;
             }
@@ -33,7 +33,7 @@ let StrokeTool = new function() {
             }
         }
 
-        return { 
+        return {
             "x1": x1,
             "y1": y1,
             "x2": x2,

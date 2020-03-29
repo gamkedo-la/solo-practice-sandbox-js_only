@@ -49,13 +49,15 @@ canvas.addEventListener('keyup', e => {
 });
 
 let rock = new Rock();
+let stroke = new StrokeTool();
 
 let reset = () => {
 
 };
 let update = dt => {
-    rock.update(dt);
-    let stroke = StrokeTool.update(inputMouse);
+    rock.update(dt, stroke);
+    stroke.update(inputMouse);
+
     // console.log(stroke.x1 + " " + stroke.y1 + " to " + stroke.x2 + " " + stroke.y2);
 };
 let render = dt => {
@@ -63,7 +65,7 @@ let render = dt => {
     canvasContext.fillRect(0, 0, canvas.width, canvas.height);
      
     rock.render(dt);
-    StrokeTool.render(inputMouse);
+    stroke.render(inputMouse);
 };
 let getRandomColor = () => {
     let letters = '0123456789ABCDEF';
