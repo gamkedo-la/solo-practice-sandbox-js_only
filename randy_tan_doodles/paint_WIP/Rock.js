@@ -24,14 +24,17 @@ let Rock = function(cvs = canvas) {
 
                     if (p.x > this.x - this.img.width * 0.25 &&
                         p.x < this.x + this.img.width * 0.25 &&
-                        p.y > this.y - this.img.height * 0.5 &&
-                        p.y < this.y + this.img.height * 0.5) {
+                        p.y > this.y - this.img.height * 0.2 &&
+                        p.y < this.y + this.img.height * 0.48) {
 
-                        this.vy -= 10000 * dt;
+                        this.vy += -10000 * dt;
                         break;
                     }
                 }
             }
+
+            this.vy = this.y < 0 ? 10000 * dt : this.vy;
+            this.vy = this.y > cvs.height - this.img.height * 0.58 ? -25000 * dt : this.vy;
         }
     };
 
