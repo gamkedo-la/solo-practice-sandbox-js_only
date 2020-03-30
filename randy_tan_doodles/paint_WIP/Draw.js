@@ -3,6 +3,13 @@ let Draw = new function () {
         ctx.fillStyle = bgColor;
         ctx.fillRect(x, y, w, h);
     };
+    this.outlineRect = (x, y, w, h, lineColor, lineWidth, ctx = canvasContext) => {
+        ctx.beginPath();
+        ctx.strokeStyle = lineColor;
+        ctx.lineWidth = lineWidth;
+        ctx.rect(x, y, w, h);
+        ctx.stroke();
+    };
     this.colorCircle = (cx, cy, r, fillColor, ctx = canvasContext) => {
         ctx.fillStyle = fillColor;
         ctx.beginPath();
