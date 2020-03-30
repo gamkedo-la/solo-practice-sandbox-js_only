@@ -17,7 +17,7 @@ let InputMouse = function (cvs = canvas) {
     this.mouseup = e => {
         this.isDown = false;        
         this.getXY(e);
-    }
+    };
 
     this.getXY = e => {
         if (this.x != e.clientX) this.x = e.clientX;
@@ -31,5 +31,5 @@ let InputMouse = function (cvs = canvas) {
         this.y = this.y * cvs.height / cvs.clientHeight;
         
         return { 'x': this.x, 'y': this.y };
-    }
+    };
 };
