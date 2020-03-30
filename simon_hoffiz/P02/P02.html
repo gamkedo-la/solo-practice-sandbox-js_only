@@ -11,8 +11,16 @@ var fps = 30;
 //player ship variables
 var spaceShipPosX = 400;
 var spaceShipPosY = 500;
-const PLAYER_SHIP_WIDTH = 30;
-const PLAYER_SHIP_HEIGHT = 40;
+var spaceshipPic = document.createElement("img");
+var spaceshipPicLoaded = false;
+const PLAYER_SHIP_WIDTH = 60; //current width of pixel art
+const PLAYER_SHIP_HEIGHT = 80; //current height of pixel art 
+var speedBuffer = false;
+
+var playerScore = 0;
+var displayWinScreen = false;
+var gameOn = true;
+const WIN_SCORE = 3;
 
 const KEY_LEFT_ARROW = 37;
 const KEY_UP_ARROW = 38;
@@ -22,25 +30,39 @@ const KEY_BACKSPACE = 32;
 
 var shotActive = false;
 var shotY;
-var shotX;
-const PLAYER_SHOT_SPEED = 7;
+var shotY;
+const PLAYER_SHOT_SPEED = 10;
 
-//enemy variables
+//alien variables
 var alienPosX = 100;
 var alienPosY = 100;
+var alienSpeedX = 4;
 const ALINE_WIDTH = 100;
 const ALIEN_HEIGHT = 30;
+var alienDestroyed = false;
+var respawnTimer = 0;
+var alienColor = 'green';
 
-	setInterval (function() {drawEverything(),moveEverything()},1000/fps);
+var screenBuffer = 20;
+
+
+	setInterval (function() {
+		drawEverything(),
+		moveEverything()},
+		1000/fps);
 
 	document.addEventListener('keydown', keyPressed);
 	document.addEventListener('keyup', keyReleased);
 	
 	window.onload = function () {
 		drawEverything();
-		moveEverything();
-		
+		moveEverything();	
+
+		spaceshipPic.onload = function() {
+			spaceshipPicLoaded = true;
 		}
+		spaceshipPic.src = "spaceship_placeholderart.png";
+	}
 
 function drawEverything() {
 	//canvas
@@ -49,58 +71,118 @@ function drawEverything() {
 	ctx.fillStyle = 'black';
 	ctx.fillRect (0, 0, c.width, c.height);
 
-	//space ship
-	colorRect(spaceShipPosX, spaceShipPosY, PLAYER_SHIP_WIDTH, PLAYER_SHIP_HEIGHT, 'white')
-
 	//player shot
 	if(shotActive) {
 		colorRect(shotX, shotY, 4, 10,'white');
 	}
 
 	//alien
-	colorRect(alienPosX, alienPosY, ALINE_WIDTH, ALIEN_HEIGHT, 'green');
+	if(alienDestroyed == false) {
+		colorRect(alienPosX, alienPosY, ALINE_WIDTH, ALIEN_HEIGHT, alienColor);
+	}
+
+	if(gameOn){
+		//space ship
+		if(spaceshipPicLoaded){
+			ctx.drawImage(spaceshipPic, spaceShipPosX, spaceShipPosY);
+		}
+
+		//player score
+		colorText("Score: " + playerScore, 700, 560, "15px arial", "white");
+
+		respawnAlien();
+	}
+
+	if(gameOn == false) {
+		if(displayWinScreen == true) {
+			colorText("Player Wins", c.width/2 - 80, c.height/2, "30px arial", "white");
+		}
+		colorText("New Game: [SPACE]", 330, 350, "15px arial", "white");
+	}
+
+
+	//win screen
+	
 }
 
 function moveEverything() {
 	moveShot();
+	moveAlien();
+	spaceshipAutoReverse();
 }
 
 
 function keyPressed(evt) {
-	console.log("Key pressed: " + evt.keyCode);
-	if (evt.keyCode == KEY_LEFT_ARROW) {
-		spaceShipPosX -= 5;
+	if(gameOn){
+		//console.log("Key pressed: " + evt.keyCode);
+		if (evt.keyCode == KEY_LEFT_ARROW) {
+			if(spaceShipPosX >= 20) {
+				spaceShipPosX -= 10;
+			}
+		}
+
+		if (evt.keyCode == KEY_RIGHT_ARROW) {
+			if(spaceShipPosX <= c.width - PLAYER_SHIP_WIDTH - 20) {
+				spaceShipPosX += 10;
+			}
+		}
+
+		if (evt.keyCode == KEY_UP_ARROW) {
+			speedBuffer = false;
+			if(spaceShipPosY >= 20){
+				spaceShipPosY -= 5;
+			}	
+		}
+
+		if (evt.keyCode == KEY_DOWN_ARROW) {
+			if(spaceShipPosY <= 495){
+				spaceShipPosY += 5;
+			}
+		}
+
+		if(evt.keyCode == KEY_UP_ARROW && evt.keyCode == KEY_RIGHT_ARROW){
+			speedBuffer = false;
+			if(spaceShipPosY >= 20){
+				spaceShipPosY -= 5;
+			}
+			if(spaceShipPosX <= c.width - PLAYER_SHIP_WIDTH - 20) {
+				spaceShipPosX += 10;
+			}
+
+		}
+
+		if(evt.keyCode == KEY_BACKSPACE) {
+			playerReload();
+		}
 	}
 
-	if (evt.keyCode == KEY_RIGHT_ARROW) {
-		spaceShipPosX += 5;
+	if(gameOn == false) {
+		if(evt.keyCode == KEY_BACKSPACE) {
+			gameOn = true;
+			playerScore = 0;
+		}
 	}
 
-	if (evt.keyCode == KEY_UP_ARROW) {
-		spaceShipPosY -= 5;
-	}
-
-	if (evt.keyCode == KEY_DOWN_ARROW) {
-		spaceShipPosY += 5;
-	}
-
-	if(evt.keyCode == KEY_BACKSPACE) {
-		playerReload();
-	}
 
 	evt.preventDefault(); // this is to prevent arrow keys from scrolling the page.
 }
 
 function keyReleased(evt) {
 	//console.log("Key released: " + evt.keyCode);
-	if(evt.keyCode == KEY_BACKSPACE) {
-		
+	if(evt.keyCode == KEY_UP_ARROW) {
+		speedBuffer = true;
+	}
+}
+
+function spaceshipAutoReverse() {
+	if(spaceShipPosY <= 495 && speedBuffer){
+		spaceShipPosY += 1;
 	}
 }
 
 function playerReload() {
 	if(shotActive == false) {
-		shotX = spaceShipPosX + (PLAYER_SHIP_WIDTH/2);
+		shotX = spaceShipPosX + 28;
 		shotY = spaceShipPosY;
 		shotActive = true;
 	}
@@ -114,15 +196,63 @@ function moveShot() {
 }
 
 function playerShotCheck() {
-	if(shotY <= alienPosY ) {
+	if(shotY <= alienPosY + ALIEN_HEIGHT && shotX >= alienPosX && shotX <= alienPosX + ALINE_WIDTH) {
 		shotActive = false;
 		console.log("alien destroyed");
+		alienDestroyed = true;
+		playerScoring();
 	}
 	if(shotY < 0) {
 		shotActive = false;
 	}
 }
 
+function moveAlien() {
+	alienPosX = alienPosX - alienSpeedX;
+	
+	if(alienPosX > c.width - ALINE_WIDTH - screenBuffer) {
+		alienSpeedX = -alienSpeedX;
+	}
+	
+	if(alienPosX < 0 + screenBuffer) {
+		alienSpeedX = -alienSpeedX;
+	}
+}
+
+function respawnAlien() {
+	colorAlien();
+	if(alienDestroyed == true){
+		respawnTimer++;
+		if(respawnTimer >= 60) {
+			alienDestroyed = false;
+			respawnTimer = 0;
+		}
+	}
+}
+
+function colorAlien() {
+	if(playerScore == 0){
+		alienColor = 'green';
+	}
+	if(playerScore == 1){
+		alienColor = 'blue';
+	}
+	if(playerScore == 2){
+		alienColor = 'red';
+
+	}
+}
+
+function playerScoring() {
+	playerScore ++;
+	
+	if(playerScore >= WIN_SCORE){
+		displayWinScreen = true;
+		gameOn = false;
+	}
+}
+
+// =========================================================================
 //Common Graphics Functions
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
 	ctx.fillStyle = fillColor;
@@ -134,6 +264,12 @@ function colorCircle(centerX, centerY, radius, fillColor) {
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI*2, true);
     ctx.fill();
+}
+
+function colorText(text, posX, posY, font, color) {
+	ctx.fillStyle = color;
+	ctx.font = font;
+	ctx.fillText (text, posX, posY);
 }
 
 </script>

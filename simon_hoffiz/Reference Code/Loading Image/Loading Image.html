@@ -1,0 +1,64 @@
+<html>
+<head></head>
+<body>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+
+var c;
+var ctx;
+var fps = 30;
+
+var ballX = 0;
+
+var spaceshipPic = document.createElement("img"); // this variable creates the document element to be placed/indetified in canvas, the source of image is defined separetly in JS.
+var spaceshipPicLoaded = false; // boolean to help manage and control image loading to ensure all images load before game starts since image loading is asynchronous with rest of game loading.
+
+var spaceShipPosX = 200;
+var spaceShipPosY = 250;
+
+	setInterval (update, 1000/fps);
+	
+	window.onload = function () {
+		drawEverything();
+		moveEverything();
+
+		spaceshipPic.onload = function() {
+			spaceshipPicLoaded = true; // code is making sure images get loaded before running rest of code to display image. That way if code needs whatever information of image, it will get it at this instance.
+		}
+		spaceshipPic.src = "spaceship_placeholderart2.png"; // bit of code is defining source of image.
+		
+		}
+
+function update() {
+	drawEverything();
+	moveEverything();
+}
+
+function drawEverything() {
+	//console.log ("working");
+
+	c = document.getElementById ('gameCanvas');
+	ctx = c.getContext ('2d');
+	ctx.fillStyle = 'black';
+	ctx.fillRect (0, 0, c.width, c.height);
+
+	ctx.fillStyle = 'white';
+	ctx.fillRect (ballX, 0, 10, 10);
+	
+
+	if(spaceshipPicLoaded){
+		//console.log ("working");
+		ctx.drawImage(spaceshipPic, spaceShipPosX, spaceShipPosY); //function to callout and place image.
+	}
+}
+
+
+function moveEverything() {
+	ballX = ballX + 1;
+	spaceShipPosX += 1;
+	}
+
+</script>
+</body>
+</html>
