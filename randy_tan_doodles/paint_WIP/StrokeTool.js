@@ -46,12 +46,12 @@ let StrokeTool = function() {
 
             if (input.isDown) {                
                 for (let i = 0; i < this.points.length; i++) {
-                    let pt = this.points[i];
+                    let pt = this.points[i];                    
                     if (pt.x >= col.x1 && pt.x <= col.x2 &&
                             pt.y >= col.y1 && pt.y <= col.y2) {
-                        this.points[i].y += 500 * dt;
+                        this.points[i].y += 200 * dt;
 
-                        console.log(this.points[i].x + " " + this.points.length);
+                        // console.log(this.points[i].x + " " + this.points.length);
                     }
                 }
             }
@@ -70,16 +70,16 @@ let StrokeTool = function() {
     };
 
     this.render = input => {
-        Draw.rect(input.x - this.size * 0.5, input.y - this.size * 0.5, this.size, this.size, 'black');
+        Draw.rect(input.x - this.size * 0.5, input.y - this.size * 0.5, this.size, this.size, 'Black');
         // Draw.colorCircle(input.x, input.y, this.size, 'black'); 
         for (let i = 0; i < this.points.length; i++) {
             if (i > 0) {
                 this.drawX = this.points[i - 1].x;
-                this.drawY = this.points[i - 1].y;            
+                this.drawY = this.points[i - 1].y;
             }
     
             if (this.points[i].isDrawing) {
-                Draw.follow(this.drawX, this.drawY, this.points[i].x, this.points[i].y, 'black', this.size);
+                Draw.follow(this.drawX, this.drawY, this.points[i].x, this.points[i].y, 'Black', this.size);
             }
             
             this.drawX = this.points[i].x;
