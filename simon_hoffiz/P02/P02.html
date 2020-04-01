@@ -20,13 +20,15 @@ var speedBuffer = false;
 var playerScore = 0;
 var displayWinScreen = false;
 var gameOn = true;
-const WIN_SCORE = 3;
+const WIN_SCORE = 1;
+var displayGameOverScreen = false;
 
 const KEY_LEFT_ARROW = 37;
 const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
 const KEY_DOWN_ARROW = 40;
 const KEY_BACKSPACE = 32;
+const KEY_Q = 81;
 
 var shotActive = false;
 var shotY;
@@ -42,6 +44,11 @@ const ALIEN_HEIGHT = 30;
 var alienDestroyed = false;
 var respawnTimer = 0;
 var alienColor = 'green';
+var alienShotActive = false;
+var alienShotX;
+var alienShotY;
+const ALIEN_SHOT_SPEED = 10;
+
 
 var screenBuffer = 20;
 
@@ -61,7 +68,7 @@ var screenBuffer = 20;
 		spaceshipPic.onload = function() {
 			spaceshipPicLoaded = true;
 		}
-		spaceshipPic.src = "spaceship_placeholderart.png";
+		spaceshipPic.src = "PlayerShip.png";
 	}
 
 function drawEverything() {
@@ -81,6 +88,10 @@ function drawEverything() {
 		colorRect(alienPosX, alienPosY, ALINE_WIDTH, ALIEN_HEIGHT, alienColor);
 	}
 
+	if(alienShotActive) {
+		colorRect(alienShotX, alienShotY, 4, 10, 'white');
+	}
+
 	if(gameOn){
 		//space ship
 		if(spaceshipPicLoaded){
@@ -93,16 +104,18 @@ function drawEverything() {
 		respawnAlien();
 	}
 
+	//win screen
 	if(gameOn == false) {
 		if(displayWinScreen == true) {
 			colorText("Player Wins", c.width/2 - 80, c.height/2, "30px arial", "white");
+		}
+		if(displayGameOverScreen == true){
+			colorText("Game Over", c.width/2 - 80, c.height/2, "30px arial", "white");
 		}
 		colorText("New Game: [SPACE]", 330, 350, "15px arial", "white");
 	}
 
 
-	//win screen
-	
 }
 
 function moveEverything() {
@@ -154,6 +167,12 @@ function keyPressed(evt) {
 		if(evt.keyCode == KEY_BACKSPACE) {
 			playerReload();
 		}
+
+		if(evt.keyCode == KEY_Q) {
+			console.log("alien shot");
+			alienReload();
+		}
+
 	}
 
 	if(gameOn == false) {
@@ -188,10 +207,22 @@ function playerReload() {
 	}
 }
 
+function alienReload(){
+	if(alienShotActive == false) {
+		alienShotX = alienPosX + ALINE_WIDTH/2;
+		alienShotY = alienPosY + ALIEN_HEIGHT;
+		alienShotActive = true;
+	}
+}
+
 function moveShot() {
 	if(shotActive) {
 		shotY -= PLAYER_SHOT_SPEED;
 		playerShotCheck();
+	}
+	if(alienShotActive){
+		alienShotY += ALIEN_SHOT_SPEED;
+		alienShotCheck();
 	}
 }
 
@@ -204,6 +235,17 @@ function playerShotCheck() {
 	}
 	if(shotY < 0) {
 		shotActive = false;
+	}
+}
+
+function alienShotCheck() {
+	if(alienShotY >= spaceShipPosY && alienShotX >= spaceShipPosX && alienShotX <= spaceShipPosX + PLAYER_SHIP_WIDTH){
+		alienShotActive = false;
+		console.log("player destroyed");
+		playerLose();
+	}
+	if(alienShotY >= c.height) {
+		alienShotActive = false;
 	}
 }
 
@@ -251,6 +293,11 @@ function playerScoring() {
 		gameOn = false;
 	}
 }
+
+function playerLose() {
+	displayGameOverScreen = true;
+	gameOn = false;
+	}
 
 // =========================================================================
 //Common Graphics Functions
