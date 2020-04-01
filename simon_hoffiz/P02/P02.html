@@ -13,10 +13,12 @@ var spaceshipPic = document.createElement("img");
 var spaceshipPicLoaded = false;
 var alienShipPic = document.createElement("img");
 var alienShipPicLoaded = false;
+var shieldPic = document.createElement("img");
+var shieldPicLoaded = false;
 
 //player ship variables
-var spaceShipPosX = 400;
-var spaceShipPosY = 500;
+var spaceShipPosX = 380;
+var spaceShipPosY = 480;
 const PLAYER_SHIP_WIDTH = 60; //current width of pixel art
 const PLAYER_SHIP_HEIGHT = 80; //current height of pixel art 
 var speedBuffer = false;
@@ -56,6 +58,8 @@ var alienShotX;
 var alienShotY;
 const ALIEN_SHOT_SPEED = 10;
 
+var angle = 0;
+
 
 var screenBuffer = 20;
 
@@ -75,9 +79,11 @@ var screenBuffer = 20;
 		spaceshipPic.onload = function() {
 			spaceshipPicLoaded = true;
 			alienShipPicLoaded = true;
+			shieldPicLoaded = true;
 		}
 		spaceshipPic.src = "PlayerShip.png";
 		alienShipPic.src = "AlienShip.png";
+		shieldPic.src = "Shield.png";
 	}
 
 function drawEverything() {
@@ -89,7 +95,8 @@ function drawEverything() {
 
 	//player shot
 	if(shotActive) {
-		colorRect(shotX, shotY, 4, 10,'white');
+		colorCircle(shotX, shotY, 3, 'white'); 
+		//colorRect(shotX, shotY, 4, 10,'white');
 	}
 
 	//alien
@@ -109,7 +116,8 @@ function drawEverything() {
 		}
 		//ship shield
 		if(shield01) {
-			colorEmptyCircle(spaceShipPosX + PLAYER_SHIP_WIDTH/2, spaceShipPosY + PLAYER_SHIP_HEIGHT/2, 55, 'white');
+			drawBitmapCenteredAtLocationWithRotation(shieldPic, spaceShipPosX + PLAYER_SHIP_WIDTH/2, spaceShipPosY + PLAYER_SHIP_HEIGHT/2, angle);
+			//colorEmptyCircle(spaceShipPosX + PLAYER_SHIP_WIDTH/2, spaceShipPosY + PLAYER_SHIP_HEIGHT/2, 55, 'white');
 		}
 		
 
@@ -137,6 +145,7 @@ function moveEverything() {
 	moveShot();
 	moveAlien();
 	spaceshipAutoReverse();
+	angle += .01;
 }
 
 
@@ -224,7 +233,7 @@ function spaceshipAutoReverse() {
 
 function playerReload() {
 	if(shotActive == false) {
-		shotX = spaceShipPosX + 28;
+		shotX = spaceShipPosX + 30;
 		shotY = spaceShipPosY;
 		shotActive = true;
 	}
@@ -354,6 +363,23 @@ function colorText(text, posX, posY, font, color) {
 	ctx.fillStyle = color;
 	ctx.font = font;
 	ctx.fillText (text, posX, posY);
+}
+
+function colorLine(startX, startY, endX, endY, lineWidth, fillColor) {
+	ctx.strokeStyle = fillColor;
+	ctx.lineWidth = lineWidth;
+	ctx.beginPath();
+	ctx.moveTo(startX, startY);
+	ctx.lineTo(endX, endY);
+	ctx.stroke();
+}
+
+function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY,withAngle) {
+	ctx.save(); // allows us to undo translate movement and rotate spin
+	ctx.translate(atX,atY); // sets the point where our graphic will go
+	ctx.rotate(withAngle); // sets the rotation
+	ctx.drawImage(graphic,-graphic.width/2,-graphic.height/2); // center, draw
+	ctx.restore(); // undo the translation movement and rotation since save()
 }
 
 </script>
