@@ -56,7 +56,7 @@ let reset = () => {
 };
 let update = dt => {
     rock.update(dt, stroke);
-    stroke.update(inputMouse);
+    stroke.update(dt, inputMouse, rock);
 
     // console.log(stroke.x1 + " " + stroke.y1 + " to " + stroke.x2 + " " + stroke.y2);
 };
