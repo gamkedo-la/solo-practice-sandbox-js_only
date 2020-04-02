@@ -1,1 +1,1 @@
-console.log("Hello, World");
+canvas = document.getElementById('canvas');
