@@ -16,20 +16,26 @@ var alienShipPicLoaded = false;
 var shieldPic = document.createElement("img");
 var shieldPicLoaded = false;
 
+//Game Scenes
+const GAME_SCREEN = 0;
+const WIN_SCREEN = 1;
+const GAME_OVER = 2;
+const TITLE_SCREEN = 3;
+const MAIN_MENU = 4;
+const CREDIT_SCREEN = 5;
+var mode = TITLE_SCREEN;
+
 //player ship variables
 var spaceShipPosX = 380;
-var spaceShipPosY = 480;
+var spaceShipPosY = 460;
 const PLAYER_SHIP_WIDTH = 60; //current width of pixel art
 const PLAYER_SHIP_HEIGHT = 80; //current height of pixel art 
 var speedBuffer = false;
 
 var shield01 = true;
-
 var playerScore = 0;
-var displayWinScreen = false;
-var gameOn = true;
-const WIN_SCORE = 2;
-var displayGameOverScreen = false;
+const WIN_SCORE = 1;
+
 
 const KEY_LEFT_ARROW = 37;
 const KEY_UP_ARROW = 38;
@@ -87,11 +93,55 @@ var screenBuffer = 20;
 	}
 
 function drawEverything() {
+
 	//canvas
 	c = document.getElementById ('gameCanvas');
 	ctx = c.getContext ('2d');
 	ctx.fillStyle = 'black';
 	ctx.fillRect (0, 0, c.width, c.height);
+
+	//game screen
+	if(mode == GAME_SCREEN){
+		gameMode();
+		}
+
+	//win screen
+	if(mode == WIN_SCREEN) {
+		winScreen();
+		}
+
+	//game over screen
+	if(mode == GAME_OVER) {
+		gameOverScreen();
+		}
+
+	//title screen
+	if(mode == TITLE_SCREEN) {
+		titleScreen();
+	}
+
+	//main menu
+	if(mode == MAIN_MENU) {
+		mainMenuScreen();
+	}
+	
+	//credits
+	if(mode == CREDIT_SCREEN) {
+		creditScreen();
+	}
+
+}
+
+function moveEverything() {
+	moveShot();
+	moveAlien();
+	spaceshipAutoReverse();
+	angle += .01;
+}
+//======================================================================
+//scene function
+
+function gameMode() {
 
 	//player shot
 	if(shotActive) {
@@ -109,48 +159,60 @@ function drawEverything() {
 		colorRect(alienShotX, alienShotY, 4, 10, 'white');
 	}
 
-	if(gameOn){
-		//space ship
-		if(spaceshipPicLoaded){
-			ctx.drawImage(spaceshipPic, spaceShipPosX, spaceShipPosY);
-		}
-		//ship shield
-		if(shield01) {
-			drawBitmapCenteredAtLocationWithRotation(shieldPic, spaceShipPosX + PLAYER_SHIP_WIDTH/2, spaceShipPosY + PLAYER_SHIP_HEIGHT/2, angle);
-			//colorEmptyCircle(spaceShipPosX + PLAYER_SHIP_WIDTH/2, spaceShipPosY + PLAYER_SHIP_HEIGHT/2, 55, 'white');
-		}
-		
-
-		//player score
-		colorText("Score: " + playerScore, 700, 560, "15px arial", "white");
-
-		respawnAlien();
+	//space ship
+	if(spaceshipPicLoaded){
+		ctx.drawImage(spaceshipPic, spaceShipPosX, spaceShipPosY);
 	}
 
-	//win screen
-	if(gameOn == false) {
-		if(displayWinScreen == true) {
-			colorText("Player Wins", c.width/2 - 80, c.height/2, "30px arial", "white");
-		}
-		if(displayGameOverScreen == true){
-			colorText("Game Over", c.width/2 - 80, c.height/2, "30px arial", "white");
-		}
-		colorText("New Game: [SPACE]", 330, 350, "15px arial", "white");
+	//ship shield
+	if(shield01) {
+		drawBitmapCenteredAtLocationWithRotation(shieldPic, spaceShipPosX + PLAYER_SHIP_WIDTH/2, spaceShipPosY + PLAYER_SHIP_HEIGHT/2, angle);
+		//colorEmptyCircle(spaceShipPosX + PLAYER_SHIP_WIDTH/2, spaceShipPosY + PLAYER_SHIP_HEIGHT/2, 55, 'white');
 	}
+	
+	//player score
+	colorText("Score: " + playerScore, 700, 560, "15px arial", "white");
 
+	respawnAlien();
 
 }
 
-function moveEverything() {
-	moveShot();
-	moveAlien();
-	spaceshipAutoReverse();
-	angle += .01;
+function gameOverScreen() {
+	colorRect(0, 0, c.width, c.height, 'blue');
+	colorText("Game Over", c.width/2 - 80, c.height/2, "30px arial", "white");
+	colorText("New Game: [SPACE]", 330, 350, "15px arial", "white");
 }
 
+function winScreen() {
+	colorRect(0, 0, c.width, c.height, 'green');
+	colorText("Player Wins", c.width/2 - 80, c.height/2, "30px arial", "white");
+	colorText("New Game: [SPACE]", 330, 350, "15px arial", "white");
+}
+
+function titleScreen() {
+	colorRect(0, 0, c.width, c.height, 'red');
+	colorText("Title Screen", c.width/2 - 80, c.height/2, "30px arial", "white");
+	colorText("New Game: [SPACE]", 330, 350, "15px arial", "white");
+}
+
+function mainMenuScreen() {
+	colorRect(0, 0, c.width, c.height, 'orange');
+	colorText("Main Menu", c.width/2 - 80, c.height/2, "30px arial", "white");
+	colorText("New Game: [SPACE]", 330, 350, "15px arial", "white");
+}
+
+function creditScreen() {
+	colorRect(0, 0, c.width, c.height, 'black');
+	colorText("Credits", c.width/2 - 80, c.height/2, "30px arial", "white");
+	colorText("New Game: [SPACE]", 330, 350, "15px arial", "white");
+}
+
+//======================================================================
+
+//input handling
 
 function keyPressed(evt) {
-	if(gameOn){
+	if(mode == GAME_SCREEN){
 		//console.log("Key pressed: " + evt.keyCode);
 		if (evt.keyCode == KEY_LEFT_ARROW) {
 			if(spaceShipPosX >= 20) {
@@ -205,9 +267,15 @@ function keyPressed(evt) {
 
 	}
 
-	if(gameOn == false) {
+	if(mode == TITLE_SCREEN) {
 		if(evt.keyCode == KEY_BACKSPACE) {
-			gameOn = true;
+			mode = MAIN_MENU;
+		}
+	}
+
+	if(mode != GAME_SCREEN && mode != TITLE_SCREEN) {
+		if(evt.keyCode == KEY_BACKSPACE) {
+			mode = GAME_SCREEN;
 			playerScore = 0;
 			spaceShipPosX = 400;
 			spaceShipPosY = 500;
@@ -218,12 +286,15 @@ function keyPressed(evt) {
 	evt.preventDefault(); // this is to prevent arrow keys from scrolling the page.
 }
 
+
 function keyReleased(evt) {
 	//console.log("Key released: " + evt.keyCode);
 	if(evt.keyCode == KEY_UP_ARROW) {
 		speedBuffer = true;
 	}
 }
+
+//======================================================================
 
 function spaceshipAutoReverse() {
 	if(spaceShipPosY <= 495 && speedBuffer){
@@ -326,16 +397,13 @@ function playerScoring() {
 	playerScore ++;
 	
 	if(playerScore >= WIN_SCORE){
-		displayWinScreen = true;
-		gameOn = false;
+		mode = WIN_SCREEN;
 	}
 }
 
 function playerLose() {
-	displayGameOverScreen = true;
-	gameOn = false;
+	mode = GAME_OVER;
 }
-
 
 
 // =========================================================================
