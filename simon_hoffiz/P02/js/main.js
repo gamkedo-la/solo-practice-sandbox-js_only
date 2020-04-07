@@ -2,9 +2,6 @@ var c;
 var ctx;
 var fps = 30;
 
-
-
-
 var playerScore = 0;
 const WIN_SCORE = 1;
 
@@ -13,11 +10,10 @@ var shotY;
 var shotY;
 const PLAYER_SHOT_SPEED = 10;
 
-
-
 var angle = 0;
 var screenBuffer = 20;
 
+var p1 = new playerClass();
 	
 window.onload = function () {
 	imageLoading();
@@ -74,15 +70,43 @@ function drawEverything() {
 function moveEverything() {
 	moveShot();
 	moveAlien();
-	spaceshipAutoReverse();
 	angle += .01;
 }
 
+function gameMode() {
+
+	//player shot
+	if(shotActive) {
+		colorCircle(shotX, shotY, 3, 'white'); 
+		//colorRect(shotX, shotY, 4, 10,'white');
+	}
+
+	//alien
+	if(alienDestroyed == false) {
+		ctx.drawImage(alienShipPic, alienPosX, alienPosY);
+		//colorRect(alienPosX, alienPosY, ALINE_WIDTH, ALIEN_HEIGHT, alienColor);
+	}
+
+	if(alienShotActive) {
+		colorRect(alienShotX, alienShotY, 4, 10, 'white');
+	}
+
+
+	p1.draw();
+	p1.spaceshipAutoReverse();
+
+	
+	//player score
+	colorText("Score: " + playerScore, 700, 560, "15px arial", "white");
+
+	respawnAlien();
+
+}
 
 function moveShot() {
 	if(shotActive) {
 		shotY -= PLAYER_SHOT_SPEED;
-		playerShotCheck();
+		p1.shotCheck();
 	}
 	if(alienShotActive){
 		alienShotY += ALIEN_SHOT_SPEED;

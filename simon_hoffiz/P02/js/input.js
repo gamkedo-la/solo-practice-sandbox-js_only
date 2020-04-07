@@ -12,43 +12,43 @@ function keyPressed(evt) {
 	if(mode == GAME_SCREEN){
 		//console.log("Key pressed: " + evt.keyCode);
 		if (evt.keyCode == KEY_LEFT_ARROW) {
-			if(spaceShipPosX >= 20) {
-				spaceShipPosX -= 10;
+			if(p1.spaceShipPosX >= 20) {
+				p1.spaceShipPosX -= 10;
 			}
 		}
 
 		if (evt.keyCode == KEY_RIGHT_ARROW) {
-			if(spaceShipPosX <= c.width - PLAYER_SHIP_WIDTH - 20) {
-				spaceShipPosX += 10;
+			if(p1.spaceShipPosX <= c.width - PLAYER_SHIP_WIDTH - 20) {
+				p1.spaceShipPosX += 10;
 			}
 		}
 
 		if (evt.keyCode == KEY_UP_ARROW) {
-			speedBuffer = false;
-			if(spaceShipPosY >= 20){
-				spaceShipPosY -= 5;
+			p1.speedBuffer = false;
+			if(p1.spaceShipPosY >= 20){
+				p1.spaceShipPosY -= 5;
 			}	
 		}
 
 		if (evt.keyCode == KEY_DOWN_ARROW) {
-			if(spaceShipPosY <= 495){
-				spaceShipPosY += 5;
+			if(p1.spaceShipPosY <= 495){
+				p1.spaceShipPosY += 5;
 			}
 		}
 
 		if(evt.keyCode == KEY_UP_ARROW && evt.keyCode == KEY_RIGHT_ARROW){
-			speedBuffer = false;
-			if(spaceShipPosY >= 20){
-				spaceShipPosY -= 5;
+			p1.speedBuffer = false;
+			if(p1.spaceShipPosY >= 20){
+				p1.spaceShipPosY -= 5;
 			}
-			if(spaceShipPosX <= c.width - PLAYER_SHIP_WIDTH - 20) {
-				spaceShipPosX += 10;
+			if(p1.spaceShipPosX <= c.width - PLAYER_SHIP_WIDTH - 20) {
+				p1.spaceShipPosX += 10;
 			}
 
 		}
 
 		if(evt.keyCode == KEY_BACKSPACE) {
-			playerReload();
+			p1.playerReload();
 		}
 
 		//cheat keys
@@ -59,7 +59,7 @@ function keyPressed(evt) {
 		}
 
 		if(evt.keyCode == KEY_S) {
-			shield01 = !shield01;
+			p1.shield01 = !p1.shield01;
 		}
 
 	}
@@ -74,8 +74,8 @@ function keyPressed(evt) {
 		if(evt.keyCode == KEY_BACKSPACE) {
 			mode = GAME_SCREEN;
 			playerScore = 0;
-			spaceShipPosX = 400;
-			spaceShipPosY = 500;
+			p1.spaceShipPosX = 400;
+			p1.spaceShipPosY = 500;
 		}
 	}
 
@@ -87,6 +87,6 @@ function keyPressed(evt) {
 function keyReleased(evt) {
 	//console.log("Key released: " + evt.keyCode);
 	if(evt.keyCode == KEY_UP_ARROW) {
-		speedBuffer = true;
+		p1.speedBuffer = true;
 	}
 }

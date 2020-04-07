@@ -1,47 +1,60 @@
-//player ship variables
-var spaceShipPosX = 380;
-var spaceShipPosY = 460;
 const PLAYER_SHIP_WIDTH = 60; //current width of pixel art
 const PLAYER_SHIP_HEIGHT = 80; //current height of pixel art 
-var speedBuffer = false;
 
-var shield01 = true;
+function playerClass() {
 
-function playerShotCheck() {
-	if(shotY <= alienPosY + ALIEN_HEIGHT && shotX >= alienPosX && shotX <= alienPosX + ALINE_WIDTH) {
-		shotActive = false;
-		console.log("alien destroyed");
-		alienDestroyed = true;
-		playerScoring();
+
+	this.spaceShipPosX = 380;
+	this.spaceShipPosY = 460;
+	this.speedBuffer = false;
+	this.shield01 = true;
+
+	this.shotCheck = function() {
+		if(shotY <= alienPosY + ALIEN_HEIGHT && shotX >= alienPosX && shotX <= alienPosX + ALINE_WIDTH) {
+			shotActive = false;
+			alienDestroyed = true;
+			playerScoring();
+		}
+		if(shotY < 0) {
+			shotActive = false;
+		}
 	}
-	if(shotY < 0) {
-		shotActive = false;
+
+	this.draw = function() {
+		//space ship
+		if(spaceshipPicLoaded){
+			ctx.drawImage(spaceshipPic, this.spaceShipPosX, this.spaceShipPosY);
+		}
+
+		//ship shield
+		if(this.shield01) {
+			drawBitmapCenteredAtLocationWithRotation(shieldPic, this.spaceShipPosX + PLAYER_SHIP_WIDTH/2, this.spaceShipPosY + PLAYER_SHIP_HEIGHT/2, angle);
+		}
 	}
-}
 
-
-function playerScoring() {
-	playerScore ++;
-	
-	if(playerScore >= WIN_SCORE){
-		mode = WIN_SCREEN;
+	function playerScoring() {
+		playerScore ++;
+		
+		if(playerScore >= WIN_SCORE){
+			mode = WIN_SCREEN;
+		}
 	}
-}
 
-function playerLose() {
-	mode = GAME_OVER;
-}
-
-function spaceshipAutoReverse() {
-	if(spaceShipPosY <= 495 && speedBuffer){
-		spaceShipPosY += 1;
+	this.playerLose = function() {
+		mode = GAME_OVER;
 	}
-}
 
-function playerReload() {
-	if(shotActive == false) {
-		shotX = spaceShipPosX + 30;
-		shotY = spaceShipPosY;
-		shotActive = true;
+	this.spaceshipAutoReverse = function() {
+		if(this.spaceShipPosY <= 495 && this.speedBuffer) {
+			this.spaceShipPosY += 1;
+		}
+	}
+
+	this.playerReload = function() {
+		if(shotActive == false) {
+			shotX = this.spaceShipPosX + 30;
+			shotY = this.spaceShipPosY;
+			shotActive = true;
+		}
 	}
 }

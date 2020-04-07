@@ -13,15 +13,15 @@ var alienShotY;
 const ALIEN_SHOT_SPEED = 10;
 
 function alienShotCheck() {
-	if(shield01 && alienShotY >= spaceShipPosY - 20 && alienShotX >= spaceShipPosX - 20 && alienShotX <= spaceShipPosX + PLAYER_SHIP_WIDTH + 20){
-		shield01 = false;
+	if(p1.shield01 && alienShotY >= p1.spaceShipPosY - 20 && alienShotX >= p1.spaceShipPosX - 20 && alienShotX <= p1.spaceShipPosX + PLAYER_SHIP_WIDTH + 20){
+		p1.shield01 = false;
 		alienShotActive = false;
 	}
 
-	if(alienShotY >= spaceShipPosY && alienShotX >= spaceShipPosX && alienShotX <= spaceShipPosX + PLAYER_SHIP_WIDTH){
+	if(alienShotY >= p1.spaceShipPosY && alienShotX >= p1.spaceShipPosX && alienShotX <= p1.spaceShipPosX + PLAYER_SHIP_WIDTH){
 		alienShotActive = false;
 		console.log("player destroyed");
-		playerLose();
+		p1.playerLose();
 	}
 	if(alienShotY >= c.height) {
 		alienShotActive = false;
@@ -41,26 +41,12 @@ function moveAlien() {
 }
 
 function respawnAlien() {
-	colorAlien();
 	if(alienDestroyed == true){
 		respawnTimer++;
 		if(respawnTimer >= 60) {
 			alienDestroyed = false;
 			respawnTimer = 0;
 		}
-	}
-}
-
-function colorAlien() {
-	if(playerScore == 0){
-		alienColor = 'green';
-	}
-	if(playerScore == 1){
-		alienColor = 'blue';
-	}
-	if(playerScore == 2){
-		alienColor = 'red';
-
 	}
 }
 
