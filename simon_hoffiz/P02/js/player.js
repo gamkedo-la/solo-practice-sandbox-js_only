@@ -4,13 +4,13 @@ const PLAYER_SHIP_HEIGHT = 80; //current height of pixel art
 function playerClass() {
 
 
-	this.spaceShipPosX = 380;
-	this.spaceShipPosY = 460;
+	this.x = 380;
+	this.y = 460;
 	this.speedBuffer = false;
 	this.shield01 = true;
 
 	this.shotCheck = function() {
-		if(shotY <= alienPosY + ALIEN_HEIGHT && shotX >= alienPosX && shotX <= alienPosX + ALINE_WIDTH) {
+		if(shotY <= a1.y + ALIEN_HEIGHT && shotX >= a1.x && shotX <= a1.x + ALINE_WIDTH) {
 			shotActive = false;
 			alienDestroyed = true;
 			playerScoring();
@@ -23,20 +23,12 @@ function playerClass() {
 	this.draw = function() {
 		//space ship
 		if(spaceshipPicLoaded){
-			ctx.drawImage(spaceshipPic, this.spaceShipPosX, this.spaceShipPosY);
+			ctx.drawImage(spaceshipPic, this.x, this.y);
 		}
 
 		//ship shield
 		if(this.shield01) {
-			drawBitmapCenteredAtLocationWithRotation(shieldPic, this.spaceShipPosX + PLAYER_SHIP_WIDTH/2, this.spaceShipPosY + PLAYER_SHIP_HEIGHT/2, angle);
-		}
-	}
-
-	function playerScoring() {
-		playerScore ++;
-		
-		if(playerScore >= WIN_SCORE){
-			mode = WIN_SCREEN;
+			drawBitmapCenteredAtLocationWithRotation(shieldPic, this.x + PLAYER_SHIP_WIDTH/2, this.y + PLAYER_SHIP_HEIGHT/2, angle);
 		}
 	}
 
@@ -45,16 +37,26 @@ function playerClass() {
 	}
 
 	this.spaceshipAutoReverse = function() {
-		if(this.spaceShipPosY <= 495 && this.speedBuffer) {
-			this.spaceShipPosY += 1;
+		if(this.y <= 495 && this.speedBuffer) {
+			this.y += 1;
 		}
 	}
 
 	this.playerReload = function() {
 		if(shotActive == false) {
-			shotX = this.spaceShipPosX + 30;
-			shotY = this.spaceShipPosY;
+			shotX = this.x + 30;
+			shotY = this.y;
 			shotActive = true;
+		}
+	}
+//==========================================================
+// internal class functions
+
+	function playerScoring() {
+		playerScore ++;
+		
+		if(playerScore >= WIN_SCORE){
+			mode = WIN_SCREEN;
 		}
 	}
 }

@@ -5,44 +5,46 @@ const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
 const KEY_DOWN_ARROW = 40;
 const KEY_BACKSPACE = 32;
+const KEY_ENTER = 13;
+const KEY_SHIFT = 16;
 const KEY_Q = 81;
 const KEY_S = 83;
 
 function keyPressed(evt) {
+	console.log("Key pressed: " + evt.keyCode);
 	if(mode == GAME_SCREEN){
-		//console.log("Key pressed: " + evt.keyCode);
 		if (evt.keyCode == KEY_LEFT_ARROW) {
-			if(p1.spaceShipPosX >= 20) {
-				p1.spaceShipPosX -= 10;
+			if(p1.x >= 20) {
+				p1.x -= 10;
 			}
 		}
 
 		if (evt.keyCode == KEY_RIGHT_ARROW) {
-			if(p1.spaceShipPosX <= c.width - PLAYER_SHIP_WIDTH - 20) {
-				p1.spaceShipPosX += 10;
+			if(p1.x <= c.width - PLAYER_SHIP_WIDTH - 20) {
+				p1.x += 10;
 			}
 		}
 
 		if (evt.keyCode == KEY_UP_ARROW) {
 			p1.speedBuffer = false;
-			if(p1.spaceShipPosY >= 20){
-				p1.spaceShipPosY -= 5;
+			if(p1.y >= 20){
+				p1.y -= 5;
 			}	
 		}
 
 		if (evt.keyCode == KEY_DOWN_ARROW) {
-			if(p1.spaceShipPosY <= 495){
-				p1.spaceShipPosY += 5;
+			if(p1.y <= 495){
+				p1.y += 5;
 			}
 		}
 
 		if(evt.keyCode == KEY_UP_ARROW && evt.keyCode == KEY_RIGHT_ARROW){
 			p1.speedBuffer = false;
-			if(p1.spaceShipPosY >= 20){
-				p1.spaceShipPosY -= 5;
+			if(p1.y >= 20){
+				p1.y -= 5;
 			}
-			if(p1.spaceShipPosX <= c.width - PLAYER_SHIP_WIDTH - 20) {
-				p1.spaceShipPosX += 10;
+			if(p1.x <= c.width - PLAYER_SHIP_WIDTH - 20) {
+				p1.x += 10;
 			}
 
 		}
@@ -54,8 +56,7 @@ function keyPressed(evt) {
 		//cheat keys
 
 		if(evt.keyCode == KEY_Q) {
-			console.log("alien shot");
-			alienReload();
+			a1.alienReload();
 		}
 
 		if(evt.keyCode == KEY_S) {
@@ -64,20 +65,31 @@ function keyPressed(evt) {
 
 	}
 
-	if(mode == TITLE_SCREEN) {
+	if(mode == TITLE_SCREEN || mode == CREDIT_SCREEN) {
 		if(evt.keyCode == KEY_BACKSPACE) {
 			mode = MAIN_MENU;
+			console.log(mode);
 		}
 	}
 
-	if(mode != GAME_SCREEN && mode != TITLE_SCREEN) {
+	if(mode == MAIN_MENU) {
+		if(evt.keyCode == KEY_ENTER) {
+			mode = GAME_SCREEN;
+		}
+		if(evt.keyCode == KEY_SHIFT) {
+			mode = CREDIT_SCREEN;
+		}
+	}
+
+	if(mode == WIN_SCREEN || mode == GAME_OVER) {
 		if(evt.keyCode == KEY_BACKSPACE) {
 			mode = GAME_SCREEN;
 			playerScore = 0;
-			p1.spaceShipPosX = 400;
-			p1.spaceShipPosY = 500;
+			p1.x = 400;
+			p1.y = 500;
 		}
 	}
+
 
 
 	evt.preventDefault(); // this is to prevent arrow keys from scrolling the page.
