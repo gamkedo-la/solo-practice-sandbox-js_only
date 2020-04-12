@@ -1,6 +1,6 @@
 //A little glue code to get us started
-import WebRenderer from './webRenderer.js';
-import TileRenderer from '.TileRenderer.js';
+//import WebRenderer from './webRenderer.js';
+import TileRenderer from './TileRenderer.js';
 
 window.onload = function() {
     main();
@@ -14,5 +14,5 @@ function main() {
     //tileSize, widthInTiles, heightInTiles, tileImage, bkgdImage, flipImage
     const renderer = new TileRenderer(canvas);
     
-    renderer.addTileLayer(8,8,tileSource,gids,0);
-};
+//    renderer.addTileLayer(8,8,tileSource,gids,0);
+}

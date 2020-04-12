@@ -1,11 +1,16 @@
 //ShaderManager.js
+import DefaultTileShader from './DefaultTileShader.js';
+import DefaultSpriteShader from './DefaultSpriteShader.js';
 /**
  * Abstracts the compiling and linking of shader programs
  * @typedef {Object} ShaderManager
- * @param {Boolean} usesBinaryAlpha true if all pixels for all images have alpha = 1.0 or 0.0, false otherwise. 
+ * @param {WebGLRenderingContext} gl The context for rendering to the canvas.
  * @param {Boolean} rotationAllowed true if any sprite will rotate around the z-axis (in/out of screen), false otherwise.
  */
-function ShaderManager(usesBinaryAlpha, rotationAllowed) {
+function ShaderManager(gl, rotationAllowed) {
+    const DEFAULT_TILE = new DefaultTileShader();
+    const DEFAULT_SPRITE = new DefaultSpriteShader();
+
     const programs = {defaultTile:null, defaultSprite:null};
     const locations = {defaultTile:{}, defaultSprite:{}};//other program locations can be added and will look like name:{}
 
@@ -27,7 +32,7 @@ function ShaderManager(usesBinaryAlpha, rotationAllowed) {
      */
     this.getDefaultSpriteShader = function() {
         if(programs.defaultSprite === null) {
-            buildDefaultSpriteProgram();
+            buildDefaultSpriteProgram(rotationAllowed);
         }
 
         return programs.defaultSprite;
@@ -59,7 +64,7 @@ function ShaderManager(usesBinaryAlpha, rotationAllowed) {
         if((name === 'defaultTile') && (programs[name] === undefined)) {
             buildDefaultTileProgram();
         } else if((name === 'defaultSprite') && (programs[name] === undefined)) {
-            buildDefaultSpriteProgram();
+            buildDefaultSpriteProgram(rotationAllowed);
         }
 
         return programs[name];
@@ -75,11 +80,27 @@ function ShaderManager(usesBinaryAlpha, rotationAllowed) {
         if((name === 'defaultTile') && (locations[name] === undefined)) {
             buildDefaultTileProgram();
         } else if((name === 'defaultSprite') && (locations[name] === undefined)) {
-            buildDefaultSpriteProgram();
+            buildDefaultSpriteProgram(rotationAllowed);
         }
 
         return locations[name];
     };
+
+    this.setAttribData = function(buffer, data, location, elementCount = 2, drawHint = gl.STATIC_DRAW, type = gl.FLOAT, stride = 0, offset = 0) {
+        gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+        gl.bufferData(gl.ARRAY_BUFFER, data, drawHint);
+
+        gl.vertexAttribPointer(
+            location, //Attribute location
+            elementCount, //number of elements per attribute
+            type, //Type of the elements
+            gl.FALSE, //Is data normalized?
+            stride * Float32Array.BYTES_PER_ELEMENT, //Stride
+            offset * Float32Array.BYTES_PER_ELEMENT //Offset into buffer for first element of this type
+        );
+
+        gl.enableVertexAttribArray(location);
+    }
 
     /** 
      * @description The default tile vertex shader as a string.
@@ -175,16 +196,17 @@ function ShaderManager(usesBinaryAlpha, rotationAllowed) {
      * @description Compiles and links the default tile shader.  Also sets the locations of the attributes and uniforms.
      */
     const buildDefaultTileProgram = function() {
-        programs.defaultTile = getWebGLProgram(getDefaultTileVertexShaderString(), getDefaultTileFragmentShaderString());
-        setLocations('defaultTile', ['vertPosition', 'aTextureCoord'], ['delta', 'sampler']);
+        programs.defaultTile = getWebGLProgram(DEFAULT_TILE.getVertexString(), DEFAULT_TILE.getFragmentString());
+        setLocations(DEFAULT_TILE);
     };
 
     /**
      * @description Compiles and links the default sprite shader.  Also sets the locations of the attributes and uniforms.
+     * @param {Boolean} canRotate If false, uses a simpler shader which does not make rotation calculations.
      */
-    const buildDefaultSpriteProgram = function() {
-        programs.defaultSprite = getWebGLProgram(getDefaultSpriteVertexShaderString(), getDefaultSpriteFragmentShaderString());
-        setLocations('defaultSprite', ["vertPosition", "aTextureCoord", "deltaPos", "bright"], ["sampler"]);
+    const buildDefaultSpriteProgram = function(canRotate) {
+        programs.defaultSprite = getWebGLProgram(DEFAULT_SPRITE.getVertexString(canRotate), DEFAULT_SPRITE.getFragmentString());
+        setLocations(DEFAULT_SPRITE)
     };
 
     /**
@@ -227,18 +249,11 @@ function ShaderManager(usesBinaryAlpha, rotationAllowed) {
 
     /**
      * @description Gets the WebGL locations for all listed attributes and uniforms and saves them to the locations object for later use.
-     * @param {string} name A string representing the name of the program whose attribute and uniform locations are being set.
-     * @param {Array<string>} attribs An array of strings representing the attributes for the named program whose location are being set.
-     * @param {Array<string>} uniforms An array of strings representing the uniforms for the named program whose location are being set.
+     * @param {ShaderObject} shaderObject The shader object whose locations are being set.
      */
-    const setLocations = function(name, attribs, uniforms) {
-        for(let i = 0; i < attribs.length; i++) {
-            locations[name][attribs[i]] = gl.getAttribLocation(programs[name], attribs[i]);
-        }
-
-        for(let i = 0; i < uniforms.length; i++) {
-            locations[name][uniforms[i]] = gl.getUniformLocation(programs[name], uniforms[i]);
-        }
+    const setLocations = function(shaderObject) {
+        locations[shaderObject.name] = shaderObject.getUniformLocations();
+        Object.assign(locations[shaderObject.name], shaderObject.getAttributeLocations());
     };
 }
 
