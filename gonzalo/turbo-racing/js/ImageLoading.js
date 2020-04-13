@@ -1,9 +1,22 @@
+const THEMES = {
+  default: {
+	ground: "GROUND_TILES_DEFAULT",
+	objects: "OBJECT_TILES_DEFAULT"
+  },
+  night: {
+	ground: "GROUND_TILES_NIGHT",
+	objects: "OBJECT_TILES_NIGHT"
+  }
+};
+
 const imageLoader = new (function() {
   const IMAGE_DEFS = [
 	{id: "carPic", src: "./images/player1.png"},
 	{id: "car2Pic", src: "./images/player2.png"},
-	{id: "GROUND_TILES_DEFAULT", src: "./images/ground_tiles_default.png"},
-	{id: "OBJECT_TILES_DEFAULT", src: "./images/object_tiles_default.png"}
+	{id: THEMES.default.ground, src: "./images/ground_tiles_default.png"},
+	{id: THEMES.default.objects, src: "./images/object_tiles_default.png"},
+	{id: THEMES.night.ground, src: "./images/ground_tiles_night.png"},
+	{id: THEMES.night.objects, src: "./images/object_tiles_night.png"}
   ];
   const images = {};
 
