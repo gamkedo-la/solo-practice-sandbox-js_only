@@ -32,3 +32,8 @@ create my own things, but I also hope it helps whoever reads it :)
 - <2020-04-08 mié 17:39> Bundle of 30 Language Games: Started work on
   integrating prompts and answers into my runner game. Made good
   progress, but there's still some bugs I'll need to fix.
+*** 2020-04-13 lunes
+- <2020-04-13 lun 08:07> Started work on Turbo Racing themes. I keep
+  finding small bits to refactor. Must resist the temptation! I still
+  need to make a lot of tile themes, that'll be good pixel art
+  practice :)
