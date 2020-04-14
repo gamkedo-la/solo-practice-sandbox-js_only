@@ -1,24 +1,14 @@
 const PLAYER_SHIP_WIDTH = 60; //current width of pixel art
 const PLAYER_SHIP_HEIGHT = 80; //current height of pixel art 
+const WIN_SCORE = 2;
+var playerScore = 0;
 
 function playerClass() {
-
 
 	this.x = 380;
 	this.y = 460;
 	this.speedBuffer = false;
 	this.shield01 = true;
-
-	this.shotCheck = function() {
-		if(shotY <= a1.y + ALIEN_HEIGHT && shotX >= a1.x && shotX <= a1.x + ALINE_WIDTH) {
-			shotActive = false;
-			alienDestroyed = true;
-			playerScoring();
-		}
-		if(shotY < 0) {
-			shotActive = false;
-		}
-	}
 
 	this.draw = function() {
 		//space ship
@@ -49,14 +39,15 @@ function playerClass() {
 			shotActive = true;
 		}
 	}
-//==========================================================
-// internal class functions
 
-	function playerScoring() {
+	this.playerScoring = function() {
 		playerScore ++;
-		
 		if(playerScore >= WIN_SCORE){
 			mode = WIN_SCREEN;
 		}
+	}
+
+	this.playerScore = function() {
+		colorText("Score: " + playerScore, 700, 560, "15px arial", "white");
 	}
 }

@@ -6,7 +6,7 @@ const GAME_OVER = 2;
 const TITLE_SCREEN = 3;
 const MAIN_MENU = 4;
 const CREDIT_SCREEN = 5;
-var mode = TITLE_SCREEN;
+var mode = GAME_SCREEN;
 
 function gameOverScreen() {
 	colorRect(0, 0, c.width, c.height, 'blue');

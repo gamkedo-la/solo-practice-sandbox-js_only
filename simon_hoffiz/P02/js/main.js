@@ -2,21 +2,22 @@ var c;
 var ctx;
 var fps = 30;
 
-var playerScore = 0;
-const WIN_SCORE = 2;
+
 
 var shotActive = false;
 var shotY;
-var shotY;
-const PLAYER_SHOT_SPEED = 10;
+var shotX;
 
 var angle = 0;
 var screenBuffer = 20;
 
 var p1 = new playerClass();
+var w1 = new playerBasicShotClass();
 var a1 = new alienClass();
 	
 window.onload = function () {
+	c = document.getElementById ('gameCanvas');
+	ctx = c.getContext ('2d');
 	imageLoading();
 
 	setInterval (function() {
@@ -24,15 +25,13 @@ window.onload = function () {
 		moveEverything()},
 		1000/fps);
 
-	document.addEventListener('keydown', keyPressed);
-	document.addEventListener('keyup', keyReleased);
+	initInput();
 }	
 
 function drawEverything() {
 
 	//canvas
-	c = document.getElementById ('gameCanvas');
-	ctx = c.getContext ('2d');
+	
 	ctx.fillStyle = 'black';
 	ctx.fillRect (0, 0, c.width, c.height);
 
@@ -69,18 +68,24 @@ function drawEverything() {
 }
 
 function moveEverything() {
+	//player basic shot
+	w1.move();
+	
+	//others
 	moveShot();
 	a1.moveAlien();
-	angle += .01;
+	angle += .01; // shield rotation speed
+
 }
 
 function gameMode() {
-
-	//player shot
-	if(shotActive) {
-		colorCircle(shotX, shotY, 3, 'white'); 
-		//colorRect(shotX, shotY, 4, 10,'white');
-	}
+	//player ship
+	p1.draw();
+	p1.spaceshipAutoReverse();
+	//player basic shot
+	w1.draw();
+	w1.weaponReset();
+	w1.shotCheck();
 
 	//alien shot
 	if(alienShotActive) {
@@ -88,24 +93,13 @@ function gameMode() {
 	}
 
 	a1.draw();
-
-
-	p1.draw();
-	p1.spaceshipAutoReverse();
-
+	a1.respawnAlien();
 	
 	//player score
-	colorText("Score: " + playerScore, 700, 560, "15px arial", "white");
-
-	a1.respawnAlien();
-
+	p1.playerScore();
 }
 
 function moveShot() {
-	if(shotActive) {
-		shotY -= PLAYER_SHOT_SPEED;
-		p1.shotCheck();
-	}
 	if(alienShotActive){
 		alienShotY += ALIEN_SHOT_SPEED;
 		a1.alienShotCheck();

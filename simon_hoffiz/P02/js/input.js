@@ -4,11 +4,16 @@ const KEY_LEFT_ARROW = 37;
 const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
 const KEY_DOWN_ARROW = 40;
-const KEY_BACKSPACE = 32;
+const KEY_SPACE = 32;
 const KEY_ENTER = 13;
 const KEY_SHIFT = 16;
 const KEY_Q = 81;
 const KEY_S = 83;
+
+function initInput() {
+	document.addEventListener('keydown', keyPressed);
+	document.addEventListener('keyup', keyReleased);
+}
 
 function keyPressed(evt) {
 	console.log("Key pressed: " + evt.keyCode);
@@ -49,8 +54,9 @@ function keyPressed(evt) {
 
 		}
 
-		if(evt.keyCode == KEY_BACKSPACE) {
-			p1.playerReload();
+		if(evt.keyCode == KEY_SPACE) {
+			//p1.playerReload();
+			w1.basicWeaponActive = true;
 		}
 
 		//cheat keys
@@ -66,9 +72,8 @@ function keyPressed(evt) {
 	}
 
 	if(mode == TITLE_SCREEN || mode == CREDIT_SCREEN) {
-		if(evt.keyCode == KEY_BACKSPACE) {
+		if(evt.keyCode == KEY_SPACE) {
 			mode = MAIN_MENU;
-			console.log(mode);
 		}
 	}
 
@@ -82,7 +87,7 @@ function keyPressed(evt) {
 	}
 
 	if(mode == WIN_SCREEN || mode == GAME_OVER) {
-		if(evt.keyCode == KEY_BACKSPACE) {
+		if(evt.keyCode == KEY_SPACE) {
 			mode = GAME_SCREEN;
 			playerScore = 0;
 			p1.x = 400;

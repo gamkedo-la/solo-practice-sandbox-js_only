@@ -9,10 +9,10 @@ var alienDestroyed = false;
 
 function alienClass() {
 
-	var this.x = 100;
-	var this.y = 100;
-	var this.sx = 4;
-	var this.respawnTimer = 0;
+	this.x = 100;
+	this.y = 100;
+	this.sx = 4;
+	this.respawnTimer = 0;
 
 	this.draw = function() {
 		if(alienDestroyed == false) {
