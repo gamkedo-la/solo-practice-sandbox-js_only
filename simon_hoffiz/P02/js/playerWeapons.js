@@ -2,7 +2,6 @@ const SHOT_DISPLAY_RADIUS = 3.0;
 const PLAYER_SHOT_SPEED = 10;
 
 
-
 function playerBasicShotClass() {
 
 	this.x = p1.x;
@@ -20,22 +19,19 @@ function playerBasicShotClass() {
 		}
 	}
 
-	this.weaponReset = function() {
-		if(this.y < 0) {
-			this.basicWeaponActive = false;
-			this.y = p1.y;
-		}
-	}
-
 	this.shotCheck = function() {
 		if(this.y <= a1.y + ALIEN_HEIGHT && this.x >= a1.x && this.x <= a1.x + ALINE_WIDTH) {
 			this.basicWeaponActive = false;
 			alienDestroyed = true;
 			p1.playerScoring();
+			this.y = p1.y;
+			this.x = p1.x;
 			
 		}
 		if(this.y < 0) {
 			this.basicWeaponActive = false;
+			this.y = p1.y;
+			this.x = p1.x;
 		}
 	}
 

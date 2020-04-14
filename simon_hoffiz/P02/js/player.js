@@ -2,6 +2,7 @@ const PLAYER_SHIP_WIDTH = 60; //current width of pixel art
 const PLAYER_SHIP_HEIGHT = 80; //current height of pixel art 
 const WIN_SCORE = 2;
 var playerScore = 0;
+var shieldRotationSpeed = 0;
 
 function playerClass() {
 
@@ -18,8 +19,12 @@ function playerClass() {
 
 		//ship shield
 		if(this.shield01) {
-			drawBitmapCenteredAtLocationWithRotation(shieldPic, this.x + PLAYER_SHIP_WIDTH/2, this.y + PLAYER_SHIP_HEIGHT/2, angle);
+			drawBitmapCenteredAtLocationWithRotation(shieldPic, this.x + PLAYER_SHIP_WIDTH/2, this.y + PLAYER_SHIP_HEIGHT/2, shieldRotationSpeed);
 		}
+	}
+
+	this.moveShield = function() {
+		shieldRotationSpeed += .01;
 	}
 
 	this.playerLose = function() {
@@ -27,16 +32,8 @@ function playerClass() {
 	}
 
 	this.spaceshipAutoReverse = function() {
-		if(this.y <= 495 && this.speedBuffer) {
+		if(this.y <= 460 && this.speedBuffer) {
 			this.y += 1;
-		}
-	}
-
-	this.playerReload = function() {
-		if(shotActive == false) {
-			shotX = this.x + 30;
-			shotY = this.y;
-			shotActive = true;
 		}
 	}
 

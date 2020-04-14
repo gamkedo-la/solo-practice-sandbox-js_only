@@ -12,7 +12,7 @@ function imageLoading() {
 		alienShipPicLoaded = true;
 		shieldPicLoaded = true;
 	}		
-	spaceshipPic.src = "PlayerShip.png";
+	spaceshipPic.src = "PlayerSpaceship.png";
 	alienShipPic.src = "AlienShip.png";
 	shieldPic.src = "Shield.png";
 }

@@ -38,7 +38,7 @@ function keyPressed(evt) {
 		}
 
 		if (evt.keyCode == KEY_DOWN_ARROW) {
-			if(p1.y <= 495){
+			if(p1.y <= 460){
 				p1.y += 5;
 			}
 		}
