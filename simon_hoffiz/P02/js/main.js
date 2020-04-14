@@ -63,8 +63,8 @@ function moveEverything() {
 	//player
 	p1.moveShield();
 	//player basic shot
-	w1.move();
 	
+
 	//alien
 	moveShot();
 	a1.moveAlien();
@@ -75,8 +75,12 @@ function gameMode() {
 	p1.draw();
 	p1.spaceshipAutoReverse();
 	//player basic shot
-	w1.draw();
-	w1.shotCheck();
+	if(w1.basicWeaponActive == true) {
+		w1.draw();
+		w1.move();
+		w1.shotCheck();
+	}
+	
 	//player score
 	p1.playerScore();
 

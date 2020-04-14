@@ -1,5 +1,4 @@
 //input handling
-
 const KEY_LEFT_ARROW = 37;
 const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
@@ -90,8 +89,8 @@ function keyPressed(evt) {
 		if(evt.keyCode == KEY_SPACE) {
 			mode = GAME_SCREEN;
 			playerScore = 0;
-			p1.x = 400;
-			p1.y = 500;
+			p1.x = c.width/2;
+			p1.y = PLAYER_POS_Y;
 		}
 	}
 
