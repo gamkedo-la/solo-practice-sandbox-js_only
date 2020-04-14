@@ -6,35 +6,35 @@ const track = new (function() {
   const GROUND_GRID = [
 	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ////
 	1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, ////
-	1, 0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 0, 0, 4, 1, ////
-	1, 3, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 4, 1, ////
-	1, 3, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 4, 1, ////
-	1, 3, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 4, 1, ////
+	1, 0, 0, 0,14, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,13, 0, 4,32, ////
+   30, 3, 0,14,10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9,13, 4, 1, ////
+   32, 3,14,10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 4, 1, ////
+	1, 3, 4, 1, 1,30,30,30,30,30,30,30,30,30,30,30, 1, 3, 4, 1, ////
 	1, 3, 4, 1, 3, 0, 0, 0, 1, 1, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
 	1, 3, 4, 1, 3, 0, 0, 4, 1, 1, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
-	1, 3, 4, 1, 3, 0, 0, 0, 0, 0, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
-	1, 3, 4, 1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, 3, 4, 1, ////
-	1, 3, 4, 1, 3, 0, 1, 1, 3, 0, 0, 0, 4, 1, 3, 0, 5, 0, 4, 1, ////
-	1, 1, 1, 1, 3, 0, 1, 1, 3, 0, 0, 0, 4, 1, 3, 0, 0, 0, 4, 1, ////
-	1, 3, 2, 5, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 3, 0, 0, 0, 4, 1, ////
-	1, 3, 2, 6, 6, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, ////
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+	1, 3, 4, 1, 3, 0, 0,16, 5, 0, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
+	1, 3, 4, 1, 3,14, 6, 6,13,16, 5,15,14, 6,13, 4, 1, 3, 4, 1, ////
+	1, 3, 4, 1, 3, 4, 1, 1, 3, 0, 0, 0, 4, 1, 3,16, 5,15, 4, 1, ////
+	1, 1, 1, 1, 3, 4,30,32, 3, 0, 0, 0, 4, 1, 3, 0, 0, 0, 4, 1, ////
+   30, 3, 2, 5,15, 4, 1, 1, 1, 0, 0, 0, 0, 1, 3, 0, 0, 0, 4, 1, ////
+	1, 3, 2, 6, 6,10, 1,31,30,30, 1, 1,30,30, 0, 0, 0, 0, 0, 1, ////
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,31,30, 1, 1, 1,30,32
   ];
   const OBJECT_GRID = [
-	4,  4, 10,  1,  1,  1, 1,  1,  1,  1, 1, 1,  1, 1, 1, 1, 1, 1, 9, 4, ////
-	4, 10, 11,  0,  6,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0,12, 9, ////
-	10, 11,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
-	11,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
-	0,  0,  0,  0,  0, 10, 1,  1,  1,  1, 1, 1,  1, 1, 1, 9, 0, 0, 0, 8, ////
-	0,  0,  0, 10,  1,  9, 0,  4,  4,  4, 4, 4,  4, 4, 4,10, 9, 0, 0, 8, ////
-	0,  0,  0,  8,  0, 12, 1,  1,  9,  4,10, 1,  1, 1, 1,11, 8, 0, 0, 8, ////
-	0,  0,  6,  8,  0,  0, 0,  0,  8,  4, 8, 0,  0, 0, 0, 0, 8, 0, 0, 8, ////
-	5,  0,  0,  5,  0,  0, 0,  0, 12,  1, 9, 0,  0, 0, 0, 0, 8, 0, 0, 8, ////
-	8,  0,  0,  8,  0,  0, 5,  0,  0,  0,14, 0,  0, 5, 0, 0, 8, 0, 0, 8, ////
-	8,  2,  2,  8,  0, 10, 1,  9,  0,  0, 0, 0,  0, 8, 0, 0, 5, 0, 0, 8, ////
+	 4,  4, 10,  1,  1,  1, 1,  1,  1,  1, 1, 1,  1, 1, 1, 1, 1, 1, 9, 4, ////
+	 4, 10, 11,  0,  6,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0,12, 9, ////
+	10, 11, 0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+	11,  0, 0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+	 0,  0,  0,  0,  0, 10, 1,  1,  1,  1, 1, 1,  1, 1, 1, 9, 0, 0, 0, 8, ////
+	 0,  0,  0, 10,  1,  9, 0,  4,  4,  4, 4, 4,  4, 4, 4,10, 9, 0, 0, 8, ////
+	 0,  0,  0,  8,  0, 12, 1,  1,  9,  4,10, 1,  1, 1, 1,11, 8, 0, 0, 8, ////
+	 0,  0,  6,  8,  0,  0, 0,  0,  8,  4, 8, 0,  0, 0, 0, 0, 8, 0, 0, 8, ////
+	 5,  0,  0,  5,  0,  0, 0,  0, 12,  1, 9, 0,  0, 0, 0, 0, 8, 0, 0, 8, ////
+	 8,  0,  0,  8,  0,  0, 5,  0,  0,  0,14, 0,  0, 5, 0, 0, 8, 0, 0, 8, ////
+	 8,  2,  2,  8,  0, 10, 1,  9,  0,  0, 0, 0,  0, 8, 0, 0, 5, 0, 0, 8, ////
 	13,  1,  1,  5,  0,  8, 0,  8,  0,  0, 0, 6,  0, 8, 0, 0, 0, 0, 0, 8, ////
-	8,  0,  0,  0,  0,  8, 4, 12,  1,  9, 0, 0, 10, 9, 0, 0, 0, 0, 0, 8, ////
-	8,  0,  0,  0,  0,  8, 0,  4,  0, 12, 1, 1, 11,12, 9, 0, 0, 0,10,11, ////
+	 8,  0,  0,  0,  0,  8, 4, 12,  1,  9, 0, 0, 10, 9, 0, 0, 0, 0, 0, 8, ////
+	 8,  0,  0,  0,  0,  8, 0,  4,  0, 12, 1, 1, 11,12, 9, 0, 0, 0,10,11, ////
 	12,  1,  1,  5,  1, 11, 4,  0,  4,  4, 0, 4,  4, 4,12, 1, 1, 1,11, 0
   ];
   const GROUND_INDEX = {
@@ -45,6 +45,26 @@ const track = new (function() {
 	roadRightSide: 4,
 	roadTopSide: 5,
 	roadBottomSide: 6,
+	roadBothSidesHorizontal: 7,
+	roadBothSidesVertical: 8,
+	roadCornerSW: 9,
+	roadCornerSE: 10,
+	roadCornerNW: 11,
+	roadCornerNE: 12,
+	roadJointSW: 13,
+	roadJointSE: 14,
+	roadJointNW: 15,
+	roadJointNE: 16,
+	roadJointSWSE: 17,
+	roadJointSWNW: 18,
+	roadJointSWNE: 19,
+	roadJointSENE: 20,
+	roadJointNWSE: 21,
+	roadJointNWNE: 22,
+	roadJointALL: 23,
+	offRoadWallShade: 30,
+	offRoadWallShadeWest: 31,
+	offRoadWallShadeEast: 32,
 	_default: Number.MAX_SAFE_INTEGER
   };
   const OBJECT_INDEX = {
@@ -98,6 +118,57 @@ const track = new (function() {
 	  driveable: true,
 	  onDrive: (car)=>{car.canSteer = true;}
 	},
+	[GROUND_INDEX.roadBothSidesVertical]: {
+	  tileOffset: {x: 0, y: 6},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.roadBothSidesHorizontal]: {
+	  tileOffset: {x: 1, y: 1},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.roadCornerSW]: {
+	  tileOffset: {x: 3, y: 0},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.roadCornerSE]: {
+	  tileOffset: {x: 2, y: 0},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.roadCornerNE]: {
+	  tileOffset: {x: 4, y: 0},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.roadCornerNW]: {
+	  tileOffset: {x: 5, y: 0},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	
+	[GROUND_INDEX.roadJointSW]: {
+	  tileOffset: {x: 0, y: 2},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.roadJointSE]: {
+	  tileOffset: {x: 1, y: 2},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.roadJointNE]: {
+	  tileOffset: {x: 2, y: 2},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
+	[GROUND_INDEX.roadJointNW]: {
+	  tileOffset: {x: 3, y: 2},
+	  driveable: true,
+	  onDrive: (car)=>{car.canSteer = true;}
+	},
 	[GROUND_INDEX.goal]: {
 	  tileOffset: {x: 6, y: 1},
 	  driveable: true,
@@ -110,6 +181,21 @@ const track = new (function() {
 	},
 	[GROUND_INDEX.offroad]: {
 	  tileOffset: {x: 0, y: 0},
+	  driveable: true,
+	  onDrive: (car) => {car.carSpeed /= 2;}
+	},
+	[GROUND_INDEX.offRoadWallShade]: {
+	  tileOffset: {x: 1, y: 0},
+	  driveable: true,
+	  onDrive: (car) => {car.carSpeed /= 2;}
+	},
+	[GROUND_INDEX.offRoadWallShadeEast]: {
+	  tileOffset: {x: 7, y: 0},
+	  driveable: true,
+	  onDrive: (car) => {car.carSpeed /= 2;}
+	},
+	[GROUND_INDEX.offRoadWallShadeWest]: {
+	  tileOffset: {x: 8, y: 0},
 	  driveable: true,
 	  onDrive: (car) => {car.carSpeed /= 2;}
 	},
@@ -200,6 +286,11 @@ const track = new (function() {
 	}
   };
   const takenPlayerTiles = [];
+  let currentTheme = THEMES['night'];
+
+  this.setTheme = function(themeId) {
+	currentTheme = THEMES[themeId];
+  };
 
   this.isDriveableCoord = function(X, Y) {
 	const tileCol = Math.floor(X / TILE_WIDTH);
@@ -235,8 +326,8 @@ const track = new (function() {
 	let trackIndex = 0;
 	let trackLeftEdgeX = 0;
 	let trackTopEdgeY = 0;
-	const groundTileSheet = imageLoader.getImage("GROUND_TILES_DEFAULT");
-	const objectTileSheet = imageLoader.getImage("OBJECT_TILES_DEFAULT");
+	const groundTileSheet = imageLoader.getImage(currentTheme.ground);
+	const objectTileSheet = imageLoader.getImage(currentTheme.objects);
 	for (let eachRow=0; eachRow<ROWS; eachRow++) {
 	  trackLeftEdgeX = 0;
 	  for (let eachCol=0; eachCol<COLS; eachCol++) {

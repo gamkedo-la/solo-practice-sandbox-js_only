@@ -1,0 +1,11 @@
+{
+  "name": "webgl_renderer",
+  "version": "1.0.0",
+  "description": "A package to abstract the low-level work of rendering a tile based game using WebGl.",
+  "main": "main.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "H Trayford | Renegade Applications, LLC",
+  "license": "MIT"
+}
