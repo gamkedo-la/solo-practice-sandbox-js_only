@@ -6,7 +6,7 @@ var screenBuffer = 20;
 
 var p1 = new playerClass();
 var w1 = new playerBasicShotClass();
-var a1 = new alienClass();
+var z1 = new basicAlienClass();
 	
 window.onload = function () {
 	c = document.getElementById ('gameCanvas');
@@ -61,13 +61,7 @@ function drawEverything() {
 
 function moveEverything() {
 	//player
-	p1.moveShield();
-	//player basic shot
-	
-
-	//alien
-	moveShot();
-	a1.moveAlien();
+	p1.moveShield();	
 }
 
 function gameMode() {
@@ -80,24 +74,17 @@ function gameMode() {
 		w1.move();
 		w1.shotCheck();
 	}
+
+	z1.draw();
+	z1.move();
+	z1.basicShot();
+	z1.shotCheck();
+	z1.respawnAlien();
 	
 	//player score
 	p1.playerScore();
-
-	//alien shot
-	if(alienShotActive) {
-		colorRect(alienShotX, alienShotY, 4, 10, 'white');
-	}
-	a1.draw();
-	a1.respawnAlien();
 }
 
-function moveShot() {
-	if(alienShotActive){
-		alienShotY += ALIEN_SHOT_SPEED;
-		a1.alienShotCheck();
-	}
-}
 
 
 

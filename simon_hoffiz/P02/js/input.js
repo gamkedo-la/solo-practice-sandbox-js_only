@@ -54,14 +54,15 @@ function keyPressed(evt) {
 		}
 
 		if(evt.keyCode == KEY_SPACE) {
-			//p1.playerReload();
 			w1.basicWeaponActive = true;
+			w1.x = p1.x + PLAYER_SHIP_WIDTH/2;
+			
 		}
 
 		//cheat keys
 
 		if(evt.keyCode == KEY_Q) {
-			a1.alienReload();
+
 		}
 
 		if(evt.keyCode == KEY_S) {

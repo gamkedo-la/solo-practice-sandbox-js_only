@@ -2,7 +2,7 @@ const PLAYER_SHIP_WIDTH = 150; //current width of pixel art
 const PLAYER_SHIP_HEIGHT = 150; //current height of pixel art 
 const PLAYER_POS_Y = 600 - PLAYER_SHIP_HEIGHT - 15;
 const PLAYE_POS_X = 400 - PLAYER_SHIP_WIDTH/2;
-const WIN_SCORE = 2;
+const WIN_SCORE = 5;
 var playerScore = 0;
 var shieldRotationSpeed = 0;
 
