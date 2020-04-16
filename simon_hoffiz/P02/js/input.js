@@ -54,8 +54,8 @@ function keyPressed(evt) {
 		}
 
 		if(evt.keyCode == KEY_SPACE) {
-			w1.basicWeaponActive = true;
-			w1.x = p1.x + PLAYER_SHIP_WIDTH/2;
+			p1.fireShot();
+			
 		}
 
 		//cheat keys

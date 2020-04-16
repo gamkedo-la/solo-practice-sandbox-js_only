@@ -5,7 +5,6 @@ var fps = 30;
 var screenBuffer = 20;
 
 var p1 = new playerClass();
-var w1 = new playerBasicShotClass();
 var z1 = new basicAlienClass();
 var powerUp1 = new basicPowerUpClass();
 var starList = [];
@@ -64,7 +63,7 @@ function drawEverything() {
 
 function moveEverything() {
 	//player
-	p1.moveShield();
+	p1.move();
 	starMove();	
 }
 
@@ -73,14 +72,6 @@ function gameMode() {
 	//player ship
 	p1.draw();
 	p1.spaceshipAutoReverse();
-
-
-	//player basic shot
-	if(w1.basicWeaponActive == true) {
-		w1.draw();
-		w1.move();
-		w1.shotCheck();
-	}
 
 	//basic enemy 
 	z1.draw();
@@ -98,6 +89,8 @@ function gameMode() {
 	powerUp1.shieldPowerUp();
 	powerUp1.respawn();
 }
+
+
 
 
 

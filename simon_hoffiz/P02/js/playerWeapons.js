@@ -19,10 +19,11 @@ function playerBasicShotClass() {
 	this.move = function() {
 		if(this.basicWeaponActive == true) {
 			this.y -= PLAYER_SHOT_SPEED;
+			this.shotCheck();
 		}		
 	}
 
-	this.shotCheck = function() {
+	this.shotCheck = function() { //note called by this.move
 		//enemy collision
 		if(this.y <= z1.y + z1.h && this.x >= z1.x && this.x <= z1.x + z1.w) {
 			this.basicWeaponActive = false;
