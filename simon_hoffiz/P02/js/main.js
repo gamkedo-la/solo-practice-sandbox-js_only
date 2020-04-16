@@ -7,6 +7,7 @@ var screenBuffer = 20;
 var p1 = new playerClass();
 var w1 = new playerBasicShotClass();
 var z1 = new basicAlienClass();
+var powerUp1 = new basicPowerUpClass();
 	
 window.onload = function () {
 	c = document.getElementById ('gameCanvas');
@@ -68,6 +69,8 @@ function gameMode() {
 	//player ship
 	p1.draw();
 	p1.spaceshipAutoReverse();
+
+
 	//player basic shot
 	if(w1.basicWeaponActive == true) {
 		w1.draw();
@@ -75,6 +78,7 @@ function gameMode() {
 		w1.shotCheck();
 	}
 
+	//basic enemy 
 	z1.draw();
 	z1.move();
 	z1.basicShot();
@@ -83,6 +87,12 @@ function gameMode() {
 	
 	//player score
 	p1.playerScore();
+
+	//power ups
+	powerUp1.draw();
+	powerUp1.move();
+	powerUp1.shieldPowerUp();
+	powerUp1.respawn();
 }
 
 

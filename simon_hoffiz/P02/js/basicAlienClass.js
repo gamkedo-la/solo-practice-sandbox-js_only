@@ -78,7 +78,7 @@ function basicAlienClass() {
 				this.shotActive = true;
 				this.shotY = this.y;
 				this.shotX = this.x;
-			}
+			} 
 		}
 
 		if(this.shotY >= c.height) {
@@ -87,14 +87,20 @@ function basicAlienClass() {
 	}
 
 	this.shotCheck = function() {
-		if(p1.shield01 && this.shotY >= p1.y - 20 && this.shotX >= p1.x - 20 && this.shotX <= p1.x + PLAYER_SHIP_WIDTH + 20){
-			p1.shield01 = false;
-			this.shotActive = false;
+
+		if(playerShields != 0) {
+			if(this.shotY >= p1.y - 20 && this.shotY <= p1.y + PLAYER_SHIP_HEIGHT/2 && this.shotX >= p1.x - 20 && this.shotX <= p1.x + PLAYER_SHIP_WIDTH + 20) {
+				this.shotActive = false;
+				this.shotY = this.y;
+				p1.substractShield();
+			}
 		}
-		
-		if(this.shotY >= p1.y && this.shotX >= p1.x && this.shotX <= p1.x + PLAYER_SHIP_WIDTH){
-			this.shotActive = false;
-			p1.playerLose();
+
+		if(playerShields == 0) {
+			if(this.shotY >= p1.y - 20 && this.shotY <= p1.y + PLAYER_SHIP_HEIGHT/2 && this.shotX >= p1.x - 20 && this.shotX <= p1.x + PLAYER_SHIP_WIDTH + 20) {
+				this.shotActive = false;
+				p1.playerLose();
+			}
 		}
 	}
 

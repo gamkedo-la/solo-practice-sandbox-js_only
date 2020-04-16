@@ -1,6 +1,7 @@
 const SHOT_DISPLAY_RADIUS = 3.0;
 const PLAYER_SHOT_SPEED = 10;
 
+
 function playerBasicShotClass() {
 
 	this.x = p1.x + PLAYER_SHIP_WIDTH/2;
@@ -8,6 +9,7 @@ function playerBasicShotClass() {
 	this.basicWeaponActive = false;
 
 	this.draw = function() {
+
 
 		if(this.basicWeaponActive == true) {
 			colorCircle(this.x, this.y, SHOT_DISPLAY_RADIUS, 'white');
@@ -30,8 +32,13 @@ function playerBasicShotClass() {
 
 		if(this.y <= 0) {
 			this.basicWeaponActive = false;
+			this.y = p1.y;			
+		}
+
+		if(this.y <= powerUp1.y + powerUp1.h && this.y >= powerUp1.y && this.x >= powerUp1.x && this.x <= powerUp1.x + powerUp1.w) {
+			powerUp1.powerUpAccesible = true;
+			this.basicWeaponActive = false;
 			this.y = p1.y;
-			
 		}
 	}
 

@@ -56,7 +56,6 @@ function keyPressed(evt) {
 		if(evt.keyCode == KEY_SPACE) {
 			w1.basicWeaponActive = true;
 			w1.x = p1.x + PLAYER_SHIP_WIDTH/2;
-			
 		}
 
 		//cheat keys
@@ -90,13 +89,13 @@ function keyPressed(evt) {
 		if(evt.keyCode == KEY_SPACE) {
 			mode = GAME_SCREEN;
 			playerScore = 0;
+			playerShields = 0;
+			p1.shield01 = false;
 			p1.x = c.width/2;
 			p1.y = PLAYER_POS_Y;
 		}
 	}
-
-
-
+	
 	evt.preventDefault(); // this is to prevent arrow keys from scrolling the page.
 }
 
