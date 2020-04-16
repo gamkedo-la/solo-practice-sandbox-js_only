@@ -8,11 +8,13 @@ var p1 = new playerClass();
 var w1 = new playerBasicShotClass();
 var z1 = new basicAlienClass();
 var powerUp1 = new basicPowerUpClass();
-	
+var starList = [];
+
 window.onload = function () {
 	c = document.getElementById ('gameCanvas');
 	ctx = c.getContext ('2d');
 	imageLoading();
+	starInit();
 
 	setInterval (function() {
 		drawEverything(),
@@ -62,10 +64,12 @@ function drawEverything() {
 
 function moveEverything() {
 	//player
-	p1.moveShield();	
+	p1.moveShield();
+	starMove();	
 }
 
 function gameMode() {
+	starDraw();
 	//player ship
 	p1.draw();
 	p1.spaceshipAutoReverse();
