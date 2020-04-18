@@ -3,6 +3,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Tennis!</title>
+
+    <script src="SoundAndMusic.js"></script>
+
     <script type="text/javascript">
       // This next line prepares for the LiveReload connection
       document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')
@@ -39,7 +42,18 @@
       const WINNING_SCORE = 10;
       var scoreColor = 'white';
 
+      // Sound effects
+      var bloop = null;
+      var goal = null;
+
+
       window.onload = () => {
+        console.log("Loading sound effects...");
+        bloop = new SoundOverlapsClass();
+        goal = new SoundOverlapsClass();
+        bloop.load("./sounds/bloop");
+        goal.load("./sounds/goal");
+
         console.log("Initializing canvas...");
         canvas = document.getElementById("gameCanvas");
         canvasContext = canvas.getContext("2d");
@@ -139,10 +153,12 @@
         if (ballX < (paddle1X + PADDLE_WIDTH)) {
           if (ballX < 0) {
             paddle2Score++;       // Must be BEFORE ballReset
+            goal.play();
             ballReset(2);
           } else {
             if (ballY > paddle1Y && ballY < paddle1Y + paddle1Height) {
               ballSpeedX = -ballSpeedX;
+              bloop.play();
 
               var deltaY = ballY - (paddle1Y + paddle1Height / 2);
               ballSpeedY = deltaY * 1.35;
@@ -153,10 +169,13 @@
         if (ballX > paddle2X) {
           if (ballX > canvas.width) {
             paddle1Score++;       // Must be BEFORE ballReset
+            goal.play();
             ballReset(1);
           } else {
             if (ballY > paddle2Y && ballY < paddle2Y + paddle2Height) {
               ballSpeedX = -ballSpeedX;
+              bloop.play();
+
               var deltaY = ballY - (paddle2Y + paddle2Height / 2);
               ballSpeedY = deltaY * 1.35;
             }
@@ -166,6 +185,7 @@
         // Vertical movement
         if (ballY < 0 || ballY > canvas.height) {
           ballSpeedY = -ballSpeedY;
+          bloop.play();
         }
       }
 
