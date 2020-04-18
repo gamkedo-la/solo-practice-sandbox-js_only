@@ -1,0 +1,8 @@
+{
+  "name": "tennis",
+  "description": "Just a simple Pong clone for the sake of pratice Javascript.",
+  "version": "2.0.0",
+  "devDependencies": {
+    "livereload": "^0.9.1"
+  }
+}
