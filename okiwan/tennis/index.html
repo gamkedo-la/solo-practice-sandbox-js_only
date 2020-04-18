@@ -12,18 +12,19 @@
       var canvasContext;
 
       // Ball-related variables
-      const BASE_BALL_SPEED_X = 10;
-      const BASE_BALL_SPEED_Y = 4;
+      const BASE_BALL_SPEED_X = 15;
+      const SERVE_BALL_MAX_SPEED_Y = 15;
+      const SERVE_BALL_MIN_SPEED_Y = 1;
       var ballX = 50;
       var ballY = 50;
       var ballSpeedX = BASE_BALL_SPEED_X;
-      var ballSpeedY = BASE_BALL_SPEED_Y;
+      var ballSpeedY = -1;
 
       // All inits with -1 should be initialized after canvas definition
       const PADDLE_MARGIN = 20;
       const PADDLE_WIDTH = 10;
       var paddle1X = PADDLE_MARGIN;
-      var paddle1Y = -1; 
+      var paddle1Y = -1;
       var paddle1Height = 100;
       var paddle1Score = 0;
       var paddle2X = -1;
@@ -35,7 +36,7 @@
       var showWinningScreen = false;
       var showWinningScreenFrame = 0;
       var showWinningScreenHandler = 0;
-      const WINNING_SCORE = 3;
+      const WINNING_SCORE = 10;
       var scoreColor = 'white';
 
       window.onload = () => {
@@ -93,7 +94,7 @@
         colorCircle(ballX, ballY, 10, 'white');
         // Draw left paddle
         colorRect(paddle1X, paddle1Y, PADDLE_WIDTH, paddle1Height, 'white');
-        // Draw left paddle
+        // Draw right paddle
         colorRect(paddle2X, paddle2Y, PADDLE_WIDTH, paddle2Height, 'white');
         // Draw net
         drawNet();
@@ -118,9 +119,9 @@
       function computerMovement() {
         var paddle2Center = paddle2Y + (paddle2Height / 2);
         if (paddle2Center < ballY - 25) {
-          paddle2Y += 6;
+          paddle2Y += 20;
         } else if (paddle2Center > ballY + 25) {
-          paddle2Y -= 6;
+          paddle2Y -= 20;
         }
       }
 
@@ -138,13 +139,13 @@
         if (ballX < (paddle1X + PADDLE_WIDTH)) {
           if (ballX < 0) {
             paddle2Score++;       // Must be BEFORE ballReset
-            ballReset();
+            ballReset(2);
           } else {
             if (ballY > paddle1Y && ballY < paddle1Y + paddle1Height) {
               ballSpeedX = -ballSpeedX;
 
               var deltaY = ballY - (paddle1Y + paddle1Height / 2);
-              ballSpeedY = deltaY * 0.35;
+              ballSpeedY = deltaY * 1.35;
             }
           }
         }
@@ -152,12 +153,12 @@
         if (ballX > paddle2X) {
           if (ballX > canvas.width) {
             paddle1Score++;       // Must be BEFORE ballReset
-            ballReset();
+            ballReset(1);
           } else {
             if (ballY > paddle2Y && ballY < paddle2Y + paddle2Height) {
               ballSpeedX = -ballSpeedX;
               var deltaY = ballY - (paddle2Y + paddle2Height / 2);
-              ballSpeedY = deltaY * 0.35;
+              ballSpeedY = deltaY * 1.35;
             }
           }
         }
@@ -168,7 +169,7 @@
         }
       }
 
-      function ballReset() {
+      function ballReset(winner) {
         if (paddle1Score >= WINNING_SCORE || paddle2Score >= WINNING_SCORE) {
           showWinningScreen = true;
 
@@ -184,8 +185,21 @@
 
         ballX = canvas.width / 2;
         ballY = canvas.height / 2;
-        ballSpeedX = BASE_BALL_SPEED_X;
-        ballSpeedY = BASE_BALL_SPEED_Y;
+
+        if (winner == 1) {
+          ballSpeedX = BASE_BALL_SPEED_X
+        } else if (winner == 2) {
+          ballSpeedX = -BASE_BALL_SPEED_X
+        } else {
+          var direction = Math.random() < 0.5 ? -1 : 1;
+          ballSpeedX = direction * BASE_BALL_SPEED_X;
+        }
+        ballSpeedY = setServeSpeed();
+      }
+
+      function setServeSpeed() {
+        var direction = Math.random() < 0.5 ? -1 : 1
+        return direction * Math.round(Math.random()*(SERVE_BALL_MAX_SPEED_Y-SERVE_BALL_MIN_SPEED_Y+1)+SERVE_BALL_MIN_SPEED_Y);
       }
 
       function colorRect(leftX, topY, width, height, drawColor) {
