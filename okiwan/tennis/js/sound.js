@@ -1,3 +1,7 @@
+// Sound effects
+var bloop = null;
+var goal = null;
+
 var supportedAudioFormat;
 
 function setFormat() {
