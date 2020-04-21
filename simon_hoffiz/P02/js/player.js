@@ -14,6 +14,7 @@ function playerClass() {
 	this.speedBuffer = false;
 	this.shield01 = true;
 	this.myShot = [];
+	this.reverseSpeed = 3;
 
 	this.fireShot = function () {
 		var newShot = new playerBasicShotClass();
@@ -49,6 +50,7 @@ function playerClass() {
 		}
 
 		this.moveShield();
+		this.spaceshipAutoReverse();
 	}
 
 	this.moveShield = function() { // called by this.move
@@ -74,7 +76,7 @@ function playerClass() {
 
 	this.spaceshipAutoReverse = function() {
 		if(this.y <= PLAYER_POS_Y && this.speedBuffer) {
-			this.y += 1;
+			this.y += this.reverseSpeed;
 		}
 	}
 

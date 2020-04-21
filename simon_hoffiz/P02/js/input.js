@@ -34,6 +34,10 @@ function keyPressed(evt) {
 			if(p1.y >= 20){
 				p1.y -= 5;
 			}	
+
+			if(starFieldSpeed <= STARFIELD_TOP_SPEED) {
+				starFieldSpeed += STARFIELD_ACCELERATION;
+			}
 		}
 
 		if (evt.keyCode == KEY_DOWN_ARROW) {
@@ -103,6 +107,8 @@ function keyPressed(evt) {
 function keyReleased(evt) {
 	//console.log("Key released: " + evt.keyCode);
 	if(evt.keyCode == KEY_UP_ARROW) {
+		console.log("working");
 		p1.speedBuffer = true;
+		slowStarField = true;
 	}
 }

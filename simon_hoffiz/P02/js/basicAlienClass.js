@@ -1,6 +1,5 @@
 
 
-
 function basicAlienClass() {
 
 	this.x = 50;

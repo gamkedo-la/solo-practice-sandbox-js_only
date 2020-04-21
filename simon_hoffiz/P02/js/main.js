@@ -7,7 +7,7 @@ var screenBuffer = 20;
 var p1 = new playerClass();
 var z1 = new basicAlienClass();
 var powerUp1 = new basicPowerUpClass();
-var starList = [];
+var starList = []; //parallax 
 
 window.onload = function () {
 	c = document.getElementById ('gameCanvas');
@@ -26,37 +26,33 @@ window.onload = function () {
 function drawEverything() {
 
 	//canvas
-	ctx.fillStyle = 'black';
-	ctx.fillRect (0, 0, c.width, c.height);
+	colorRect(0, 0, c.width, c.height, 'black');
 
-	//game screens
-	if(mode == GAME_SCREEN){
+	//state machine handling game screens
+	switch(mode) {
+		case GAME_SCREEN:
 		gameMode();
-		}
+		break;
 
-	//win screen
-	if(mode == WIN_SCREEN) {
+		case WIN_SCREEN:
 		winScreen();
-		}
+		break;
 
-	//game over screen
-	if(mode == GAME_OVER) {
+		case GAME_OVER:
 		gameOverScreen();
-		}
+		break;
 
-	//title screen
-	if(mode == TITLE_SCREEN) {
+		case TITLE_SCREEN:
 		titleScreen();
-	}
+		break;
 
-	//main menu
-	if(mode == MAIN_MENU) {
+		case MAIN_MENU:
 		mainMenuScreen();
-	}
-	
-	//credits
-	if(mode == CREDIT_SCREEN) {
+		break;
+
+		case CREDIT_SCREEN:
 		creditScreen();
+		break;
 	}
 
 }
@@ -64,19 +60,21 @@ function drawEverything() {
 function moveEverything() {
 	//player
 	p1.move();
+	//p1.spaceshipAutoReverse();
 	starMove();	
+	z1.move();
+	powerUp1.move();
 }
 
 function gameMode() {
 	starDraw();
 	//player ship
 	p1.draw();
-	p1.spaceshipAutoReverse();
 
 	//basic enemy 
 	z1.draw();
-	z1.move();
-	z1.basicShot();
+	
+	//z1.basicShot();
 	z1.shotCheck();
 	z1.respawnAlien();
 	
@@ -85,7 +83,6 @@ function gameMode() {
 
 	//power ups
 	powerUp1.draw();
-	powerUp1.move();
 	powerUp1.shieldPowerUp();
 	powerUp1.respawn();
 }
