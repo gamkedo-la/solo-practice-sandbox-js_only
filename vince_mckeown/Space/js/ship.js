@@ -5,15 +5,12 @@ const SPACESPEED_DECAY_MULT = 0.99;
 shipClass.prototype = new movingWrapPositionClass();
 
 function shipClass() {
-	this.myShot = new shotClass();
-	
-	this.x = 60;
-	this.y = 60;
-	
+	this.x, this.y;
 	this.keyHeld_Thrust = false;
 	this.keyHeld_TurnLeft = false;
 	this.keyHeld_TurnRight = false;
-
+	this.myShotList = [];
+	this.totalShots = 3;
 	this.picture = document.createElement("img");
 	
 	this.setupControls = function(forwardKey,leftKey,rightKey,shotKey) {
@@ -27,7 +24,9 @@ function shipClass() {
 	this.reset = function() {
 		this.superclassReset();
 		this.ang = -0.5 * Math.PI;
-		this.myShot.reset();
+		for (var i=0; i < this.myShotList.length ; i++){
+			this.myShotList[i].reset();
+		}
 	}
 					
 	this.init = function(whichGraphic, whichName) {
@@ -55,7 +54,11 @@ function shipClass() {
 		this.xv *= SPACESPEED_DECAY_MULT;
 		this.yv *= SPACESPEED_DECAY_MULT;
 		
-		this.myShot.movement();
+		for (var i=0; i < this.myShotList.length ; i++){
+			this.myShotList[i].movement();
+		}
+		
+		this.removeBullet();
 	}	
 	
 	this.checkMyShipAndShotCollisionAgainst = function(thisEnemy){
@@ -63,21 +66,37 @@ function shipClass() {
 			this.reset();
 			document.getElementById("debugText").innerHTML = "Player Crashed!";
 		}
-		if(this.myShot.hitTest(thisEnemy)){
-			thisEnemy.reset();
-			this.myShot.reset();
-			document.getElementById("debugText").innerHTML = "Enemy Blasted!";
+		for (i=0; i < this.myShotList.length; i++){
+			if(this.myShotList[i].hitTest(thisEnemy)){
+				thisEnemy.reset();
+				this.myShotList[i].reset();
+				document.getElementById("debugText").innerHTML = "Enemy Blasted!";
+			}
 		}
 	}
 	
 	this.draw = function(){
-		this.myShot.draw();
+		for (i=0; i < this.myShotList.length ; i++){
+			this.myShotList[i].draw();
+		}
 		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, this.ang);
 	}
 	
 	this.cannonFire = function(){
-		if(this.myShot.isShotReadyToFire()){
-			this.myShot.shootFrom(this);
+		if(this.myShotList.length < this.totalShots){
+			console.log("FIRE");
+			let tempShot = new shotClass();
+			tempShot.shootFrom(this);
+			this.myShotList.push(tempShot);
+		}
+	}
+	
+	this.removeBullet = function (){
+		for(var i = this.myShotList.length - 1; i >= 0 ; i--){
+			console.log(this.myShotList.length);
+			if(this.myShotList[i].readyToRemove){
+				this.myShotList.splice(i,1);
+			}
 		}
 	}
 }

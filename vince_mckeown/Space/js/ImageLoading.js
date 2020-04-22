@@ -1,10 +1,6 @@
 var picture = document.createElement("img");
 var ufoPic = document.createElement("img");
 
-//var titlepagePic = document.createElement("img");
-var trackPics = [];
-
-
 var picsToLoad = 0;
 
 function countLoadedImagesAndLaunchIfReady(){

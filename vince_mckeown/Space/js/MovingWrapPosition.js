@@ -1,6 +1,6 @@
 function movingWrapPositionClass(){
-	this.x = 60;
-	this.y = 60;
+	this.x;
+	this.y;
 	
 	this.reset = function() {
 		this.xv = 0;
@@ -31,4 +31,4 @@ function movingWrapPositionClass(){
 		
 		this.handleScreenWrap();
 	}	
-} // end of movingWrapPositionClass
+} 

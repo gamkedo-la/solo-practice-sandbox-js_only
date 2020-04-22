@@ -5,8 +5,9 @@ const SHOT_DISPLAY_RADIUS = 2.0;
 shotClass.prototype = new movingWrapPositionClass();
 
 function shotClass(){
-	this.x = 60;
-	this.y = 60;
+	this.x;
+	this.y;
+	this.readyToRemove = false;
 	
 	this.picture = document.createElement("img");
 	
@@ -16,6 +17,7 @@ function shotClass(){
 		this.ang = -0.5 * Math.PI;
 		this.x = canvas.width/2;
 		this.y = canvas.height/2;
+		this.readyToRemove = true;
 	}
 		
 	this.isShotReadyToFire = function(){
@@ -43,6 +45,7 @@ function shotClass(){
 	
 	this.hitTest = function(thisEnemy) {
 		if(this.shotLife <= 0) {
+			this.readyToRemove = true;
 			return false;
 		}
 		return thisEnemy.isOverlappingPoint(this.x,this.y);

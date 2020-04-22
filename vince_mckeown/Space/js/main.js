@@ -37,8 +37,6 @@ function imageLoadingDoneSoStartGame(){
 	playerOne.init(picture, "Red Vehicle");	
 	enemy.init(ufoPic, "UFO");
 }
-
-			
 			
 function moveEverything() {
 	
@@ -46,17 +44,7 @@ function moveEverything() {
 	enemy.movement();
 	playerOne.checkMyShipAndShotCollisionAgainst(enemy);
 }
-			
-function calculateMousePos(evt) {
-	var rect = canvas.getBoundingClientRect(), root = document.documentElement;
-	var mouseX = evt.clientX - rect.left - root.scrollLeft;
-	var mouseY = evt.clientY - rect.top - root.scrollTop;
-	return {
-		x: mouseX, 
-		y: mouseY
-	};
-}
-						
+									
 function drawEverything() {
 				
 	//clears screen
