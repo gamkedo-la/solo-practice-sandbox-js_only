@@ -89,6 +89,15 @@ function gameMode() {
 	powerUp1.respawn();
 }
 
+function resetGame() {
+	mode = GAME_SCREEN;
+	playerScore = 0;
+	playerShields = 0;
+	p1.shield01 = false;
+	p1.x = c.width/2;
+	p1.y = PLAYER_POS_Y;
+}
+
 
 
 

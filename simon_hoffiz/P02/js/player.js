@@ -38,6 +38,8 @@ function playerClass() {
 	}
 
 	this.move = function () {
+		this.handleInput();
+
 		for(var i=0; i < this.myShot.length; i++) {
 			this.myShot[i].move();
 		}
@@ -89,6 +91,55 @@ function playerClass() {
 		colorText("ShotCount: " + this.myShot.length, 700, 540, "15px arial", "orange"); // debug output - remove
 		colorText("Score: " + playerScore, 700, 560, "15px arial", "white");
 		colorText("Shields: " + playerShields, 700, 580, "15px arial", "white");
+	}
+
+	this.handleInput = function() {
+		this.speedBuffer = (holdUp == false);
+		slowStarField = this.speedBuffer;
+		if (holdLeft) {
+			this.moveLeft();
+		}
+
+		if (holdRight) {
+			this.moveRight();
+		}
+
+		if (holdUp) {
+			this.moveUp();
+		}
+
+		if (holdDown) {
+			this.moveDown();
+		}
+
+	}
+
+	this.moveUp = function() {
+		if(this.y >= c.height/4){
+			this.y -= 5;
+		}	
+
+		if(starFieldSpeed <= STARFIELD_TOP_SPEED) {
+			starFieldSpeed += STARFIELD_ACCELERATION;
+		}
+	}
+
+	this.moveDown = function() {
+		if(this.y <= 460){
+			this.y += 5;
+		}
+	}
+
+	this.moveLeft = function() {
+		if(this.x >= 20) {
+			this.x -= 10;
+		}
+	}
+
+	this.moveRight = function() {
+		if(this.x <= c.width - PLAYER_SHIP_WIDTH - 20) {
+			this.x += 10;
+		}
 	}
 
 }
