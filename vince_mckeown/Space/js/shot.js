@@ -1,6 +1,7 @@
 const SHOT_SPEED = 6.0;
 const SHOT_LIFE = 30;
 const SHOT_DISPLAY_RADIUS = 2.0;
+var missShot = -10;
 
 shotClass.prototype = new movingWrapPositionClass();
 
@@ -45,6 +46,7 @@ function shotClass(){
 	
 	this.hitTest = function(thisEnemy) {
 		if(this.shotLife <= 0) {
+			playerOne.score = playerOne.score + missShot;
 			this.readyToRemove = true;
 			return false;
 		}

@@ -52,4 +52,5 @@ function drawEverything() {
 				
 	playerOne.draw();
 	enemy.draw();
+	drawUserInterface();
 }

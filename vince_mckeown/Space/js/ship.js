@@ -10,7 +10,8 @@ function shipClass() {
 	this.keyHeld_TurnLeft = false;
 	this.keyHeld_TurnRight = false;
 	this.myShotList = [];
-	this.totalShots = 3;
+	this.totalShots = 3
+	this.score = 0;
 	this.picture = document.createElement("img");
 	
 	this.setupControls = function(forwardKey,leftKey,rightKey,shotKey) {
@@ -65,12 +66,14 @@ function shipClass() {
 		if(thisEnemy.isOverlappingPoint(this.x,this.y)){
 			this.reset();
 			document.getElementById("debugText").innerHTML = "Player Crashed!";
+			this.score -= 200;
 		}
 		for (i=0; i < this.myShotList.length; i++){
 			if(this.myShotList[i].hitTest(thisEnemy)){
 				thisEnemy.reset();
 				this.myShotList[i].reset();
 				document.getElementById("debugText").innerHTML = "Enemy Blasted!";
+				this.score += 100;
 			}
 		}
 	}
