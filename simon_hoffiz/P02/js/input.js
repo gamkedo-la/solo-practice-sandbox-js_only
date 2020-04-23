@@ -31,7 +31,7 @@ function keyPressed(evt) {
 
 		if (evt.keyCode == KEY_UP_ARROW) {
 			p1.speedBuffer = false;
-			if(p1.y >= 20){
+			if(p1.y >= c.height/4){
 				p1.y -= 5;
 			}	
 

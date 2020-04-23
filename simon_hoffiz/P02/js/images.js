@@ -1,18 +1,24 @@
 //image loading
-var spaceshipPic = document.createElement("img");
-var spaceshipPicLoaded = false;
-var alienShipPic = document.createElement("img");
-var alienShipPicLoaded = false;
-var shieldPic = document.createElement("img");
-var shieldPicLoaded = false;
+var imageNames = ["PlayerSpaceship.png",
+					 "Shield.png"
+					];
+var imageLoadCounter = imageNames.length;
+var imageArray = [];
+
+function receivedImage() {
+	imageLoadCounter --;
+	if(imageLoadCounter <= 0) {
+		startGame();
+	}
+	return 5 + 7;
+}
 
 function imageLoading() {
-	spaceshipPic.onload = function() {
-		spaceshipPicLoaded = true;
-		alienShipPicLoaded = true;
-		shieldPicLoaded = true;
-	}		
-	spaceshipPic.src = "PlayerSpaceship.png";
-	alienShipPic.src = "AlienShip.png";
-	shieldPic.src = "Shield.png";
+	for(var i=0; i < imageNames.length; i++){
+		var newImg = document.createElement("img");
+		//newImg.onload = receivedImage();
+		newImg.src = imageNames[i];
+		imageArray[ imageNames[i] ] = newImg;
+	}
+	
 }

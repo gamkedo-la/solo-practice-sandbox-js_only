@@ -14,14 +14,17 @@ window.onload = function () {
 	ctx = c.getContext ('2d');
 	imageLoading();
 	starInit();
+}	
 
+function startGame() {
 	setInterval (function() {
 		drawEverything(),
 		moveEverything()},
 		1000/fps);
 
 	initInput();
-}	
+}
+
 
 function drawEverything() {
 
@@ -60,7 +63,6 @@ function drawEverything() {
 function moveEverything() {
 	//player
 	p1.move();
-	//p1.spaceshipAutoReverse();
 	starMove();	
 	z1.move();
 	powerUp1.move();

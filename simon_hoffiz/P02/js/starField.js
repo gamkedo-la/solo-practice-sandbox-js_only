@@ -3,9 +3,10 @@ var slowStarField = false;
 const STARFIELD_ACCELERATION = 0.05; // handled in up arrow key press
 const STARFIELD_DECELERATION = 0.01;
 const STARFIELD_TOP_SPEED = 3;
+const STARFIELD_COUNT = 350;
 
 function starInit() {
-	for(var i=0; i<350; i++) {
+	for(var i=0; i<STARFIELD_COUNT; i++) {
 		starList.push({x:Math.random()*c.width, y:Math.random()*c.height, sz:Math.random()*4});
 	}
 }

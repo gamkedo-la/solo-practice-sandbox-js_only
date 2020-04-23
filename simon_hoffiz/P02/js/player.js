@@ -25,13 +25,11 @@ function playerClass() {
 
 	this.draw = function() {
 		//space ship
-		if(spaceshipPicLoaded){
-			ctx.drawImage(spaceshipPic, this.x, this.y);
-		}
+		ctx.drawImage(imageArray["PlayerSpaceship.png"], this.x, this.y);
 
 		//ship shield
 		if(this.shield01) {
-			drawBitmapCenteredAtLocationWithRotation(shieldPic, this.x + PLAYER_SHIP_WIDTH/2, this.y + PLAYER_SHIP_HEIGHT/2, shieldRotationSpeed);
+			drawBitmapCenteredAtLocationWithRotation(imageArray["Shield.png"], this.x + PLAYER_SHIP_WIDTH/2, this.y + PLAYER_SHIP_HEIGHT/2, shieldRotationSpeed);
 		}
 
 		for(var i=0; i < this.myShot.length; i++) {
