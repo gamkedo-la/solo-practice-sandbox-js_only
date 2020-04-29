@@ -37,3 +37,9 @@ create my own things, but I also hope it helps whoever reads it :)
   finding small bits to refactor. Must resist the temptation! I still
   need to make a lot of tile themes, that'll be good pixel art
   practice :)
+*** 2020-04-29 miércoles
+- <2020-04-29 mié 09:41> (yesterday) did a little work on "Bundle of
+  30 Language Games", fixing a bug in the runner game where sliding
+  while jumping was possible (which got the runner "stuck" in the
+  mid-air), and also tweaked the gravity and jump speed for a better
+  jump feel.
