@@ -20,7 +20,9 @@ let Rock = function(cvs = canvas) {
 
     this.update = (dt, stroke) => {
         if (this.imgLoaded) {
-            this.vy += 9.81;
+            this.x += this.vx * dt;
+
+            this.vy += 9.81;            
             this.y += this.vy * dt;
 
             this.x1 = this.x + 14;
@@ -30,15 +32,29 @@ let Rock = function(cvs = canvas) {
 
             if (stroke != undefined && stroke.points.length > 4) { 
                 for (let i = 0; i < stroke.points.length; i++) {
-                    let p = stroke.points[i];
+                    let p = stroke.points[i];                    
+
                     if (p.x > this.x1 && p.x < this.x2 &&
                             p.y > this.y1 && p.y < this.y2) {
                         this.vy += -15000 * dt;
+
+                        if (p.x > (this.x1 + (this.x2 - this.x1) / 2)) {
+                            this.vx -= 15000 * dt;
+                            console.log("Bounce to left");
+                            break;                       
+                        }
+
+                        if (p.x < (this.x1 + (this.x2 - this.x1) / 2)) {
+                            this.vx += 15000 * dt;
+                            console.log("Bounce to right");
+                            break;
+                        }
+
                         break;
                     }
                 }
             }
-
+            
             if (this.vy > cvs.height * 0.5) {
                 this.vy = this.y > cvs.height - this.img.height * 0.5 ? -35000 * dt : this.vy;
             }
