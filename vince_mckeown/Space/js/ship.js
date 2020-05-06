@@ -12,6 +12,8 @@ function shipClass() {
 	this.myShotList = [];
 	this.totalShots = 3
 	this.score = 0;
+	this.life = 3;
+	this.displayScoreList = [];
 	this.picture = document.createElement("img");
 	
 	this.setupControls = function(forwardKey,leftKey,rightKey,shotKey) {
@@ -27,6 +29,9 @@ function shipClass() {
 		this.ang = -0.5 * Math.PI;
 		for (var i=0; i < this.myShotList.length ; i++){
 			this.myShotList[i].reset();
+		}
+		for (var i=0; i < this.displayScoreList.length ; i++){
+			this.displayScoreList[i].reset();
 		}
 	}
 					
@@ -58,36 +63,57 @@ function shipClass() {
 		for (var i=0; i < this.myShotList.length ; i++){
 			this.myShotList[i].movement();
 		}
+		for (var i=0; i < this.displayScoreList.length ; i++){
+			this.displayScoreList[i].movement();
+		}
 		
 		this.removeBullet();
+		this.removeScoreFromScreen();
 	}	
 	
-	this.checkMyShipAndShotCollisionAgainst = function(thisEnemy){
+	this.checkMyShipCollisionAgainst = function(thisEnemy){
 		if(thisEnemy.isOverlappingPoint(this.x,this.y)){
 			this.reset();
 			document.getElementById("debugText").innerHTML = "Player Crashed!";
+			let tempScore = new scoreDisplayClass; //create score being added
+			tempScore.displayFrom("-200", this.x, this.y, 0, 0, 50, "red");
+			playerOne.displayScoreList.push(tempScore);
 			this.score -= 200;
-		}
-		for (i=0; i < this.myShotList.length; i++){
-			if(this.myShotList[i].hitTest(thisEnemy)){
-				thisEnemy.reset();
-				this.myShotList[i].reset();
+			this.life -= 1;
+			if(this.life <= 0){
+				resetGame();
+			}
+		} 
+	}
+	
+	this.checkMyShotCollisionAgainst = function(thisEnemy){
+		for (ii=0; ii < this.myShotList.length; ii++){
+			if(this.myShotList[ii].hitTest(thisEnemy)){
+				thisEnemy.markForRemoval();
+				this.myShotList[ii].reset();
 				document.getElementById("debugText").innerHTML = "Enemy Blasted!";
+				let tempScore = new scoreDisplayClass; //create score being added
+				tempScore.displayFrom("100", this.x, this.y, 0, 0, 50, "white");
+				playerOne.displayScoreList.push(tempScore);
 				this.score += 100;
 			}
-		}
+		} 
 	}
 	
 	this.draw = function(){
 		for (i=0; i < this.myShotList.length ; i++){
 			this.myShotList[i].draw();
 		}
+		
 		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, this.ang);
+
+		for (i=0; i < this.displayScoreList.length ; i++){
+			this.displayScoreList[i].draw();
+		}
 	}
 	
 	this.cannonFire = function(){
 		if(this.myShotList.length < this.totalShots){
-			console.log("FIRE");
 			let tempShot = new shotClass();
 			tempShot.shootFrom(this);
 			this.myShotList.push(tempShot);
@@ -96,9 +122,16 @@ function shipClass() {
 	
 	this.removeBullet = function (){
 		for(var i = this.myShotList.length - 1; i >= 0 ; i--){
-			console.log(this.myShotList.length);
 			if(this.myShotList[i].readyToRemove){
 				this.myShotList.splice(i,1);
+			}
+		}
+	}
+	
+	this.removeScoreFromScreen = function(){
+		for(var i = this.displayScoreList.length - 1; i >= 0 ; i--){
+			if(this.displayScoreList[i].readyToRemove){
+				this.displayScoreList.splice(i,1);
 			}
 		}
 	}

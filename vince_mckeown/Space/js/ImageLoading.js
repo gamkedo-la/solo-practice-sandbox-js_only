@@ -1,5 +1,6 @@
 var picture = document.createElement("img");
 var ufoPic = document.createElement("img");
+var asteroidPic = document.createElement("img");
 
 var picsToLoad = 0;
 
@@ -25,7 +26,8 @@ function loadImages() {
 	
 		var imageList = [
 			{varName: picture, theFile: "player1.png"},
-			{varName: ufoPic, theFile: "ufoPic.png"}
+			{varName: ufoPic, theFile: "ufoPic.png"},
+			{varName: asteroidPic, theFile: "Astroid.png"}
 		];
 			
 	picsToLoad = imageList.length;

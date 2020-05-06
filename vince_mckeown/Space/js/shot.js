@@ -48,6 +48,9 @@ function shotClass(){
 		if(this.shotLife <= 0) {
 			playerOne.score = playerOne.score + missShot;
 			this.readyToRemove = true;
+			let tempScore = new scoreDisplayClass; //create score being added
+			tempScore.displayFrom("-10", this.x, this.y, 0, 0, 50, "red");
+			playerOne.displayScoreList.push(tempScore);
 			return false;
 		}
 		return thisEnemy.isOverlappingPoint(this.x,this.y);

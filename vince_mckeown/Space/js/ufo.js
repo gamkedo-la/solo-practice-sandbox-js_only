@@ -3,11 +3,9 @@ const UFO_TIME_BETWEEN_DIR_CHANGE = 85;
 const UFO_COLLISION_RADIUS = 25;
 
 ufoClass.prototype = new movingWrapPositionClass();
-
-function ufoClass() {
-		
-	this.x = 60;
-	this.y = 60;
+function ufoClass() {	
+	this.x, this.y;
+	this.readyToRemove = false;
 	
 	this.keyHeld_Thrust = false;
 	
@@ -47,7 +45,29 @@ function ufoClass() {
 		return (dist <= UFO_COLLISION_RADIUS);
 	}
 	
+	this.checkMyShipCollisionAgainst = function(thisEnemy){
+		if(thisEnemy.isOverlappingPoint(this.x,this.y)){
+			this.readyToRemove = true;
+			document.getElementById("debugText").innerHTML = "Crashed into the Asteroid";
+		} 
+	}
+	
+	this.checkMyShotCollisionAgainst = function(thisEnemy){
+		for (var ii=0; ii < this.myShotList.length; ii++){
+			if(this.myShotList[ii].hitTest(thisEnemy)){
+				thisEnemy.readyToRemove = true;
+				this.myShotList[ii].reset();
+				document.getElementById("debugText").innerHTML = "Player Blasted!";
+			}
+		} 
+	}
+	
+	this.markForRemoval = function(){
+		this.readyToRemove = true;
+	}
+	
 	this.draw = function(){
 		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, 0.0);
+		//colorText(this.myName, this.x, this.y - 50, "white");
 	}
 } // end UFO Class
