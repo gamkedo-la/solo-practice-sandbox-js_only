@@ -31,8 +31,8 @@ function imageLoadingDoneSoStartGame(){
 		moveEverything();
 		drawEverything();
 	}, 1000/framesPerSecond);
-	propertyOne.init(propertyPic, "1", 0, 0);
-	propertyTwo.init(propertyPic, "2", 0, 150);
+	propertyOne.init(propertyPic, "1");
+	propertyTwo.init(propertyPic, "2");
 }
 			
 function moveEverything() {
@@ -40,7 +40,6 @@ function moveEverything() {
 }
 			
 function calculateMousePos(evt) {
-	
 	var rect = canvas.getBoundingClientRect(), root = document.documentElement;
 	var mouseX = evt.clientX - rect.left - root.scrollLeft;
 	var mouseY = evt.clientY - rect.top - root.scrollTop;
@@ -50,11 +49,8 @@ function calculateMousePos(evt) {
 	};
 }
 						
-function drawEverything() {
-				
-	//clears screen
-	colorRect(0,0,canvas.width,canvas.height, 'black');
-				
+function drawEverything() {		
+	colorRect(0,0,canvas.width,canvas.height, 'black');		
 	drawLandScape();
 	propertyOne.draw();
 	propertyTwo.draw();

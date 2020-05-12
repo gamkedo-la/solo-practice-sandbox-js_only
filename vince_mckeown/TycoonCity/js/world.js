@@ -4,7 +4,7 @@ const MAP_COLS = 16;
 const MAP_ROWS = 12;
 
 var roomGrid = [
-					0,0,2,0,0,0,0,0,0,0,0,0,0,2,0,0,
+					1,0,2,1,0,0,0,0,0,0,0,0,0,2,0,0,
 					0,0,2,0,0,0,0,0,0,0,0,0,0,2,0,0,
 					2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 					0,0,2,0,0,0,0,0,0,0,0,0,0,2,0,0,
@@ -19,7 +19,7 @@ var roomGrid = [
 					];
 					
 	const TILE_GRASS = 0;
-	const TILE_PLAYER = 1;
+	const TILE_PROPERTY = 1;
 	const TILE_ROAD = 2;
 
 

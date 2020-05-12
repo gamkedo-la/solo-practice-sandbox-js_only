@@ -24,12 +24,11 @@ function initInput(){
 }
 
 function keyPressed(evt) {
-	setKeyHoldState(evt.keyCode, playerOne, true);
 	evt.preventDefault();
 }
 
 function keyReleased(evt) {
-	setKeyHoldState(evt.keyCode, playerOne, false);
+
 }
 
 

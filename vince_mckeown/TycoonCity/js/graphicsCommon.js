@@ -11,6 +11,8 @@ function colorCircle(centerX, centerY, radius, fillColor){
 }
 
 function drawBitmapAtLocation(graphic, atX, atY){
+	canvasContext.save();
 	canvasContext.translate(atX,atY); //sets the point where the car graphic goes
 	canvasContext.drawImage(graphic, 0, 0); //center, draws car
+	canvasContext.restore();
 }
