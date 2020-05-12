@@ -1,13 +1,12 @@
 var canvas;
 var canvasContext;
-var gameState = "combat";
+var gameState = "chooseTeam";
 
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
-	console.log("Load");
     loadImages();
-	console.log("Init");
+
     initInput();
 
     canvas.addEventListener('mousemove', function(evt) {
@@ -24,7 +23,6 @@ window.onload = function() {
 }
 
 function imageLoadingDoneSoStartGame() {
-    console.log("start");
 	var framesPerSecond = 60;
     setInterval(function() {
         moveEverything();
@@ -32,12 +30,15 @@ function imageLoadingDoneSoStartGame() {
     }, 1000 / framesPerSecond);
 }
 
+
 function moveEverything() {
 
 }
 	
 function drawEverything() {
-	if(gameState == "combat"){
+	if(gameState == "chooseTeam"){
+		drawChooseTeamScreen();
+	} else if(gameState == "combat"){
 		drawCombatScreen();
 	}
 }
