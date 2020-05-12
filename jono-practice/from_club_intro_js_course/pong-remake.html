@@ -1,0 +1,54 @@
+<html>
+    <h1>Pong clone</h1>
+    <p>Attempting to re-create pong after watching training vid without looking at solution.</p>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+</html>
+
+<script type="text/javascript">
+
+//Frame setup 
+var canvasElement;
+var canvasContext;
+const FPS = 60;
+const TimeBetweenFrames = 1000/FPS;
+
+window.onload = function () {
+
+    canvasElement = document.getElementById("gameCanvas");
+    canvasContext = canvasContext.getContext();
+    
+    setTimeout(processFrame, TimeBetweenFrames);
+};
+
+//game details 
+const PaddleHeight = 50;
+const PaddleThickness = 10;
+const BallRadius = 20;
+const NettingHeight = 10;
+const NettingThickness = 10;
+var ballPositionX = 0;
+var ballPositionY = 0;
+
+//player 1 details
+var player1PositionX = 0;
+var player1PositionY = 0;
+var player1Score = 0;
+
+//player 2 details
+var player2PositionX = 0;
+var player2PositionY = 0;
+var player2Score = 0;
+
+function updateGame(){
+
+}
+function renderGame(){
+
+}
+
+function processFrame(){
+    updateGame();
+    renderGame();
+}
+
+</script>
