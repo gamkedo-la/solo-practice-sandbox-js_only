@@ -8,47 +8,152 @@
 
 //Frame setup 
 var canvasElement;
-var canvasContext;
+var context;
 const FPS = 60;
 const TimeBetweenFrames = 1000/FPS;
 
 window.onload = function () {
 
+    window.onclick = handleMouseClick;
+
     canvasElement = document.getElementById("gameCanvas");
-    canvasContext = canvasContext.getContext();
-    
-    setTimeout(processFrame, TimeBetweenFrames);
+    context = canvasElement.getContext("2d");
+
+    setInterval(processFrame, TimeBetweenFrames);
 };
 
+
 //game details 
-const PaddleHeight = 50;
+const BackgroundStyle = 'black';
+const PaddleHeight = 130;
 const PaddleThickness = 10;
-const BallRadius = 20;
-const NettingHeight = 10;
-const NettingThickness = 10;
-var ballPositionX = 0;
-var ballPositionY = 0;
+const PaddleStyle = 'white';
+const BallRadius = 15;
+const BallStyle = 'white';
+const NettingHeight = 40;
+const NettingThickness = 4;
+const NettingStyle = 'white';
+const ScoreToWin = 5;
+const StartGameState = 'start';
+const InGameState = 'game';
+const FinishGameState = 'finish';
+var gameState = StartGameState; //can be start, game, finish
+var ballPositionX = 400 - BallRadius;
+var ballPositionY = 300 - BallRadius;
+var ballSpeedX = 0;
+var ballSpeedY = 0;
+
+//game ui details
+const TitleText = 'P O N G';
+const TitleFont = 'normal small-caps 500 ultra-expanded 46px Tahoma';
+const TitleAlign = 'center';
+const StartGameText = '＜ Click to begin ＞';
+const FinishedGameTitleText = 'Game over';
+const FinishedGameWinnerText = 'Congrats, you win!';
+const FinishedGameLoserText = 'They were too good. Try again!~';
+const FinishedGameBackgroundStyle = 'rgba(0,0,0,0.6)';
+const GeneralTextFont = 'normal 18px Tahoma';
+const GeneralTextAlign = 'center';
+const GeneralTextStyle = 'white';
 
 //player 1 details
 var player1PositionX = 0;
-var player1PositionY = 0;
+var player1PositionY = 300 - PaddleHeight*0.5;
 var player1Score = 0;
 
 //player 2 details
-var player2PositionX = 0;
-var player2PositionY = 0;
+var player2PositionX = 800 - PaddleThickness;
+var player2PositionY = 300 - PaddleHeight*0.5;
 var player2Score = 0;
 
+
 function updateGame(){
-
 }
-function renderGame(){
 
+function renderGame(){
+    renderRectangle(0, 0, canvasElement.width, canvasElement.height, BackgroundStyle);
+
+    //render netting
+    let middleCourt = canvasElement.width*0.5;
+    for(let nettingPositionY = 0; nettingPositionY < canvasElement.height; nettingPositionY += NettingHeight*2){
+        
+        renderRectangle(middleCourt - NettingThickness*0.5, nettingPositionY, NettingThickness, NettingHeight, NettingStyle);
+    }
+    
+    renderRectangle(player1PositionX, player1PositionY, PaddleThickness, PaddleHeight, PaddleStyle);
+    renderRectangle(player2PositionX, player2PositionY, PaddleThickness, PaddleHeight, PaddleStyle);
+
+    renderCircle(ballPositionX, ballPositionY, BallRadius, BallStyle);
+}
+
+function renderStartGame(){
+    renderRectangle(0, 0, canvasElement.width, canvasElement.height, BackgroundStyle);
+
+    renderText(TitleText, canvasElement.width*0.5, canvasElement.height*0.5, TitleFont, TitleAlign, GeneralTextStyle);
+    renderText(StartGameText, canvasElement.width*0.5, canvasElement.height*0.8, GeneralTextFont, GeneralTextAlign, GeneralTextStyle);
+}   
+
+function renderFinishedGame(){
+    renderRectangle(0, 0, canvasElement.width, canvasElement.height, FinishedGameBackgroundStyle);
+
+    renderText(FinishedGameTitleText, canvasElement.width*0.5, canvasElement.height*0.5, TitleFont, TitleAlign, GeneralTextStyle);
+    if(player1Score > player2Score){
+        renderText(FinishedGameWinnerText, canvasElement.width*0.5, canvasElement.height*0.8, GeneralTextFont, GeneralTextAlign, GeneralTextStyle);
+    }
+    else{
+        renderText(FinishedGameLoserText, canvasElement.width*0.5, canvasElement.height*0.8, GeneralTextFont, GeneralTextAlign, GeneralTextStyle);
+    }
+    
+}
+
+//#region Canvas rendering helpers
+function renderRectangle(x, y, width, height, color){
+    context.fillStyle = color;
+    context.fillRect(x,y, width, height);
+}
+
+// x,y params should be from top left corner of circle bounding box.
+function renderCircle(x, y, radius, color){
+    context.fillStyle = color;
+    context.arc(x+radius, y+radius, radius, 0, Math.PI*2, true);
+    context.fill();
+}
+
+function renderText(text, x, y, font, align, style) {
+    context.font = font;
+    context.textAlign = align;
+    context.fillStyle = style;
+    context.fillText(text, x, y);
+}
+//#endregion 
+
+function handleMouseClick(event){
+    let newState;
+    switch (gameState) {
+        case StartGameState:
+            newState = InGameState; 
+            break;
+        case FinishGameState:
+            newState = StartGameState;
+            break;
+    }
+    gameState = newState;
 }
 
 function processFrame(){
-    updateGame();
-    renderGame();
+    switch (gameState) {
+        case StartGameState:
+            renderStartGame();
+            break;
+        case InGameState:
+            updateGame();
+            renderGame();
+            break;
+        case FinishGameState:
+            renderGame();
+            renderFinishedGame();
+            break;
+    }
 }
 
 </script>
