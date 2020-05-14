@@ -1,0 +1,259 @@
+<html>
+    <h1>Pong clone</h1>
+    <p>Attempting to re-create pong after watching training vid without looking at solution.</p>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+</html>
+
+<script type="text/javascript">
+
+//Frame setup 
+var canvasElement;
+var context;
+const FPS = 60;
+const TimeBetweenFrames = 1000/FPS;
+
+window.onload = function () {
+
+    window.onclick = updateGameState;
+    window.onmousemove = movePlayer1;
+
+    canvasElement = document.getElementById("gameCanvas");
+    context = canvasElement.getContext("2d");
+
+    setInterval(processFrame, TimeBetweenFrames);
+};
+
+
+//game details 
+const BackgroundStyle = 'black';
+const PaddleHeight = 100;
+const PaddleThickness = 10;
+const PaddleStyle = 'white';
+const BallRadius = 15;
+const BallStyle = 'white';
+const NettingHeight = 40;
+const NettingThickness = 4;
+const NettingStyle = 'white';
+const ScoreToWin = 5;
+const StartGameState = 'start';
+const InGameState = 'game';
+const FinishGameState = 'finish';
+var gameState = StartGameState; //can be start, game, finish
+var ballPositionX = 400 - BallRadius;
+var ballPositionY = 300 - BallRadius;
+const InitialBallSpeed = 8;
+var ballSpeedX = -InitialBallSpeed;
+var ballSpeedY = InitialBallSpeed;
+
+//game ui details
+const TitleText = 'P O N G';
+const TitleFont = 'normal small-caps 700 ultra-expanded 46px Tahoma';
+const TitleAlign = 'center';
+const ScoreFont = 'normal small-caps 700 ultra-expanded 64px sans-serif';
+const StartGameText = '＜ First to score five wins. Click to begin ＞';
+const FinishedGameTitleText = 'Game over';
+const FinishedGameWinnerText = 'Congrats, you win!';
+const FinishedGameLoserText = 'They were too good. Click to try again!';
+const FinishedGameBackgroundStyle = 'rgba(0,0,0,0.6)';
+const GeneralTextFont = 'normal 18px Tahoma';
+const GeneralTextAlign = 'center';
+const GeneralTextStyle = 'white';
+
+//player 1 details
+var player1PositionX = 0;
+var player1PositionY = 300 - PaddleHeight*0.5;
+var player1Score = 0;
+
+//player 2 details
+var player2PositionX = 800 - PaddleThickness;
+var player2PositionY = 300 - PaddleHeight*0.5;
+var player2Score = 0;
+
+
+function updateGame(){
+    updateBall();
+    movePlayer2Automatically();
+}
+
+
+// so the higher the x speed, the more horizontal it is. 
+// at the middle of the paddle, you want it fully horizontal.
+// at the edge of the paddle you want it to be fairly vertical.
+
+
+function updateBall(){
+    
+    //Reflect at the left/right edges if we hit the paddle, otherwise score.
+    if(ballPositionX >= canvasElement.width - BallRadius*2){
+        if(ballPositionY + BallRadius >= player2PositionY && ballPositionY + BallRadius <= player2PositionY + PaddleHeight){
+            ballSpeedX = -ballSpeedX;
+            var deltaY = (ballPositionY + BallRadius) //center of ball
+					-(player2PositionY+PaddleHeight*0.5); //center of paddle
+			ballSpeedY = deltaY * 0.25;
+        }else{
+            ++player1Score;
+            playerScores();
+        }
+    }
+    if(ballPositionX <= 0){
+        if(ballPositionY + BallRadius >= player1PositionY && ballPositionY + BallRadius <= player1PositionY + PaddleHeight){
+            ballSpeedX = -ballSpeedX;
+            var deltaY = (ballPositionY + BallRadius) //center of ball
+					-(player1PositionY+PaddleHeight*0.5); //center of paddle
+			ballSpeedY = deltaY * 0.25;
+        }else{
+            ++player2Score;
+            playerScores();
+        }
+    }
+
+
+    //Reflect at the top/bottom edges of the court.
+    if(ballPositionY >= canvasElement.height  - BallRadius*2 || ballPositionY <= 0){
+        ballSpeedY = -ballSpeedY;
+    }
+
+    //Update new position based on speed.
+    ballPositionX += ballSpeedX;
+    ballPositionY += ballSpeedY;
+}
+
+function playerScores(){
+    const InitialBallPositionX = canvasElement.width*0.5 - BallRadius;
+    const InitialBallPositionY = canvasElement.height*0.5 - BallRadius;
+
+    ballPositionX = InitialBallPositionX;
+    ballPositionY = InitialBallPositionY;
+    
+    ballSpeedX = -ballSpeedX;
+    if(Math.random() - 0.5 > 0){
+        ballSpeedY = -ballSpeedY;
+    }
+
+    if(player1Score >= ScoreToWin || player2Score >= ScoreToWin){
+        gameState = FinishGameState;
+    }
+}
+
+function movePlayer2Automatically(){
+    let heightDifferenceBetweenPaddleAndBall = ballPositionY - player2PositionY;
+    
+    // Only move towards the ball if its not in the center 50% of the paddle.
+    const MiddleRangeOfPaddle = PaddleHeight*0.5; 
+    const Player2PaddleSpeed = 6;
+    if(heightDifferenceBetweenPaddleAndBall > MiddleRangeOfPaddle){
+        player2PositionY += Player2PaddleSpeed;
+    }
+    if(heightDifferenceBetweenPaddleAndBall < -MiddleRangeOfPaddle){
+        player2PositionY -= Player2PaddleSpeed;
+    }
+}
+
+
+//#region Rendering
+
+function renderGame(){
+    renderRectangle(0, 0, canvasElement.width, canvasElement.height, BackgroundStyle);
+
+    //render netting
+    let middleCourt = canvasElement.width*0.5;
+    for(let nettingPositionY = 0; nettingPositionY < canvasElement.height; nettingPositionY += NettingHeight*2){
+        
+        renderRectangle(middleCourt - NettingThickness*0.5, nettingPositionY, NettingThickness, NettingHeight, NettingStyle);
+    }
+
+    //Render Scores
+    renderText(player1Score, canvasElement.width*0.25, canvasElement.height*0.2, ScoreFont, TitleAlign, GeneralTextStyle);
+    renderText(player2Score, canvasElement.width*0.75, canvasElement.height*0.2, ScoreFont, TitleAlign, GeneralTextStyle);
+
+    //Render paddles and ball
+    renderRectangle(player1PositionX, player1PositionY, PaddleThickness, PaddleHeight, PaddleStyle);
+    renderRectangle(player2PositionX, player2PositionY, PaddleThickness, PaddleHeight, PaddleStyle);
+
+    renderCircle(ballPositionX, ballPositionY, BallRadius, BallStyle);
+}
+
+function renderStartGame(){
+    renderRectangle(0, 0, canvasElement.width, canvasElement.height, BackgroundStyle);
+
+    renderText(TitleText, canvasElement.width*0.5, canvasElement.height*0.5, TitleFont, TitleAlign, GeneralTextStyle);
+    renderText(StartGameText, canvasElement.width*0.5, canvasElement.height*0.8, GeneralTextFont, GeneralTextAlign, GeneralTextStyle);
+}   
+
+function renderFinishedGame(){
+    renderRectangle(0, 0, canvasElement.width, canvasElement.height, FinishedGameBackgroundStyle);
+
+    renderText(FinishedGameTitleText, canvasElement.width*0.5, canvasElement.height*0.5, TitleFont, TitleAlign, GeneralTextStyle);
+    if(player1Score > player2Score){
+        renderText(FinishedGameWinnerText, canvasElement.width*0.5, canvasElement.height*0.8, GeneralTextFont, GeneralTextAlign, GeneralTextStyle);
+    }
+    else{
+        renderText(FinishedGameLoserText, canvasElement.width*0.5, canvasElement.height*0.8, GeneralTextFont, GeneralTextAlign, GeneralTextStyle);
+    }
+    
+}
+
+//#region Canvas rendering helpers
+function renderRectangle(x, y, width, height, color){
+    context.fillStyle = color;
+    context.fillRect(x,y, width, height);
+}
+
+// x,y params should be from top left corner of circle bounding box.
+function renderCircle(x, y, radius, color){
+    context.fillStyle = color;
+    context.beginPath();
+    context.arc(x+radius, y+radius, radius, 0, Math.PI*2, true);
+    context.fill();
+}
+
+function renderText(text, x, y, font, align, style) {
+    context.font = font;
+    context.textAlign = align;
+    context.fillStyle = style;
+    context.fillText(text, x, y);
+}
+//#endregion 
+
+//#endregion 
+
+function updateGameState(event){
+    let newState = gameState;
+    switch (gameState) {
+        case StartGameState:
+            player1Score = 0;
+            player2Score = 0;
+            newState = InGameState; 
+            break;
+        case FinishGameState:
+            newState = StartGameState;
+            break;
+    }
+    gameState = newState;
+}
+
+function movePlayer1(event){
+    var rect = canvasElement.getBoundingClientRect();
+	var root = document.documentElement;
+	var mouseY = event.clientY - rect.top - root.scrollTop;
+    player1PositionY = mouseY - PaddleHeight*0.5;
+}
+
+
+function processFrame(){
+    switch (gameState) {
+        case StartGameState:
+            renderStartGame();
+            break;
+        case InGameState:
+            updateGame();
+            renderGame();
+            break;
+        case FinishGameState:
+            renderGame();
+            renderFinishedGame();
+            break;
+    }
+}
+
+</script>

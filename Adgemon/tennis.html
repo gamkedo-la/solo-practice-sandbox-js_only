@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+</head>
+<body>
+<canvas id="gameCanvas" width="640" height="700"></canvas>
+
+<script>
+var canvas, canvasContext;
+
+var ballX = 75, ballY = 75;
+var ballSpeedX = 3, ballSpeedY = 4;
+
+const PADDLE_HEIGHT = 100;
+const PADDLE_THICKNESS = 10;
+var paddle1X = 250, paddle1Y = 250;
+var paddle2X = 250, paddle2Y = 250;
+
+var paddle1Score = 0, paddle2Score = 0;
+var paddle3Score = 0, paddle4Score = 0;
+
+function calculateMousePos(evt) {
+  var rect = canvas.getBoundingClientRect(), root = document.documentElement; 
+
+  var mouseX = evt.clientX - rect.left - root.scrollLeft;
+  var mouseY = evt.clientY - rect.top - root.scrollTop;
+ return {
+    x: mouseX,
+    y: mouseY
+  };
+}
+
+window.onload = function() {
+  //save the canvas for dimensions, and 2d context for drawing to it;
+  canvas = document.getElementById('gameCanvas');
+  canvasContext = canvas.getContext("2d");
+
+  canvas.addEventListener('mousemove', function(evt) {
+      var mousePos = calculateMousePos(evt);
+      paddle2Y = mousePos.y - (PADDLE_HEIGHT/2);  // minus half paddle height to center
+  } );
+  
+  var framesPersecond = 60;
+   setInterval(function(){
+      moveEverything();
+      drawEverything();
+  },1000/framesPersecond);
+}
+
+function ballReset() {
+  ballSpeedX = -ballSpeedX;
+
+  //center ball on screen
+  ballX = canvas.width / 2;
+  ballY = canvas.siwth / 2;
+}
+
+function moveEverything() {
+  if(ballX < 0) { 
+      if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
+        ballSpeedX *= -1;
+
+        var deltaY = ballY - (paddle1Y+PADDLE_HEIGHT/2);
+        ballSpeedY = deltaY * 0.25;
+      } else {
+        ballReset();
+      }
+    }
+
+  if(ballX > canvas.width) {
+    if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT) {
+      ballSpeedX *= -1;
+
+      var deltaY = ballY - (paddle2Y+PADDLE_HEIGHT/2);
+        ballSpeedY = deltaY * 0.35;
+    } else {
+      ballReset();
+    }
+  }
+
+  // if(ballY < 0) {
+  //   if(ballY > paddle1X && ballY < paddle1X+PADDLE_HEIGHT) {
+  //     ballSpeedX *= -1;
+  //   } else {
+  //     ballReset();
+  //   }
+  // }
+
+  // if(ballY > canvas.hegiht) {
+  //   if(ballY > paddle2X && ballY < paddle2X+PADDLE_HEIGHT) {
+  //     ballSpeedX *= -1;
+  //   } else {
+  //     ballReset();
+  //   }
+  // }
+
+  if(ballY < 0) { // if ball has moved beyond the top edge
+      ballSpeedY *= -1; // reverse ball's vertical direction
+    }
+    
+    if(ballY > canvas.height) { // if ball has moved beyond the bottom edge
+      ballSpeedY *= -1; // reverse ball's vertical direction
+    }
+  
+  ballX += ballSpeedX;
+  ballY += ballSpeedY;
+}
+
+function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
+  canvasContext.fillStyle = fillColor;
+  canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+};
+
+function colorCircle(centerX, centerY, radius, fillColor){
+  canvasContext.fillStyle = fillColor;
+  canvasContext.beginPath();
+  canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+  canvasContext.fill();
+};
+
+function colorLine(startX, startY, endX, endY, fillColor){
+  canvasContext.fillStyle = fillColor;
+  canvasContext.beginPath();
+  canvasContext.moveTo(startX, startY);
+  canvasContext.lineTo(endX, endY);
+  canvasContext.stroke();
+}
+
+function drawEverything(){
+  colorRect(0, 0, canvas.width, canvas.height, '#203030');
+
+  colorRect(0, paddle1Y, PADDLE_THICKNESS , PADDLE_HEIGHT, '#FF25AA');//P1
+  colorRect(canvas.width - PADDLE_THICKNESS , paddle2Y, PADDLE_THICKNESS , PADDLE_HEIGHT, 'orange');//P2
+  colorRect(paddle1X, 0, PADDLE_HEIGHT , PADDLE_THICKNESS, 'cyan');//P3
+  colorRect(paddle2X, canvas.height - PADDLE_THICKNESS, PADDLE_HEIGHT , PADDLE_THICKNESS, 'red');//P4
+  colorCircle(ballX, ballY, 10, 'white');
+
+  canvasContext.fillText(paddle1Score, 300, 680);
+  canvasContext.fillText(paddle1Score + paddle2Score + paddle3Score, 500, 100);
+}
+</script>
+</body>
+</html>
