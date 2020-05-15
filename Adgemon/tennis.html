@@ -15,11 +15,16 @@ var ballSpeedX = 3, ballSpeedY = 4;
 
 const PADDLE_HEIGHT = 100;
 const PADDLE_THICKNESS = 10;
+const WINNING_SCORE = 3;
+const PADDLE_COMPUTER_MOVE_SPEED = 7.0;
+
 var paddle1X = 250, paddle1Y = 250;
 var paddle2X = 250, paddle2Y = 250;
 
 var paddle1Score = 0, paddle2Score = 0;
 var paddle3Score = 0, paddle4Score = 0;
+var showWinningScreen = false;
+
 
 function calculateMousePos(evt) {
   var rect = canvas.getBoundingClientRect(), root = document.documentElement; 
@@ -32,32 +37,71 @@ function calculateMousePos(evt) {
   };
 }
 
+function handleMouseCLick(evt){
+  if (showWinningScreen){
+    paddle1Score = 0;
+    paddle2Score = 0;
+    showWinningScreen = false;
+  }
+}
+
 window.onload = function() {
   //save the canvas for dimensions, and 2d context for drawing to it;
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext("2d");
 
-  canvas.addEventListener('mousemove', function(evt) {
-      var mousePos = calculateMousePos(evt);
-      paddle2Y = mousePos.y - (PADDLE_HEIGHT/2);  // minus half paddle height to center
-  } );
-  
   var framesPersecond = 60;
    setInterval(function(){
       moveEverything();
       drawEverything();
   },1000/framesPersecond);
+
+  canvas.addEventListener('mousedown' , handleMouseCLick);
+
+  canvas.addEventListener('mousemove', function(evt) {
+      var mousePos = calculateMousePos(evt);
+      paddle1Y = mousePos.y - (PADDLE_HEIGHT/2);  // minus half paddle height to center
+  } );
+  
 }
 
+canvasContext.textAlign = 'center';//All texts are centered
+
 function ballReset() {
+    if (paddle1Score >= WINNING_SCORE || paddle2Score >= WINNING_SCORE) {
+      showWinningScreen = true;
+    }
+
+
+  // reverse ball heading, so whoever lost a point "serves"
   ballSpeedX = -ballSpeedX;
 
   //center ball on screen
   ballX = canvas.width / 2;
-  ballY = canvas.siwth / 2;
+  ballY = canvas.height / 2;
+}
+function moveComputerPaddle() {
+  const AI_SIT_STILL_MARGIN = 35;
+  
+  var paddle2Center = paddle2Y + (PADDLE_HEIGHT/2)
+  var topChaseLine = paddle2Center - AI_SIT_STILL_MARGIN;
+  var bottomChaseLine = paddle2Center + AI_SIT_STILL_MARGIN;
+
+  if (ballY < topChaseLine) {
+    paddle2Y -= PADDLE_COMPUTER_MOVE_SPEED;
+  }
+
+  if (ballY >  bottomChaseLine) {
+    paddle2Y += PADDLE_COMPUTER_MOVE_SPEED;
+  }
 }
 
 function moveEverything() {
+  if (showWinningScreen){
+    return;
+  }
+  moveComputerPaddle();
+
   if(ballX < 0) { 
       if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
         ballSpeedX *= -1;
@@ -65,6 +109,7 @@ function moveEverything() {
         var deltaY = ballY - (paddle1Y+PADDLE_HEIGHT/2);
         ballSpeedY = deltaY * 0.25;
       } else {
+        paddle2Score++;
         ballReset();
       }
     }
@@ -76,6 +121,7 @@ function moveEverything() {
       var deltaY = ballY - (paddle2Y+PADDLE_HEIGHT/2);
         ballSpeedY = deltaY * 0.35;
     } else {
+      paddle1Score++;
       ballReset();
     }
   }
@@ -128,17 +174,29 @@ function colorLine(startX, startY, endX, endY, fillColor){
   canvasContext.stroke();
 }
 
+function colorText(showWords, textX, textY, fillColor){
+  canvasContext.fillStyle = fillColor;
+  canvasContext.fillText(showWords, textX, textY);
+}
+
 function drawEverything(){
   colorRect(0, 0, canvas.width, canvas.height, '#203030');
 
-  colorRect(0, paddle1Y, PADDLE_THICKNESS , PADDLE_HEIGHT, '#FF25AA');//P1
-  colorRect(canvas.width - PADDLE_THICKNESS , paddle2Y, PADDLE_THICKNESS , PADDLE_HEIGHT, 'orange');//P2
-  colorRect(paddle1X, 0, PADDLE_HEIGHT , PADDLE_THICKNESS, 'cyan');//P3
-  colorRect(paddle2X, canvas.height - PADDLE_THICKNESS, PADDLE_HEIGHT , PADDLE_THICKNESS, 'red');//P4
-  colorCircle(ballX, ballY, 10, 'white');
-
-  canvasContext.fillText(paddle1Score, 300, 680);
-  canvasContext.fillText(paddle1Score + paddle2Score + paddle3Score, 500, 100);
+  if(showWinningScreen){
+    if(paddle1Score >= WINNING_SCORE){
+      colorText('player1 wins', canvas.width/2 , canvas.height/2,'white'); 
+    }else if(paddle2Score >= WINNING_SCORE){
+      colorText('CPU wins', canvas.width/2 , canvas.height/2,'white');
+    }
+  } else {
+    colorRect(0, paddle1Y, PADDLE_THICKNESS , PADDLE_HEIGHT, '#FF25AA');//P1
+    colorRect(canvas.width - PADDLE_THICKNESS , paddle2Y, PADDLE_THICKNESS , PADDLE_HEIGHT, 'orange');//P2
+    colorRect(paddle1X, 0, PADDLE_HEIGHT , PADDLE_THICKNESS, 'cyan');//P3
+    colorRect(paddle2X, canvas.height - PADDLE_THICKNESS, PADDLE_HEIGHT , PADDLE_THICKNESS, 'red');//P4
+    colorCircle(ballX, ballY, 10, 'white');
+  }
+  colorText(paddle1Score, 100, 100, 'white');
+  colorText(paddle2Score, canvas.width-100, canvas.height-100, 'white');
 }
 </script>
 </body>
