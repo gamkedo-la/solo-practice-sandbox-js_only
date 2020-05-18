@@ -20,7 +20,7 @@ var shootStart;
 var shotVector = {};
 
 var ballX = 500;
-var ballY = 300;
+var ballY = 333;
 var ballSpeedX = 0;
 var ballSpeedY = 0;
 
@@ -132,7 +132,8 @@ function ballReset() {
 
 	}
 
-	ballSpeedX = -ballSpeedX;
+	ballSpeedX = 0
+	ballSpeedY = 0;
 	ballX = canvas.width/2;
 	ballY = canvas.height/2;
 }
@@ -230,7 +231,7 @@ function drawNet() {
 	for(var i=0;i<canvas.height;i+=60) {
 		colorRect(canvas.width/2-1,i,8,30,'white');
 	}
-//	colorCircle(canvas.width/2, canvas.height/2, 140, 'white')
+	strokeCircle(canvas.width/2, canvas.height/2, 140, 'white');
 }
 
 function drawEverything() {
@@ -294,11 +295,24 @@ function drawEverything() {
 	
 }
 
-function colorCircle(centerX, centerY, radius, drawColor) {
+function colorCircle(centerX, centerY, radius, drawColor, stroke=false) {
 	canvasContext.fillStyle = drawColor;
 	canvasContext.beginPath();
 	canvasContext.arc(centerX, centerY, radius, 0,Math.PI*2,true);
 	canvasContext.fill();
+	if(stroke){
+		canvasContext.lineWidth = 5;
+		canvasContext.strokeStyle = 'white';
+	}
+}
+
+function strokeCircle(centerX, centerY, radius, drawColor) {
+	canvasContext.fillStyle = drawColor;
+	canvasContext.beginPath();
+	canvasContext.arc(centerX, centerY, radius, 0,Math.PI*2,true);
+	canvasContext.lineWidth = 5;
+	canvasContext.strokeStyle = 'white';
+	canvasContext.stroke();
 }
 
 function colorRect(leftX,topY, width,height, drawColor, rotation=0) {
