@@ -18,7 +18,7 @@ let Rock = function(cvs = canvas) {
         this.x = cvs.width * 0.5 - this.img.width * 0.25;
     };
 
-    this.update = (dt, stroke) => {
+    this.update = (dt, stroke, cvs = canvas) => {
         if (this.imgLoaded) {
             this.x += this.vx * dt;
 
@@ -29,6 +29,8 @@ let Rock = function(cvs = canvas) {
             this.y1 = this.y + 14;
             this.x2 = this.x + this.img.width * 0.40;
             this.y2 = this.y + this.img.height * 0.40;
+            
+            this.xMid = this.x1 + (this.x2 - this.x1) / 2;
 
             if (stroke != undefined && stroke.points.length > 4) { 
                 for (let i = 0; i < stroke.points.length; i++) {
@@ -38,13 +40,13 @@ let Rock = function(cvs = canvas) {
                             p.y > this.y1 && p.y < this.y2) {
                         this.vy += -15000 * dt;
 
-                        if (p.x > (this.x1 + (this.x2 - this.x1) / 2)) {
+                        if (p.x > this.xMid) {
                             this.vx -= 15000 * dt;
                             console.log("Bounce to left");
                             break;                       
                         }
 
-                        if (p.x < (this.x1 + (this.x2 - this.x1) / 2)) {
+                        if (p.x < this.xMid) {
                             this.vx += 15000 * dt;
                             console.log("Bounce to right");
                             break;
@@ -55,6 +57,13 @@ let Rock = function(cvs = canvas) {
                 }
             }
             
+            if (this.x1 < 0) {
+                this.vx = Math.abs(this.vx) * 0.75;
+            }
+            else if (this.x2 > cvs.width) {
+                this.vx = -Math.abs(this.vx) * 0.75;
+            }
+
             if (this.vy > cvs.height * 0.5) {
                 this.vy = this.y > cvs.height - this.img.height * 0.5 ? -35000 * dt : this.vy;
             }
