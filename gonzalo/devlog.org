@@ -43,3 +43,13 @@ create my own things, but I also hope it helps whoever reads it :)
   while jumping was possible (which got the runner "stuck" in the
   mid-air), and also tweaked the gravity and jump speed for a better
   jump feel.
+** 2020-05 mayo
+*** 2020-05-15 viernes
+- <2020-05-15 vie 10:10> Added "Celeste" hair animation frame to "Xeno
+  Jackers" player sprite. Tried to also add an anticipation frame to
+  the jump animation, but couldn't crack it in the time I had.
+*** 2020-05-21 jueves
+- <2020-05-21 jue 06:41> Added a couple in-betweens to "Xeno Jackers"
+  player landing animation, and also added a thumb-up animation (with
+  some edits by Jeff, one of the leads). Really enjoying working on
+  animations for that game!
