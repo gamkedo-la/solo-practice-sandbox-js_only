@@ -1,4 +1,4 @@
-let Rock = function(cvs = canvas) {
+let Rock = function(cvs = canvas, ctx = canvasContext) {
     this.x = 0;
     this.y = 0;
     this.vx = 0;
@@ -8,6 +8,8 @@ let Rock = function(cvs = canvas) {
     this.y1 = 0;
     this.x2 = 0;
     this.y2 = 0;
+
+    this.currentRotationRad = 0;
 
     this.img = document.createElement("img");
     this.img.src = "rock.png";
@@ -43,12 +45,14 @@ let Rock = function(cvs = canvas) {
                         if (p.x > this.xMid) {
                             this.vx -= 15000 * dt;
                             console.log("Bounce to left");
+                            this.currentRotationRad += 1000 * dt;
                             break;                       
                         }
 
                         if (p.x < this.xMid) {
                             this.vx += 15000 * dt;
                             console.log("Bounce to right");
+                            this.currentRotationRad -= 1000 * dt;
                             break;
                         }
 
@@ -70,14 +74,22 @@ let Rock = function(cvs = canvas) {
             else {
                 this.vy = this.y < 0 ? 10000 * dt : this.vy;
             }
+
+            this.currentRotationRad += 500 * dt;
         }
     };
 
     this.render = (dt, cvs = canvas, ctx = canvasContext) => {
         if (this.imgLoaded) {
-            Draw.image(this.img, 0, 0, 176, 185, this.x, this.y, 176 * 0.5, 185 * 0.5);
+            ctx.save();
             
-            Draw.outlineRect(this.x1, this.y1, this.x2 - this.x1, this.y2 - this.y1, "Magenta", 2);
+            ctx.translate(cvs.width * 0.5 + this.x * 0.25 * 0.5, cvs.height * 0.5 + this.y * 0.5);
+            ctx.rotate(this.currentRotationRad * Math.PI / 180);
+            Draw.image(this.img, 0, 0, 176, 185, -this.img.width * 0.25, -this.img.height * 0.25, 176 * 0.5, 185 * 0.5);
+
+            ctx.restore();
+
+            Draw.outlineRect(this.x, this.y, this.x2 - this.x1, this.y2 - this.y1, "Magenta", 2);
         }
     };
 };
