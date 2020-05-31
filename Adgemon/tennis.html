@@ -167,13 +167,13 @@ moveComputerPaddle3();
 
       var deltaX = ballX - (paddle1X+PADDLE_HEIGHT/2);
       ballSpeedX = deltaX * 0.25;
-    } }else {
+    } else {
       paddle1Score++;
       ballReset();
     }
   }
 
-  if(ballY > canvas.hegiht) {// if ball has moved beyond the bottom edge
+  if(ballY > canvas.height) {// if ball has moved beyond the bottom edge
     if(ballX > paddle2X && ballX < paddle2X+PADDLE_WIDTH) {
       ballSpeedY *= -1;
 
@@ -185,9 +185,6 @@ moveComputerPaddle3();
     }
   }
 
-  if(ballY > canvas.height || ballY < 0) { // if ball has moved beyond the bottom edge
-      ballReset();
-    }
 
     // if (paddle2Y < 0) {paddle2Y = 0}; 
     // if (paddle2Y + PADDLE_HEIGHT > gameCanvas.height) {paddle2Y = gameCanvas.width - PADDLE_HEIGHT/2};
