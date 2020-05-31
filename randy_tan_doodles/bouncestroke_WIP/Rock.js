@@ -10,6 +10,8 @@ let Rock = function(cvs = canvas, ctx = canvasContext) {
     this.y2 = 0;
 
     this.currentRotationRad = 0;
+    this.angularVelocity = 0;
+    this.angularDampening = 0.1;
 
     this.img = document.createElement("img");
     this.img.src = "rock.png";
@@ -45,14 +47,14 @@ let Rock = function(cvs = canvas, ctx = canvasContext) {
                         if (p.x > this.xMid) {
                             this.vx -= 15000 * dt;
                             console.log("Bounce to left");
-                            this.currentRotationRad += 1000 * dt;
+                            this.angularVelocity += 100;
                             break;                       
                         }
 
                         if (p.x < this.xMid) {
                             this.vx += 15000 * dt;
                             console.log("Bounce to right");
-                            this.currentRotationRad -= 1000 * dt;
+                            this.angularVelocity -= 100;
                             break;
                         }
 
@@ -73,6 +75,15 @@ let Rock = function(cvs = canvas, ctx = canvasContext) {
             }
             else {
                 this.vy = this.y < 0 ? 10000 * dt : this.vy;
+            }
+
+            this.currentRotationRad += this.angularVelocity * dt;
+
+            if (this.angularVelocity > 0.1) {
+                this.angularVelocity += -this.angularDampening;                
+            }
+            else if (this.angularVelocity < -0.1) {
+                this.angularVelocity += this.angularDampening;
             }
         }
     };
