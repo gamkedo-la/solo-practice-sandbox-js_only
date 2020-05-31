@@ -74,8 +74,6 @@ let Rock = function(cvs = canvas, ctx = canvasContext) {
             else {
                 this.vy = this.y < 0 ? 10000 * dt : this.vy;
             }
-
-            this.currentRotationRad += 500 * dt;
         }
     };
 
@@ -83,7 +81,7 @@ let Rock = function(cvs = canvas, ctx = canvasContext) {
         if (this.imgLoaded) {
             ctx.save();
             
-            ctx.translate(cvs.width * 0.5 + this.x * 0.25 * 0.5, cvs.height * 0.5 + this.y * 0.5);
+            ctx.translate(this.x1 + 10, this.y1 + 15);
             ctx.rotate(this.currentRotationRad * Math.PI / 180);
             Draw.image(this.img, 0, 0, 176, 185, -this.img.width * 0.25, -this.img.height * 0.25, 176 * 0.5, 185 * 0.5);
 
