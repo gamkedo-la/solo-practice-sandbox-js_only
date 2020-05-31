@@ -4,7 +4,10 @@ function Player() {
     // keep track of player's position
     this.x = 10;
     this.y = 550;
-
+    var onGround = true;
+    var isJumping = false;
+    var isFalling = false;
+    
     this.keyHeld_East = false;
     this.keyHeld_West = false;
     this.keyHeld_Jump = false;
@@ -32,27 +35,12 @@ function Player() {
         
         if (this.keyHeld_Jump) {
             this.jump();
-        }
-        
-        this.jump = function() {
-            var onGround = true;
-            var isJumping = false;
-            var isFalling = false;
-            
-            if (onGround) {
-                onGround = false;
-                isJumping = true;
-                    if (isJumping) {
-                        this.y -= PLAYER_MOVE_SPEED * 3;
-                        isFalling = true;
-                        isJumping = false;
-                        console.log("Is done jumping, falling now!")
-                    }
-                console.log("onGround: " + onGround + ", isJumping: " + isJumping + ", isFalling: " + isFalling);
-                console.log("this.y: " + this.y);
+            if (this.y < 550) {
+                this.fall();
             }
-            
-    
+        }
+
+        this.fall = function() {
             if (isFalling) {
                 this.y += PLAYER_MOVE_SPEED;
                 console.log("Is falling!");
@@ -63,6 +51,21 @@ function Player() {
                     console.log("Is onGround!");
                 }
                 
+            }
+        }
+        
+        this.jump = function() {
+            if (onGround) {
+                onGround = false;
+                isJumping = true;
+                    if (isJumping) {
+                        this.y -= PLAYER_MOVE_SPEED * 10;
+                        isFalling = true;
+                        isJumping = false;
+                        console.log("Is done jumping, falling now!")
+                    }
+                console.log("onGround: " + onGround + ", isJumping: " + isJumping + ", isFalling: " + isFalling);
+                console.log("this.y: " + this.y);
             }
         }
     }
