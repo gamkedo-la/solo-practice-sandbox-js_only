@@ -12,7 +12,7 @@ function Player() {
     this.keyHeld_West = false;
     this.keyHeld_Jump = false;
 
-    this.setupControls = function(eastKey,westKey,jumpKey) {
+    this.setupControls = function(eastKey, westKey, jumpKey) {
         this.controlKeyForEast = eastKey;
         this.controlKeyForWest = westKey;
         this.controlKeyForJump = jumpKey;
@@ -32,25 +32,10 @@ function Player() {
         }
 
         // --- Jump --- //
-        
         if (this.keyHeld_Jump) {
             this.jump();
             if (this.y < 550) {
                 this.fall();
-            }
-        }
-
-        this.fall = function() {
-            if (isFalling) {
-                this.y += PLAYER_MOVE_SPEED;
-                console.log("Is falling!");
-                
-                if (this.y == 550) {
-                    isFalling = false;
-                    onGround = true;
-                    console.log("Is onGround!");
-                }
-                
             }
         }
         
@@ -68,6 +53,19 @@ function Player() {
                 console.log("this.y: " + this.y);
             }
         }
-    }
 
+        this.fall = function() {
+            if (isFalling) {
+                this.y += PLAYER_MOVE_SPEED;
+                console.log("Is falling!");
+                
+                if (this.y == 550) {
+                    isFalling = false;
+                    onGround = true;
+                    console.log("Is onGround!");
+                }
+                
+            }
+        }
+    }
 }
