@@ -53,3 +53,15 @@ create my own things, but I also hope it helps whoever reads it :)
   player landing animation, and also added a thumb-up animation (with
   some edits by Jeff, one of the leads). Really enjoying working on
   animations for that game!
+*** 2020-05-26 martes
+- <2020-05-26 mar 08:04> Started work on a very simple FSM for "Xeno
+  Jackers". Hoping this will at least help get clarity on the states
+  and transitions the player and other entities will be involved in
+  during gameplay.
+** 2020-06 junio
+*** 2020-06-12 viernes
+- <2020-06-12 vie 08:08> I finally "released" the FSM for Xeno
+  Jackers. I like my simple code implementation, but ended up causing
+  a lot of bugs and it seems it slowed down development for about a
+  week, but happily H fixed a lot of the nastier bugs and the project
+  is back on track.
