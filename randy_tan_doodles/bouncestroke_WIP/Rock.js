@@ -17,12 +17,14 @@ let Rock = function(cvs = canvas, ctx = canvasContext) {
     this.img.src = "rock.png";
     this.imgLoaded = false;
 
+    this.colCheck = new Collision();
+
     this.img.onload = () => {
         this.imgLoaded = true;
         this.x = cvs.width * 0.5 - this.img.width * 0.25;
     };
 
-    this.update = (dt, stroke, cvs = canvas) => {
+    this.update = (dt, col) => {        
         if (this.imgLoaded) {
             this.x += this.vx * dt;
 
@@ -36,24 +38,22 @@ let Rock = function(cvs = canvas, ctx = canvasContext) {
             
             this.xMid = this.x1 + (this.x2 - this.x1) / 2;
 
-            if (stroke != undefined && stroke.points.length > 4) { 
-                for (let i = 0; i < stroke.points.length; i++) {
-                    let p = stroke.points[i];                    
-
-                    if (p.x > this.x1 && p.x < this.x2 &&
-                            p.y > this.y1 && p.y < this.y2) {
+            if (col != undefined && col.points.length > 4) {
+                for (let i = 0; i < col.points.length; i++) {
+                    let p = col.points[i];                    
+                    
+                    if (this.colCheck.isColliding(p.x, p.y, p.x, p.y, 
+                                                  this.x1, this.y1, this.x2, this.y2)) {
                         this.vy += -15000 * dt;
 
                         if (p.x > this.xMid) {
                             this.vx -= 15000 * dt;
-                            console.log("Bounce to left");
                             this.angularVelocity += 20;
-                            break;                       
+                            break;  
                         }
 
                         if (p.x < this.xMid) {
                             this.vx += 15000 * dt;
-                            console.log("Bounce to right");
                             this.angularVelocity -= 20;
                             break;
                         }
@@ -88,7 +88,7 @@ let Rock = function(cvs = canvas, ctx = canvasContext) {
         }
     };
 
-    this.render = (dt, cvs = canvas, ctx = canvasContext) => {
+    this.render = dt => {
         if (this.imgLoaded) {
             ctx.save();
             

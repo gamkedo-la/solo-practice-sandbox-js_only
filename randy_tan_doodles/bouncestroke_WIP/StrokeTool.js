@@ -8,6 +8,8 @@ let StrokeTool = function() {
     this.size = 10;
     this.margin = 0;
 
+    this.colCheck = new Collision();
+
     let x1, y1, x2, y2;
 
     this.update = (dt, input, col) => {
@@ -46,9 +48,10 @@ let StrokeTool = function() {
 
             if (input.isDown) {                
                 for (let i = 0; i < this.points.length; i++) {
-                    let pt = this.points[i];                    
-                    if (pt.x >= col.x1 && pt.x <= col.x2 &&
-                            pt.y >= col.y1 && pt.y <= col.y2) {
+                    let pt = this.points[i];
+                    
+                    if (this.colCheck.isColliding(pt.x, pt.y, pt.x, pt.y,
+                                                  col.x1, col.y1, col.x2, col.y2)) {
                         this.points[i].y += 200 * dt;
 
                         // console.log(this.points[i].x + " " + this.points.length);
