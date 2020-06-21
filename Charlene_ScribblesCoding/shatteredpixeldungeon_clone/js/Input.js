@@ -27,10 +27,12 @@ function setKeyHoldState(thisKey, thisPlayer, setTo) {
 }
 
 function keyPressed(evt) {
+  document.getElementById("debugText").innerHTML = "It's pressed!";
   setKeyHoldState(evt.keyCode, p1, true);
   evt.preventDefault(); // without this, arrow keys scroll the browser!
 }
 
 function keyReleased(evt) {
+  document.getElementById("debugText").innerHTML = "It's released!";
   setKeyHoldState(evt.keyCode, p1, false);
 }

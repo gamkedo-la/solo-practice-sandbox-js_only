@@ -1,4 +1,4 @@
-const PLAYER_MOVE_SPEED = 3.0;
+const PLAYER_MOVE_SPEED = 50.0;
 
 function warriorClass() {
   // variables to keep track of player position
@@ -47,21 +47,29 @@ function warriorClass() {
   this.move = function() {
     var nextX = this.x;
     var nextY = this.y;
+    var keypress = false;
 
-    if (this.keyHeld_North) {
-      nextY -= PLAYER_MOVE_SPEED;
-    }
+    if (!keypress) {
+      document.getElementById("keypressText").innerHTML = "keypress = " + keypress;
+      keypress = true;
 
-    if (this.keyHeld_East) {
-      nextX += PLAYER_MOVE_SPEED;
-    }
-    
-    if (this.keyHeld_South) {
-      nextY += PLAYER_MOVE_SPEED;
-    }
+      if (this.keyHeld_North) {
+        nextY -= PLAYER_MOVE_SPEED;
+      }
+  
+      if (this.keyHeld_East) {
+        nextX += PLAYER_MOVE_SPEED;
+      }
+      
+      if (this.keyHeld_South) {
+        nextY += PLAYER_MOVE_SPEED;
+      }
+  
+      if (this.keyHeld_West) {
+        nextX -= PLAYER_MOVE_SPEED;
+      }
 
-    if (this.keyHeld_West) {
-      nextX -= PLAYER_MOVE_SPEED;
+      keypress = false;
     }
     
     var walkIntoTileIndex = getTileIndexAtPixelCoord(nextX, nextY);
