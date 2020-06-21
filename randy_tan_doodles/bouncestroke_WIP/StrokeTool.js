@@ -1,11 +1,12 @@
 let StrokeTool = function() {
+    this.name = "stroke tool";
     this.drawX = 0;
     this.drawY = 0;
     this.isDrawing = false;
     this.isBent = false;
     this.points = [];
     this.bentPoints = [];
-    this.size = 10;
+    this.size = 5;
     this.margin = 0;
 
     this.colCheck = new Collision();

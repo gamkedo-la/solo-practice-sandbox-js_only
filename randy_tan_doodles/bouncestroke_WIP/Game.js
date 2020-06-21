@@ -48,6 +48,7 @@ canvas.addEventListener('keyup', e => {
 
 });
 
+let net = new Net();
 let rock = new Rock();
 let stroke = new StrokeTool();
 
@@ -55,7 +56,8 @@ let reset = () => {
 
 };
 let update = dt => {
-    rock.update(dt, stroke);
+    net.update(dt);
+    rock.update(dt, [stroke, net]);
     stroke.update(dt, inputMouse, rock);
 
     // console.log(stroke.x1 + " " + stroke.y1 + " to " + stroke.x2 + " " + stroke.y2);
@@ -64,6 +66,7 @@ let render = dt => {
     canvasContext.fillStyle = 'white';
     canvasContext.fillRect(0, 0, canvas.width, canvas.height);
      
+    net.render(dt);
     rock.render(dt);
     stroke.render(inputMouse);
 };

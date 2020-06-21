@@ -24,7 +24,7 @@ let Rock = function(cvs = canvas, ctx = canvasContext) {
         this.x = cvs.width * 0.5 - this.img.width * 0.25;
     };
 
-    this.update = (dt, col) => {        
+    this.update = (dt, col) => {
         if (this.imgLoaded) {
             this.x += this.vx * dt;
 
@@ -38,28 +38,55 @@ let Rock = function(cvs = canvas, ctx = canvasContext) {
             
             this.xMid = this.x1 + (this.x2 - this.x1) / 2;
 
-            if (col != undefined && col.points.length > 4) {
-                for (let i = 0; i < col.points.length; i++) {
-                    let p = col.points[i];                    
+            for (let c = 0; c < col.length; c++) {
+                if (col[c] != undefined) {
                     
-                    if (this.colCheck.isColliding(p.x, p.y, p.x, p.y, 
-                                                  this.x1, this.y1, this.x2, this.y2)) {
-                        this.vy += -15000 * dt;
+                    if (col[c].name == "stroke tool") {
+                        if (col[c].points && col[c].points.length > 4) {
+                            for (let i = 0; i < col[c].points.length; i++) {
+                                let p = col[c].points[i];                    
+                                
+                                if (this.colCheck.isColliding(p.x, p.y, p.x, p.y, 
+                                                            this.x1, this.y1, this.x2, this.y2)) {
+                                    this.vy += -15000 * dt;
 
-                        if (p.x > this.xMid) {
-                            this.vx -= 15000 * dt;
-                            this.angularVelocity += 20;
-                            break;  
+                                    if (p.x > this.xMid) {
+                                        this.vx -= 15000 * dt;
+                                        this.angularVelocity += 20;
+                                        break;  
+                                    }
+
+                                    if (p.x < this.xMid) {
+                                        this.vx += 15000 * dt;
+                                        this.angularVelocity -= 20;
+                                        break;
+                                    }
+
+                                    break;
+                                }
+                            }
                         }
-
-                        if (p.x < this.xMid) {
-                            this.vx += 15000 * dt;
-                            this.angularVelocity -= 20;
-                            break;
-                        }
-
-                        break;
                     }
+
+                    if (col[c].name == "net") {
+                        let net = col[c];
+                        if (this.colCheck.isColliding(this.x2, this.y2, this.x1, this.y1,
+                                                      net.x, net.y, net.x + net.w, net.y + net.h)) {
+                            
+                            console.log("Rock hits net!");
+
+                            let l = this.xMid > net.x;
+                            let r = this.xMid < net.x + net.w;
+
+                            if (l) {
+                                this.vx = -15000 * dt;                                
+                            }
+                            if (r) {
+                                this.vx = 15000 * dt;                                                                   
+                            }
+                        }
+                    }
+
                 }
             }
             
