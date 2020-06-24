@@ -30,8 +30,14 @@ function setKeyHoldState(thisKey, thisCar, setTo) {
 }    
 
 function keyPressed(evt) {
-  setKeyHoldState(evt.keyCode, p1, true);
-  setKeyHoldState(evt.keyCode, p2, true);
+  switch(event.code) {
+  case "KeyT":
+	track.flipTheme();
+	break;
+  default:
+	setKeyHoldState(evt.keyCode, p1, true);
+	setKeyHoldState(evt.keyCode, p2, true);
+  }
   evt.preventDefault();
 }
 

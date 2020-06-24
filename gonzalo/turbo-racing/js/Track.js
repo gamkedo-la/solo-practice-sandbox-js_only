@@ -288,6 +288,14 @@ const track = new (function() {
   const takenPlayerTiles = [];
   let currentTheme = THEMES['night'];
 
+  this.flipTheme = function() {
+	if (currentTheme != THEMES.default) {
+	  currentTheme = THEMES.default;
+	} else {
+	  currentTheme = THEMES.night;
+	}
+  };
+
   this.setTheme = function(themeId) {
 	currentTheme = THEMES[themeId];
   };

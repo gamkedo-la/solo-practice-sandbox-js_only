@@ -57,7 +57,7 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 
 *** DONE Modify ~track.draw~ to use ~currentTheme~ (or ~this.getTheme~)
 
-*** TODO Set up theme switching with /T/ key
+*** DONE Set up theme switching with /T/ key
 
 *** TODO Display text explaining theme switch key before cars start moving
 
