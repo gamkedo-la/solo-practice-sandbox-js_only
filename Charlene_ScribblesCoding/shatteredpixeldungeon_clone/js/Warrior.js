@@ -47,29 +47,21 @@ function warriorClass() {
   this.move = function() {
     var nextX = this.x;
     var nextY = this.y;
-    var keypress = false;
 
-    if (!keypress) {
-      document.getElementById("keypressText").innerHTML = "keypress = " + keypress;
-      keypress = true;
+    if (this.keyHeld_North) {
+      nextY -= PLAYER_MOVE_SPEED;
+    }
 
-      if (this.keyHeld_North) {
-        nextY -= PLAYER_MOVE_SPEED;
-      }
-  
-      if (this.keyHeld_East) {
-        nextX += PLAYER_MOVE_SPEED;
-      }
-      
-      if (this.keyHeld_South) {
-        nextY += PLAYER_MOVE_SPEED;
-      }
-  
-      if (this.keyHeld_West) {
-        nextX -= PLAYER_MOVE_SPEED;
-      }
+    if (this.keyHeld_East) {
+      nextX += PLAYER_MOVE_SPEED;
+    }
+    
+    if (this.keyHeld_South) {
+      nextY += PLAYER_MOVE_SPEED;
+    }
 
-      keypress = false;
+    if (this.keyHeld_West) {
+      nextX -= PLAYER_MOVE_SPEED;
     }
     
     var walkIntoTileIndex = getTileIndexAtPixelCoord(nextX, nextY);
