@@ -65,3 +65,9 @@ create my own things, but I also hope it helps whoever reads it :)
   a lot of bugs and it seems it slowed down development for about a
   week, but happily H fixed a lot of the nastier bugs and the project
   is back on track.
+*** 2020-06-25 jueves
+- <2020-06-25 jue 06:24> Saw [[https://www.locomalito.com/solar_gladiators.php][Locomalito's new game]], which gave me some
+  ideas for my twin-stick shooter idea :D
+*** 2020-06-30 martes
+- <2020-06-30 mar 06:37> Finished "night tree" sprite for Turbo
+  Racing. Doesn't look great, but works I guess.
