@@ -17,3 +17,12 @@ function colorCircle(centerX, centerY, radius, fillColor) {
   canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
   canvasContext.fill();
 }
+
+function colorTextCentered(showWords, textX, textY, fillColor, font = "14px Arial Black") {
+  canvasContext.save();
+  canvasContext.textAlign = "center";
+  canvasContext.fillStyle = fillColor;
+  canvasContext.font = font;
+  canvasContext.fillText(showWords, textX, textY);
+  canvasContext.restore();
+}

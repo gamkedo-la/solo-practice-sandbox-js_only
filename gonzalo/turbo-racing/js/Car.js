@@ -52,6 +52,9 @@ function carClass() {
 		this.carAng += TURN_RATE*Math.PI * dt;
 	  }
 	}
+	if (this.carSpeed != 0) {
+	  carMoved = true;
+	}
 	let nextX = this.carX + Math.cos(this.carAng) * this.carSpeed * dt;
 	let nextY = this.carY + Math.sin(this.carAng) * this.carSpeed * dt;
     if (track.isDriveableCoord(nextX, nextY)) {

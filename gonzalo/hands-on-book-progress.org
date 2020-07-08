@@ -49,7 +49,7 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 
 ** DONE Extra: move wall tiles (or all tiles) into single spritesheet :extra:
 
-** TODO Exercise 2, day/night or theme tile sets                     :warmup:
+** DONE Exercise 2, day/night or theme tile sets                     :warmup:
 
 *** DONE Add ~currentTheme~ (private) variable to ~track~, and write ~setTheme~ and ~getTheme~ methods
 
@@ -59,7 +59,7 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 
 *** DONE Set up theme switching with /T/ key
 
-*** TODO Display text explaining theme switch key before cars start moving
+*** DONE Display text explaining theme switch key before cars start moving
 
 *** DONE Night tree sprite
 	Tree trunk shouldn't be visible much because of occlussion

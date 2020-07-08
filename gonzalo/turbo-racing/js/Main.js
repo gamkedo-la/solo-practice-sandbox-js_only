@@ -4,6 +4,7 @@ const p1 = new carClass();
 const p2 = new carClass();
 var dt = 0, last = timestamp();
 const UPDATE_STEP = 1/30;
+let carMoved = false;
 
 function runGameStep(browserTimeStamp) {
   dt += Math.min(1, (browserTimeStamp - last)/1000);
@@ -33,6 +34,13 @@ function drawEverything() {
   track.draw();
   p1.carDraw();
   p2.carDraw();
+  if (!carMoved) {
+	colorTextCentered(
+	  "Press T key to switch between day/night themes!",
+	  canvas.width/2, canvas.height/2 - 110,
+	  "white", "22px Arial Black"
+	);
+  }
 }
 
 function moveEverything(dt) {
