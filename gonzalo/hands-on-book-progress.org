@@ -65,7 +65,7 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 	Tree trunk shouldn't be visible much because of occlussion
 	Make it darker near the bottom
 
-*** TODO Night flag sprite
+*** DONE Night flag sprite
 
 ** TODO Exercise 3, basic car-to-car collision                       :practice:
 
