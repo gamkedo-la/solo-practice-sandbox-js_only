@@ -71,3 +71,11 @@ create my own things, but I also hope it helps whoever reads it :)
 *** 2020-06-30 martes
 - <2020-06-30 mar 06:37> Finished "night tree" sprite for Turbo
   Racing. Doesn't look great, but works I guess.
+** 2020-07 julio
+*** 2020-07-04 sábado
+- <2020-07-04 sáb 08:59> Worked on a walk animation for Xeno Jackers'
+  biker enemy. Not a great result, but I think it looks good enough in
+  game, and was definitely good practice!
+*** 2020-07-08 miércoles
+- <2020-07-08 mié 08:58> Finally finished Turbo Racing's exercise 2,
+  gotta go fast!
