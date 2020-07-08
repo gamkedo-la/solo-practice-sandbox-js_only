@@ -83,6 +83,14 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 
 ** TODO Exercise 10, in-game track editor GUI                      :practice:
 
+** TODO Extra: auto-tiling                                            :extra:
+   Look into these resources:
+   - [[https://www.codeproject.com/articles/106884/implementing-auto-tiling-functionality-in-a-tile-m][Implementing Auto-tiling Functionality in a Tile Map Editor]]
+   - [[https://gamedev.stackexchange.com/questions/46594/elegant-autotiling][Elegant autotiling (Gamdev StackExchange question)]]
+   - [[https://blog.rpgmakerweb.com/tutorials/anatomy-of-an-autotile/][Anatomy of an Autotile]]
+   - [[https://web.archive.org/web/20150906102436/http://www.saltgames.com/2010/a-bitwise-method-for-applying-tilemaps/][A Bitwise Method For Applying Tilemaps]]
+   - [[https://www.deviantart.com/pix3m/art/Metatiles-In-a-Nutshell-449744620][Metatiles in a Nutshell]]
+
 ** TODO Exercise 11, laps with checkpoints                        :challenge:
 
 ** TODO Exercise 12, collision at front and rear of car           :challenge:
