@@ -1,4 +1,5 @@
 const PLAYER_MOVE_SPEED = 50.0;
+var monsterCount = 3;
 
 function warriorClass() {
   // variables to keep track of player position
@@ -27,6 +28,8 @@ function warriorClass() {
   
   this.reset = function() {
     this.keysHeld = 0;
+    monsterCount = 3;
+    document.getElementById("monsterCount").innerHTML = "Monster count : " + monsterCount;
 
     if (this.homeX == undefined) {
       for (var i = 0; i < roomGrid.length; i++) {
@@ -40,6 +43,7 @@ function warriorClass() {
         }
       }
     }
+
     this.x = this.homeX;
     this.y = this.homeY;
   }
@@ -70,15 +74,22 @@ function warriorClass() {
     if (walkIntoTileType != undefined) {
       walkIntoTileType = roomGrid[walkIntoTileIndex];
     } 
-
+    
     switch (walkIntoTileType) {
       case TILE_GROUND:
         this.x = nextX;
         this.y = nextY;
         break;
       case TILE_GOAL:
-        document.getElementById("debugText").innerHTML = this.myName + " won!";
-        this.reset();
+        monsterCount--;
+        document.getElementById("monsterCount").innerHTML = "Monster count : " + monsterCount;
+        roomGrid[walkIntoTileIndex] = TILE_GROUND;
+
+        if (monsterCount == 0) {
+          document.getElementById("monsterCount").innerHTML = "All monsters defeated! :D";
+          this.reset();
+        }
+
         break;
       case TILE_DOOR:
         if (this.keysHeld > 0) {
