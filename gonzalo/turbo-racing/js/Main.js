@@ -46,6 +46,10 @@ function drawEverything() {
 function moveEverything(dt) {
   p1.carMove(dt);
   p2.carMove(dt);
+  if ((Math.abs(p1.carX - p2.carX) < CAR_RADIUS*2.2) && (Math.abs(p1.carY - p2.carY) < CAR_RADIUS*2.2)) {
+	p1.nudge(Math.sign(p1.carX - p2.carX), Math.sign(p1.carY - p2.carY), dt);
+	p2.nudge(Math.sign(p2.carX - p1.carX), Math.sign(p2.carY - p1.carY), dt);
+  }
 }
 
 function timestamp() {

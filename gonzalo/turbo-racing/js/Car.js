@@ -1,4 +1,5 @@
 const GROUNDSPEED_DECAY_MULT = 0.94;
+const NUDGE_SPEED_DECAY = 24;
 const DRIVE_POWER = 500;
 const REVERSE_POWER = 200;
 const TURN_RATE = 1.2;
@@ -37,6 +38,25 @@ function carClass() {
 	[this.carX, this.carY] = track.getFreePlayerTileCoord();
   };
 
+  this.nudge = function(xDir, yDir, dt) {
+	this.carAng += Math.atan2(yDir, xDir)*0.09;
+	this.carSpeed -= NUDGE_SPEED_DECAY;
+	this.calcAndApplyNextPos(dt);
+  };
+
+  this.calcAndApplyNextPos = function(dt) {
+	let nextX = this.carX + Math.cos(this.carAng) * this.carSpeed * dt;
+	let nextY = this.carY + Math.sin(this.carAng) * this.carSpeed * dt;
+    if (track.isDriveableCoord(nextX, nextY)) {
+	  this.carX = nextX;
+	  this.carY = nextY;
+	  this.carSpeed *= GROUNDSPEED_DECAY_MULT;
+      track.onDrive(this);
+	} else {
+	  this.carSpeed = 0.0;
+	}
+  };
+
   this.carMove = function(dt) {
 	if (this.keyHeld_Gas) {
 	  this.carSpeed += DRIVE_POWER*dt;
@@ -55,15 +75,6 @@ function carClass() {
 	if (this.carSpeed != 0) {
 	  carMoved = true;
 	}
-	let nextX = this.carX + Math.cos(this.carAng) * this.carSpeed * dt;
-	let nextY = this.carY + Math.sin(this.carAng) * this.carSpeed * dt;
-    if (track.isDriveableCoord(nextX, nextY)) {
-	  this.carX = nextX;
-	  this.carY = nextY;
-	  this.carSpeed *= GROUNDSPEED_DECAY_MULT;
-      track.onDrive(this);
-	} else {
-	  this.carSpeed = 0.0;
-	}
+	this.calcAndApplyNextPos(dt);
   };
 }

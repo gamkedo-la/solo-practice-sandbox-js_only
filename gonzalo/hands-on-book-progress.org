@@ -67,7 +67,7 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 
 *** DONE Night flag sprite
 
-** TODO Exercise 3, basic car-to-car collision                       :practice:
+** DONE Exercise 3, basic car-to-car collision                     :practice:
 
 ** TODO Exercise 4, terrible computer controlled car               :practice:
 
