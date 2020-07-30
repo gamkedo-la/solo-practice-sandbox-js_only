@@ -35,8 +35,9 @@ function keyPressed(evt) {
 	track.flipTheme();
 	break;
   default:
-	setKeyHoldState(evt.keyCode, p1, true);
-	setKeyHoldState(evt.keyCode, p2, true);
+	for (p of [p1, p2].filter(p => !p.cpuControl)) {
+	  setKeyHoldState(evt.keyCode, p, true);
+	}
   }
   evt.preventDefault();
 }

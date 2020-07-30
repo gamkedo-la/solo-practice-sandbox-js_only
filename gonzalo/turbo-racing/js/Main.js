@@ -25,8 +25,8 @@ window.onload = function() {
 }
 
 function startGame(values) {
-  p2.carInit(imageLoader.getImage("car2Pic"), "Green Car");
-  p1.carInit(imageLoader.getImage("carPic"), "Blue Car");
+  p2.carInit(true, imageLoader.getImage("car2Pic"), "Blue Car");
+  p1.carInit(false, imageLoader.getImage("carPic"), "Green Car");
   window.requestAnimationFrame(runGameStep);
 }
 

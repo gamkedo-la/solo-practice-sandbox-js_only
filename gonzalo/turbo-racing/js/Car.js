@@ -7,6 +7,7 @@ const MIN_TURN_SPEED = 10;
 const CAR_RADIUS = 10;
 
 function carClass() {
+  this.cpuActionTimer = 0.4;
   this.carX = 100;
   this.carY = 220;
   this.keyHeld_Gas = false;
@@ -16,13 +17,18 @@ function carClass() {
   this.canSteer = true;
 
   this.setupControls = function(forwardKey, backKey, leftKey, rightKey) {
-	this.controlKeyForGas = forwardKey;
-	this.controlKeyForReverse = backKey;
-	this.controlKeyForTurnLeft = leftKey;
-	this.controlKeyForTurnRight = rightKey;
+	this.controlKeyForGas = this.cpuControl ? null : forwardKey;
+	this.controlKeyForReverse = this.cpuControl ? null : backKey;
+	this.controlKeyForTurnLeft = this.cpuControl? null: leftKey;
+	this.controlKeyForTurnRight = this.cpuControl ? null : rightKey;
   };
 
-  this.carInit = function(whichGraphic, whichName) {
+  this.carInit = function(cpuControl, whichGraphic, whichName) {
+	this.cpuControl = cpuControl;
+	this.cpuGasProb = 0.3;
+	this.cpuRevProb = 0.9;
+	this.cpuLeftProb = 0.7;
+	this.cpuRightProb = 0.7;
 	this.myBitmap = whichGraphic;
 	this.myName = whichName;
 	this.carReset();
@@ -51,13 +57,35 @@ function carClass() {
 	  this.carX = nextX;
 	  this.carY = nextY;
 	  this.carSpeed *= GROUNDSPEED_DECAY_MULT;
+	  if (this.cpuControl) {
+		this.cpuGasProb = 0.3;
+		this.cpuRevProb = 0.9;
+		this.cpuLeftProb = 0.6;
+		this.cpuRightProb = 0.6;
+	  };
       track.onDrive(this);
 	} else {
 	  this.carSpeed = 0.0;
+	  if (this.cpuControl) {
+		this.cpuGasProb = 0.9;
+		this.cpuRevProb = 0.2;
+		this.cpuLeftProb = 0.8;
+		this.cpuRightProb = 0.8;
+	  };
 	}
   };
 
   this.carMove = function(dt) {
+	if (this.cpuControl) {
+	  this.cpuActionTimer -= dt;
+	  this.keyHeld_Gas = Math.random() > this.cpuGasProb;
+	  this.keyHeld_Reverse = !this.keyHeld_Gas && Math.random() > this.cpuRevProb;
+	  if (this.cpuActionTimer < 0) {
+		this.keyHeld_TurnLeft = Math.random() > this.cpuLeftProb;
+		this.keyHeld_TurnRight = !this.keyHeld_TurnLeft && Math.random() > this.cpuLeftProb;
+		this.cpuActionTimer = 1;
+	  }
+	}
 	if (this.keyHeld_Gas) {
 	  this.carSpeed += DRIVE_POWER*dt;
 	}
@@ -76,5 +104,15 @@ function carClass() {
 	  carMoved = true;
 	}
 	this.calcAndApplyNextPos(dt);
+  };
+
+  this.driveOffRoad = function() {
+	this.carSpeed /= 2;
+	if (this.cpuControl) {
+	  this.cpuGasProb = 0.9;
+	  this.cpuRevProb = 0.001;
+	  this.cpuLeftProb = 0.999;
+	  this.cpuRightProb = 0.999;
+	};
   };
 }

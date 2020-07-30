@@ -182,22 +182,22 @@ const track = new (function() {
 	[GROUND_INDEX.offroad]: {
 	  tileOffset: {x: 0, y: 0},
 	  driveable: true,
-	  onDrive: (car) => {car.carSpeed /= 2;}
+	  onDrive: (car) => {car.driveOffRoad();}
 	},
 	[GROUND_INDEX.offRoadWallShade]: {
 	  tileOffset: {x: 1, y: 0},
 	  driveable: true,
-	  onDrive: (car) => {car.carSpeed /= 2;}
+	  onDrive: (car) => {car.driveOffRoad();}
 	},
 	[GROUND_INDEX.offRoadWallShadeEast]: {
 	  tileOffset: {x: 7, y: 0},
 	  driveable: true,
-	  onDrive: (car) => {car.carSpeed /= 2;}
+	  onDrive: (car) => {car.driveOffRoad()}
 	},
 	[GROUND_INDEX.offRoadWallShadeWest]: {
 	  tileOffset: {x: 8, y: 0},
 	  driveable: true,
-	  onDrive: (car) => {car.carSpeed /= 2;}
+	  onDrive: (car) => {car.driveOffRoad()}
 	},
 	[GROUND_INDEX._default]: {
 	  tileOffset: {x: 0, y: 1},
@@ -242,7 +242,7 @@ const track = new (function() {
 	[OBJECT_INDEX.wallCornerNE]: {
 	  tileOffset: {x: 3, y: 1},
 	  driveable: false,
-	  onDrive: ()=>{},
+	  onDrive: ()=>{}
 	},
 	[OBJECT_INDEX.wallCornerNW]: {
 	  tileOffset: {x: 0, y: 1},
@@ -252,17 +252,17 @@ const track = new (function() {
 	[OBJECT_INDEX.wallCornerSE]: {
 	  tileOffset: {x: 3, y: 2},
 	  driveable: false,
-	  onDrive: ()=>{},
+	  onDrive: ()=>{}
 	},
 	[OBJECT_INDEX.wallCornerSW]: {
 	  tileOffset: {x: 0, y: 2},
 	  driveable: false,
-	  onDrive: ()=>{},
+	  onDrive: ()=>{}
 	},
 	[OBJECT_INDEX.wallJoin]: {
 	  tileOffset: {x: 2, y: 1},
 	  driveable: false,
-	  onDrive: ()=>{},
+	  onDrive: ()=>{}
 	},
 	[OBJECT_INDEX.pillar]: {
 	  tileOffset: {x: 4, y: 2},
