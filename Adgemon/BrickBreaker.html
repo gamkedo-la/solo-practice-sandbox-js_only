@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
+</head>
+<body>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+var ballSpeedX = 5, ballSpeedY = 7;
+var ballX = 75, ballY = 75;
+var canvas, canvasContext;
+
+const BRICK_W = 80;
+const BRICK_H = 20;
+const BRICK_GAP = 2;
+const BRICK_COLS = 10;
+const BRICK_ROWS = 14;
+var brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
+var bricksLeft;
+
+const PADDLE_WIDTH = 100;
+const PADDLE_THICKNES = 20;
+const PADDLE_Y = 540;
+var paddleX = 400;
+
+function calculateMousePos(evt) {
+      var rect = canvas.getBoundingClientRect(), root = document.documentElement;
+        //account for canvas position on page, the margins, scroll amount, etc. 
+      var mouseX = evt.clientX - rect.left - root.scrollLeft;
+      var mouseY = evt.clientY - rect.top - root.scrollTop;
+        return {
+            x: mouseX,
+            y: mouseY
+        }
+    }
+
+function brickTileToIndex(tileCol, tileROw) {
+    return (tileCol + BRICK_COLS * tileROw);
+}
+
+function isBrickAtTileCoord(brickTileCol, brickTileRow) {
+    var brickIndex = brickTileToIndex(brickTileCol, brickTileRow);
+    return (brickGrid[brickIndex] == 1);
+}
+
+function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY){
+    var tileCol = pixelX / BRICK_W;
+    var tileRow = pixelY / BRICK_H;
+    
+    tileCol = Math.floor(tileCol);
+    tileRow = Math.floor(tileRow);
+
+    //check whether the ball is within any part of the wall. 
+    if(tileCol < 0 && tileCol >= BRICK_COLS && 
+        tileRow < 0 && tileRow >= BRICK_ROWS) {
+        return false;//illegal array position usage
+    }
+
+    var brickIndex = brickTileToIndex(tileCol, tileRow);
+
+    if(brickGrid[brickIndex] == 1) {
+
+        var prevBallX = ballX - ballSpeedX;
+        var prevBallY = ballY - ballSpeedY;
+        var prevTileCol = Math.floor(prevBallX / BRICK_W);
+        var prevTileRow = Math.floor(prevBallY / BRICK_H);
+
+        var bothTestsFailed = true;
+       
+       if(prevTileCol != tileCol) {// must have come in horizontally 
+        var adjacentBrickIndex = brickTileToIndex(prevTileCol,tileRow);
+        //make sure the side we want to reflect off isn't blocked!
+            if(brickGrid[adjacentBrickIndex] != 1) {
+            ballSpeedX *= -1;
+            bothTestsFailed = false;
+            }
+       }
+
+       if(prevTileRow != tileRow) {// must have come in vertically 
+        var adjacentBrickIndex = brickTileToIndex(tileCol, prevTileRow);
+        //make sure the side we want to reflect off isn't blocked!
+            if(brickGrid[adjacentBrickIndex] != 1) {
+            ballSpeedY *= -1;
+            bothTestsFailed = false;
+        }
+       }
+
+       if(bothTestsFailed){
+        ballSpeedX *= -1;
+        ballSpeedY *= -1;
+       }
+    
+       brickGrid[brickIndex] = 0;//	remove the brick that got hit
+       bricksLeft--;
+       console.log(bricksLeft);
+    }
+}
+
+function resetBricks() {
+    bricksLeft = BRICK_COLS * BRICK_ROWS;
+    for (var eachCol=0; eachCol<BRICK_COLS; eachCol++) {
+        for (var eachRow=0; eachRow<BRICK_COLS; eachRow++) {
+            var brickIndex = brickTileToIndex(eachCol, eachRow);
+            if(eachRow >= 3) {
+                brickGrid[brickIndex] = 1;
+                bricksLeft++;
+            } else {
+                brickGrid[brickIndex] = 0;
+                bricksLeft--;
+            }
+        }
+    }
+}
+
+    window.onload = function()	{
+        canvas = document.getElementById('gameCanvas');
+        canvasContext = canvas.getContext('2d');
+
+        var framesPerSecond = 30;
+        setInterval(function() {
+            moveEverything();
+            drawEverything();
+        }, 1000/framesPerSecond);
+
+        canvas.addEventListener('mousemove' , function(evt) {
+            var mousePos = calculateMousePos(evt);
+            paddleX = mousePos.x - (PADDLE_WIDTH/2);
+        } );
+        resetBricks();
+        ballReset();
+    }
+
+  
+    function ballReset() {
+        ballX = canvas.width/2;
+        ballY = canvas.height/2;
+    }
+    function moveEverything() {
+        if(ballX < 0) {
+            ballSpeedX *= -1;
+        }
+
+        if(ballX > canvas.width) {
+            ballSpeedX *= -1;
+        }
+        if(ballY < 0) {
+            ballSpeedY *= -1;
+        }
+    if(ballY > 0.0){
+        if(ballY >= PADDLE_Y && ballY <= PADDLE_Y + PADDLE_THICKNES) {
+            if(ballX > paddleX && ballX < paddleX + PADDLE_WIDTH){
+                ballSpeedY *= -1;
+
+                if (bricksLeft== 0){
+                    resetBricks();
+                }
+                var deltaX = ballX - (paddleX + PADDLE_WIDTH/2);
+                ballSpeedX = deltaX * 0.35;
+            }   
+        }
+    }
+        if(ballY > canvas.height){
+            ballReset();
+        }
+
+        breakAndBounceOffBrickAtPixelCoord(ballX,ballY);
+
+        ballX += ballSpeedX;
+        ballY += ballSpeedY;
+    }
+
+    function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
+        canvasContext.fillStyle = fillColor;
+        canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+    }
+
+    function colorCircle(centerX, centerY, radius, fillColor){
+        canvasContext.fillStyle = fillColor;
+        canvasContext.beginPath();
+        canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+        canvasContext.fill();
+    }
+
+    function drawBricks() {
+        for (var eachCol=0; eachCol<BRICK_COLS; eachCol++) {
+         for(var eachRow=0; eachRow<BRICK_ROWS; eachRow++){
+          if(isBrickAtTileCoord(eachCol, eachRow)){
+ 
+            var brickLeftEdgeX = eachCol * BRICK_W;
+            var brickToptEdgeY = eachRow * BRICK_H;
+            colorRect(brickLeftEdgeX, brickToptEdgeY,
+            BRICK_W - BRICK_GAP, BRICK_H - BRICK_GAP, '#0069FF');
+          }
+        }
+      }
+    }
+    function drawEverything() {
+       colorRect(0, 0, canvas.width, canvas.height, '#00001F');
+
+       colorRect(paddleX, PADDLE_Y, PADDLE_WIDTH , PADDLE_THICKNES, '#00F100');
+
+       drawBricks();
+
+       colorCircle(ballX, ballY, 8, '#00FF00');
+    }
+
+  
+</script>
+
+</body>
+</html>
