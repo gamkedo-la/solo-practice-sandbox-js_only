@@ -1,5 +1,5 @@
 const PLAYER_MOVE_SPEED = 50.0;
-var monsterCount = 3;
+var monsterCount = 5;
 
 function warriorClass() {
   // variables to keep track of player position
