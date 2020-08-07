@@ -177,6 +177,7 @@ const track = new (function() {
 		takenPlayerTiles.splice(0, takenPlayerTiles.length);
 		p1.carReset();
 		p2.carReset();
+		raceTime = 0;
 	  }
 	},
 	[GROUND_INDEX.offroad]: {
