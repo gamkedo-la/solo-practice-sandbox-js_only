@@ -5,6 +5,8 @@ const REVERSE_POWER = 200;
 const TURN_RATE = 1.2;
 const MIN_TURN_SPEED = 10;
 const CAR_RADIUS = 10;
+const NITRO_POWER = 800;
+const NITRO_SECONDS = 1;
 
 function carClass() {
   this.cpuActionTimer = 0.4;
@@ -14,13 +16,15 @@ function carClass() {
   this.keyHeld_Reverse = false;
   this.keyHeld_TurnLeft = false;
   this.keyHeld_TurnRight = false;
+  this.keyHeld_Nitro = false;
   this.canSteer = true;
 
-  this.setupControls = function(forwardKey, backKey, leftKey, rightKey) {
+  this.setupControls = function(forwardKey, backKey, leftKey, rightKey, nitroKey) {
 	this.controlKeyForGas = this.cpuControl ? null : forwardKey;
 	this.controlKeyForReverse = this.cpuControl ? null : backKey;
 	this.controlKeyForTurnLeft = this.cpuControl? null: leftKey;
 	this.controlKeyForTurnRight = this.cpuControl ? null : rightKey;
+	this.controlKeyForNitro = this.cpuControl ? null : nitroKey;
   };
 
   this.carInit = function(cpuControl, whichGraphic, whichName) {
@@ -42,6 +46,7 @@ function carClass() {
 	this.carSpeed = 0;
 	this.carAng = -0.5 * Math.PI;
 	[this.carX, this.carY] = track.getFreePlayerTileCoord();
+	this.nitroLeft = NITRO_SECONDS;
   };
 
   this.nudge = function(xDir, yDir, dt) {
@@ -76,6 +81,7 @@ function carClass() {
   };
 
   this.carMove = function(dt) {
+	let turnRate = TURN_RATE;
 	if (this.cpuControl) {
 	  this.cpuActionTimer -= dt;
 	  this.keyHeld_Gas = Math.random() > this.cpuGasProb;
@@ -86,6 +92,14 @@ function carClass() {
 		this.cpuActionTimer = 1;
 	  }
 	}
+	if (this.keyHeld_Nitro && this.nitroLeft > 0) {
+	  this.carSpeed += NITRO_POWER*dt;
+	  this.nitroLeft -= dt;
+	  turnRate -= 0.7; // Decrease maneuverability when nitro is on
+	  if (this.nitroLeft < 0) {
+		turnRate = TURN_RATE;
+	  }
+	}
 	if (this.keyHeld_Gas) {
 	  this.carSpeed += DRIVE_POWER*dt;
 	}
@@ -94,10 +108,10 @@ function carClass() {
 	}
 	if (this.canSteer && Math.abs(this.carSpeed) > MIN_TURN_SPEED) {
 	  if (this.keyHeld_TurnLeft) {
-		this.carAng += -TURN_RATE*Math.PI * dt;
+		this.carAng += -turnRate*Math.PI * dt;
 	  }
 	  if (this.keyHeld_TurnRight) {
-		this.carAng += TURN_RATE*Math.PI * dt;
+		this.carAng += turnRate*Math.PI * dt;
 	  }
 	}
 	if (this.carSpeed != 0) {

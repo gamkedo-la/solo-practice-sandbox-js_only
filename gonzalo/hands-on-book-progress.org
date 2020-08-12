@@ -73,7 +73,7 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 
 ** DONE Exercise 5, keep and show true racing time                 :practice:
 
-** TODO Exercise 6, nitro boost                                    :practice:
+** DONE Exercise 6, nitro boost                                    :practice:
 
 ** TODO Exercise 7, support multiple tracks                        :practice:
 

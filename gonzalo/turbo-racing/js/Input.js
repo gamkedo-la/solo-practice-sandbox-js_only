@@ -1,8 +1,8 @@
 function initInput() {
   document.addEventListener("keydown", keyPressed);
   document.addEventListener("keyup", keyReleased);
-  p1.setupControls("ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight");
-  p2.setupControls("KeyW", "KeyS", "KeyA", "KeyD");
+  p1.setupControls("ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight", "ShiftRight");
+  p2.setupControls("KeyW", "KeyS", "KeyA", "KeyD", "ShiftLeft");
 }
 
 function setKeyHoldState(thisKey, thisCar, setTo) {
@@ -17,6 +17,9 @@ function setKeyHoldState(thisKey, thisCar, setTo) {
   }
   if (thisKey == thisCar.controlKeyForTurnRight) {
 	thisCar.keyHeld_TurnRight = setTo;
+  }
+  if (thisKey == thisCar.controlKeyForNitro) {
+	thisCar.keyHeld_Nitro = setTo;
   }
 }    
 
