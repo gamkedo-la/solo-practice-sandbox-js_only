@@ -1,5 +1,4 @@
 const PLAYER_MOVE_SPEED = 50.0;
-var monsterCount = 5;
 
 function warriorClass() {
   // variables to keep track of player position
@@ -28,7 +27,7 @@ function warriorClass() {
   
   this.reset = function() {
     this.keysHeld = 0;
-    monsterCount = 3;
+    monsterCount = 5;
     document.getElementById("monsterCount").innerHTML = "Monster count : " + monsterCount;
 
     if (this.homeX == undefined) {
