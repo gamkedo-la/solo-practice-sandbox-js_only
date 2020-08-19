@@ -75,6 +75,10 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 
 ** DONE Exercise 6, nitro boost                                    :practice:
 
+** TODO Extra: nitro boost juice                                      :extra:
+   Display an explosion, fire, or cool effect when nitro is on.
+
+** TODO Extra: nitro boost charge bar display                         :extra:
 ** TODO Exercise 7, support multiple tracks                        :practice:
 
 ** TODO Exercise 8, ramp tiles and airborne cars                   :practice:
