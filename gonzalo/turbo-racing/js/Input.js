@@ -28,6 +28,12 @@ function keyPressed(evt) {
   case "KeyT":
 	track.flipTheme();
 	break;
+  case "PageUp":
+	track.prevMap();
+	break;
+  case "PageDown":
+	track.nextMap();
+	break;
   default:
 	for (p of [p1, p2].filter(p => !p.cpuControl)) {
 	  setKeyHoldState(evt.code, p, true);

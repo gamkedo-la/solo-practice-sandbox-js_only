@@ -3,40 +3,83 @@ const track = new (function() {
   const TILE_HEIGHT = 40;
   const COLS = 20;
   const ROWS = 15;
-  const GROUND_GRID = [
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ////
-	1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, ////
-	1, 0, 0, 0,14, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,13, 0, 4,32, ////
-   30, 3, 0,14,10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9,13, 4, 1, ////
-   32, 3,14,10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 4, 1, ////
-	1, 3, 4, 1, 1,30,30,30,30,30,30,30,30,30,30,30, 1, 3, 4, 1, ////
-	1, 3, 4, 1, 3, 0, 0, 0, 1, 1, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
-	1, 3, 4, 1, 3, 0, 0, 4, 1, 1, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
-	1, 3, 4, 1, 3, 0, 0,16, 5, 0, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
-	1, 3, 4, 1, 3,14, 6, 6,13,16, 5,15,14, 6,13, 4, 1, 3, 4, 1, ////
-	1, 3, 4, 1, 3, 4, 1, 1, 3, 0, 0, 0, 4, 1, 3,16, 5,15, 4, 1, ////
-	1, 1, 1, 1, 3, 4,30,32, 3, 0, 0, 0, 4, 1, 3, 0, 0, 0, 4, 1, ////
-   30, 3, 2, 5,15, 4, 1, 1, 1, 0, 0, 0, 0, 1, 3, 0, 0, 0, 4, 1, ////
-	1, 3, 2, 6, 6,10, 1,31,30,30, 1, 1,30,30, 0, 0, 0, 0, 0, 1, ////
-	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,31,30, 1, 1, 1,30,32
+  const MAPS = [
+	{
+	  theme: "default",
+	  ground: [
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ////
+		1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, ////
+		1, 0, 0, 0,14, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,13, 0, 4,32, ////
+		30, 3, 0,14,10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9,13, 4, 1, ////
+		32, 3,14,10, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 4, 1, ////
+		1, 3, 4, 1, 1,30,30,30,30,30,30,30,30,30,30,30, 1, 3, 4, 1, ////
+		1, 3, 4, 1, 3, 0, 0, 0, 1, 1, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
+		1, 3, 4, 1, 3, 0, 0, 4, 1, 1, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
+		1, 3, 4, 1, 3, 0, 0,16, 5, 0, 1, 3, 0, 0, 0, 4, 1, 3, 4, 1, ////
+		1, 3, 4, 1, 3,14, 6, 6,13,16, 5,15,14, 6,13, 4, 1, 3, 4, 1, ////
+		1, 3, 4, 1, 3, 4, 1, 1, 3, 0, 0, 0, 4, 1, 3,16, 5,15, 4, 1, ////
+		1, 1, 1, 1, 3, 4,30,32, 3, 0, 0, 0, 4, 1, 3, 0, 0, 0, 4, 1, ////
+		30, 3, 2, 5,15, 4, 1, 1, 1, 0, 0, 0, 0, 1, 3, 0, 0, 0, 4, 1, ////
+		1, 3, 2, 6, 6,10, 1,31,30,30, 1, 1,30,30, 0, 0, 0, 0, 0, 1, ////
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,31,30, 1, 1, 1,30,32
+	  ],
+	  objects: [
+		4,  4, 10,  1,  1,  1, 1,  1,  1,  1, 1, 1,  1, 1, 1, 1, 1, 1, 9, 4, ////
+		4, 10, 11,  0,  6,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0,12, 9, ////
+		10, 11, 0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		11,  0, 0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		0,  0,  0,  0,  0, 10, 1,  1,  1,  1, 1, 1,  1, 1, 1, 9, 0, 0, 0, 8, ////
+		0,  0,  0, 10,  1,  9, 0,  4,  4,  4, 4, 4,  4, 4, 4,10, 9, 0, 0, 8, ////
+		0,  0,  0,  8,  0, 12, 1,  1,  9,  4,10, 1,  1, 1, 1,11, 8, 0, 0, 8, ////
+		0,  0,  6,  8,  0,  0, 0,  0,  8,  4, 8, 0,  0, 0, 0, 0, 8, 0, 0, 8, ////
+		5,  0,  0,  5,  0,  0, 0,  0, 12,  1, 9, 0,  0, 0, 0, 0, 8, 0, 0, 8, ////
+		8,  0,  0,  8,  0,  0, 5,  0,  0,  0,14, 0,  0, 5, 0, 0, 8, 0, 0, 8, ////
+		8,  2,  2,  8,  0, 10, 1,  9,  0,  0, 0, 0,  0, 8, 0, 0, 5, 0, 0, 8, ////
+		13,  1,  1,  5,  0,  8, 0,  8,  0,  0, 0, 6,  0, 8, 0, 0, 0, 0, 0, 8, ////
+		8,  0,  0,  0,  0,  8, 4, 12,  1,  9, 0, 0, 10, 9, 0, 0, 0, 0, 0, 8, ////
+		8,  0,  0,  0,  0,  8, 0,  4,  0, 12, 1, 1, 11,12, 9, 0, 0, 0,10,11, ////
+		12,  1,  1,  5,  1, 11, 4,  0,  4,  4, 0, 4,  4, 4,12, 1, 1, 1,11, 0
+	  ]
+	},
+	{
+	  theme: "night",
+	  ground: [
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ////
+		1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, ////
+		1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, ////
+		1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, ////
+		1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, ////
+		1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, ////
+		1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, ////
+		1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, ////
+		1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, ////
+		1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, ////
+		1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, ////
+		1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, ////
+		1, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1, ////
+		1, 9, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,10, 1, ////
+		1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+	  ],
+	  objects: [
+		 4,  4, 10,  1,  1,  1, 1,  1,  1,  1, 1, 1,  1, 1, 1, 1, 1, 1, 9, 4, ////
+		 4, 10, 11,  0,  6,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0,12, 9, ////
+		10,11, 0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		8,  0, 0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		8,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		8,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		8,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		8,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		8,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		8,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		8,  2,  2,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		8,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		8,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
+		8,  0,  0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0,10,11, ////
+		12, 1,  1,  1,  1,  1, 1,  1,  1,  1, 1, 1,  1, 1, 1, 1, 1, 1,11, 0
+	  ]
+	}
   ];
-  const OBJECT_GRID = [
-	 4,  4, 10,  1,  1,  1, 1,  1,  1,  1, 1, 1,  1, 1, 1, 1, 1, 1, 9, 4, ////
-	 4, 10, 11,  0,  6,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0,12, 9, ////
-	10, 11, 0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
-	11,  0, 0,  0,  0,  0, 0,  0,  0,  0, 0, 0,  0, 0, 0, 0, 0, 0, 0, 8, ////
-	 0,  0,  0,  0,  0, 10, 1,  1,  1,  1, 1, 1,  1, 1, 1, 9, 0, 0, 0, 8, ////
-	 0,  0,  0, 10,  1,  9, 0,  4,  4,  4, 4, 4,  4, 4, 4,10, 9, 0, 0, 8, ////
-	 0,  0,  0,  8,  0, 12, 1,  1,  9,  4,10, 1,  1, 1, 1,11, 8, 0, 0, 8, ////
-	 0,  0,  6,  8,  0,  0, 0,  0,  8,  4, 8, 0,  0, 0, 0, 0, 8, 0, 0, 8, ////
-	 5,  0,  0,  5,  0,  0, 0,  0, 12,  1, 9, 0,  0, 0, 0, 0, 8, 0, 0, 8, ////
-	 8,  0,  0,  8,  0,  0, 5,  0,  0,  0,14, 0,  0, 5, 0, 0, 8, 0, 0, 8, ////
-	 8,  2,  2,  8,  0, 10, 1,  9,  0,  0, 0, 0,  0, 8, 0, 0, 5, 0, 0, 8, ////
-	13,  1,  1,  5,  0,  8, 0,  8,  0,  0, 0, 6,  0, 8, 0, 0, 0, 0, 0, 8, ////
-	 8,  0,  0,  0,  0,  8, 4, 12,  1,  9, 0, 0, 10, 9, 0, 0, 0, 0, 0, 8, ////
-	 8,  0,  0,  0,  0,  8, 0,  4,  0, 12, 1, 1, 11,12, 9, 0, 0, 0,10,11, ////
-	12,  1,  1,  5,  1, 11, 4,  0,  4,  4, 0, 4,  4, 4,12, 1, 1, 1,11, 0
-  ];
+  let currentMapIndex = 0;
   const GROUND_INDEX = {
 	road: 0,
 	offroad: 1, // grass, sand, etc. depending on skin
@@ -287,13 +330,25 @@ const track = new (function() {
 	}
   };
   const takenPlayerTiles = [];
-  let currentTheme = THEMES['night'];
+  let currentTheme = THEMES[MAPS[currentMapIndex].theme];
 
   this.flipTheme = function() {
 	if (currentTheme != THEMES.default) {
 	  currentTheme = THEMES.default;
 	} else {
 	  currentTheme = THEMES.night;
+	}
+  };
+
+  this.prevMap = function() {
+	if (--currentMapIndex < 0) {
+	  currentMapIndex = MAPS.length - 1;
+	}
+  };
+
+  this.nextMap = function() {
+	if (++currentMapIndex >= MAPS.length) {
+	  currentMapIndex = 0;
 	}
   };
 
@@ -308,8 +363,8 @@ const track = new (function() {
 	if (tileCol < 0 || tileCol >= COLS || tileRow < 0 || tileRow >= ROWS) {
 	  return GROUND_TYPES[GROUND_INDEX._default];
 	}
-	let groundTile = GROUND_TYPES[GROUND_GRID[trackIndex]];
-	let object = OBJECT_TYPES[OBJECT_GRID[trackIndex]];
+	let groundTile = GROUND_TYPES[MAPS[currentMapIndex].ground[trackIndex]];
+	let object = OBJECT_TYPES[MAPS[currentMapIndex].objects[trackIndex]];
 	return (groundTile.driveable && object.driveable);
   };
 
@@ -320,9 +375,9 @@ const track = new (function() {
 	if (tileCol < 0 || tileCol >= COLS || tileRow < 0 || tileRow >= ROWS) {
 	  GROUND_TYPES[GROUND_INDEX._default].onDrive(car);
 	} else {
-	  let groundTile = GROUND_TYPES[GROUND_GRID[trackIndex]];
+	  let groundTile = GROUND_TYPES[MAPS[currentMapIndex].ground[trackIndex]];
 	  groundTile.onDrive(car);
-	  let object = OBJECT_TYPES[OBJECT_GRID[trackIndex]];
+	  let object = OBJECT_TYPES[MAPS[currentMapIndex].objects[trackIndex]];
 	  object.onDrive(car);
 	}
   };
@@ -340,7 +395,7 @@ const track = new (function() {
 	for (let eachRow=0; eachRow<ROWS; eachRow++) {
 	  trackLeftEdgeX = 0;
 	  for (let eachCol=0; eachCol<COLS; eachCol++) {
-		let groundTileHere = GROUND_TYPES[GROUND_GRID[trackIndex]];
+		let groundTileHere = GROUND_TYPES[MAPS[currentMapIndex].ground[trackIndex]];
 		canvasContext.drawImage(
 		  groundTileSheet,
 		  groundTileHere.tileOffset.x*TILE_WIDTH,
@@ -349,8 +404,8 @@ const track = new (function() {
 		  trackLeftEdgeX, trackTopEdgeY,
 		  TILE_WIDTH, TILE_HEIGHT
 		);
-		if (!(OBJECT_GRID[trackIndex] == OBJECT_INDEX.nothing || OBJECT_GRID[trackIndex] == OBJECT_INDEX.playerStart || OBJECT_GRID[trackIndex] == OBJECT_INDEX.goal || OBJECT_GRID[trackIndex] == OBJECT_INDEX._default)) {
-		  let objectHere = OBJECT_TYPES[OBJECT_GRID[trackIndex]];
+		if (!(MAPS[currentMapIndex].objects[trackIndex] == OBJECT_INDEX.nothing || MAPS[currentMapIndex].objects[trackIndex] == OBJECT_INDEX.playerStart || MAPS[currentMapIndex].objects[trackIndex] == OBJECT_INDEX.goal || MAPS[currentMapIndex].objects[trackIndex] == OBJECT_INDEX._default)) {
+		  let objectHere = OBJECT_TYPES[MAPS[currentMapIndex].objects[trackIndex]];
 		  canvasContext.drawImage(
 			objectTileSheet,
 			objectHere.tileOffset.x*TILE_WIDTH,
@@ -368,8 +423,8 @@ const track = new (function() {
   };
 
   this.getFreePlayerTileCoord = function() {
-	for(let i=0; i<OBJECT_GRID.length; i++){
-	  let tileKey = OBJECT_GRID[i];
+	for(let i=0; i<MAPS[currentMapIndex].objects.length; i++){
+	  let tileKey = MAPS[currentMapIndex].objects[i];
 	  if(tileKey == OBJECT_INDEX.playerStart && !takenPlayerTiles.includes(i)) {
 		let tileRow = Math.floor(i/COLS);
 		let tileCol = i % COLS;
