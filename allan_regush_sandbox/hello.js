@@ -50,7 +50,7 @@ class State {
     exit() { if (this.constructor === State) throw new Error("Abstract Method"); }
 }
 
-class  Menu extends State {
+class Menu extends State {
     constructor() {
 
     }
@@ -69,5 +69,21 @@ class  Menu extends State {
 
     exit() {
         
+    }
+}
+
+let instance = null;
+
+class Test {
+    constructor(data) {
+        if(!instance) {
+            instance = this;
+            this.data = data;
+        }
+        return instance;
+    }
+
+    getData() {
+        return this.data;
     }
 }
