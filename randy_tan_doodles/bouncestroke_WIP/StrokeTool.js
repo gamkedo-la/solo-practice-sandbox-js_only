@@ -1,4 +1,4 @@
-let StrokeTool = function() {
+const StrokeTool = function() {
     this.name = "stroke tool";
     this.drawX = 0;
     this.drawY = 0;

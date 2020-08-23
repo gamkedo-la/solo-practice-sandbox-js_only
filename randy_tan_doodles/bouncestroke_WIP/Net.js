@@ -1,4 +1,4 @@
-let Net = function(cvs = canvas, ctx = canvasContext) {
+const Net = function(cvs = canvas, ctx = canvasContext) {
     this.name = "net";
     this.w = 20;
     this.h = 300;

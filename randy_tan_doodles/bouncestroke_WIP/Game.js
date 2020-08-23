@@ -1,4 +1,4 @@
-let inputMouse = new InputMouse();
+const inputMouse = new InputMouse();
 
 window.addEventListener('blur', e => {
     isGameLoopPaused = true;
@@ -48,29 +48,32 @@ canvas.addEventListener('keyup', e => {
 
 });
 
-let net = new Net();
-let rock = new Rock();
-let stroke = new StrokeTool();
+const net = new Net();
+const sun = new Sun();
+const rock = new Rock();
+const stroke = new StrokeTool();
 
-let reset = () => {
+const reset = () => {
 
 };
-let update = dt => {
+const update = dt => {
     net.update(dt);
+    sun.update(dt);
     rock.update(dt, [stroke, net]);
     stroke.update(dt, inputMouse, rock);
 
     // console.log(stroke.x1 + " " + stroke.y1 + " to " + stroke.x2 + " " + stroke.y2);
 };
-let render = dt => {
+const render = dt => {
     canvasContext.fillStyle = 'white';
     canvasContext.fillRect(0, 0, canvas.width, canvas.height);
-     
+    
+    sun.render(dt);
     net.render(dt);
     rock.render(dt);
     stroke.render(inputMouse);
 };
-let getRandomColor = () => {
+const getRandomColor = () => {
     let letters = '0123456789ABCDEF';
     let color = '#';
     for (var i = 0; i < 6; i++) {

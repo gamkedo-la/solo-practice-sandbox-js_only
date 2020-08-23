@@ -1,4 +1,4 @@
-let Rock = function(cvs = canvas, ctx = canvasContext) {
+const Rock = function(cvs = canvas, ctx = canvasContext) {
     this.x = 0;
     this.y = 0;
     this.vx = 0;
@@ -81,7 +81,7 @@ let Rock = function(cvs = canvas, ctx = canvasContext) {
                             if (l) {
                                 this.vx = -15000 * dt;                                
                             }
-                            if (r) {
+                            else if (r) {
                                 this.vx = 15000 * dt;                                                                   
                             }
                         }
