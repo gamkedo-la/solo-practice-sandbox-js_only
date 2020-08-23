@@ -27,7 +27,7 @@ function warriorClass() {
   
   this.reset = function() {
     this.keysHeld = 0;
-    monsterCount = 5;
+    monsterCount = 6;
     document.getElementById("monsterCount").innerHTML = "Monster count : " + monsterCount;
 
     if (this.homeX == undefined) {
