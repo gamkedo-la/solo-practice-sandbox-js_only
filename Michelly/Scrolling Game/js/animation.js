@@ -10,7 +10,8 @@ function Animation(frameSet, time) {
   // Index of the current animation set
   this.animSetIndex = 0;
 
-  this.changeAnimSet = function(frameSet, time = 15) {
+  // Reset the animation - with same or another frameSet
+  this.changeAnimSet = function (frameSet, time = 10) {
     // Reset count
     this.timePassed = 0;
     // Set the duration
@@ -23,22 +24,27 @@ function Animation(frameSet, time) {
     this.spriteNumber = this.animSet[this.animSetIndex];
   };
 
-  this.update = function() {
+  this.update = function () {
+    // Every time the player is jumping, manually set the sprite to the jumping sprite
     if (player.jumping) {
       this.spriteNumber = 2;
       return;
     }
+
     // Keep track of how many game cycles have passed since last frame change
     this.timePassed++;
 
-    // If enough time have passed, change the frame
+    // If enough time has passed, change the frame
     if (this.timePassed >= this.animDuration) {
       // Reset the count
       this.timePassed = 0;
 
       // If the index is on the last value of the animation set, reset to 0 -> first element of the set
       // If isn't the last, just add 1 and move to the next sprite
-      this.animSetIndex = this.animSetIndex == this.animSet.length - 1 ? 0 : this.animSetIndex + 1;
+      this.animSetIndex =
+        this.animSetIndex == this.animSet.length - 1
+          ? 0
+          : this.animSetIndex + 1;
 
       // Change current animation frame value
       this.spriteNumber = this.animSet[this.animSetIndex];
