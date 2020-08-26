@@ -7,9 +7,10 @@ const MIN_TURN_SPEED = 10;
 const CAR_RADIUS = 10;
 const NITRO_POWER = 800;
 const NITRO_SECONDS = 1;
+const CPU_TIME = 1.2;
 
 function carClass() {
-  this.cpuActionTimer = 0.4;
+  this.cpuActionTimer = CPU_TIME;
   this.carX = 100;
   this.carY = 220;
   this.keyHeld_Gas = false;
@@ -89,7 +90,7 @@ function carClass() {
 	  if (this.cpuActionTimer < 0) {
 		this.keyHeld_TurnLeft = Math.random() > this.cpuLeftProb;
 		this.keyHeld_TurnRight = !this.keyHeld_TurnLeft && Math.random() > this.cpuLeftProb;
-		this.cpuActionTimer = 1;
+		this.cpuActionTimer = CPU_TIME;
 	  }
 	}
 	if (this.keyHeld_Nitro && this.nitroLeft > 0) {
