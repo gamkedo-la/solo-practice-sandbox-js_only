@@ -344,12 +344,14 @@ const track = new (function() {
 	if (--currentMapIndex < 0) {
 	  currentMapIndex = MAPS.length - 1;
 	}
+	this.setTheme(MAPS[currentMapIndex].theme);
   };
 
   this.nextMap = function() {
 	if (++currentMapIndex >= MAPS.length) {
 	  currentMapIndex = 0;
 	}
+	this.setTheme(MAPS[currentMapIndex].theme);
   };
 
   this.setTheme = function(themeId) {
