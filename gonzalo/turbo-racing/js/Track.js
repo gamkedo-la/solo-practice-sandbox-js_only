@@ -217,10 +217,7 @@ const track = new (function() {
 	  driveable: true,
 	  onDrive: function(car) {
 		document.getElementById("debugText").innerHTML = car.myName + " hit the goal line";
-		takenPlayerTiles.splice(0, takenPlayerTiles.length);
-		p1.carReset();
-		p2.carReset();
-		raceTime = 0;
+		resetRace();
 	  }
 	},
 	[GROUND_INDEX.offroad]: {
@@ -345,6 +342,7 @@ const track = new (function() {
 	  currentMapIndex = MAPS.length - 1;
 	}
 	this.setTheme(MAPS[currentMapIndex].theme);
+	resetRace();
   };
 
   this.nextMap = function() {
@@ -352,6 +350,7 @@ const track = new (function() {
 	  currentMapIndex = 0;
 	}
 	this.setTheme(MAPS[currentMapIndex].theme);
+	resetRace();
   };
 
   this.setTheme = function(themeId) {
@@ -438,4 +437,11 @@ const track = new (function() {
 	}
 	return [-1, -1];
   };
+
+  function resetRace() {
+	takenPlayerTiles.splice(0, takenPlayerTiles.length);
+	p1.carReset();
+	p2.carReset();
+	raceTime = 0;
+  }
 })();
