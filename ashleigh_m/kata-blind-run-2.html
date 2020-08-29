@@ -1,0 +1,53 @@
+<script>
+    var canvas;
+    var canvasCtx;
+    var fps = 30;
+
+    var moveSpeed = 5;
+    var growthRate = 5;
+    var rectX = 0;
+    var rectHeight = 10;
+
+window.onload = function (){
+    canvas = document.createElement('canvas');
+    canvasCtx = canvas.getContext('2d');
+    document.body.appendChild(canvas);
+    canvas.height = 600;
+    canvas.width = 800;
+    setInterval(frameUpdate, 1000/fps)
+}
+
+window
+
+function moveAll(){
+    rectX += moveSpeed;
+    rectHeight += growthRate;
+
+    if(rectX > canvas.width || rectX < 0){
+        moveSpeed = -moveSpeed;
+    }
+
+    if(rectHeight > canvas.height || rectHeight < 0){
+        growthRate = -growthRate;
+    }
+}
+
+function drawAll(){
+    //bg
+    colorRect(0, 0, canvas.width, canvas.height, 'black');
+    //blu gai
+    colorRect(rectX, 10, 30, rectHeight, 'teal');
+}
+
+function frameUpdate(){
+    moveAll();
+    drawAll();
+}
+
+function colorRect(x, y, w, h, color){
+    canvasCtx.fillStyle = color;
+    canvasCtx.fillRect(x, y, w, h);
+}
+
+
+</script>
