@@ -1,0 +1,124 @@
+<script>
+    var canvas;
+    var canvasCtx;
+    var fps = 2;
+
+    var velX = 15;
+    var velY = 20;
+    var ballX = 10;
+    var ballY = 10;
+
+    var lineX1 = 400;
+    var lineY1 = 40;
+    var lineX2 = 20;
+    var lineY2 = 500;
+
+window.onload = function (){
+    canvas = document.createElement('canvas');
+    canvasCtx = canvas.getContext('2d');
+    document.body.appendChild(canvas);
+    canvas.height = 600;
+    canvas.width = 800;
+    setInterval(frameUpdate, 1000/fps)
+}
+
+function moveAll(){
+    ballX += velX;
+    ballY += velY;
+
+    if(ballX > canvas.width || ballX < 0){
+        velX *= -1;
+    }
+
+    if(ballY > canvas.height || ballY < 0){
+        velY *= -1;
+    }
+}
+
+function drawAll(){
+    var bgColor = 'black';
+    if(segmentOverlap(ballX, ballY, ballX+velX, ballY+velY,
+                      lineX1, lineY1, lineX2, lineY2)){
+        bgColor = 'red'
+    }
+    //bg
+    colorRect(0, 0, canvas.width, canvas.height, bgColor);
+    //blu gai
+    colorRect(ballX-5, ballY-5, 10, 10, 'teal');
+    //ball Vector
+    colorLine(ballX, ballY, ballX+velX, ballY+velY, 'white');
+    colorLine(lineX1, lineY1, lineX2, lineY2, 'green');
+
+}
+
+function frameUpdate(){
+    moveAll();
+    drawAll();
+}
+
+function colorRect(x, y, w, h, color){
+    canvasCtx.fillStyle = color;
+    canvasCtx.fillRect(x, y, w, h);
+}
+
+function colorLine(x1, y1, x2, y2, color){
+        //console.log('am i being called?');
+        canvasCtx.strokeStyle = color;
+        canvasCtx.lineWidth = 2;
+        canvasCtx.beginPath();
+        canvasCtx.moveTo(x1, y1);
+        canvasCtx.lineTo(x2, y2);
+        canvasCtx.stroke();
+        
+}
+
+function segmentOverlap(p_x1, p_y1, p_x2, p_y2, 
+                        q_x1, q_y1, q_x2, q_y2){
+    var s1_x, s1_y, s2_x, s2_y;
+
+    //describing it from the origin, doesn't know position of ball, 
+    //it's just where the line is pointing 
+    //vector for line 1
+    s1_x = p_x2 - p_x1;     
+    s1_y = p_y2 - p_y1;
+    
+    //vector for line 2
+    s2_x = q_x2 - q_x1;     
+    s2_y = q_y2 - q_y1;
+
+    var s = (-s1_y * (p_x1 - q_x1) + s1_x * (p_y1 - q_y1)) / (-s2_x * s1_y + s1_x * s2_y);
+    var t = ( s2_x * (p_y1 - q_y1) - s2_y * (p_x1 - q_x1)) / (-s2_x * s1_y + s1_x * s2_y);
+
+    if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+    {
+        return true;
+    }
+
+    return false; // No collision
+    
+}
+
+/*
+// Returns 1 if the lines intersect, otherwise 0. In addition, if the lines 
+// intersect the intersection point may be stored in the floats i_x and i_y.
+char get_line_intersection(float p_x1, float p_y1, float p_x2, float p_y2, 
+    float q_x1, float q_y1, float q_x2, float q_y2)
+{
+    float s1_x, s1_y, s2_x, s2_y;
+    s1_x = p_x2 - p_x1;     s1_y = p_y2 - p_y1;
+    s2_x = q_x2 - q_x1;     s2_y = q_y2 - q_y1;
+
+    float s, t;
+    s = (-s1_y * (p_x1 - q_x1) + s1_x * (p_y1 - q_y1)) / (-s2_x * s1_y + s1_x * s2_y);
+    t = ( s2_x * (p_y1 - q_y1) - s2_y * (p_x1 - q_x1)) / (-s2_x * s1_y + s1_x * s2_y);
+
+    if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+    {
+        return 1;
+    }
+
+    return 0; // No collision
+}
+*/
+
+</script>
