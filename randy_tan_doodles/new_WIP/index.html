@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+        <style>
+            body {
+                background:black;
+                margin:0;
+                padding:0;
+                overflow:hidden;
+            }
+            #gameCanvas {                
+                /* width:100vw; */
+                height:100vh;
+                padding:0;
+                outline:0;
+                image-rendering: pixelated;
+                -ms-interpolation-mode: nearest-neighbor;
+                image-rendering: -webkit-optimize-contrast;
+                image-rendering: -webkit-crisp-edges;
+                image-rendering: -moz-crisp-edges;
+                image-rendering: -o-crisp-edges;
+                margin: 0 auto;
+                display: block;
+                overflow: hidden;
+            }
+            @media only screen and (orientation:portrait){
+                body {
+                    height: 100vw;
+                    transform: rotate(90deg);
+                    background:black;
+                    margin:0;
+                    padding:0;
+                    overflow:hidden;
+                }
+                #gameCanvas {                    
+                    height:100vh;
+                    padding:0;
+                    outline:0;
+                    image-rendering: pixelated;
+                    -ms-interpolation-mode: nearest-neighbor;
+                    image-rendering: -webkit-optimize-contrast;
+                    image-rendering: -webkit-crisp-edges;
+                    image-rendering: -moz-crisp-edges;
+                    image-rendering: -o-crisp-edges;
+                    margin: 0 auto;
+                    display: none;
+                    overflow: hidden;
+                }
+            }
+        </style>
+    </head>
+    <body oncontextmenu="return false;">
+        <script src="./utils/Vector2D.js" crossorigin="anonymous"></script>
+        <script src="./utils/UI.js" crossorigin="anonymous"></script>
+
+        <script src="./graphics/Draw.js" crossorigin="anonymous"></script>
+        <script src="./graphics/Sprite.js" crossorigin="anonymous"></script>
+        <script src="./graphics/AnimatedSprite.js" crossorigin="anonymous"></script>
+        
+        <script src="Assets.js" crossorigin="anonymous"></script>
+        <script src="Game.js" crossorigin="anonymous"></script>
+        
+        <script src="./input/InputHandlers.js" crossorigin="anonymous"></script>
+        <script src="./input/InputListeners.js" crossorigin="anonymous"></script>
+        
+        <script src="./layers/LayerActive.js" crossorigin="anonymous"></script>             
+        
+        <script src="./scenes/SceneMain.js" crossorigin="anonymous"></script>        
+        
+        <script src="Camera.js" crossorigin="anonymous"></script>     
+        <script src="Callbacks.js" crossorigin="anonymous"></script>
+        
+    </body>
+</html>
