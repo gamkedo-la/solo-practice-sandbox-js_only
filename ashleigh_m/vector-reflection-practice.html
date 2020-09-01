@@ -8,17 +8,19 @@
     var ballX = 10;
     var ballY = 10;
 
-    var lineX1 = 400;
-    var lineY1 = 40;
-    var lineX2 = 20;
-    var lineY2 = 500;
+    var lineX1 = 0;
+    var lineY1 = 600;
+    var lineX2 = 600;
+    var lineY2 = 0;
+
+    var unit = 100;
 
 window.onload = function (){
     canvas = document.createElement('canvas');
     canvasCtx = canvas.getContext('2d');
     document.body.appendChild(canvas);
     canvas.height = 600;
-    canvas.width = 800;
+    canvas.width = 600;
     setInterval(frameUpdate, 1000/fps)
 }
 
@@ -33,6 +35,13 @@ function moveAll(){
     if(ballY > canvas.height || ballY < 0){
         velY *= -1;
     }
+    /*
+        //ball Vector
+        colorLine(ballX, ballY, ballX+(velX*5), ballY+(velY*5), 'white');
+        //visualize "n"
+        colorLine(lineX2/2, lineY1/2, (lineX2/2)-unit, (lineX2/2)-unit, 'yellow');
+    */
+    console.log(dotProduct(1, 2, 1, 2));
 }
 
 function drawAll(){
@@ -45,9 +54,12 @@ function drawAll(){
     colorRect(0, 0, canvas.width, canvas.height, bgColor);
     //blu gai
     colorRect(ballX-5, ballY-5, 10, 10, 'teal');
-    //ball Vector
-    colorLine(ballX, ballY, ballX+velX, ballY+velY, 'white');
+    // line to be intersected
     colorLine(lineX1, lineY1, lineX2, lineY2, 'green');
+    //ball Vector
+    colorLine(ballX, ballY, ballX+(velX*5), ballY+(velY*5), 'white');
+    //visualize "n"
+    colorLine(lineX2/2, lineY1/2, (lineX2/2)-unit, (lineX2/2)-unit, 'yellow');
 
 }
 
@@ -89,7 +101,7 @@ function segmentOverlap(p_x1, p_y1, p_x2, p_y2,
     var s = (-s1_y * (p_x1 - q_x1) + s1_x * (p_y1 - q_y1)) / (-s2_x * s1_y + s1_x * s2_y);
     var t = ( s2_x * (p_y1 - q_y1) - s2_y * (p_x1 - q_x1)) / (-s2_x * s1_y + s1_x * s2_y);
 
-    if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
+    if (s >= 0 && s <= 1 && t >= 0 && t <= 1) //what % along either line
     {
         return true;
     }
@@ -120,5 +132,10 @@ char get_line_intersection(float p_x1, float p_y1, float p_x2, float p_y2,
     return 0; // No collision
 }
 */
+
+function dotProduct(a_x, a_y, b_x, b_y){
+    return (a_x * b_x) + (a_y * b_y);
+}
+
 
 </script>
