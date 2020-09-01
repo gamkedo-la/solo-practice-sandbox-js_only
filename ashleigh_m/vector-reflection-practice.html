@@ -41,7 +41,9 @@ function moveAll(){
         //visualize "n"
         colorLine(lineX2/2, lineY1/2, (lineX2/2)-unit, (lineX2/2)-unit, 'yellow');
     */
-    console.log(dotProduct(1, 2, 1, 2));
+   // I think the normal we are working with is -1, -1, move left, move up: negative twice
+    //console.log(dotProduct(velX, velY, -1, -1));
+    console.log(newV(velX, velY, -1, -1));
 }
 
 function drawAll(){
@@ -135,6 +137,18 @@ char get_line_intersection(float p_x1, float p_y1, float p_x2, float p_y2,
 
 function dotProduct(a_x, a_y, b_x, b_y){
     return (a_x * b_x) + (a_y * b_y);
+}
+
+function newV(vX, vY, nX, nY){
+    var dotProd = dotProduct(vX, vY, nX, nY);
+    var dotProdByNeg2 = -2*(dotProd)
+    nX *= dotProdByNeg2;
+    nY *= dotProdByNeg2;
+    newX = vX + nX;
+    newY = vY + nY;
+    var newVector = {x:newX, y:newY};
+    return newVector; 
+    //need to multiple and add vectors, which is a lil more math
 }
 
 
