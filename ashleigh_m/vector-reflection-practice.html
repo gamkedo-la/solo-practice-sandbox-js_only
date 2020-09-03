@@ -43,6 +43,7 @@ function moveAll(){
     */
    // I think the normal we are working with is -1, -1, move left, move up: negative twice
     //console.log(dotProduct(velX, velY, -1, -1));
+    //leave this here
     console.log(newV(velX, velY, -1, -1));
 }
 
@@ -51,6 +52,14 @@ function drawAll(){
     if(segmentOverlap(ballX, ballY, ballX+velX, ballY+velY,
                       lineX1, lineY1, lineX2, lineY2)){
         bgColor = 'red'
+        //trying to change the vector of the ball
+        var newVect = newV(velX, velY, -1, -1); 
+        console.log(newVect);
+        var newVectX = newVect.x;
+        var newVectY = newVect.y;
+        velX = newVectX;
+        velY = newVectY;
+
     }
     //bg
     colorRect(0, 0, canvas.width, canvas.height, bgColor);
@@ -62,6 +71,7 @@ function drawAll(){
     colorLine(ballX, ballY, ballX+(velX*5), ballY+(velY*5), 'white');
     //visualize "n"
     colorLine(lineX2/2, lineY1/2, (lineX2/2)-unit, (lineX2/2)-unit, 'yellow');
+
 
 }
 
