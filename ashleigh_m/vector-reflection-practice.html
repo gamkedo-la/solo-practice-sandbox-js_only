@@ -1,11 +1,12 @@
 <script>
     var canvas;
     var canvasCtx;
-    var fps = 2;
+    var fps = 30;
 
-    var velX = 15;
-    var velY = 20;
-    var ballX = 10;
+    var velX = 1;
+    var velY = 5;
+    const VECTOR_CEILING = 10;
+    var ballX = 500;
     var ballY = 10;
 
     var lineX1 = 0;
@@ -44,14 +45,13 @@ function moveAll(){
    // I think the normal we are working with is -1, -1, move left, move up: negative twice
     //console.log(dotProduct(velX, velY, -1, -1));
     //leave this here
-    console.log(newV(velX, velY, -1, -1));
 }
 
 function drawAll(){
     var bgColor = 'black';
     if(segmentOverlap(ballX, ballY, ballX+velX, ballY+velY,
                       lineX1, lineY1, lineX2, lineY2)){
-        bgColor = 'red'
+        //bgColor = 'red'
         //trying to change the vector of the ball
         var newVect = newV(velX, velY, -1, -1); 
         console.log(newVect);
@@ -151,12 +151,27 @@ function dotProduct(a_x, a_y, b_x, b_y){
 
 function newV(vX, vY, nX, nY){
     var dotProd = dotProduct(vX, vY, nX, nY);
-    var dotProdByNeg2 = -2*(dotProd)
-    nX *= dotProdByNeg2;
-    nY *= dotProdByNeg2;
+    var dotProdByNeg2 = -2*dotProd;
+    nX = nX*dotProdByNeg2;
+    nY = nY*dotProdByNeg2;
     newX = vX + nX;
     newY = vY + nY;
-    var newVector = {x:newX, y:newY};
+    
+    //attempt to put a ceiling on the vector
+    var cappedX = Math.min(Math.abs(newX), 10);
+    var cappedY = Math.min(Math.abs(newY), 10);
+
+    if(newX < 0){
+        cappedX = -cappedX;
+    }
+
+    if(newY < 0){
+        cappedY = -cappedY;
+    }
+
+    console.log(cappedX);
+    console.log(cappedY);
+    var newVector = {x:cappedX, y:cappedY};
     return newVector; 
     //need to multiple and add vectors, which is a lil more math
 }
