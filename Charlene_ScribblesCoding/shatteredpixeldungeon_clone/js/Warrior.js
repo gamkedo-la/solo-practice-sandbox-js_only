@@ -43,6 +43,8 @@ function warriorClass() {
       }
     }
 
+    menu();
+
     this.x = this.homeX;
     this.y = this.homeY;
   }
@@ -86,6 +88,7 @@ function warriorClass() {
 
         if (monsterCount == 0) {
           document.getElementById("monsterCount").innerHTML = "All monsters defeated! :D";
+          isGameStarted = false;
           this.reset();
         }
 

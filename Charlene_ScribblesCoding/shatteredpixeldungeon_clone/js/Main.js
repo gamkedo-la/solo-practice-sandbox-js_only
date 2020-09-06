@@ -2,6 +2,7 @@
 var canvas, canvasContext;
 
 var p1 = new warriorClass();
+var isGameStarted = false;
 
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
@@ -10,17 +11,21 @@ window.onload = function() {
   menu();
 
   canvas.addEventListener('click', function(e) {
-    loadImages();
+    if (isGameStarted == false) {
+      isGameStarted = true;
+      loadImages();
+    }
   });
 }
 
 function menu() {
+  colorRect(0, 0, canvas.width, canvas.height, 'white');
   canvasContext.font = "48px serif";
   canvasContext.fillStyle = "black";
-  canvasContext.fillText("Welcome to Shattered Pixel Dungeon clone!", 20, 200);
-  canvasContext.fillText("Dungeon clone!", 200, 250);
+  canvasContext.fillText("Welcome to Shattered Pixel", 20, 200);
+  canvasContext.fillText("Dungeon clone!", 160, 250);
   canvasContext.font = "30px serif";
-  canvasContext.fillText("Click anywhere to start playing", 180, 300);
+  canvasContext.fillText("Click anywhere to start playing", 120, 300);
 }
 
 function loadingDoneSoStartGame() {
