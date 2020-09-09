@@ -1,13 +1,18 @@
 <script>
     var canvas;
     var canvasCtx;
+
+    var mouseX;
+    var mouseY;
+
     var fps = 30;
 
-    var velX = 1;
-    var velY = 5;
+    var velX = 3;
+    var velY = -2;
     const VECTOR_CEILING = 10;
-    var ballX = 500;
-    var ballY = 10;
+    const DRAG = .01;
+    var ballX = 200;
+    var ballY = 200;
 
     var lineX1 = 0;
     var lineY1 = 600;
@@ -22,13 +27,30 @@ window.onload = function (){
     document.body.appendChild(canvas);
     canvas.height = 600;
     canvas.width = 600;
+
+    canvas.addEventListener('mousedown', handleClick);
+    canvas.addEventListener('mousemove', calculateMousePos);
+
     setInterval(frameUpdate, 1000/fps)
+}
+
+function calculateMousePos(evt) {
+    var rect = canvas.getBoundingClientRect();
+
+    mouseX = evt.clientX - rect.left;
+    mouseY = evt.clientY - rect.top;
+}
+
+function handleClick() {
+    ballX = mouseX;
+    ballY = mouseY;
 }
 
 function moveAll(){
     ballX += velX;
     ballY += velY;
-
+    //velX *= DRAG;
+    //velY *= DRAG;
     if(ballX > canvas.width || ballX < 0){
         velX *= -1;
     }
@@ -53,7 +75,7 @@ function drawAll(){
                       lineX1, lineY1, lineX2, lineY2)){
         //bgColor = 'red'
         //trying to change the vector of the ball
-        var newVect = newV(velX, velY, -1, -1); 
+        var newVect = newV(velX, velY, -.707, -.707); 
         console.log(newVect);
         var newVectX = newVect.x;
         var newVectY = newVect.y;
@@ -121,29 +143,6 @@ function segmentOverlap(p_x1, p_y1, p_x2, p_y2,
     return false; // No collision
     
 }
-
-/*
-// Returns 1 if the lines intersect, otherwise 0. In addition, if the lines 
-// intersect the intersection point may be stored in the floats i_x and i_y.
-char get_line_intersection(float p_x1, float p_y1, float p_x2, float p_y2, 
-    float q_x1, float q_y1, float q_x2, float q_y2)
-{
-    float s1_x, s1_y, s2_x, s2_y;
-    s1_x = p_x2 - p_x1;     s1_y = p_y2 - p_y1;
-    s2_x = q_x2 - q_x1;     s2_y = q_y2 - q_y1;
-
-    float s, t;
-    s = (-s1_y * (p_x1 - q_x1) + s1_x * (p_y1 - q_y1)) / (-s2_x * s1_y + s1_x * s2_y);
-    t = ( s2_x * (p_y1 - q_y1) - s2_y * (p_x1 - q_x1)) / (-s2_x * s1_y + s1_x * s2_y);
-
-    if (s >= 0 && s <= 1 && t >= 0 && t <= 1)
-    {
-        return 1;
-    }
-
-    return 0; // No collision
-}
-*/
 
 function dotProduct(a_x, a_y, b_x, b_y){
     return (a_x * b_x) + (a_y * b_y);
