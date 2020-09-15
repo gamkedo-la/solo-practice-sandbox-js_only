@@ -320,8 +320,10 @@ function drawBricks()
 
 function drawAll()
 {
+    canvasContext.globalAlpha = 0.75;
     // Background
-    colorRect(0, 0, canvas.width, canvas.height, backgroundColor);
+    colorRect(0, 0, canvas.width, canvas.height, backgroundColor);	    
+	canvasContext.globalAlpha = 1.0;
 
     // Text
     colorText(canvas.width / 2 - 100, canvas.height / 2 - 100, "Phil", "42px Arial", '#1F0A1F');
