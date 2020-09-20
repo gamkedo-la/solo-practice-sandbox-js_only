@@ -57,6 +57,11 @@ function calculateMousePos(evt) {
 }
 
 function ballReset() {
+    const value = Math.random();
+    if  (value < 0.5) {
+        ball.deltaX *= -1;
+        ball.deltaY *= -1;
+    } 
     ball.y = canvas.height / 2;
     ball.x = canvas.width / 2;
 }
@@ -68,6 +73,7 @@ function update() {
     if(ball.x < 20 + PADDLE_WIDTH) {
         if (ball.y > paddle1.y && ball.y < paddle1.y + PADDLE_HEIGHT) {
             ball.deltaX *= -1;
+            calculateBallDeltaSpeed(paddle1.y);
         } else if (ball.x < 0) {
             score.player2++
             ballReset();
@@ -76,6 +82,7 @@ function update() {
     if(ball.x > canvas.width - 20 - PADDLE_WIDTH) {
         if (ball.y > paddle2.y && ball.y < paddle2.y + PADDLE_HEIGHT) {
             ball.deltaX *= -1;
+            calculateBallDeltaSpeed(paddle2.y);
         } else if (ball.x > canvas.width) {
             score.player1++
             ballReset();
@@ -90,6 +97,11 @@ function drawText(text, x, y) {
     canvasContext.fillText(text, x, y);
 }
 
+function calculateBallDeltaSpeed(paddleY) {
+    const centerOfPaddle = paddleY + PADDLE_HEIGHT / 2;
+    const ballDistFromCenterOfPaddle = ball.y - centerOfPaddle;
+    ball.deltaX = ballDistFromCenterOfPaddle * 0.35;
+}
 
 function render() {
     blackoutCanvas();
