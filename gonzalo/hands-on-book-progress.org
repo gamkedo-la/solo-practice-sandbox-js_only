@@ -82,7 +82,7 @@ NOTE: At the start of this document, I'm at the Game 3: Turbo Racing completion 
 ** DONE Exercise 7, support multiple tracks                        :practice:
 ** TODO Extra: Moar tracks                                            :extra:
 
-** TODO Exercise 8, ramp tiles and airborne cars                   :practice:
+** DONE Exercise 8, ramp tiles and airborne cars                   :practice:
 
 ** TODO Exercise 9, sound effects (advanced!)                      :practice:
 

@@ -19,6 +19,16 @@ function carClass() {
   this.keyHeld_TurnRight = false;
   this.keyHeld_Nitro = false;
   this.canSteer = true;
+  const shadow = {
+	radius: CAR_RADIUS*1.9,
+	color: 'black', alpha: 0.7,
+	offsetX: 0, offsetY: 0
+  };
+  const gravity = -8;
+  let isJumping = false;
+  let jumpTimer = 0;
+  let jumpH = 0;
+  let jumpVel = 6;
 
   this.setupControls = function(forwardKey, backKey, leftKey, rightKey, nitroKey) {
 	this.controlKeyForGas = this.cpuControl ? null : forwardKey;
@@ -40,6 +50,7 @@ function carClass() {
   };
 
   this.carDraw = function() {
+	colorCircle(this.carX + shadow.offsetX, this.carY + shadow.offsetY, shadow.radius, shadow.color, shadow.alpha);
 	drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.carX, this.carY, this.carAng);
   };
 
@@ -48,12 +59,15 @@ function carClass() {
 	this.carAng = -0.5 * Math.PI;
 	[this.carX, this.carY] = track.getFreePlayerTileCoord();
 	this.nitroLeft = NITRO_SECONDS;
+	isJumping = false;
   };
 
   this.nudge = function(xDir, yDir, dt) {
-	this.carAng += Math.atan2(yDir, xDir)*0.09;
-	this.carSpeed -= NUDGE_SPEED_DECAY;
-	this.calcAndApplyNextPos(dt);
+	if (!isJumping) {
+	  this.carAng += Math.atan2(yDir, xDir)*0.09;
+	  this.carSpeed -= NUDGE_SPEED_DECAY;
+	  this.calcAndApplyNextPos(dt);
+	}
   };
 
   this.calcAndApplyNextPos = function(dt) {
@@ -62,7 +76,9 @@ function carClass() {
     if (track.isDriveableCoord(nextX, nextY)) {
 	  this.carX = nextX;
 	  this.carY = nextY;
-	  this.carSpeed *= GROUNDSPEED_DECAY_MULT;
+	  if (!isJumping) {
+		this.carSpeed *= GROUNDSPEED_DECAY_MULT;
+	  }
 	  if (this.cpuControl) {
 		this.cpuGasProb = 0.3;
 		this.cpuRevProb = 0.9;
@@ -81,6 +97,14 @@ function carClass() {
 	}
   };
 
+  this.jump = function() {
+	if (!isJumping) {
+	  console.log('JUMP!');
+	  isJumping = true;
+	  jumpTimer = 0;
+	}
+  };
+  
   this.carMove = function(dt) {
 	let turnRate = TURN_RATE;
 	if (this.cpuControl) {
@@ -93,7 +117,7 @@ function carClass() {
 		this.cpuActionTimer = CPU_TIME;
 	  }
 	}
-	if (this.keyHeld_Nitro && this.nitroLeft > 0) {
+	if (!isJumping && this.keyHeld_Nitro && this.nitroLeft > 0) {
 	  this.carSpeed += NITRO_POWER*dt;
 	  this.nitroLeft -= dt;
 	  turnRate -= 0.7; // Decrease maneuverability when nitro is on
@@ -101,13 +125,13 @@ function carClass() {
 		turnRate = TURN_RATE;
 	  }
 	}
-	if (this.keyHeld_Gas) {
+	if (!isJumping && this.keyHeld_Gas) {
 	  this.carSpeed += DRIVE_POWER*dt;
 	}
-	if (this.keyHeld_Reverse) {
+	if (!isJumping && this.keyHeld_Reverse) {
 	  this.carSpeed -= REVERSE_POWER*dt;
 	}
-	if (this.canSteer && Math.abs(this.carSpeed) > MIN_TURN_SPEED) {
+	if (!isJumping && this.canSteer && Math.abs(this.carSpeed) > MIN_TURN_SPEED) {
 	  if (this.keyHeld_TurnLeft) {
 		this.carAng += -turnRate*Math.PI * dt;
 	  }
@@ -118,16 +142,47 @@ function carClass() {
 	if (this.carSpeed != 0) {
 	  carMoved = true;
 	}
+	if (isJumping) {
+	  jumpVel += gravity*dt;
+	  jumpH += jumpVel*dt;
+	  jumpTimer += dt;
+	  // shadow.radius = -1.2*Math.pow(dt, 2) + 0.8*dt;
+	  shadow.alpha = Math.abs(norm(jumpH, 0, 5));
+	  if (shadow.alpha > 0.7) {
+		shadow.alpha = 0.7;
+	  }
+	  if (shadow.alpha < 0.1) {
+		shadow.alpha = 0.1;
+	  }
+	  shadow.offsetX = Math.round(jumpH*5);
+	  shadow.offsetY = Math.round(jumpH*8);
+	  if (jumpH <= 0) {
+		shadow.radius = CAR_RADIUS*1.9;
+		shadow.alpha = 0.7;
+		isJumping = false;
+		jumpTimer = 0;
+		jumpVel = 10;
+		jumpH = 0;
+		shadow.offsetX = 0;
+		shadow.offsetY = 0;
+	  }
+	}
 	this.calcAndApplyNextPos(dt);
   };
 
   this.driveOffRoad = function() {
-	this.carSpeed /= 2;
-	if (this.cpuControl) {
-	  this.cpuGasProb = 0.9;
-	  this.cpuRevProb = 0.001;
-	  this.cpuLeftProb = 0.999;
-	  this.cpuRightProb = 0.999;
-	};
+	if (!isJumping) {
+	  this.carSpeed /= 2;
+	  if (this.cpuControl) {
+		this.cpuGasProb = 0.9;
+		this.cpuRevProb = 0.001;
+		this.cpuLeftProb = 0.999;
+		this.cpuRightProb = 0.999;
+	  };
+	}
   };
+}
+
+function norm(value, max, min) {
+  return (value - min) / (max - min);
 }
