@@ -71,27 +71,22 @@ function ballReset() {
 }
 
 function update() {
-    if(ball.y > canvas.height || ball.y < 0) {
+    if(ball.y < 0) {
         ball.deltaY *= -1;
     }
-    if(ball.x < 20 + PADDLE_WIDTH) {
+    if(ball.x > canvas.width || ball.x < 0) {
+        ball.deltaX *=-1;
+    }
+    if(ball.y < 20 + PADDLE_WIDTH) {
         if (ball.y > paddle1.y && ball.y < paddle1.y + PADDLE_HEIGHT) {
             ball.deltaX *= -1;
             calculateBallDeltaSpeed(paddle1.y);
-        } else if (ball.x < 0) {
-            score.player2++
-            ballReset();
         }
     }
-    if(ball.x > canvas.width - 20 - PADDLE_WIDTH) {
-        if (ball.y > paddle2.y && ball.y < paddle2.y + PADDLE_HEIGHT) {
-            ball.deltaX *= -1;
-            calculateBallDeltaSpeed(paddle2.y);
-        } else if (ball.x > canvas.width) {
-            score.player1++
-            ballReset();
-        }
+    if(ball.y > canvas.width) {
+        ballReset();
     }
+
     ball.y += ball.deltaY;
     ball.x += ball.deltaX;
 }
