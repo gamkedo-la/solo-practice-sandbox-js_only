@@ -1,8 +1,8 @@
 let canvas;
 let canvasContext;
 
-const PADDLE_HEIGHT = 100;
-const PADDLE_WIDTH = 10;
+const PADDLE_HEIGHT = 10;
+const PADDLE_WIDTH = 100;
 
 function getCenter() {
     return canvas.width / 2;
@@ -77,13 +77,13 @@ function update() {
     if(ball.x > canvas.width || ball.x < 0) {
         ball.deltaX *=-1;
     }
-    if(ball.y < 20 + PADDLE_WIDTH) {
-        if (ball.y > paddle1.y && ball.y < paddle1.y + PADDLE_HEIGHT) {
-            ball.deltaX *= -1;
+    if(ball.y > canvas.height - 15) {
+        if (ball.x > paddle1.x && ball.x < paddle1.x + PADDLE_WIDTH) {
+            ball.deltaY *= -1;
             calculateBallDeltaSpeed(paddle1.y);
         }
     }
-    if(ball.y > canvas.width) {
+    if(ball.y > canvas.height) {
         ballReset();
     }
 
