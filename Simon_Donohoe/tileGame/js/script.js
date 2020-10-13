@@ -8,13 +8,13 @@ let ballSpeedY = 7;
 
 // brick constants and variables
 const BRICK_W = 100;
-const BRICK_H = 50;
+const BRICK_H = 20;
 const BRICK_GAP = 2;
-const BRICK_COUNT = 8;
-const BRICK_ROWS = 4;
+const BRICK_COLS = 10;
+const BRICK_ROWS = 14;
 
 
-let brickGrid = new Array(BRICK_COUNT);
+let brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
 
 // paddle size constants
 const PADDLE_WIDTH = 100;
@@ -42,7 +42,7 @@ function updateMousePos(evt) {
 }
 
 function brickReset(){
-  for(let i = 0; i < BRICK_COUNT; i++){
+  for(let i = 0; i < BRICK_COLS * BRICK_ROWS; i++){
     
     // a type of coin flip
     // if(Math.random() < 0.5){
@@ -97,6 +97,18 @@ function moveAll() {
     // ballSpeedY *= -1;
   }
 
+  let ballBrickCol = Math.floor(ballX / BRICK_W); //Math.floor removes the decimal places from the cursor. Rounds down.
+  let ballBrickRow = Math.floor(ballY / BRICK_H);
+  let brickIndexUnderBall = rowColToArrayIndex(ballBrickCol, ballBrickRow);
+
+  if(ballBrickCol >= 0 && ballBrickCol < BRICK_COLS && ballBrickRow >= 0 && ballBrickRow < BRICK_ROWS){
+
+    if(brickGrid[brickIndexUnderBall]){
+    brickGrid[brickIndexUnderBall] = false;
+    ballSpeedY *= -1;
+    }
+  }
+
   let paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_BOTTOM;
   let paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
   let paddleLeftEdgeX = paddleX;
@@ -116,6 +128,10 @@ function moveAll() {
   }
 }
 
+function rowColToArrayIndex(col, row){
+return col + BRICK_COLS * row;
+}
+
 function drawBricks(){
   // if(brickGrid[0]){
   //   colorRect(0,0, BRICK_W-2,BRICK_H, 'blue');    
@@ -130,9 +146,12 @@ function drawBricks(){
   //   colorRect(BRICK_W*3,0, BRICK_W-2,BRICK_H, 'blue');
   // }
   for(let eachRow = 0; eachRow < BRICK_ROWS; eachRow++){
-    for(let i = 0; i < BRICK_COUNT; i++){
-      if(brickGrid[i]){
-        colorRect(BRICK_W * i, BRICK_H * eachRow, BRICK_W-BRICK_GAP, BRICK_H-BRICK_GAP, 'blue');
+    for(let eachCol = 0; eachCol < BRICK_COLS; eachCol++){
+
+      let arrayIndex = rowColToArrayIndex(eachCol, eachRow);
+
+      if(brickGrid[arrayIndex]){
+        colorRect(BRICK_W * eachCol, BRICK_H * eachRow, BRICK_W-BRICK_GAP, BRICK_H-BRICK_GAP, 'blue');
       } //end of is this brick here
     } // end of for each brick
   } // end of drawBrick function
@@ -151,10 +170,6 @@ function drawAll() {
     PADDLE_THICKNESS, 'white'); // drawing the paddle
 
     drawBricks();
-
-    let mouseBrickCol = mouseX / BRICK_W;
-    let mouseBrickRow = mouseY / BRICK_H;
-    colorText(mouseBrickCol+","+mouseBrickRow, mouseX, mouseY, 'yellow');
 }
 
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
