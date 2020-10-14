@@ -7,14 +7,14 @@ let ballSpeedX = 5;
 let ballSpeedY = 7;
 
 // brick constants and variables
-const BRICK_W = 100;
+const BRICK_W = 80;
 const BRICK_H = 20;
 const BRICK_GAP = 2;
 const BRICK_COLS = 10;
 const BRICK_ROWS = 14;
 
-
 let brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
+let bricksLeft = 0;
 
 // paddle size constants
 const PADDLE_WIDTH = 100;
@@ -39,20 +39,33 @@ function updateMousePos(evt) {
   mouseY = evt.clientY - rect.top - root.scrollTop;
 
   paddleX = mouseX - PADDLE_WIDTH / 2; //paddle position in relation to the cursor. Cursor should be in the middle of the paddle.
+
+  //cheat / hack to test ball in any position
+    // ballX = mouseX;
+    // ballY = mouseY;
+    // ballSpeedX = 3;
+    // ballSpeedY = -4;
 }
 
 function brickReset(){
-  for(let i = 0; i < BRICK_COLS * BRICK_ROWS; i++){
+  bricksLeft = 0;
+  let i;
+  for(i = 0; i < 3*BRICK_COLS; i++){
+    brickGrid[i] = false;
+  }
+   
+  for(;i < BRICK_COLS * BRICK_ROWS; i++){
     
     // a type of coin flip
     // if(Math.random() < 0.5){
     //   brickGrid[i] = true;
     // }else{
     //   brickGrid[i] = false;
-    // } // end of else (rand stack)
+    // } // end of else (rand stack)    
+    
     brickGrid[i] = true;
+    bricksLeft++;
   } // end of for each brick
-  // brickGrid[i] = true;
 } // end of brickReset function
 
 window.onload = function () {
@@ -65,6 +78,7 @@ window.onload = function () {
   canvas.addEventListener("mousemove", updateMousePos);
 
   brickReset();
+  ballReset();
 }
 
 function updateAll() {
@@ -77,38 +91,78 @@ function ballReset() {
   ballY = canvas.height / 2;
 }
 
-function moveAll() {
-    // updates the ball position
-    ballX += ballSpeedX;
-    ballY += ballSpeedY;
+function ballMove(){
+  // updates the ball position
+  ballX += ballSpeedX;
+  ballY += ballSpeedY;
 
   // changes the direction when it reaches the boundary
-  if (ballX < 0) { //left
-    ballSpeedX *= -1;
-  }
-  if (ballY < 0) { //right
+  
+  if (ballY < 0) { //top
     ballSpeedY *= -1;
   }
-  if (ballX > canvas.width) { // top
+  if (ballX > canvas.width) { // right
     ballSpeedX *= -1;
   }
   if (ballY > canvas.height) { // bottom
     ballReset();
+    brickReset();
     // ballSpeedY *= -1;
   }
+  if (ballX < 0) { //left
+    ballSpeedX *= -1;
+  }
+}
 
+function isBrickAtColRow(col, row){
+  if(col >= 0 && col < BRICK_COLS && row >= 0 && row < BRICK_ROWS){  
+    let brickIndexUnderCoord = rowColToArrayIndex(col, row);
+    return brickGrid[brickIndexUnderCoord];
+  }else{
+    return false;
+  }
+}
+
+function ballBrickHandling(){
   let ballBrickCol = Math.floor(ballX / BRICK_W); //Math.floor removes the decimal places from the cursor. Rounds down.
   let ballBrickRow = Math.floor(ballY / BRICK_H);
   let brickIndexUnderBall = rowColToArrayIndex(ballBrickCol, ballBrickRow);
 
   if(ballBrickCol >= 0 && ballBrickCol < BRICK_COLS && ballBrickRow >= 0 && ballBrickRow < BRICK_ROWS){
 
-    if(brickGrid[brickIndexUnderBall]){
-    brickGrid[brickIndexUnderBall] = false;
-    ballSpeedY *= -1;
-    }
-  }
+    if(isBrickAtColRow(ballBrickCol, ballBrickRow)){
+      brickGrid[brickIndexUnderBall] = false;
+      bricksLeft--;
+console.log(bricksLeft);
 
+      let prevBallX = ballX - ballSpeedX;
+      let prevBallY = ballY - ballSpeedY;
+      let prevBrickCol = Math.floor(prevBallX / BRICK_W);
+      let prevBrickRow = Math.floor(prevBallY / BRICK_H);
+      let bothTestsFailed = true;
+
+      if(prevBrickCol != ballBrickCol){
+        if(isBrickAtColRow(prevBrickCol, prevBrickRow) == false){
+          ballSpeedX *= -1;
+          bothTestsFailed = false;
+        }
+      }
+      if(prevBrickRow != ballBrickRow){
+        if(isBrickAtColRow(ballBrickCol, ballBrickRow) == false){
+          ballSpeedY *= -1;
+          bothTestsFailed = false;
+        }
+      }
+      if(bothTestsFailed){ //armpit case prevents ball from going right through
+        ballSpeedX *= -1;
+        ballSpeedY *= -1;
+      }
+    
+    } //end of brick found
+  } // end of valid col and row
+} // end of ballBrickHandling func
+
+function ballPaddleHandling(){
   let paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_BOTTOM;
   let paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
   let paddleLeftEdgeX = paddleX;
@@ -125,7 +179,17 @@ function moveAll() {
     let centerOfPaddleX = ballX + PADDLE_WIDTH/2;
     let ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
     ballSpeedX = ballDistFromPaddleCenterX * 0.35;
-  }
+
+    if(bricksLeft == 0){
+      brickReset();
+    } // out of bricks
+  } // ball center inside paddle
+} // end of ballPaddleHandling
+
+function moveAll() {
+  ballMove();
+  ballBrickHandling();
+  ballPaddleHandling();
 }
 
 function rowColToArrayIndex(col, row){
