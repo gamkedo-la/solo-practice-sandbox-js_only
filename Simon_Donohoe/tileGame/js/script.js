@@ -53,7 +53,7 @@ function brickReset(){
   for(i = 0; i < 3*BRICK_COLS; i++){
     brickGrid[i] = false;
   }
-   
+
   for(;i < BRICK_COLS * BRICK_ROWS; i++){
     
     // a type of coin flip
@@ -98,10 +98,10 @@ function ballMove(){
 
   // changes the direction when it reaches the boundary
   
-  if (ballY < 0) { //top
+  if (ballY < 0 && ballSpeedY < 0.0) { //top
     ballSpeedY *= -1;
   }
-  if (ballX > canvas.width) { // right
+  if (ballX > canvas.width && ballSpeedX > 0.0) { // right
     ballSpeedX *= -1;
   }
   if (ballY > canvas.height) { // bottom
@@ -109,7 +109,7 @@ function ballMove(){
     brickReset();
     // ballSpeedY *= -1;
   }
-  if (ballX < 0) { //left
+  if (ballX < 0 && ballSpeedX < 0.0) { //left
     ballSpeedX *= -1;
   }
 }
@@ -133,7 +133,7 @@ function ballBrickHandling(){
     if(isBrickAtColRow(ballBrickCol, ballBrickRow)){
       brickGrid[brickIndexUnderBall] = false;
       bricksLeft--;
-console.log(bricksLeft);
+      // console.log(bricksLeft);
 
       let prevBallX = ballX - ballSpeedX;
       let prevBallY = ballY - ballSpeedY;
@@ -176,8 +176,9 @@ function ballPaddleHandling(){
   ) {
     ballSpeedY *= -1;
 
-    let centerOfPaddleX = ballX + PADDLE_WIDTH/2;
+    let centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
     let ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
+
     ballSpeedX = ballDistFromPaddleCenterX * 0.35;
 
     if(bricksLeft == 0){
@@ -238,13 +239,13 @@ function drawAll() {
 
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
   canvasContext.fillStyle = fillColor;
-  canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor);
+  canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
 }
 
 function colorCircle(centerX, centerY, radius, fillColor) {
   canvasContext.fillStyle = fillColor;
   canvasContext.beginPath();
-  canvasContext.arc(centerX, centerY, radius, 0, Math.PI * 2, true);
+  canvasContext.arc(centerX, centerY, 8, 0, Math.PI * 2, true);
   canvasContext.fill();
 }
 
