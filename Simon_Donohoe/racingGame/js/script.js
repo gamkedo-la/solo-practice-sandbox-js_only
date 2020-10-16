@@ -1,3 +1,6 @@
+let carPic = document.createElement("img"); // variable for image of car
+let carPicLoaded = false; // variable to later see if car image is loaded
+
 // ball starting position variables
 let ballX = 75;
 let ballY = 75;
@@ -58,6 +61,11 @@ window.onload = function () {
   setInterval(updateAll, 1000 / framesPerSecond);
 
   canvas.addEventListener("mousemove", updateMousePos);
+
+  carPic.onload = function(){
+    carPicLoaded = true; // Car image set after this function, so set to true
+  }
+  carPic.src = "playerOneCar.png"; // Car image
 
   ballReset();
 }
@@ -177,8 +185,10 @@ function drawAll() {
   // drawing the canvas
   colorRect(0, 0, canvas.width, canvas.height, "black"); //clear screen
 
-  colorCircle(ballX, ballY, 10, "white"); // drawing the ball
-
+  //colorCircle(ballX, ballY, 10, "white"); // drawing the ball
+  if(carPicLoaded){
+    canvasContext.drawImage(carPic, ballX - carPic.width/2, ballY - carPic.height/2);
+  }
   drawTracks();
 }
 
