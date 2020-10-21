@@ -8,7 +8,7 @@ const TRACK_COLS = 20;
 const TRACK_ROWS = 15;
 
 // track layout
-let trackGrid = [ 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4,
+let levelOne = [ 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4,
                   4, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 
                   4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 
                   1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 
@@ -18,11 +18,14 @@ let trackGrid = [ 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4,
                   1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 5, 0, 0, 1, 0, 0, 1, 
                   1, 0, 0, 1, 0, 0, 5, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 
                   1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 5, 0, 0, 1, 0, 0, 1, 0, 0, 1, 
-                  1, 0, 2, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1, 
+                  1, 2, 2, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1, 
                   1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 
                   0, 3, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 
                   0, 3, 0, 0, 0, 0, 1, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 
                   1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 4];
+
+let trackGrid = [];
+
 const TRACK_ROAD = 0;
 const TRACK_WALL = 1;
 const TRACK_PLAYERSTART = 2;
@@ -30,30 +33,36 @@ const TRACK_FINISH = 3;
 const TRACK_TREE = 4;
 const TRACK_FLAG = 5;
 
-function isObstacleAtColRow(col, row){
+function returnTileTypeAtColRow(col, row){
   if(col >= 0 && col < TRACK_COLS && row >= 0 && row < TRACK_ROWS){  
     let trackIndexUnderCoord = rowColToArrayIndex(col, row);
-    return (trackGrid[trackIndexUnderCoord] != TRACK_ROAD);
+    return trackGrid[trackIndexUnderCoord];
   }else{
-    return false;
+    return TRACK_WALL;
   }
 }
 
-function carTrackHandling(){
-  let carTrackCol = Math.floor(carX / TRACK_W); //Math.floor removes the decimal places from the cursor. Rounds down.
-  let carTrackRow = Math.floor(carY / TRACK_H);
+function carTrackHandling(whichCar){
+  let carTrackCol = Math.floor(whichCar.x / TRACK_W); //Math.floor removes the decimal places from the cursor. Rounds down.
+  let carTrackRow = Math.floor(whichCar.y / TRACK_H);
   let trackIndexUnderCar = rowColToArrayIndex(carTrackCol, carTrackRow);
 
   if(carTrackCol >= 0 && carTrackCol < TRACK_COLS && carTrackRow >= 0 && carTrackRow < TRACK_ROWS){
 
-    if(isObstacleAtColRow(carTrackCol, carTrackRow)){
+    let tileHere = returnTileTypeAtColRow(carTrackCol, carTrackRow);
+
+    if(tileHere == TRACK_FINISH){
+      console.log(whichCar.name + " WINS!!");
+      loadLevel(levelOne);
+      // whichCar.speed *= -0.5;
+    }else if(tileHere != TRACK_ROAD){
       // next two lines added to fix a bug.
       // undoes the car movement which got it onto the wall.
-      carX -= Math.cos(carAng) * carSpeed;
-      carY -= Math.sin(carAng) * carSpeed;
+      whichCar.x -= Math.cos(whichCar.ang) * whichCar.speed;
+      whichCar.y -= Math.sin(whichCar.ang) * whichCar.speed;
 
-      carSpeed *= -0.5;
-    } //end of track found
+      whichCar.speed *= -0.5;
+    } //end of else if
   } // end of valid col and row
 } // end of carTrackHandling func
 

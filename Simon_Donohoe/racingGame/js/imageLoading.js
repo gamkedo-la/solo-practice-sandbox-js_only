@@ -1,6 +1,7 @@
 
 //declare car texture
-let carPic = document.createElement("img");
+let blueCarPic = document.createElement("img");
+let greenCarPic = document.createElement("img");
 //declare track textures
 let trackPics = [];
 
@@ -29,7 +30,8 @@ function loadImages(){
   //let dataset = {varName: carPic, theFile: "playerOneCar.png"};
 
   let imageList = [
-    {varName: carPic, theFile: "playerOneCar.png" },
+    {varName: blueCarPic, theFile: "playerOneCar.png" },
+    {varName: greenCarPic, theFile: "playerTwoCar.png" },
     {trackType: TRACK_ROAD, theFile: "roadTexture.png" },
     {trackType: TRACK_WALL, theFile: "wallTexture.png" },
     {trackType: TRACK_FINISH, theFile: "finishLineTexture.png" },
