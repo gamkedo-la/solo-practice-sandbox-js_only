@@ -22,8 +22,7 @@ const paddle1 = {
 
 
 const score = {
-    player1: 0,
-    player2: 0
+    player1: 0
 }
 
 function init() {
@@ -111,8 +110,7 @@ function render() {
 }
 
 function drawScore() {
-    drawText(score.player1.toString(), 100, 80);
-    drawText(score.player2.toString(), canvas.width - 140, 80);
+    drawText(score.player1.toString(), 680, 80);
 }
 
 function blackoutCanvas() {
