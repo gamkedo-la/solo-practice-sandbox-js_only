@@ -4,6 +4,12 @@ let canvasContext;
 const PADDLE_HEIGHT = 10;
 const PADDLE_WIDTH = 100;
 
+const BRICK_WIDTH = 80;
+const BRICK_HEIGHT = 20;
+const BRICK_GAP = 2;
+const BRICK_COLS = 10;
+const BRICK_ROWS = 14;
+
 function getCenter() {
     return canvas.width / 2;
 }
@@ -90,8 +96,21 @@ function update() {
     ball.x += ball.deltaX;
 }
 
+function drawBricks() {
+    for(let col = 0; col < BRICK_COLS; ++col) {
+        for(let row = 0; row < BRICK_ROWS; ++row) {
+            const brickLeftEdgeX = col * BRICK_WIDTH;
+            const brickTopEdgeY = row *  BRICK_HEIGHT;
+
+            drawRectangle(brickLeftEdgeX, brickTopEdgeY,
+                          BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT - BRICK_GAP, 'blue');
+        }
+    }
+}
+
 function drawText(text, x, y) {
     canvasContext.font = '48px serif';
+    canvasContext.fillStyle = 'White';
     canvasContext.fillText(text, x, y);
 }
 
@@ -105,7 +124,7 @@ function render() {
     blackoutCanvas();
     drawCircle('white', 10);
     drawRectangle(paddle1.x, paddle1.y, PADDLE_WIDTH, PADDLE_HEIGHT, 'white');
-    drawCircle();
+    drawBricks();
     drawScore();
 }
 
