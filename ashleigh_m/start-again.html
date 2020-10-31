@@ -1,0 +1,36 @@
+<html>
+<head>
+    <script>
+
+        var canvas;
+        var ctx;
+
+        window.onload = function(){
+            canvas = document.createElement('canvas');
+            canvasCtx = canvas.getContext('2d');
+            document.body.appendChild(canvas);
+            canvas.height = 600;
+            canvas.width = 600;
+            setInterval(updateAll, 1000/30);
+        }
+
+        function updateAll(){
+            drawAll();
+            moveAll();
+        }
+
+        function colorRect(x,y,w,h,color){
+            canvasCtx.fillStyle = color;
+            canvasCtx.fillRect(x,y,w,h);
+        }
+
+        function drawAll(){
+            colorRect(10, 10, 100, 100, 'red');
+        }
+
+        function moveAll(){}
+    </script>
+</head>
+<body>
+</body>
+</html>
