@@ -61,7 +61,7 @@ function warriorClass(){
       nextX -= PLAYER_MOVE_SPEED;
     }
     
-    let walkIntoTileIndex = getTileTypeAtPixelCoord(nextX,nextY);
+    let walkIntoTileIndex = warriorWorldCoord(nextX,nextY);
 
     if(walkIntoTileIndex == WORLD_FINISH){
       console.log(this.name + " WINS!");

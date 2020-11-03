@@ -42,9 +42,9 @@ function returnTileTypeAtColRow(col, row){
   }
 }
 
-function warriorWorldHandling(atX, atY){
-  let warriorWorldCol = Math.floor(whichWarrior.x / WORLD_W); //Math.floor removes the decimal places from the cursor. Rounds down.
-  let warriorWorldRow = Math.floor(whichWarrior.y / WORLD_H);
+function warriorWorldCoord(atX, atY){
+  let warriorWorldCol = Math.floor(atX / WORLD_W); //Math.floor removes the decimal places from the cursor. Rounds down.
+  let warriorWorldRow = Math.floor(atY / WORLD_H);
   let worldIndexUnderWarrior = rowColToArrayIndex(warriorWorldCol, warriorWorldRow);
 
   if(warriorWorldCol >= 0 && warriorWorldCol < WORLD_COLS && warriorWorldRow >= 0 && warriorWorldRow < WORLD_ROWS){

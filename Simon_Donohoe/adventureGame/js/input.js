@@ -35,18 +35,18 @@ function updateMousePos(evt) {
     // warriorSpeedY = -4;
 }
 
-function keySet(keyEvent, whichWarrior, setTo){
-  if(keyEvent.keyCode == whichWarrior.controlKeyLeft){
-    whichWarrior.keyHeld_Left = setTo;
+function keySet(keyEvent, setTo){
+  if(keyEvent.keyCode == blueWarrior.controlKeyLeft){
+    blueWarrior.keyHeld_Left = setTo;
     }
-  if(keyEvent.keyCode == whichWarrior.controlKeyRight){
-    whichWarrior.keyHeld_Right = setTo;
+  if(keyEvent.keyCode == blueWarrior.controlKeyRight){
+    blueWarrior.keyHeld_Right = setTo;
     }
-  if(keyEvent.keyCode == whichWarrior.controlKeyUp){
-    whichWarrior.keyHeld_Up = setTo;
+  if(keyEvent.keyCode == blueWarrior.controlKeyUp){
+    blueWarrior.keyHeld_Up = setTo;
   }
-  if(keyEvent.keyCode == whichWarrior.controlKeyDown){
-    whichWarrior.keyHeld_Down = setTo;
+  if(keyEvent.keyCode == blueWarrior.controlKeyDown){
+    blueWarrior.keyHeld_Down = setTo;
     }
 }
 
