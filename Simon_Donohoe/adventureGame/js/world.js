@@ -42,7 +42,7 @@ function returnTileTypeAtColRow(col, row){
   }
 }
 
-function warriorWorldHandling(whichWarrior){
+function warriorWorldHandling(atX, atY){
   let warriorWorldCol = Math.floor(whichWarrior.x / WORLD_W); //Math.floor removes the decimal places from the cursor. Rounds down.
   let warriorWorldRow = Math.floor(whichWarrior.y / WORLD_H);
   let worldIndexUnderWarrior = rowColToArrayIndex(warriorWorldCol, warriorWorldRow);
@@ -50,20 +50,9 @@ function warriorWorldHandling(whichWarrior){
   if(warriorWorldCol >= 0 && warriorWorldCol < WORLD_COLS && warriorWorldRow >= 0 && warriorWorldRow < WORLD_ROWS){
 
     let tileHere = returnTileTypeAtColRow(warriorWorldCol, warriorWorldRow);
-
-    if(tileHere == WORLD_FINISH){
-      console.log(whichWarrior.name + " WINS!!");
-      loadLevel(levelOne);
-      // whichWarrior.speed *= -0.5;
-    }else if(tileHere != WORLD_FLOOR){
-      // next two lines added to fix a bug.
-      // undoes the warrior movement which got it onto the wall.
-      whichWarrior.x -= Math.cos(whichWarrior.ang) * whichWarrior.speed;
-      whichWarrior.y -= Math.sin(whichWarrior.ang) * whichWarrior.speed;
-
-      whichWarrior.speed *= -0.5;
-    } //end of else if
-  } // end of valid col and row
+    return tileHere;
+  } // end of valid col and row 
+  return WORLD_WALL //treat outside the map boundary as solid area
 } // end of warriorWorldHandling func
 
 function rowColToArrayIndex(col, row){
