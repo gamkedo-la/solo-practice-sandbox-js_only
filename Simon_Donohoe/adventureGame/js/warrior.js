@@ -1,25 +1,16 @@
-
-const GROUNDSPEED_DECAY_MULT= 0.94;
-const DRIVE_POWER = 0.5;
-const REVERSE_POWER = 0.2;
-//const TURN_RATE = 0.06;
-const MIN_SPEED_TO_TURN = 0.05;
-
+const PLAYER_MOVE_SPEED = 3.0;
 
 function warriorClass(){
   // warrior starting position variables
   this.x = 75;
   this.y = 75;
-  this.ang = 0;
-  // warrior speed variable
-  this.speed = 0;
   this.myWarriorPic; // which picture to use
   this.name = "Untitled Warrior";
 
-  this.keyHeld_Accel = false;
-  this.keyHeld_Reverse = false;
-  //this.keyHeld_TurnLeft = false;
-  //this.keyHeld_TurnRight = false;
+  this.keyHeld_Up = false;
+  this.keyHeld_Down = false;
+  this.keyHeld_Left = false;
+  this.keyHeld_Right = false;
 
   this.controlKeyUp;
   this.controlKeyRight;
@@ -36,14 +27,12 @@ function warriorClass(){
   this.reset = function(whichImage, warriorName) {
     this.name = warriorName;
     this.myWarriorPic = whichImage;
-    this.speed = 0;
 
     for(let eachRow = 0; eachRow < WORLD_ROWS; eachRow++){
       for(let eachCol = 0; eachCol < WORLD_COLS; eachCol++){
         let arrayIndex = rowColToArrayIndex(eachCol, eachRow);
         if(worldGrid[arrayIndex] == WORLD_PLAYERSTART){
           worldGrid[arrayIndex] = WORLD_FLOOR;
-          this.ang = -Math.PI/2;
           this.x = eachCol * WORLD_W + WORLD_W/2;
           this.y = eachRow * WORLD_H + WORLD_H/2;
           return;  
@@ -53,31 +42,34 @@ function warriorClass(){
   } // end of warriorReset()
 
   this.move = function(){
-    this.speed *= GROUNDSPEED_DECAY_MULT;
+    let nextX = this.x; 
+    let nextY = this.y; 
 
-    if(this.keyHeld_Accel){
-      this.speed += DRIVE_POWER;
+    if(this.keyHeld_Up){
+      nextY -= PLAYER_MOVE_SPEED;
     }
-    if(this.keyHeld_Reverse){
-      this.speed -= REVERSE_POWER;
+    if(this.keyHeld_Right){
+      nextX += PLAYER_MOVE_SPEED;
     }
-    //if(Math.abs(this.speed) > MIN_SPEED_TO_TURN){
-      //if(this.keyHeld_TurnLeft){
-        //this.ang -= TURN_RATE;
-      //}
-      //if(this.keyHeld_TurnRight){
-        //this.ang += TURN_RATE;
-      //}
-    //}
-    // updates the warrior position
-    this.x += Math.cos(this.ang) * this.speed;
-    this.y += Math.sin(this.ang) * this.speed;
-
+    if(this.keyHeld_Down){
+      nextY += PLAYER_MOVE_SPEED;
+    }
+    if(this.keyHeld_Left){
+      nextX -= PLAYER_MOVE_SPEED;
+    }
     
-  warriorWorldHandling(this);
+    let walkIntoTileIndex = warriorWorldCoord(nextX,nextY);
+
+    if(walkIntoTileIndex == WORLD_FINISH){
+      console.log(this.name + " WINS!");
+      loadLevel(levelOne);
+    }else if(walkIntoTileIndex == WORLD_FLOOR){
+      this.x = nextX;
+      this.y = nextY;
+    }
   }
 
   this.draw = function(){
-    drawBitmapCenteredWithRotation(this.myWarriorPic, this.x, this.y, this.ang);
+    drawBitmapCenteredWithRotation(this.myWarriorPic, this.x, this.y, 0);
   } //end of warriorDraw funct
 } // end of warriorClass()
