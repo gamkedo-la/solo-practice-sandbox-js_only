@@ -33,8 +33,8 @@ function loadImages(){
     {worldType: WORLD_FLOOR, theFile: "floorTexture.png" },
     {worldType: WORLD_WALL, theFile: "wallTexture.png" },
     {worldType: WORLD_FINISH, theFile: "finishLineTexture.png" },
-    {worldType: WORLD_FLAG, theFile: "flagTexture.png" },
-    {worldType: WORLD_TREE, theFile: "treeTexture.png" }
+    {worldType: WORLD_DOOR, theFile: "doorTexture.png" },
+    {worldType: WORLD_KEY, theFile: "keyTexture.png" }
   ];
   picsToLoad = imageList.length;
 

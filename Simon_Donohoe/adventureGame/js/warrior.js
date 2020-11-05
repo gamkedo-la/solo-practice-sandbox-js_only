@@ -1,7 +1,4 @@
-
 const PLAYER_MOVE_SPEED = 3.0;
-
-
 
 function warriorClass(){
   // warrior starting position variables
