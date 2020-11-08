@@ -24,8 +24,8 @@ function Scooter()
 	{
 		this.startingDrawX = undefined;
 		this.startingDrawY = undefined;
-		this.width = 66;
-		this.height = 88;
+		this.width = 90;
+		this.height = 125;
 		this.angle = 0;
 		this.speed = 0;
 
@@ -141,16 +141,16 @@ function Scooter()
 
 	this.move = function()
 	{
-		if (this.keyHeld_Gas && this.speed < 12 && !this.keyHeld_HandBrake)
+		if (this.keyHeld_Gas && this.speed < 10 && !this.keyHeld_HandBrake)
 		{
 			this.speed += 0.75;
 		}
-		else if (this.keyHeld_Gas && this.speed < 50 && !this.keyHeld_HandBrake)
+		else if (this.keyHeld_Gas && this.speed < 10 && !this.keyHeld_HandBrake)
 		{
 			this.speed += 0.25;
-			if (this.speed > 50)
+			if (this.speed > 10)
 			{
-				this.speed = 50;
+				this.speed = 10;
 			}
 		}
 		else if (!this.keyHeld_Gas && this.speed > 0)

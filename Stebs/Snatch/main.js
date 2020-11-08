@@ -1,4 +1,4 @@
-var canvas, canvasContext, framesPerSecond, frameRate;
+var canvas, canvasContext, framesPerSecond, frameRate, camera;
 
 window.onload = function()
 {
@@ -51,6 +51,7 @@ function initializeGame()
 	document.addEventListener('keydown', handleKeyPress);
 	document.addEventListener('keyup', handleKeyRelease);
 
+	camera = new Camera();
 
 	setInterval(gameLoop, frameRate);
 }
@@ -58,12 +59,16 @@ function initializeGame()
 function updateEverything()
 {
 	scooter.update();
+	camera.follow(canvas, scooter);
 }
 
 function drawEverything()
 {
 	background.draw();
+	camera.startPan(canvasContext);
 	trackGrid.draw();
+	camera.endPan(canvasContext);
+	
 	scooter.draw();
 
 	if (debugOn)

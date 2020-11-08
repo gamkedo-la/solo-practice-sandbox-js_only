@@ -40,3 +40,5 @@ function convertRowsAndColumnsToGridIndex(columnIndex,rowIndex)
 	let gridIndex = columnIndex + rowIndex*NUMBER_OF_COLUMNS;
 	return gridIndex; 
 }
+
+var controlCameraForDebug = false;
