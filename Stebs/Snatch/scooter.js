@@ -201,12 +201,12 @@ function Scooter()
 		//turning right with gas and brake
 		if (this.keyHeld_TurnRight && this.keyHeld_HandBrake && this.keyHeld_Gas)
 		{
-			this.angle += 0.11;
+			this.angle += 0.15;
 		}
 		//turning right with brake and without gas
 		if (this.keyHeld_TurnRight && this.keyHeld_HandBrake && !this.keyHeld_Gas)
 		{
-			this.angle += 0.075;
+			this.angle += 0.2;
 		} 
 		
 		//only turning left, no gas or brake
@@ -222,12 +222,12 @@ function Scooter()
 		//turning left with gas and brake
 		if (this.keyHeld_TurnLeft  && this.keyHeld_HandBrake && this.keyHeld_Gas)
 		{
-			this.angle -= 0.11;
+			this.angle -= 0.15;
 		}
 		//turning left with brake and without gas
 		if (this.keyHeld_TurnLeft && this.keyHeld_HandBrake && !this.keyHeld_Gas)
 		{
-			this.angle -= 0.075;
+			this.angle -= 0.2;
 		} 
 
 		//slow down bounces over time

@@ -7,6 +7,9 @@ var roadImageLoaded = false;
 var roadWithHorizontalDashImage = document.createElement("img");
 var roadWithHorizontalDashImageLoaded = false;
 
+var roadWithVerticalDashImage = document.createElement("img");
+var roadWithVerticalDashImageLoaded = false;
+
 var sidewalkImage = document.createElement("img");
 var sidewalkImageLoaded = false;
 

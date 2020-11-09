@@ -30,6 +30,12 @@ window.onload = function()
 	}
 	sidewalkImage.src = 'sidewalk.png';
 
+	roadWithVerticalDashImage.onload = function()
+	{
+		roadWithVerticalDashImageLoaded = true;
+	}
+	roadWithVerticalDashImage.src = 'road_with_vertical_dash.png';
+
 	initializeGame();
 }
 
