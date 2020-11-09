@@ -66,9 +66,12 @@ function updateEverything()
 function drawEverything()
 {
 	background.draw();
-	camera.startPan(canvasContext);
+	// camera.startPan(canvasContext);
+	canvasContext.save();
+	canvasContext.translate(-scooter.centerX,-scooter.centerY);
 	trackGrid.draw();
-	camera.endPan(canvasContext);
+	canvasContext.restore();
+	// camera.endPan(canvasContext);
 	
 	scooter.draw();
 

@@ -125,13 +125,18 @@ function Scooter()
 		{
 			let scooterImageRotationPivotX = this.startingDrawX + this.width/2;
 			let scooterImageRotationPivotY = this.startingDrawY + this.height/2;
+			let tempStartingDrawX = canvas.width/2 - this.width/2;
+			let tempStartingDrawY = canvas.height/2 - this.height/2;
+			
 			//scooter spritesheet source dimensions
 			//total width: 3232, individual frame: 202
 			//height: 197
 			//(image, sourceX,sourceY, sourceWidth,sourceHeight, destinationX,destinationY,
 			// destinationWidth,destinationHeight, pivotX,pivotY, angle)
-			drawImageAfterPivotedRotation(scooterImage, 202*4,0, 202,197, this.startingDrawX,this.startingDrawY,
-			this.width,this.height, scooterImageRotationPivotX,scooterImageRotationPivotY, this.angle);						  	
+			drawImageAfterPivotedRotation(scooterImage, 202*4,0, 202,197, tempStartingDrawX,tempStartingDrawY,
+			this.width,this.height, canvas.width/2,canvas.height/2, this.angle);	
+
+			//canvasContext.drawImage(scooterImage, 202*4,0, 202,197, tempStartingDrawX,tempStartingDrawY, this.width,this.height);					  	
 		}
 	}
 
@@ -151,12 +156,12 @@ function Scooter()
 		{
 			this.speed += 0.75;
 		}
-		else if (this.keyHeld_Gas && this.speed < 10 && !this.keyHeld_HandBrake)
+		else if (this.keyHeld_Gas && this.speed < 40 && !this.keyHeld_HandBrake)
 		{
 			this.speed += 0.25;
-			if (this.speed > 10)
+			if (this.speed > 40)
 			{
-				this.speed = 10;
+				this.speed = 40;
 			}
 		}
 		else if (!this.keyHeld_Gas && this.speed > 0)
