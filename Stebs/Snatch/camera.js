@@ -7,23 +7,47 @@ function Camera () {
 	this.follow = function (canvas, target) {
 		
 		if(controlCameraForDebug) {return;}
-		this.panX = target.startingDrawX - (canvas.width/2); //   /scaleWidth;
-		this.panY = target.startingDrawY - (canvas.height/2); //   /scaleHeight;
-		if(this.panX < 0){
-			this.panX = 0;
-		}
-		if(this.panY < 0){
-			this.panY = 0;
-		}
+		this.deltaCanvasCenterXWithTarget = target.centerX - (canvas.width/2); //   /scaleWidth;
+		this.deltaCanvasCenterYWithTarget = target.centerY - (canvas.height/2); //   /scaleHeight;
+		// this.verticalCenterOfCanvas = canvas.width/2;
+		// this.horizontalCenterOfCanvas = canvas.height/2;
+
+		// this.checkIfScooterIsAtVerticalCenterOfCanvas = function()
+		// {
+		// 	if ( Math.abs(scooter.centerX - canvas.width/2) < 10)
+		// 	{
+		// 		return true;
+		// 	}
+		// }
+
+		// this.checkIfScooterIsAtHorizontalCenterOfCanvas = function()
+		// {
+		// 	if ( Math.abs(scooter.centerY - canvas.height/2) < 10)
+		// 	{
+		// 		return true;
+		// 	}
+		// }
+
+		// if(this.deltaCanvasCenterXWithTarget < 0){
+		// 	console.log('this.deltaCanvasCenterXWithTarget: ' + this.deltaCanvasCenterXWithTarget);
+		// 	this.deltaCanvasCenterXWithTarget = 0;
+		// }
+		// if(this.deltaCanvasCenterYWithTarget < 0){
+		// 	console.log('this.deltaCanvasCenterYWithTarget: ' + this.deltaCanvasCenterYWithTarget);
+		// 	this.deltaCanvasCenterYWithTarget = 0;
+		// }
 		
-		var rightEdgeX = TRACK_WIDTH * NUMBER_OF_COLUMNS;
-		var bottomEdgeY = TRACK_HEIGHT * NUMBER_OF_ROWS;
+		var rightEdgeOfCanvasX = TRACK_WIDTH * NUMBER_OF_COLUMNS;
+		var leftEdgeOfCanvasX = 0;
+		var bottomEdgeOfCanvasY = TRACK_HEIGHT * NUMBER_OF_ROWS;
+		var leftEdgeOfCanvasY = 0;
+
 		
-		if(this.panX >= rightEdgeX - 1 - canvas.width  /*/scaleWidth*/  ){
-			this.panX = (rightEdgeX - 1 - canvas.width)  /*/scaleWidth*/ ;
+		if(this.deltaCanvasCenterXWithTarget >= rightEdgeOfCanvasX - 1 - canvas.width  /*/scaleWidth*/  ){
+			this.deltaCanvasCenterXWithTarget = (rightEdgeOfCanvasX - 1 - canvas.width)  /*/scaleWidth*/ ;
 		}
-		if(this.panY >= bottomEdgeY - 1 - canvas.height  /*/scaleHeight*/  ){
-			this.panY = bottomEdgeY - 1 - canvas.height  /*/scaleHeight*/  ;
+		if(this.deltaCanvasCenterYWithTarget >= bottomEdgeOfCanvasY - 1 - canvas.height  /*/scaleHeight*/  ){
+			this.deltaCanvasCenterYWithTarget = bottomEdgeOfCanvasY - 1 - canvas.height  /*/scaleHeight*/  ;
 		}
 	};
 
@@ -41,7 +65,25 @@ function Camera () {
 			shakeX = Math.floor(Math.random() * 3 - 1) * this.shakePower;
 			shakeY = Math.floor(Math.random() * 3 - 1) * this.shakePower;
 		}
-		ctx.translate(-this.panX + shakeX, -this.panY + shakeY);
+		
+		if (this.deltaCanvasCenterXWithTarget > 0)
+		{
+			ctx.translate(-this.deltaCanvasCenterXWithTarget + shakeX, 0);
+		}
+		else if (this.deltaCanvasCenterXWithTarget < 0)
+		{
+			ctx.translate(this.deltaCanvasCenterXWithTarget + shakeX, 0);
+		}
+
+		if (this.deltaCanvasCenterYWithTarget > 0)
+		{
+			ctx.translate(0, -this.deltaCanvasCenterYWithTarget + shakeY);
+		}
+		else if (this.deltaCanvasCenterYWithTarget > 0)
+		{
+			ctx.translate(0, this.deltaCanvasCenterYWithTarget + shakeY);
+		}
+		
 	};
 
 	this.endPan = function (ctx = canvasContext) {

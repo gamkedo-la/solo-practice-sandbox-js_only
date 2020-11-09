@@ -60,6 +60,7 @@ function updateEverything()
 {
 	scooter.update();
 	camera.follow(canvas, scooter);
+	
 }
 
 function drawEverything()

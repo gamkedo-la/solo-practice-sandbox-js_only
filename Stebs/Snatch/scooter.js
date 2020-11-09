@@ -10,6 +10,8 @@ function Scooter()
 	this.rightEdge;
 	this.bottomEdge;
 	this.leftEdge;
+	this.centerX;
+	this.centerY;
 
 	this.angle;
 	
@@ -107,6 +109,8 @@ function Scooter()
 				{
 					this.startingDrawX = columnIndex * TRACK_WIDTH + 12.5;
 					this.startingDrawY = rowIndex * TRACK_HEIGHT + 2.5;
+					this.centerX = this.startingDrawX + this.width/2;
+					this.centerY = this.startingDrawY + this.height/2;
 					trackGrid.grid[arrayIndex] = 3;
 				}
 			}
@@ -137,6 +141,8 @@ function Scooter()
 		this.rightEdge = this.startingDrawX;
 		this.bottomEdge = this.startingDrawY + this.height;
 		this.leftEdge = this.startingDrawX - this.width;
+		this.centerX = this.startingDrawX + this.width/2;
+		this.centerY = this.startingDrawY + this.height/2;
 	}
 
 	this.move = function()
