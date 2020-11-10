@@ -6,36 +6,8 @@ window.onload = function()
 	canvasContext = canvas.getContext('2d');
 
 	console.log(window.innerWidth);
-	scooterImage.onload = function()
-	{
-		scooterImageLoaded = true;
-	}
-	scooterImage.src = 'scooter-auto-spritesheet-16.png';
-
-	roadImage.onload = function()
-	{
-		roadImageLoaded = true;
-	}
-	roadImage.src = 'road.png';
-
-	roadWithHorizontalDashImage.onload = function()
-	{
-		roadWithHorizontalDashImageLoaded = true;
-	}
-	roadWithHorizontalDashImage.src = 'road_with_horizontal_dash.png';
-
-	roadWithHorizontalDashImage.onload = function()
-	{
-		sidewalkImageLoaded = true;
-	}
-	sidewalkImage.src = 'sidewalk.png';
-
-	roadWithVerticalDashImage.onload = function()
-	{
-		roadWithVerticalDashImageLoaded = true;
-	}
-	roadWithVerticalDashImage.src = 'road_with_vertical_dash.png';
-
+	
+	loadImages();
 	initializeGame();
 }
 
@@ -52,6 +24,8 @@ function initializeGame()
 
 	scooter = new Scooter();
 	scooter.initialize();
+
+	pickupAndDeliveryManager = new PickupAndDeliveryManager();
 
 	canvas.addEventListener('mousemove', updateMousePosition);
 	document.addEventListener('keydown', handleKeyPress);
@@ -76,6 +50,7 @@ function drawEverything()
 	canvasContext.save();
 	canvasContext.translate(-scooter.centerX,-scooter.centerY);
 	trackGrid.draw();
+	pickupAndDeliveryManager.drawWaypoints();
 	canvasContext.restore();
 	// camera.endPan(canvasContext);
 	
