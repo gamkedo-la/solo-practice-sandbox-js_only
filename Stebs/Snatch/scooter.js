@@ -2,8 +2,8 @@ var scooter;
 
 function Scooter()
 {
-	this.startingDrawX;
-	this.startingDrawY;
+	this.startingTileX;
+	this.startingTileY;
 	this.width;
 	this.height;
 	this.topEdge;
@@ -24,8 +24,8 @@ function Scooter()
 
 	this.initialize = function()
 	{
-		this.startingDrawX = undefined;
-		this.startingDrawY = undefined;
+		this.startingTileX = undefined;
+		this.startingTileY = undefined;
 		this.width = 90;
 		this.height = 125;
 		this.angle = 0;
@@ -33,11 +33,45 @@ function Scooter()
 
 		this.resetPosition();
 
-		this.topEdge = this.startingDrawY;
-		this.rightEdge = this.startingDrawX + this.width;
-		this.bottomEdge = this.startingDrawY + this.height;
-		this.leftEdge = this.startingDrawX;
+		this.initializeProperties();
 
+	}
+
+	this.resetPosition = function()
+	{
+		for (let rowIndex = 0; rowIndex < NUMBER_OF_ROWS; rowIndex++)
+		{
+			for (let columnIndex = 0; columnIndex < NUMBER_OF_COLUMNS; columnIndex++)
+			{
+
+				var arrayIndex = convertRowsAndColumnsToGridIndex(columnIndex,rowIndex);
+
+				if (trackGrid.grid[arrayIndex] === 2)
+				{
+					this.startingTileX = columnIndex * TRACK_WIDTH;
+					this.startingTileY = rowIndex * TRACK_HEIGHT;
+					
+					trackGrid.grid[arrayIndex] = 0;
+
+					this.centerX = this.startingTileX + TRACK_WIDTH/2;
+					this.centerY = this.startingTileY + TRACK_HEIGHT/2;
+
+					this.updateProperties();
+							
+				}
+			}
+		}
+	}
+
+	this.initializeProperties = function()
+	{
+		this.startingDrawX = this.centerX - this.width/2;
+		this.startingDrawY = this.centerY - this.height/2;
+		
+		this.topEdge = this.centerY - this.height/2;
+		this.rightEdge = this.centerX + this.width/2;
+		this.bottomEdge = this.centerY + this.height/2;
+		this.leftEdge = this.centerX - this.width/2;		
 	}
 
 
@@ -96,44 +130,20 @@ function Scooter()
 	}
 
 
-	this.resetPosition = function()
-	{
-		for (let rowIndex = 0; rowIndex < NUMBER_OF_ROWS; rowIndex++)
-		{
-			for (let columnIndex = 0; columnIndex < NUMBER_OF_COLUMNS; columnIndex++)
-			{
-
-				var arrayIndex = convertRowsAndColumnsToGridIndex(columnIndex,rowIndex);
-
-				if (trackGrid.grid[arrayIndex] === 2)
-				{
-					this.startingDrawX = columnIndex * TRACK_WIDTH + 12.5;
-					this.startingDrawY = rowIndex * TRACK_HEIGHT + 2.5;
-					this.centerX = this.startingDrawX + this.width/2;
-					this.centerY = this.startingDrawY + this.height/2;
-					trackGrid.grid[arrayIndex] = 3;
-				}
-			}
-		}
-	}
-
-
 	this.draw = function()
 	{
 		
 		if (scooterImageLoaded)
 		{
-			let scooterImageRotationPivotX = this.startingDrawX + this.width/2;
-			let scooterImageRotationPivotY = this.startingDrawY + this.height/2;
-			let tempStartingDrawX = canvas.width/2 - this.width/2;
-			let tempStartingDrawY = canvas.height/2 - this.height/2;
+			let scooterImageRotationPivotX = this.centerX;
+			let scooterImageRotationPivotY = this.centerY;
 			
 			//scooter spritesheet source dimensions
 			//total width: 3232, individual frame: 202
 			//height: 197
 			//(image, sourceX,sourceY, sourceWidth,sourceHeight, destinationX,destinationY,
 			// destinationWidth,destinationHeight, pivotX,pivotY, angle)
-			drawImageAfterPivotedRotation(scooterImage, 202*4,0, 202,197, tempStartingDrawX,tempStartingDrawY,
+			drawImageAfterPivotedRotation(scooterImage, 202*4,0, 202,197, this.startingDrawX,this.startingDrawY,
 			this.width,this.height, canvas.width/2,canvas.height/2, this.angle);	
 
 			//canvasContext.drawImage(scooterImage, 202*4,0, 202,197, tempStartingDrawX,tempStartingDrawY, this.width,this.height);					  	
@@ -142,12 +152,13 @@ function Scooter()
 
 	this.updateProperties = function()
 	{
-		this.topEdge = this.startingDrawY;
-		this.rightEdge = this.startingDrawX;
-		this.bottomEdge = this.startingDrawY + this.height;
-		this.leftEdge = this.startingDrawX - this.width;
-		this.centerX = this.startingDrawX + this.width/2;
-		this.centerY = this.startingDrawY + this.height/2;
+		this.startingDrawX = this.centerX - this.width/2;
+		this.startingDrawY = this.centerY - this.height/2;
+		
+		this.topEdge = this.centerY - this.height/2;
+		this.rightEdge = this.centerX + this.width/2;
+		this.bottomEdge = this.centerY + this.height/2;
+		this.leftEdge = this.centerX - this.width/2;		
 	}
 
 	this.move = function()
@@ -236,8 +247,11 @@ function Scooter()
 			this.speed += 0.075;
 		}
 
-		this.startingDrawX += Math.sin(-this.angle) * -this.speed;
+		this.centerX += Math.sin(-this.angle) * -this.speed;
+		this.centerY += Math.cos(-this.angle) * -this.speed;
+		this.startingDrawY += Math.sin(-this.angle) * -this.speed;
 		this.startingDrawY += Math.cos(-this.angle) * -this.speed;
+
 	}
 
 	this.update = function()

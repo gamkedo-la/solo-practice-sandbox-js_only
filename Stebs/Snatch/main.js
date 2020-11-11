@@ -27,6 +27,9 @@ function initializeGame()
 
 	pickupAndDeliveryManager = new PickupAndDeliveryManager();
 
+	snatchApp = new SnatchApp();
+	snatchApp.startOrderCycle();
+
 	canvas.addEventListener('mousemove', updateMousePosition);
 	document.addEventListener('keydown', handleKeyPress);
 	document.addEventListener('keyup', handleKeyRelease);
@@ -40,7 +43,7 @@ function updateEverything()
 {
 	scooter.update();
 	camera.follow(canvas, scooter);
-	
+	pickupAndDeliveryManager.checkForWaypointArrivals();
 }
 
 function drawEverything()
@@ -48,12 +51,14 @@ function drawEverything()
 	background.draw();
 	// camera.startPan(canvasContext);
 	canvasContext.save();
-	canvasContext.translate(-scooter.centerX,-scooter.centerY);
+	
+	canvasContext.translate(-scooter.centerX + canvas.width/2,-scooter.centerY + canvas.height/2);
 	trackGrid.draw();
 	pickupAndDeliveryManager.drawWaypoints();
 	canvasContext.restore();
 	// camera.endPan(canvasContext);
 	
+	snatchApp.drawMessage();
 	scooter.draw();
 
 	if (debugOn)
