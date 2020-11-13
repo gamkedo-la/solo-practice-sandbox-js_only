@@ -10,6 +10,8 @@ const BRICK_GAP = 2;
 const BRICK_COLS = 10;
 const BRICK_ROWS = 14;
 
+let brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
+
 function getCenter() {
     return canvas.width / 2;
 }
@@ -118,6 +120,11 @@ function calculateBallDeltaSpeed(paddleY) {
     const centerOfPaddle = paddleY + PADDLE_HEIGHT / 2;
     const ballDistFromCenterOfPaddle = ball.y - centerOfPaddle;
     ball.deltaX = ballDistFromCenterOfPaddle * 0.35;
+}
+
+function isBrickAtTileCoord(col, row) {
+    const index = col + BRICK_COLS * row;
+    return brickGrid[index] == 1;
 }
 
 function render() {
