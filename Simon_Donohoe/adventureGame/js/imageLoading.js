@@ -1,9 +1,7 @@
-
 //declare warrior texture
 let blueWarriorPic = document.createElement("img");
 //declare world textures
 let worldPics = [];
-
 
 let picsToLoad = 0; //set automatically based on imageList in loadImages()
 
@@ -27,7 +25,6 @@ function loadImageForWorldCode(worldCode, fileName){
 
 function loadImages(){
   //let dataset = {varName: warriorPic, theFile: "playerOneWarrior.png"};
-
   let imageList = [
     {varName: blueWarriorPic, theFile: "playerOneWarrior.png" },
     {worldType: WORLD_FLOOR, theFile: "floorTexture.png" },

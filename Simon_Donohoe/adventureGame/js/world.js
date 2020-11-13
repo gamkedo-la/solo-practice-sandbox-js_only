@@ -10,13 +10,14 @@ let levelOne = [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                  1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 
                  1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,  
                  1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 
-                 1, 0, 2, 0, 1, 1, 1, 4, 4, 4, 4, 4, 1, 0, 0, 1,  
+                 1, 0, 0, 0, 1, 1, 1, 4, 4, 4, 4, 4, 1, 0, 0, 1,  
                  1, 0, 0, 1, 1, 0, 0, 1, 4, 4, 4, 1, 0, 0, 0, 1,  
                  1, 0, 0, 1, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 1,  
                  1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 5, 0, 1,  
                  1, 0, 0, 1, 0, 0, 5, 0, 0, 0, 0, 0, 0, 1, 0, 1, 
-                 1, 0, 0, 1, 3, 0, 1, 1, 0, 0, 5, 0, 0, 1, 0, 1,  
-                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, ];
+                 1, 2, 0, 1, 0, 0, 1, 1, 0, 0, 5, 0, 0, 1, 0, 1, 
+                 1, 0, 0, 1, 3, 0, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 
+                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ];
 
 let worldGrid = [];
 
@@ -42,27 +43,37 @@ function warriorWorldCoord(atX, atY){
   let worldIndexUnderWarrior = rowColToArrayIndex(warriorWorldCol, warriorWorldRow);
 
   if(warriorWorldCol >= 0 && warriorWorldCol < WORLD_COLS && warriorWorldRow >= 0 && warriorWorldRow < WORLD_ROWS){
-
-    let tileHere = returnTileTypeAtColRow(warriorWorldCol, warriorWorldRow);
+    var tileHere = returnTileTypeAtColRow( warriorWorldCol,warriorWorldRow );// this code was missing
     return tileHere;
+    //return worldIndexUnderWarrior;
   } // end of valid col and row 
-  return WORLD_WALL //treat outside the map boundary as solid area
+  return undefined; //treat outside the map boundary as solid area
 } // end of warriorWorldHandling func
 
 function rowColToArrayIndex(col, row){
   return col + WORLD_COLS * row;
   }
   
-function drawWorlds(){
+function tileTypeHasTransparency (checkTileType){
+  return (checkTileType == WORLD_FINISH || checkTileType == WORLD_KEY || checkTileType == WORLD_DOOR);
+}
+
+function drawWorlds() {
+
   let arrayIndex = 0;
   let drawTileX = 0;
   let drawTileY = 0;
 
   for(let eachRow = 0; eachRow < WORLD_ROWS; eachRow++){
     for(let eachCol = 0; eachCol < WORLD_COLS; eachCol++){
+
+      let arrayIndex =  rowColToArrayIndex(eachCol, eachRow);
       let tileKindHere = worldGrid[arrayIndex];
       let useImg = worldPics[tileKindHere];
 
+      if( tileTypeHasTransparency(tileKindHere) ) {
+        canvasContext.drawImage(worldPics[WORLD_FLOOR], drawTileX, drawTileY);
+      }
       canvasContext.drawImage(useImg, drawTileX, drawTileY); 
       drawTileX += WORLD_W;
       arrayIndex++;
@@ -70,4 +81,5 @@ function drawWorlds(){
     drawTileY += WORLD_H;
     drawTileX = 0;
   } // end of for each row
+
 } // end of drawWorlds function
