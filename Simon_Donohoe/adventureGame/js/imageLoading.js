@@ -29,7 +29,7 @@ function loadImages(){
     {varName: blueWarriorPic, theFile: "playerOneWarrior.png" },
     {worldType: WORLD_FLOOR, theFile: "floorTexture.png" },
     {worldType: WORLD_WALL, theFile: "wallTexture.png" },
-    {worldType: WORLD_FINISH, theFile: "finishLineTexture.png" },
+    {worldType: WORLD_FINISH, theFile: "winnerTexture.png" },
     {worldType: WORLD_DOOR, theFile: "doorTexture.png" },
     {worldType: WORLD_KEY, theFile: "keyTexture.png" }
   ];
