@@ -6,6 +6,7 @@ function warriorClass(){
   this.y = 75;
   this.myWarriorPic; // which picture to use
   this.name = "Untitled Warrior";
+  this.keysHeld = 0;
 
   this.keyHeld_Up = false;
   this.keyHeld_Down = false;
@@ -27,6 +28,8 @@ function warriorClass(){
   this.reset = function(whichImage, warriorName) {
     this.name = warriorName;
     this.myWarriorPic = whichImage;
+    this.keysHeld = 0; 
+    this.updateKeyReadout();
 
     for(let eachRow = 0; eachRow < WORLD_ROWS; eachRow++){
       for(let eachCol = 0; eachCol < WORLD_COLS; eachCol++){
@@ -40,6 +43,10 @@ function warriorClass(){
       } // end of for col
     } //end of for row
   } // end of warriorReset()
+
+  this.updateKeyReadout = function(){
+    document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
+  }
 
   this.move = function(){
     let nextX = this.x; 
@@ -59,13 +66,36 @@ function warriorClass(){
     }
     
     let walkIntoTileIndex = warriorWorldCoord(nextX,nextY);
+    let walkIntoTileType = WORLD_WALL;
 
-    if(walkIntoTileIndex == WORLD_FINISH){
-      console.log(this.name + " WINS!");
-      loadLevel(levelOne);
-    }else if(walkIntoTileIndex == WORLD_FLOOR){
-      this.x = nextX;
-      this.y = nextY;
+    if(walkIntoTileIndex != undefined){
+      walkIntoTileType = worldGrid[walkIntoTileIndex];
+    }
+
+    switch(walkIntoTileType){
+      case WORLD_FLOOR:
+        this.x = nextX;
+        this.y = nextY;
+        break;
+      case WORLD_FINISH:
+        console.log(this.name + " WINS!");
+        loadLevel(levelOne);
+        break;
+      case WORLD_DOOR:  
+        if(this.keysHeld > 0){
+          this.keysHeld--; // use one key
+          this.updateKeyReadout();
+          worldGrid[walkIntoTileIndex] = WORLD_FLOOR;
+        }
+        break;
+      case WORLD_KEY:
+        this.keysHeld++; // collect one key
+        this.updateKeyReadout();
+        worldGrid[walkIntoTileIndex] = WORLD_FLOOR;
+        break;
+      case WORLD_WALL:
+        default:
+        break;
     }
   }
 

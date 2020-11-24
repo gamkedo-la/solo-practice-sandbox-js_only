@@ -8,15 +8,15 @@ const WORLD_ROWS = 12;
 // world layout
 let levelOne = [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
                  1, 0, 4, 0, 4, 0, 1, 4, 0, 0, 0, 0, 0, 0, 0, 1, 
-                 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,  
+                 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 1,  
                  1, 1, 1, 1, 5, 1, 1, 0, 1, 5, 1, 1, 0, 0, 0, 1, 
-                 1, 3, 5, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 2, 1,  
+                 1, 3, 5, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1,  
                  1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 4, 1, 0, 0, 0, 1,  
                  1, 4, 0, 5, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1,  
                  1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 4, 1,  
                  1, 1, 1, 1, 0, 0, 5, 0, 0, 0, 0, 0, 1, 1, 0, 1, 
                  1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 
-                 1, 0, 3, 5, 0, 0, 1, 0, 4, 5, 4, 0, 0, 0, 0, 1, 
+                 1, 4, 0, 5, 0, 0, 1, 0, 4, 5, 4, 0, 0, 0, 0, 1, 
                  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ];
 
 let worldGrid = [];
@@ -43,8 +43,9 @@ function warriorWorldCoord(atX, atY){
   let worldIndexUnderWarrior = rowColToArrayIndex(warriorWorldCol, warriorWorldRow);
 
   if(warriorWorldCol >= 0 && warriorWorldCol < WORLD_COLS && warriorWorldRow >= 0 && warriorWorldRow < WORLD_ROWS){
-    var tileHere = returnTileTypeAtColRow( warriorWorldCol,warriorWorldRow );// this code was missing
-    return tileHere;
+    //var tileHere = returnTileTypeAtColRow( warriorWorldCol,//warriorWorldRow );// this code was missing
+    return worldIndexUnderWarrior;
+    //return tileHere;
     //return worldIndexUnderWarrior;
   } // end of valid col and row 
   return undefined; //treat outside the map boundary as solid area
