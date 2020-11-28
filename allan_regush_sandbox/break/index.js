@@ -122,6 +122,24 @@ function calculateBallDeltaSpeed(paddleY) {
     ball.deltaX = ballDistFromCenterOfPaddle * 0.35;
 }
 
+function removeBrickAtPixelCoord(px, py) {
+    const col = Math.floor(px / BRICK_WIDTH);
+    const row = Math.floor(py / BRICK_HEIGHT);
+
+    if (col < 0 || col >= BRICK_COLS ||
+        row < 0 || row >= BRICK_ROWS) {
+        return;
+    }
+
+    const index = brickTileToIndex(col, row);
+
+    brickGrid[index] = 0;
+}
+
+function brickTileToIndex(col, row) {
+    return (col + BRICK_COLS * row);
+}
+
 function isBrickAtTileCoord(col, row) {
     const index = col + BRICK_COLS * row;
     return brickGrid[index] == 1;
