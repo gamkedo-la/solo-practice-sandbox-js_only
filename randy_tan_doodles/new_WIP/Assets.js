@@ -1,10 +1,11 @@
 const Assets = {
-    pathToImages: "./assets/",
+    pathToAssets: "./assets/",
 
+    imgSun: document.createElement("img"),
     
     LoadImages: (startGame, cvs = Game.canvas, ctx = Game.canvasContext) => {
         const imageList = [
-            
+            { img: Assets.imgSun, file: "sun_sheet.png" },
         ];
     
         let imgCount = imageList.length;
@@ -21,7 +22,7 @@ const Assets = {
                     }
                 };
         
-                i.img.src = Assets.pathToImages + i.file;
+                i.img.src = Assets.pathToAssets + i.file;
             });
         }
 
