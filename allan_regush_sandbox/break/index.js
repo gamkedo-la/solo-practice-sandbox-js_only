@@ -145,6 +145,12 @@ function isBrickAtTileCoord(col, row) {
     return brickGrid[index] == 1;
 }
 
+function resetBricks() {
+    for(let i = 0; i < BRICK_COLS * BRICK_ROWS; ++i) {
+        brickGrid[i] = 1;
+    }
+}
+
 function render() {
     blackoutCanvas();
     drawCircle('white', 10);
