@@ -4,50 +4,50 @@ var camPanY = 0.0;
 const PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_X = 150;
 const PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_Y = 100;
 
-function sliderMove() { // function for moving camera
-  var nextX = sliderX;
-  var nextY = sliderY;
+// function sliderMove() { // function for moving camera
+//   var nextX = sliderX;
+//   var nextY = sliderY;
 
-  if(holdLeft) {
-    nextX += -RUN_SPEED;
-  }
-  if(holdRight) {
-    nextX += RUN_SPEED;
-  }
-  if(holdUp) {
-    nextY += -RUN_SPEED;
-  }
-  if(holdDown) {
-    nextY += RUN_SPEED;
-  }
+//   if(holdLeft) {
+//     nextX += -RUN_SPEED;
+//   }
+//   if(holdRight) {
+//     nextX += RUN_SPEED;
+//   }
+//   if(holdUp) {
+//     nextY += -RUN_SPEED;
+//   }
+//   if(holdDown) {
+//     nextY += RUN_SPEED;
+//   }
 
-  if(isBrickAtPixelCoord(nextX,nextY) == false) {
-    sliderX = nextX;
-    sliderY = nextY;
-  }
-}
+//   if(isBrickAtPixelCoord(nextX,nextY) == false) {
+//     sliderX = nextX;
+//     sliderY = nextY;
+//   }
+// }
 
 function instantCamFollow() { // camera movement
-  camPanX = sliderX - canvas.width/2;
-  camPanY = sliderY - canvas.height/2;
+  camPanX = jumperX - canvas.width/2;
+  camPanY = jumperX - canvas.height/2;
 }
 
 function cameraFollow() {// camera movement
   var cameraFocusCenterX = camPanX + canvas.width/2;
   var cameraFocusCenterY = camPanY + canvas.height/2;
 
-  var playerDistFromCameraFocusX = Math.abs(sliderX-cameraFocusCenterX);
-  var playerDistFromCameraFocusY = Math.abs(sliderY-cameraFocusCenterY);
+  var playerDistFromCameraFocusX = Math.abs(jumperX-cameraFocusCenterX);
+  var playerDistFromCameraFocusY = Math.abs(jumperY-cameraFocusCenterY);
 
   if(playerDistFromCameraFocusX > PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_X) {
-    if(cameraFocusCenterX < sliderX)  {
+    if(cameraFocusCenterX < jumperX)  {
       camPanX += RUN_SPEED;
     } else {
       camPanX -= RUN_SPEED;
     }
   }
   if(playerDistFromCameraFocusY > PLAYER_DIST_FROM_CENTER_BEFORE_CAMERA_PAN_Y) {
-    if(cameraFocusCenterY < sliderY)  {
+    if(cameraFocusCenterY < jumperY)  {
       camPanY += RUN_SPEED;
     } else {
       camPanY -= RUN_SPEED;
@@ -75,8 +75,8 @@ function cameraFollow() {// camera movement
 }
 
 function moveEverything() {
-  // jumperMove();
-  sliderMove();
+  jumperMove();
+  // sliderMove();
     cameraFollow();
 }
 
