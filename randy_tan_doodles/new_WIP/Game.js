@@ -89,8 +89,6 @@ const Game = {
     },
 };
 
-Game.init();
-
 window.addEventListener("load", e => {
     Assets.LoadImages(() => {        
         Game.reset();
@@ -103,3 +101,6 @@ window.addEventListener("blur", e => {
 window.addEventListener("focus", e => {
     Game.paused(false);
 });
+
+if (canStart)
+    Game.init();
