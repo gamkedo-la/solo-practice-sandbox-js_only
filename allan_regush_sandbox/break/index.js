@@ -40,6 +40,7 @@ function init() {
     });
 
     paddle1.x = getCenter();
+    resetBricks();
 }
 
 
@@ -103,9 +104,11 @@ function drawBricks() {
         for(let row = 0; row < BRICK_ROWS; ++row) {
             const brickLeftEdgeX = col * BRICK_WIDTH;
             const brickTopEdgeY = row *  BRICK_HEIGHT;
-
-            drawRectangle(brickLeftEdgeX, brickTopEdgeY,
-                          BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT - BRICK_GAP, 'blue');
+            const arrIndex = brickTileToIndex(col, row);
+            if(brickGrid[arrIndex]) {
+                drawRectangle(brickLeftEdgeX, brickTopEdgeY,
+                            BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT - BRICK_GAP, 'blue');
+            }
         }
     }
 }
@@ -141,14 +144,15 @@ function brickTileToIndex(col, row) {
 }
 
 function isBrickAtTileCoord(col, row) {
-    const index = col + BRICK_COLS * row;
+    const index = brickTileToIndex(col, row);
     return brickGrid[index] == 1;
 }
 
 function resetBricks() {
     for(let i = 0; i < BRICK_COLS * BRICK_ROWS; ++i) {
-        brickGrid[i] = 1;
+        brickGrid[i] = true;
     }
+    brickGrid[2] = false;
 }
 
 function render() {
