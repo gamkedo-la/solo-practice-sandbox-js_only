@@ -76,25 +76,37 @@ function warriorClass() {
         this.y = nextY;
         break;
       case TILE_GOAL:
-        document.getElementById("debugText").innerHTML = this.myName + " won";
         this.reset();
         break;
       case TILE_DOOR:
-        if(this.keysHeld > 0) {
+	  case TILE_DOOR_YELLOW_FRONT:
+        console.log("Door");
+		if(this.keysHeld > 0) {
           this.keysHeld--; // one less key
           document.getElementById("debugText").innerHTML = "Keys: "+this.keysHeld;
-
           roomGrid[walkIntoTileIndex] = TILE_GROUND; // remove door
+		  SetupPathfindingGridData();
         }
         break;
       case TILE_KEY:
         this.keysHeld++; // gain key
         document.getElementById("debugText").innerHTML = "Keys: "+this.keysHeld;
-
         roomGrid[walkIntoTileIndex] = TILE_GROUND; // remove key
+		SetupPathfindingGridData();
         break;
+	  case TILE_WALL_1:
+	  case TILE_WALL_2:
+	  case TILE_WALL_3:
+	  case TILE_WALL_4:
+	  case TILE_WALL_5:
+	  case TILE_WALL_6:
 	  case TILE_WALL_7:	
       case TILE_WALL_8:
+	  case TILE_WALL_9:
+	  case TILE_WALL_10:
+	  case TILE_WALL_11:
+	  case TILE_WALL_12:
+	  case TILE_WALL_13:
       default:
         // any other tile type number was found... do nothing, for now
         break;

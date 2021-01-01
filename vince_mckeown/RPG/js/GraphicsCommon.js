@@ -3,6 +3,14 @@ function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
   canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
 }
 
+function outlineRect(topLeftX, topLeftY, boxWidth, boxHeight, lineColor) {
+    canvasContext.beginPath();
+    canvasContext.strokeStyle = lineColor;
+    canvasContext.lineWidth = "3";
+    canvasContext.rect(topLeftX, topLeftY, boxWidth, boxHeight);
+    canvasContext.stroke();
+}
+
 function colorCircle(centerX, centerY, radius, fillColor) {
   canvasContext.fillStyle = fillColor;
   canvasContext.beginPath();

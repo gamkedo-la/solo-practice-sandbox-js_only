@@ -8,9 +8,17 @@ const KEY_LETTER_A = 65;
 const KEY_LETTER_S = 83;
 const KEY_LETTER_D = 68;
 
+var mouseX = 0;
+var mouseY = 0;
+var tileOverIdx = -1;
+var mouseDragging = false;
+
 function initInput() {
   document.addEventListener("keydown", keyPressed);
   document.addEventListener("keyup", keyReleased);
+  document.addEventListener("mousemove", mousemoved);
+  document.addEventListener("mousedown", mouseclicked);
+  document.addEventListener("mouseup", mousereleased); /////
   
   p1.setupControls(KEY_UP_ARROW,KEY_RIGHT_ARROW,KEY_DOWN_ARROW,KEY_LEFT_ARROW);
 }
@@ -37,4 +45,55 @@ function keyPressed(evt) {
 
 function keyReleased(evt) {
   setKeyHoldState(evt.keyCode, p1, false);
+}
+
+function mouseclicked(evt) {
+	pathfindingNow = !pathfindingNow;
+	if(endTile != null) {
+		pathfindingNow = false;
+	}
+	if(pathfindingNow == false) {
+		SetupPathfindingGridData();
+	}
+	return;
+
+    if (tileOverIdx < 0 || tileOverIdx >= roomGrid.length) { // invalid or off board
+        console.log("Not a valid location");
+		return;
+    }
+}
+
+function mousereleased(evt) {
+    mouseDragging = false;
+}
+
+function mousemoved(evt) {
+    var rect = canvas.getBoundingClientRect();
+    var root = document.documentElement;
+
+    // account for the margins, canvas position on page, scroll amount, etc.
+    mouseX = evt.clientX - rect.left - root.scrollLeft;
+    mouseY = evt.clientY - rect.top - root.scrollTop;
+
+    var tileOverCol = Math.floor(mouseX / TILE_W);
+    var tileOverRow = Math.floor(mouseY / TILE_H);
+
+    mouseOverSidebar = (tileOverCol >= ROOM_COLS);
+    if(mouseOverSidebar) {
+        tileOverIdx = -1;
+    } else {
+        tileOverIdx = tileCoordToIndex(tileOverCol, tileOverRow);
+    }
+
+    if(mouseDragging && tileOverIdx != -1) { /////
+      /*  if(mouseSettingWalls) { /////
+            if(grid[tileOverIdx].elementType != WALL) {
+               grid[tileOverIdx].wallToggle(); 
+            }
+        } else {
+            if(grid[tileOverIdx].elementType == WALL) {
+               grid[tileOverIdx].wallToggle(); 
+            }
+        } */
+    } /////
 }

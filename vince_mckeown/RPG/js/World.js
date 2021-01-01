@@ -6,11 +6,11 @@ var roomGrid =
     [ 11, 1, 1, 1, 1, 1,16, 1, 1, 1,16, 1,16, 1, 1, 9,
       11, 0, 0, 0, 0, 0,15, 0, 0, 0, 5, 0,15, 0, 0, 9,
       11, 0, 4, 0, 4, 0,15, 0, 2, 0,15, 0,15, 4, 4, 9,
-      11, 0, 0, 0, 0, 0,15, 0, 0, 0,15, 5, 1, 5, 0, 9,
-      11, 1, 1, 5, 1, 1,14, 0, 4, 0,15, 0, 0, 0, 0, 9,
+      11, 0, 0, 0, 0, 0,15, 0, 0, 0,15,19, 1,19, 1, 9,
+      11, 1, 1,19, 1, 1,14, 0, 4, 0,15, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 4, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 9,
-      11, 0,16, 1,16, 1,16, 1, 1, 1,15, 0, 4, 0, 0, 9,
+      11, 0,16, 1,16, 1,16, 1, 0, 1,15, 0, 4, 0, 0, 9,
       11, 0,15, 0,15, 0,15, 0, 0, 0,15, 0, 0, 0, 0, 9,
       11, 0, 5, 0, 5, 0, 5, 0, 3, 0,15, 0, 0, 0, 0, 9,
       11, 0,15, 0,15, 0,15, 0, 0, 0,15, 0, 0, 0, 0, 9,
@@ -22,7 +22,6 @@ const TILE_H = 50;
 const TILE_GROUND = 0;
 const TILE_PLAYER = 2;
 const TILE_GOAL = 3;
-const TILE_KEY = 4;
 const TILE_DOOR = 5;
 const TILE_WALL_1 = 6;
 const TILE_WALL_2 = 7;
@@ -37,7 +36,8 @@ const TILE_WALL_10 = 15;
 const TILE_WALL_11 = 16;
 const TILE_WALL_12 = 17;
 const TILE_WALL_13 = 18;
-
+const TILE_KEY = 4;
+const TILE_DOOR_YELLOW_FRONT = 19;
 
 function roomTileToIndex(tileCol, tileRow) {
   return (tileCol + ROOM_COLS*tileRow);
@@ -65,6 +65,7 @@ function getTileIndexAtPixelCoord(pixelX,pixelY) {
 function tileTypeHasTransparency(checkTileType) {
   return (checkTileType == TILE_GOAL ||
           checkTileType == TILE_KEY ||
+		  checkTileType == TILE_DOOR_YELLOW_FRONT ||
           checkTileType == TILE_DOOR);
 }
 
