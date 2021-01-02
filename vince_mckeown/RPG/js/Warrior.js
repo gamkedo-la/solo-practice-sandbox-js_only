@@ -3,8 +3,8 @@ const PLAYER_MOVE_SPEED = 3.0;
 
 function warriorClass() {
   // variables to keep track of position
-  this.x = 75;
-  this.y = 75;
+  this.x;
+  this.y;
 
   // keyboard hold state variables, to use keys more like buttons
   this.keyHeld_North = false;

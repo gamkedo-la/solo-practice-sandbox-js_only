@@ -117,7 +117,7 @@ function PathfindingNextStep() {
           var previousTile = endTile.cameFrom;
           
           for (var pathIndex = endTile.distance; pathIndex>1; pathIndex--) {
-            previousTile.setTile(PATH);
+            previousTile.setTile(PATH);  //ERROR:  CAN NOT READ PROPERTY OF SET TILE OF NULL
             previousTile = previousTile.cameFrom;  
           }
         }

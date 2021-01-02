@@ -2,6 +2,7 @@
 var canvas, canvasContext;
 
 var p1 = new warriorClass();
+var pathFindingDisplay = false;
 
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');
@@ -32,6 +33,8 @@ function drawEverything() {
         PathfindingNextStep();
     }
     drawRoom();
-	drawPathingFindingTiles();
-    p1.draw();
+	if(pathFindingDisplay){
+		drawPathingFindingTiles();
+    }
+	p1.draw();
 }

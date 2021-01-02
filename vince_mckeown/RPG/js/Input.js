@@ -7,6 +7,7 @@ const KEY_LETTER_W = 87;
 const KEY_LETTER_A = 65;
 const KEY_LETTER_S = 83;
 const KEY_LETTER_D = 68;
+const KEY_NUMBER_1 = 49;
 
 var mouseX = 0;
 var mouseY = 0;
@@ -40,6 +41,11 @@ function setKeyHoldState(thisKey, thisPlayer, setTo) {
 
 function keyPressed(evt) {
   setKeyHoldState(evt.keyCode, p1, true);
+  //console.log(evt.keyCode);
+  //console.log(evt.keyCode);
+  if(evt.keyCode == KEY_NUMBER_1){
+	  pathFindingDisplay = !pathFindingDisplay;
+  }
   evt.preventDefault(); // without this, arrow keys scroll the browser!
 }
 
@@ -48,6 +54,10 @@ function keyReleased(evt) {
 }
 
 function mouseclicked(evt) {
+	if(grid[tileOverIdx].elementType != WALL) {
+		grid[tileOverIdx].setGoal(); 
+    }
+	
 	pathfindingNow = !pathfindingNow;
 	if(endTile != null) {
 		pathfindingNow = false;

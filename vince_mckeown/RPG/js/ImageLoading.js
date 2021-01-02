@@ -39,6 +39,7 @@ function loadImages() {
 	{tileType:TILE_WALL_11, theFile:"dungeonWall_11.png"},
 	{tileType:TILE_WALL_12, theFile:"dungeonWall_12.png"},
 	{tileType:TILE_WALL_13, theFile:"dungeonWall_13.png"},
+	{tileType:TILE_WALL_14, theFile:"dungeonWall_14.png"},
     {tileType:TILE_GOAL, theFile:"world_goal.png"},
     {tileType:TILE_KEY, theFile:"world_key.png"},
     {tileType:TILE_DOOR_YELLOW_FRONT, theFile:"yellowDoor_Front.png"},	

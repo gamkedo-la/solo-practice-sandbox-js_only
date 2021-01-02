@@ -15,12 +15,15 @@ function GridElement() {
     this.tilR=myR;
     this.tilIdx=myIdx;
     this.elementType = myElement;
-    if(this.elementType == TILE_PLAYER) {
-		console.log("Player Found");
-        this.setDistIfLess(0,null);
-    }
 	var elementTypeConsideration = this.elementType;
 	this.elementType = this.isNotPassible(elementTypeConsideration);
+	var playerX = p1.x;
+	var playerY = p1.y;
+	var playersLocation = getTileIndexAtPixelCoord(playerX,playerY);
+	if(this.tilIdx == playersLocation){
+		this.elementType = SOURCE;
+		this.setDistIfLess(0,null);
+	}
   }
 
   this.reset = function() {
@@ -74,14 +77,8 @@ function GridElement() {
     }
   }
   
-  this.wallToggle = function () {
-    if(this.elementType == SOURCE || this.elementType == DEST) {
-        return; // do nothing, no support yet for placing source or dest in-game, use grid init
-    } else if (this.elementType == WALL) {
-        this.elementType = NOTHING;
-    } else {
-        this.elementType = WALL;
-    }
+  this.setGoal = function () {
+     this.elementType = DEST;
   }
   
   this.isNotPassible = function(elementType){
@@ -100,16 +97,18 @@ function GridElement() {
 		updatedElementType == TILE_WALL_11 ||
 		updatedElementType == TILE_WALL_12 ||
 		updatedElementType == TILE_WALL_13 ||
+		updatedElementType == TILE_WALL_14 ||
 		updatedElementType == TILE_DOOR_YELLOW_FRONT
 		){
-			console.log(elementType);
 			return elementType = WALL;		
-	} else if (updatedElementType == TILE_GOAL){
-		return elementType = DEST;
     } else if (updatedElementType == TILE_PLAYER){
 		return elementType = SOURCE;
+	} else if (
+		updatedElementType == TILE_KEY ||
+		updatedElementType == TILE_GROUND
+		){
+		return elementType = NOTHING;
 	} else {
-		console.log(elementType);
 		return elementType;
 	}
   }
