@@ -5,6 +5,7 @@ function warriorClass() {
   // variables to keep track of position
   this.x;
   this.y;
+  this.tilePath = [];
 
   // keyboard hold state variables, to use keys more like buttons
   this.keyHeld_North = false;
@@ -55,7 +56,54 @@ function warriorClass() {
 	
 	var playersCurrentTileIndex = roomTileToIndex(playerCol, playerRow);
 	
-	console.log(playersCurrentTileIndex);
+	if(this.tilePath.length > 0){
+		var targetIndex = this.tilePath[0];
+		//console.log(targetIndex);
+		var targetC = targetIndex % ROOM_COLS;
+		var targetR = Math.floor(targetIndex / ROOM_COLS);
+		var targetX = targetC * TILE_W + (TILE_W * 0.5);
+		var targetY = targetR * TILE_H + (TILE_H * 0.5);
+		var deltaX = Math.abs(targetX - this.x);
+		var deltaY = Math.abs(targetY - this.y);
+		
+		this.keyHeld_East = this.keyHeld_West = this.keyHeld_North = this.keyHeld_South = false;
+		console.log("DeltaX:" + deltaX + " DeltaY:" + deltaY + " Speed:" + PLAYER_MOVE_SPEED);
+		
+		if(deltaX <= PLAYER_MOVE_SPEED){
+			this.x = targetX;
+			if(deltaY <= PLAYER_MOVE_SPEED){
+				this.y = targetY;
+				this.tilePath.shift();
+			} else if(targetY < this.y){
+				this.keyHeld_North = true;
+			} else {
+				this.keyHeld_South = true;
+			}
+		} else if(deltaY <= PLAYER_MOVE_SPEED){
+			this.y = targetY;
+			if(deltaX <= PLAYER_MOVE_SPEED){
+				this.x = targetX;
+				this.tilePath.shift();
+			} else if(targetX < this.x){
+				this.keyHeld_West = true;
+			} else {
+				this.keyHeld_East = true;
+			}
+		} else { // move towards center of closest tile
+			targetX = playerCol * TILE_W + (TILE_W * 0.5);
+			targetY = playerRow * TILE_H + (TILE_H * 0.5);
+			if(targetY < this.y - PLAYER_MOVE_SPEED){
+				this.keyHeld_North = true;
+			} else if (targetY > this.y + PLAYER_MOVE_SPEED) {
+				this.keyHeld_South = true;
+			} else if(targetX < this.x){
+				this.keyHeld_West = true;
+			} else {
+				this.keyHeld_East = true;
+			}
+		}
+	} 
+	
 	
     if(this.keyHeld_North) {
       nextY -= PLAYER_MOVE_SPEED;

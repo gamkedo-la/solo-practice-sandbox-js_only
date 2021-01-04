@@ -31,6 +31,8 @@ function SetupPathfindingGridData() {
             var idxHere = tileCoordToIndex(eachCol, eachRow);
 
             grid[idxHere] = new GridElement();
+			grid[idxHere].name = "" + eachCol + "," + eachRow;
+			grid[idxHere].idx = idxHere;
             unvisitedList.push( grid[idxHere] );
 
             grid[idxHere].setup(eachCol, eachRow, idxHere, roomGrid[idxHere]);
@@ -112,15 +114,22 @@ function PathfindingNextStep() {
              //// terminate the algorithm from taking further steps since we found what we needed
         if (endTile!=null) {
           console.log("Best distance found: " + endTile.distance);
-         
-          // walk backward from destination to create the path
-          var previousTile = endTile.cameFrom;
-          
-          for (var pathIndex = endTile.distance; pathIndex>1; pathIndex--) {
-            previousTile.setTile(PATH);  //ERROR:  CAN NOT READ PROPERTY OF SET TILE OF NULL
-            previousTile = previousTile.cameFrom;  
-          }
-        }
+			if(endTile.distance == INFINITY_START_DISTANCE){
+				console.log("No Valid Path Found");
+			} else {
+			  // walk backward from destination to create the path
+			  var previousTile = endTile.cameFrom;
+			  p1.tilePath = [];
+			  
+			  p1.tilePath.unshift(endTile.idx);
+			  for (var pathIndex = endTile.distance; pathIndex>1; pathIndex--) {
+				//console.log(previousTile.name);
+				p1.tilePath.unshift(previousTile.idx);
+				previousTile.setTile(PATH);  
+				previousTile = previousTile.cameFrom;  
+			  }
+			}
+		}
         pathfindingNow = false;
       }
 }

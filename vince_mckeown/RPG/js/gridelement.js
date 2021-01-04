@@ -100,14 +100,14 @@ function GridElement() {
 		updatedElementType == TILE_WALL_14 ||
 		updatedElementType == TILE_DOOR_YELLOW_FRONT
 		){
-			return elementType = WALL;		
+			return WALL;		
     } else if (updatedElementType == TILE_PLAYER){
-		return elementType = SOURCE;
+		return SOURCE;
 	} else if (
 		updatedElementType == TILE_KEY ||
 		updatedElementType == TILE_GROUND
 		){
-		return elementType = NOTHING;
+		return NOTHING;
 	} else {
 		return elementType;
 	}
