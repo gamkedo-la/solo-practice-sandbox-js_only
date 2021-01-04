@@ -49,7 +49,14 @@ function warriorClass() {
   this.move = function() {
     var nextX = this.x;
     var nextY = this.y;
-
+	
+	var playerCol = Math.floor(this.x/TILE_W);
+	var playerRow = Math.floor(this.y/TILE_H);
+	
+	var playersCurrentTileIndex = roomTileToIndex(playerCol, playerRow);
+	
+	console.log(playersCurrentTileIndex);
+	
     if(this.keyHeld_North) {
       nextY -= PLAYER_MOVE_SPEED;
     }
@@ -69,6 +76,8 @@ function warriorClass() {
     if( walkIntoTileIndex != undefined) {
       walkIntoTileType = roomGrid[walkIntoTileIndex];
     }
+	
+	
     
     switch( walkIntoTileType ) {
       case TILE_GROUND:

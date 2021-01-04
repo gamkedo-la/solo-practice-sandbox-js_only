@@ -65,7 +65,6 @@ function mouseclicked(evt) {
 	if(pathfindingNow == false) {
 		SetupPathfindingGridData();
 	}
-	return;
 
     if (tileOverIdx < 0 || tileOverIdx >= roomGrid.length) { // invalid or off board
         console.log("Not a valid location");
