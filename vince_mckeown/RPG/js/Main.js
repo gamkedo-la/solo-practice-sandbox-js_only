@@ -2,13 +2,14 @@
 var canvas, canvasContext;
 
 var p1 = new warriorClass();
+var e1 = new enemyClass();
 var pathFindingDisplay = false;
 
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');
     canvasContext = canvas.getContext('2d');
 
-    SetupPathfindingGridData();
+    SetupPathfindingGridData(p1);
     loadImages();
 }
 
@@ -21,20 +22,24 @@ function loadingDoneSoStartGame() {
     }, 1000 / framesPerSecond);
 
     p1.init(playerPic, "Blue");
+	e1.init(playerPic, "red");
     initInput();
 }
 
 function moveEverything() {
-    p1.move();
+    if (pathfindingNow) {
+        PathfindingNextStep(p1);
+		PathfindingNextStep(e1);
+    }
+	p1.move();
+	e1.move();
 }
 
 function drawEverything() {
-    if (pathfindingNow) {
-        PathfindingNextStep();
-    }
     drawRoom();
 	if(pathFindingDisplay){
 		drawPathingFindingTiles();
     }
 	p1.draw();
+	e1.draw();
 }

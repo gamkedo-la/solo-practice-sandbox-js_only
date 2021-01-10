@@ -63,7 +63,7 @@ function mouseclicked(evt) {
 		pathfindingNow = false;
 	}
 	if(pathfindingNow == false) {
-		SetupPathfindingGridData();
+		SetupPathfindingGridData(p1);
 	}
 
     if (tileOverIdx < 0 || tileOverIdx >= roomGrid.length) { // invalid or off board

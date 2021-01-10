@@ -13,7 +13,7 @@ var roomGrid =
       11, 0,16, 1,16, 1,16, 1, 1, 1,15, 0, 4, 0, 0, 9,
       11, 0,15, 0,15, 0,15, 0, 0, 0,15, 0, 0, 0, 0, 9,
       11, 0, 5, 0, 5, 0, 5, 0, 3, 0,15, 0, 0, 0, 0, 9,
-      11, 0,15, 0,15, 0,15, 0, 0, 0,15, 0, 0, 0, 0, 9,
+      11,30,15, 0,15, 0,15, 0, 0, 0,15, 0, 0, 0, 0, 9,
       17, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,18];
 
 const TILE_W = 50;
@@ -39,6 +39,7 @@ const TILE_WALL_13 = 18;
 const TILE_WALL_14 = 20;
 const TILE_KEY = 4;
 const TILE_DOOR_YELLOW_FRONT = 19;
+const TILE_ENEMY = 30;
 
 function roomTileToIndex(tileCol, tileRow) {
   return (tileCol + ROOM_COLS*tileRow);

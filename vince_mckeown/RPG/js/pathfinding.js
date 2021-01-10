@@ -2,13 +2,14 @@ var unvisitedList = [];
 var endTile = null;
 var pathfindingNow = false;
 
-function SetupPathfindingGridData() {
+function SetupPathfindingGridData(whichPathfinder) {
     var endR = -1;
     var endC = -1;
 
     unvisitedList = [];
     endTile = null;
     pathfindingNow = false;
+	var pathfinder = whichPathfinder;
 
     if(grid.length > 0) { // non-zero, copy over player set walls into tileGrid for reset
         for (var eachCol = 0; eachCol < ROOM_COLS; eachCol++) {
@@ -33,9 +34,10 @@ function SetupPathfindingGridData() {
             grid[idxHere] = new GridElement();
 			grid[idxHere].name = "" + eachCol + "," + eachRow;
 			grid[idxHere].idx = idxHere;
+			grid[idxHere].pathfinder = pathfinder;
             unvisitedList.push( grid[idxHere] );
 
-            grid[idxHere].setup(eachCol, eachRow, idxHere, roomGrid[idxHere]);
+            grid[idxHere].setup(eachCol, eachRow, idxHere, roomGrid[idxHere], pathfinder);
 
             //if(grid[idxHere].elementType == DEST) { ///// found end!
 			if(grid[idxHere].elementType == TILE_GOAL) { ///// found end!
@@ -71,8 +73,9 @@ function hValCal(atColumn,atRow, toColumn,toRow, multWeight, geometric) { /////
   }
 }
 
-function PathfindingNextStep() {
+function PathfindingNextStep(whichPathfinder) {
     var tentativeDistance = 0;
+	var pathfinder = whichPathfinder;
 
       if(unvisitedList.length > 0) { //// "while Q is not empty:"
         //// "u := vertex in Q with min dist[u]"
@@ -119,12 +122,12 @@ function PathfindingNextStep() {
 			} else {
 			  // walk backward from destination to create the path
 			  var previousTile = endTile.cameFrom;
-			  p1.tilePath = [];
+			  pathfinder.tilePath = [];
 			  
-			  p1.tilePath.unshift(endTile.idx);
+			  pathfinder.tilePath.unshift(endTile.idx);
 			  for (var pathIndex = endTile.distance; pathIndex>1; pathIndex--) {
 				//console.log(previousTile.name);
-				p1.tilePath.unshift(previousTile.idx);
+				pathfinder.tilePath.unshift(previousTile.idx);
 				previousTile.setTile(PATH);  
 				previousTile = previousTile.cameFrom;  
 			  }

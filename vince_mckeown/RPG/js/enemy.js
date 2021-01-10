@@ -1,25 +1,17 @@
 // tuning constants
-const PLAYER_MOVE_SPEED = 3.0;
+const ENEMY_MOVE_SPEED = 4.0;
 
-function warriorClass() {
+function enemyClass() {
   // variables to keep track of position
   this.x;
   this.y;
   this.tilePath = [];
 
-  // keyboard hold state variables, to use keys more like buttons
-  this.keyHeld_North = false;
-  this.keyHeld_East = false;
-  this.keyHeld_South = false;
-  this.keyHeld_West = false;
-
-  // key controls used for this
-  this.setupControls = function(northKey,eastKey,southKey,westKey) {
-    this.controlKeyForNorth = northKey;
-    this.controlKeyForEast = eastKey;
-    this.controlKeyForSouth = southKey;
-    this.controlKeyForWest = westKey;
-  }
+  // hold move states
+  this.move_North = false;
+  this.move_East = false;
+  this.move_South = false;
+  this.move_West = false;
 
   this.init = function(whichGraphic,whichName) {
     this.myBitmap = whichGraphic;
@@ -31,7 +23,7 @@ function warriorClass() {
     this.keysHeld = 0;
     if(this.homeX == undefined) {
       for(var i=0; i<roomGrid.length; i++) {
-        if( roomGrid[i] == TILE_PLAYER) {
+        if( roomGrid[i] == TILE_ENEMY) {
           var tileRow = Math.floor(i/ROOM_COLS);
           var tileCol = i%ROOM_COLS;
           this.homeX = tileCol * TILE_W + 0.5*TILE_W;
@@ -51,10 +43,17 @@ function warriorClass() {
     var nextX = this.x;
     var nextY = this.y;
 	
-	var playerCol = Math.floor(this.x/TILE_W);
-	var playerRow = Math.floor(this.y/TILE_H);
+	var enemyCol = Math.floor(this.x/TILE_W);
+	var enemyRow = Math.floor(this.y/TILE_H);
 	
-	var playersCurrentTileIndex = roomTileToIndex(playerCol, playerRow);
+	var enemyCurrentTileIndex = roomTileToIndex(enemyCol, enemyRow);
+	var playerCol = Math.floor(p1.x/TILE_W);
+	
+	if(enemyCol == playerCol){
+		SetupPathfindingGridData(e1);
+		//var playerIdx = tileCoordToIndex(p1.x, p1.y);
+		grid[24].setGoal();
+	}
 	
 	if(this.tilePath.length > 0){
 		var targetIndex = this.tilePath[0];
@@ -66,56 +65,56 @@ function warriorClass() {
 		var deltaX = Math.abs(targetX - this.x);
 		var deltaY = Math.abs(targetY - this.y);
 		
-		this.keyHeld_East = this.keyHeld_West = this.keyHeld_North = this.keyHeld_South = false;
-		console.log("DeltaX:" + deltaX + " DeltaY:" + deltaY + " Speed:" + PLAYER_MOVE_SPEED);
+		this.move_East = this.move_West = this.move_North = this.move_South = false;
+		//console.log("DeltaX:" + deltaX + " DeltaY:" + deltaY + " Speed:" + ENEMY_MOVE_SPEED);
 		
-		if(deltaX <= PLAYER_MOVE_SPEED){
+		if(deltaX <= ENEMY_MOVE_SPEED){
 			this.x = targetX;
-			if(deltaY <= PLAYER_MOVE_SPEED){
+			if(deltaY <= ENEMY_MOVE_SPEED){
 				this.y = targetY;
 				this.tilePath.shift();
 			} else if(targetY < this.y){
-				this.keyHeld_North = true;
+				this.move_North = true;
 			} else {
-				this.keyHeld_South = true;
+				this.move_South = true;
 			}
-		} else if(deltaY <= PLAYER_MOVE_SPEED){
+		} else if(deltaY <= ENEMY_MOVE_SPEED){
 			this.y = targetY;
-			if(deltaX <= PLAYER_MOVE_SPEED){
+			if(deltaX <= ENEMY_MOVE_SPEED){
 				this.x = targetX;
 				this.tilePath.shift();
 			} else if(targetX < this.x){
-				this.keyHeld_West = true;
+				this.move_West = true;
 			} else {
-				this.keyHeld_East = true;
+				this.move_East = true;
 			}
 		} else { // move towards center of closest tile
-			targetX = playerCol * TILE_W + (TILE_W * 0.5);
-			targetY = playerRow * TILE_H + (TILE_H * 0.5);
-			if(targetY < this.y - PLAYER_MOVE_SPEED){
-				this.keyHeld_North = true;
-			} else if (targetY > this.y + PLAYER_MOVE_SPEED) {
-				this.keyHeld_South = true;
+			targetX = enemyCol * TILE_W + (TILE_W * 0.5);
+			targetY = enemyRow * TILE_H + (TILE_H * 0.5);
+			if(targetY < this.y - ENEMY_MOVE_SPEED){
+				this.move_North = true;
+			} else if (targetY > this.y + ENEMY_MOVE_SPEED) {
+				this.move_South = true;
 			} else if(targetX < this.x){
-				this.keyHeld_West = true;
+				this.move_West = true;
 			} else {
-				this.keyHeld_East = true;
+				this.move_East = true;
 			}
 		}
 	} 
 	
 	
-    if(this.keyHeld_North) {
-      nextY -= PLAYER_MOVE_SPEED;
+    if(this.move_North) {
+      nextY -= ENEMY_MOVE_SPEED;
     }
-    if(this.keyHeld_East) {
-      nextX += PLAYER_MOVE_SPEED;
+    if(this.move_East) {
+      nextX += ENEMY_MOVE_SPEED;
     }
-    if(this.keyHeld_South) {
-      nextY += PLAYER_MOVE_SPEED;
+    if(this.move_South) {
+      nextY += ENEMY_MOVE_SPEED;
     }
-    if(this.keyHeld_West) {
-      nextX -= PLAYER_MOVE_SPEED;
+    if(this.move_West) {
+      nextX -= ENEMY_MOVE_SPEED;
     }
         
     var walkIntoTileIndex = getTileIndexAtPixelCoord(nextX,nextY);
@@ -125,32 +124,15 @@ function warriorClass() {
       walkIntoTileType = roomGrid[walkIntoTileIndex];
     }
 	
-	
-    
     switch( walkIntoTileType ) {
       case TILE_GROUND:
+	  case TILE_GOAL:
+	  case TILE_KEY:
         this.x = nextX;
         this.y = nextY;
         break;
-      case TILE_GOAL:
-        this.reset();
-        break;
       case TILE_DOOR:
 	  case TILE_DOOR_YELLOW_FRONT:
-        console.log("Door");
-		if(this.keysHeld > 0) {
-          this.keysHeld--; // one less key
-          document.getElementById("debugText").innerHTML = "Keys: "+this.keysHeld;
-          roomGrid[walkIntoTileIndex] = TILE_GROUND; // remove door
-		  SetupPathfindingGridData(p1);
-        }
-        break;
-      case TILE_KEY:
-        this.keysHeld++; // gain key
-        document.getElementById("debugText").innerHTML = "Keys: "+this.keysHeld;
-        roomGrid[walkIntoTileIndex] = TILE_GROUND; // remove key
-		SetupPathfindingGridData(p1);
-        break;
 	  case TILE_WALL_1:
 	  case TILE_WALL_2:
 	  case TILE_WALL_3:

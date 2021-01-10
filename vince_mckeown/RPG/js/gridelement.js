@@ -9,7 +9,7 @@ function GridElement() {
   this.distance;
   this.cameFrom; // GridElement reference to which tile we left to reach this one
   
-  this.setup = function(myC, myR, myIdx, myElement) {
+  this.setup = function(myC, myR, myIdx, myElement, whichPathFinder) {
     this.reset();
     this.tilC=myC;
     this.tilR=myR;
@@ -17,9 +17,9 @@ function GridElement() {
     this.elementType = myElement;
 	var elementTypeConsideration = this.elementType;
 	this.elementType = this.isNotPassible(elementTypeConsideration);
-	var playerX = p1.x;
-	var playerY = p1.y;
-	var playersLocation = getTileIndexAtPixelCoord(playerX,playerY);
+	var pathFinderX = whichPathFinder.x;
+	var pathFinderY = whichPathFinder.y;
+	var playersLocation = getTileIndexAtPixelCoord(pathFinderX,pathFinderY);
 	if(this.tilIdx == playersLocation){
 		this.elementType = SOURCE;
 		this.setDistIfLess(0,null);
