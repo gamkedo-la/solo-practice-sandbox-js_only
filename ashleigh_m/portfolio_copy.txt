@@ -1,0 +1,49 @@
+home page
+ - animals page
+   - include whatever assets you would like to
+   - beats (like yr two beats per page)
+ - rebirth page
+ - etc
+
+* an aside...you could keep a lot of copy as is
+  - perhaps highlight either various things you've worked on
+  - or collaboration with others 
+
+[] make a content template for the page
+- who what where - client, target demo
+- problem/solution
+- the pieces (possibly with captions)
+
+ASSORTED ANIMALS
+
+brand identity
+album design
+website UI and development
+
+The client
+The Assorted Animals are best described by a term of their own creation: ‘Abrasive Pop’; catchy hooks with lyrics that will kick your teeth in. The Animals combine several disparate genres of music under one banner to produce a sound that is sometimes jarring, but always fulfilling.
+
+Their goal
+get signed by an independent label
+increase their fan base
+
+* you could maybe do problem and solution...much punchier, MVP
+or idea/execution
+* maybe have little snippets or captions for each piece itself?
+
+who, what, where
+----------------
+Client: Assorted animals, 
+Target Demographic: 15-30, NYC art scene, college students
+Goal: get signed by an independent label, increase their fanbase.
+
+problem
+-------
+The client wanted a cohesive visual identity and marketing material 
+to demonstrate to prospective labels that much of the design legwork was already done. 
+
+solution
+--------
+A paper cut, collaged identity to express the band's unique fusion of 
+trip-hop, pop-punk, metal. A site  content in a way that reflected the top needs of the user groups right on the home page, no further navigation required.
+
