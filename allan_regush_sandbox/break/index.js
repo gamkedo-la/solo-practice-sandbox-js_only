@@ -152,7 +152,6 @@ function resetBricks() {
     for(let i = 0; i < BRICK_COLS * BRICK_ROWS; ++i) {
         brickGrid[i] = true;
     }
-    brickGrid[2] = false;
 }
 
 function render() {
@@ -162,11 +161,11 @@ function render() {
     drawBricks();
     drawScore();
 }
-
+/*
 function drawScore() {
     drawText(score.player1.toString(), 680, 80);
 }
-
+*/
 function blackoutCanvas() {
     canvasContext.fillStyle = 'black';
     canvasContext.fillRect(0,0, canvas.width, canvas.height);
