@@ -1,7 +1,7 @@
 <script>
 var howManyBlobs = 5;
-var minPt = 2;
-var maxPt = 6;
+var minPt = 3; // can be as low as 2 if you want to support lines
+var maxPt = 5;
 var blobColors = ["cyan","line","yellow","pink","white"];
 
 function bouncyPoint() {
@@ -31,7 +31,7 @@ function bouncyThing() {
   var myColor;
 
   this.setup = function() {
-    var pointCount = minPt + Math.floor(Math.random()*(maxPt-minPt));
+    var pointCount = minPt + Math.floor(Math.random()*(1+maxPt-minPt));
 
     for(var i=0;i<pointCount;i++) {
       var newPt = new bouncyPoint();
