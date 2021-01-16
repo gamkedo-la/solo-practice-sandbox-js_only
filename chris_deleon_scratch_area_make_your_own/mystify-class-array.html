@@ -1,64 +1,61 @@
 <script>
 var howManyBlobs = 5;
+var minPt = 2;
+var maxPt = 6;
 var blobColors = ["cyan","line","yellow","pink","white"];
 
-// next change might be having each vertex be an object in a list, to support 4+ point shapes
+function bouncyPoint() {
+  this.x,this.y; // exposed to simplify loop drawing
+  var xv,yv;
+  this.setup = function() {
+    this.x=randX();
+    this.y=randY();
+    xv = randVel();
+    yv = randVel();
+  }
+  this.update = function() {
+    this.x+=xv;
+    this.y+=yv;
+
+    if(this.x<0 || this.x>canv.width) {
+      xv*=-1;
+    }
+    if(this.y<0 || this.y>canv.height) {
+      yv*=-1;
+    }
+  }
+}
+
 function bouncyThing() {
-  var x1,y1,x2,y2,x3,y3;
-  var xv1,yv1,xv2,yv2,xv3,yv3;
+  var pointList = [];
   var myColor;
 
   this.setup = function() {
-    x1=randX();
-    y1=randY();
-    x2=randX();
-    y2=randY();
-    x3=randX();
-    y3=randY();
+    var pointCount = minPt + Math.floor(Math.random()*(maxPt-minPt));
 
-    xv1 = randVel();
-    yv1 = randVel();
-    xv2 = randVel();
-    yv2 = randVel();
-    xv3 = randVel();
-    yv3 = randVel();
+    for(var i=0;i<pointCount;i++) {
+      var newPt = new bouncyPoint();
+      newPt.setup();
+      pointList.push(newPt);
+    }
 
     myColor = blobColors[blobList.length % blobColors.length];
   }
   this.update = function() {
-    x1+=xv1;
-    y1+=yv1;
-    x2+=xv2;
-    y2+=yv2;
-    x3+=xv3;
-    y3+=yv3;
-
-    if(x1<0 || x1>canv.width) {
-      xv1*=-1;
-    }
-    if(y1<0 || y1>canv.height) {
-      yv1*=-1;
-    }
-    if(x2<0 || x2>canv.width) {
-      xv2*=-1;
-    }
-    if(y2<0 || y2>canv.height) {
-      yv2*=-1;
-    }
-    if(x3<0 || x3>canv.width) {
-      xv3*=-1;
-    }
-    if(y3<0 || y3>canv.height) {
-      yv3*=-1;
+    for(var i=0;i<pointList.length;i++) {
+      pointList[i].update();
     }
   }
   this.draw = function() {
     ctx.strokeStyle=myColor;
     ctx.beginPath();
-    ctx.moveTo(x1,y1);
-    ctx.lineTo(x2,y2);
-    ctx.lineTo(x3,y3);
-    ctx.lineTo(x1,y1);
+    ctx.moveTo(pointList[0].x,pointList[0].y);
+    for(var i=1;i<pointList.length;i++) { // start at 1 for lineTo
+      ctx.lineTo(pointList[i].x,pointList[i].y);
+    }
+    if(pointList.length > 2) {
+      ctx.lineTo(pointList[0].x,pointList[0].y); // close shape
+    }
     ctx.stroke();
     ctx.closePath();
   }
