@@ -1,9 +1,9 @@
 <script>
-var x1,y1,x2,y2;
-var xv1,yv1,xv2,yv2;
+var x1,y1,x2,y2,x3,y3;
+var xv1,yv1,xv2,yv2,xv3,yv3;
 
-var x1b,y1b,x2b,y2b;
-var xv1b,yv1b,xv2b,yv2b;
+var x1b,y1b,x2b,y2b,x3b,y3b;
+var xv1b,yv1b,xv2b,yv2b,xv3b,yv3b;
 
 window.onload=function() {
   canv=document.createElement("canvas");
@@ -17,20 +17,28 @@ window.onload=function() {
   y1=Math.random()*canv.height;
   x2=Math.random()*canv.width;
   y2=Math.random()*canv.height;
+  x3=Math.random()*canv.width;
+  y3=Math.random()*canv.height;
   x1b=Math.random()*canv.width;
   y1b=Math.random()*canv.height;
   x2b=Math.random()*canv.width;
   y2b=Math.random()*canv.height;
+  x3b=Math.random()*canv.width;
+  y3b=Math.random()*canv.height;
   
   xv1=5-Math.random()*10;
   yv1=5-Math.random()*10;
   xv2=5-Math.random()*10;
   yv2=5-Math.random()*10;
+  xv3=5-Math.random()*10;
+  yv3=5-Math.random()*10;
 
   xv1b=5-Math.random()*10;
   yv1b=5-Math.random()*10;
   xv2b=5-Math.random()*10;
   yv2b=5-Math.random()*10;
+  xv3b=5-Math.random()*10;
+  yv3b=5-Math.random()*10;
   
   setInterval(update,1000/30);
 }
@@ -44,10 +52,14 @@ function update() {
   y1+=yv1;
   x2+=xv2;
   y2+=yv2;
+  x3+=xv3;
+  y3+=yv3;
   x1b+=xv1b;
   y1b+=yv1b;
   x2b+=xv2b;
   y2b+=yv2b;
+  x3b+=xv3b;
+  y3b+=yv3b;
 
   if(x1<0 || x1>canv.width) {
     xv1*=-1;
@@ -60,6 +72,12 @@ function update() {
   }
   if(y2<0 || y2>canv.height) {
     yv2*=-1;
+  }
+  if(x3<0 || x3>canv.width) {
+    xv3*=-1;
+  }
+  if(y3<0 || y3>canv.height) {
+    yv3*=-1;
   }
 
   if(x1b<0 || x1b>canv.width) {
@@ -74,11 +92,19 @@ function update() {
   if(y2b<0 || y2b>canv.height) {
     yv2b*=-1;
   }
+  if(x3b<0 || x3b>canv.width) {
+    xv3b*=-1;
+  }
+  if(y3b<0 || y3b>canv.height) {
+    yv3b*=-1;
+  }
 
   ctx.strokeStyle="cyan";
   ctx.beginPath();
   ctx.moveTo(x1,y1);
   ctx.lineTo(x2,y2);
+  ctx.lineTo(x3,y3);
+  ctx.lineTo(x1,y1);
   ctx.stroke();
   ctx.closePath();
 
@@ -86,6 +112,8 @@ function update() {
   ctx.beginPath();
   ctx.moveTo(x1b,y1b);
   ctx.lineTo(x2b,y2b);
+  ctx.lineTo(x3b,y3b);
+  ctx.lineTo(x1b,y1b);
   ctx.stroke();
   ctx.closePath();
 }
