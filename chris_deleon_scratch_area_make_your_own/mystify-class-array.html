@@ -1,0 +1,105 @@
+<script>
+var howManyBlobs = 5;
+var blobColors = ["cyan","line","yellow","pink","white"];
+
+// next change might be having each vertex be an object in a list, to support 4+ point shapes
+function bouncyThing() {
+  var x1,y1,x2,y2,x3,y3;
+  var xv1,yv1,xv2,yv2,xv3,yv3;
+  var myColor;
+
+  this.setup = function() {
+    x1=randX();
+    y1=randY();
+    x2=randX();
+    y2=randY();
+    x3=randX();
+    y3=randY();
+
+    xv1 = randVel();
+    yv1 = randVel();
+    xv2 = randVel();
+    yv2 = randVel();
+    xv3 = randVel();
+    yv3 = randVel();
+
+    myColor = blobColors[blobList.length % blobColors.length];
+  }
+  this.update = function() {
+    x1+=xv1;
+    y1+=yv1;
+    x2+=xv2;
+    y2+=yv2;
+    x3+=xv3;
+    y3+=yv3;
+
+    if(x1<0 || x1>canv.width) {
+      xv1*=-1;
+    }
+    if(y1<0 || y1>canv.height) {
+      yv1*=-1;
+    }
+    if(x2<0 || x2>canv.width) {
+      xv2*=-1;
+    }
+    if(y2<0 || y2>canv.height) {
+      yv2*=-1;
+    }
+    if(x3<0 || x3>canv.width) {
+      xv3*=-1;
+    }
+    if(y3<0 || y3>canv.height) {
+      yv3*=-1;
+    }
+  }
+  this.draw = function() {
+    ctx.strokeStyle=myColor;
+    ctx.beginPath();
+    ctx.moveTo(x1,y1);
+    ctx.lineTo(x2,y2);
+    ctx.lineTo(x3,y3);
+    ctx.lineTo(x1,y1);
+    ctx.stroke();
+    ctx.closePath();
+  }
+}
+var blobList = [];
+
+function randX() {
+  return Math.random()*canv.width;
+}
+function randY() {
+  return Math.random()*canv.height;
+}
+function randVel() {
+  return 5-Math.random()*10;
+}
+
+window.onload=function() {
+  canv=document.createElement("canvas");
+  canv.width=1024;
+  canv.height=768;
+  ctx=canv.getContext("2d");
+  document.body.appendChild(canv);
+  ctx.fillRect(0,0,canv.width,canv.height);
+
+  for(var i=0;i<howManyBlobs;i++) {
+    var newBlob = new bouncyThing();
+    newBlob.setup();
+    blobList.push(newBlob);
+  }
+  
+  setInterval(update,1000/30);
+}
+function update() {
+  ctx.fillStyle="black";
+  ctx.globalAlpha=0.02;
+  ctx.fillRect(0,0,canv.width,canv.height);
+  ctx.globalAlpha=1.0;
+
+  for(var i=0;i<blobList.length;i++) {
+    blobList[i].update();
+    blobList[i].draw();
+  }
+}
+</script>
