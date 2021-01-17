@@ -1,3 +1,6 @@
+import { square } from "./entities";
+import { flipDirectionX } from "./helpers";
+
 const canvas = document.getElementById("board");
 const ctx = canvas.getContext("2d");
 const WIDTH = canvas.width;
@@ -5,14 +8,6 @@ const HEIGHT = canvas.height;
 
 let deltaTime = 0;
 let timeOfLastFrame = 0;
-
-const square = {
-  position: { x: 0, y: 0 },
-  direction: { x: 1, y: 0 },
-  dimension: { x: 100, y: 100 },
-  color: "red",
-  speed: 500,
-};
 
 function loop(totalTimeElapsedMiliseconds) {
   requestAnimationFrame(loop);
@@ -42,9 +37,3 @@ function loop(totalTimeElapsedMiliseconds) {
 }
 
 requestAnimationFrame(loop);
-
-function flipDirectionX(entity) {
-  const { x } = entity.direction;
-  if (x > 1 || x < -1) console.error(`x is ${x}`);
-  entity.direction.x = -entity.direction.x;
-}
