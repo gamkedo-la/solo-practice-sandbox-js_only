@@ -16,7 +16,6 @@ const square = {
 
 function loop(totalTimeElapsedMiliseconds) {
   requestAnimationFrame(loop);
-
   const currentTime = totalTimeElapsedMiliseconds / 1000; //convert to seconds
   const deltaTime = currentTime - timeOfLastFrame;
   timeOfLastFrame = currentTime;
@@ -35,7 +34,6 @@ function loop(totalTimeElapsedMiliseconds) {
     flipDirectionX(square);
   }
 
-  console.log("square direction", square.direction);
   square.position.x += square.speed * square.direction.x * deltaTime;
 
   //draw cube
