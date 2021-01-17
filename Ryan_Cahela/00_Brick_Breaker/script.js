@@ -9,6 +9,7 @@ let timeOfLastFrame = 0;
 const square = {
   position: { x: 0, y: 0 },
   direction: { x: 1, y: 0 },
+  dimension: { x: 100, y: 100 },
   color: "red",
   speed: 500,
 };
@@ -24,9 +25,17 @@ function loop(totalTimeElapsedMiliseconds) {
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
   //move cube
-  if (square.position.x > WIDTH || square.position.x < 0) {
-    square.direction.x = -square.direction.x;
+  if (square.position.x > WIDTH - square.dimension.x) {
+    console.log("beep");
+    flipDirectionX(square);
   }
+
+  if (square.position.x < 0) {
+    console.log("boop");
+    flipDirectionX(square);
+  }
+
+  console.log("square direction", square.direction);
   square.position.x += square.speed * square.direction.x * deltaTime;
 
   //draw cube
@@ -35,3 +44,9 @@ function loop(totalTimeElapsedMiliseconds) {
 }
 
 requestAnimationFrame(loop);
+
+function flipDirectionX(entity) {
+  const { x } = entity.direction;
+  if (x > 1 || x < -1) console.error(`x is ${x}`);
+  entity.direction.x = -entity.direction.x;
+}
