@@ -11,6 +11,7 @@ module.exports = {
     contentBase: "./dist",
     port: 9000,
   },
+  mode: "development",
   module: {
     rules: [
       {

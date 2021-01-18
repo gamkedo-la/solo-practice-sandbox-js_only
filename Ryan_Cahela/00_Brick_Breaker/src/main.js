@@ -1,5 +1,5 @@
-import { square, player } from "./entities";
-import { flipDirectionX } from "./helpers";
+import { ball, player } from "./entities";
+import { drawRect, drawCircle, flipDirectionX } from "./helpers";
 import MouseControls from "./MouseControls";
 
 const canvas = document.getElementById("board");
@@ -14,34 +14,27 @@ let timeOfLastFrame = 0;
 function loop(totalTimeElapsedMiliseconds) {
   requestAnimationFrame(loop);
   const currentTime = totalTimeElapsedMiliseconds / 1000; //convert to seconds
-  const deltaTime = currentTime - timeOfLastFrame;
+  deltaTime = currentTime - timeOfLastFrame;
   timeOfLastFrame = currentTime;
 
   //clear game screen
   ctx.clearRect(0, 0, WIDTH, HEIGHT);
 
-  //move cube
-  if (square.position.x > WIDTH - square.dimension.x) {
-    console.log("beep");
-    flipDirectionX(square);
+  //contain ball
+  if (ball.position.x > WIDTH - ball.dimension.radius) {
+    flipDirectionX(ball);
+  }
+  if (ball.position.x < ball.dimension.radius) {
+    flipDirectionX(ball);
   }
 
-  if (square.position.x < 0) {
-    console.log("boop");
-    flipDirectionX(square);
-  }
-
-  square.position.x += square.speed * square.direction.x * deltaTime;
+  //move stuff
+  ball.position.x += ball.speed * ball.direction.x * deltaTime;
   player.position.y = controls.position.y - 50;
 
-  //draw cube
-  ctx.fillStyle = square.fillStyle;
-  ctx.fillRect(square.position.x, square.position.y, 100, 100);
-
-  const { x: playerX, y: playerY } = player.position;
-  const { x: playerWidth, y: playerHeight } = player.dimension;
-  ctx.fillStyle = player.fillStyle;
-  ctx.fillRect(playerX, playerY, playerWidth, playerHeight);
+  //draw stuff
+  drawCircle(ctx, ball);
+  drawRect(ctx, player);
 }
 
 requestAnimationFrame(loop);
