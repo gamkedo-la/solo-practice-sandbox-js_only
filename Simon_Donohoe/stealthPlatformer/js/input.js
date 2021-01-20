@@ -7,8 +7,8 @@ const KEY_DOWN_ARROW = 40;
 
 let holdLeft = false;
 let holdRight = false;
-var holdUp = false;
-var holdDown = false;
+let holdUp = false;
+let holdDown = false;
 
 function initInput() {
   document.addEventListener("keydown", keyPressed);
