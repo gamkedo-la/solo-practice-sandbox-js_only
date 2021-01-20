@@ -1,6 +1,5 @@
 var unvisitedList = [];
 var endTile = null;
-var pathfindingNow = false;
 
 function SetupPathfindingGridData(whichPathfinder) {
     var endR = -1;
@@ -8,8 +7,9 @@ function SetupPathfindingGridData(whichPathfinder) {
 
     unvisitedList = [];
     endTile = null;
-    pathfindingNow = false;
 	var pathfinder = whichPathfinder;
+    pathfinder.pathfindingNow = false;
+	
 
     if(grid.length > 0) { // non-zero, copy over player set walls into tileGrid for reset
         for (var eachCol = 0; eachCol < ROOM_COLS; eachCol++) {
@@ -133,7 +133,7 @@ function PathfindingNextStep(whichPathfinder) {
 			  }
 			}
 		}
-        pathfindingNow = false;
+        pathfinder.pathfindingNow = false;
       }
 }
 

@@ -6,6 +6,7 @@ function warriorClass() {
   this.x;
   this.y;
   this.tilePath = [];
+  this.pathfindingNow = false;
 
   // keyboard hold state variables, to use keys more like buttons
   this.keyHeld_North = false;

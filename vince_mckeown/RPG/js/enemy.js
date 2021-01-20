@@ -6,8 +6,9 @@ function enemyClass() {
   this.x;
   this.y;
   this.tilePath = [];
+  this.pathfindingNow = false;
 
-  // hold move states
+  // move states
   this.move_North = false;
   this.move_East = false;
   this.move_South = false;
@@ -20,7 +21,6 @@ function enemyClass() {
   }
   
   this.reset = function() {
-    this.keysHeld = 0;
     if(this.homeX == undefined) {
       for(var i=0; i<roomGrid.length; i++) {
         if( roomGrid[i] == TILE_ENEMY) {
@@ -50,10 +50,13 @@ function enemyClass() {
 	var playerCol = Math.floor(p1.x/TILE_W);
 	
 	if(enemyCol == playerCol){
+		console.log("Player is in the same Col as Enemy");
 		SetupPathfindingGridData(e1);
 		//var playerIdx = tileCoordToIndex(p1.x, p1.y);
 		grid[24].setGoal();
 	}
+	
+	console.log("Tile Path " + this.tilePath.length);
 	
 	if(this.tilePath.length > 0){
 		var targetIndex = this.tilePath[0];

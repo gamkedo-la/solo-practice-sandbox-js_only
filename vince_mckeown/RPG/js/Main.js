@@ -22,15 +22,17 @@ function loadingDoneSoStartGame() {
     }, 1000 / framesPerSecond);
 
     p1.init(playerPic, "Blue");
-	e1.init(playerPic, "red");
+	e1.init(goblinPic, "red");
     initInput();
 }
 
 function moveEverything() {
-    if (pathfindingNow) {
+    if (p1.pathfindingNow) {
         PathfindingNextStep(p1);
-		PathfindingNextStep(e1);
     }
+	if(e1.pathfindingNow){
+		e1.PathfindingNextStep(e1);
+	}
 	p1.move();
 	e1.move();
 }

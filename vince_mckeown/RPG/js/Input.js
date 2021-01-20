@@ -58,11 +58,11 @@ function mouseclicked(evt) {
 		grid[tileOverIdx].setGoal(); 
     }
 	
-	pathfindingNow = !pathfindingNow;
+	p1.pathfindingNow = !p1.pathfindingNow;
 	if(endTile != null) {
-		pathfindingNow = false;
+		p1.pathfindingNow = false;
 	}
-	if(pathfindingNow == false) {
+	if(p1.pathfindingNow == false) {
 		SetupPathfindingGridData(p1);
 	}
 
