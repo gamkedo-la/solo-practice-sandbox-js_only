@@ -1,0 +1,102 @@
+<script>
+var howManyBlobs = 5;
+var minPt = 3; // can be as low as 2 if you want to support lines
+var maxPt = 5;
+var blobColors = ["cyan","line","yellow","pink","white"];
+
+function bouncyPoint() {
+  this.x,this.y; // exposed to simplify loop drawing
+  var xv,yv;
+  this.setup = function() {
+    this.x=randX();
+    this.y=randY();
+    xv = randVel();
+    yv = randVel();
+  }
+  this.update = function() {
+    this.x+=xv;
+    this.y+=yv;
+
+    if(this.x<0 || this.x>canv.width) {
+      xv*=-1;
+    }
+    if(this.y<0 || this.y>canv.height) {
+      yv*=-1;
+    }
+  }
+}
+
+function bouncyThing() {
+  var pointList = [];
+  var myColor;
+
+  this.setup = function() {
+    var pointCount = minPt + Math.floor(Math.random()*(1+maxPt-minPt));
+
+    for(var i=0;i<pointCount;i++) {
+      var newPt = new bouncyPoint();
+      newPt.setup();
+      pointList.push(newPt);
+    }
+
+    myColor = blobColors[blobList.length % blobColors.length];
+  }
+  this.update = function() {
+    for(var i=0;i<pointList.length;i++) {
+      pointList[i].update();
+    }
+  }
+  this.draw = function() {
+    ctx.strokeStyle=myColor;
+    ctx.beginPath();
+    ctx.moveTo(pointList[0].x,pointList[0].y);
+    for(var i=1;i<pointList.length;i++) { // start at 1 for lineTo
+      ctx.lineTo(pointList[i].x,pointList[i].y);
+    }
+    if(pointList.length > 2) {
+      ctx.lineTo(pointList[0].x,pointList[0].y); // close shape
+    }
+    ctx.stroke();
+    ctx.closePath();
+  }
+}
+var blobList = [];
+
+function randX() {
+  return Math.random()*canv.width;
+}
+function randY() {
+  return Math.random()*canv.height;
+}
+function randVel() {
+  return 5-Math.random()*10;
+}
+
+window.onload=function() {
+  canv=document.createElement("canvas");
+  canv.width=1024;
+  canv.height=768;
+  ctx=canv.getContext("2d");
+  document.body.appendChild(canv);
+  ctx.fillRect(0,0,canv.width,canv.height);
+
+  for(var i=0;i<howManyBlobs;i++) {
+    var newBlob = new bouncyThing();
+    newBlob.setup();
+    blobList.push(newBlob);
+  }
+  
+  setInterval(update,1000/30);
+}
+function update() {
+  ctx.fillStyle="black";
+  ctx.globalAlpha=0.02;
+  ctx.fillRect(0,0,canv.width,canv.height);
+  ctx.globalAlpha=1.0;
+
+  for(var i=0;i<blobList.length;i++) {
+    blobList[i].update();
+    blobList[i].draw();
+  }
+}
+</script>

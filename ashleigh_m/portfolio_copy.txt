@@ -1,0 +1,200 @@
+home page
+ - animals page
+   - include whatever assets you would like to
+   - beats (like yr two beats per page)
+ - rebirth page
+ - etc
+
+* an aside...you could keep a lot of copy as is
+  - perhaps highlight either various things you've worked on
+  - or collaboration with others 
+
+[] make a content template for the page
+- who what where - client, target demo
+- problem/solution
+- the pieces (possibly with captions)
+
+ASSORTED ANIMALS
+
+brand identity
+album design
+website UI and development
+
+The client
+The Assorted Animals are best described by a term of their own creation: ‘Abrasive Pop’; catchy hooks with lyrics that will kick your teeth in. The Animals combine several disparate genres of music under one banner to produce a sound that is sometimes jarring, but always fulfilling.
+
+Their goal
+get signed by an independent label
+increase their fan base
+
+* you could maybe do problem and solution...much punchier, MVP
+or idea/execution
+* maybe have little snippets or captions for each piece itself?
+
+who, what, where
+----------------
+Client: Assorted Animals
+Target Demographic: 15-30, NYC art scene, college students
+Goal: Get signed by an independent label, increase their fanbase.
+
+problem
+-------
+The client wanted a cohesive visual identity and marketing material 
+to demonstrate to prospective labels that much of the design legwork
+required to market the band was already done. 
+
+solution
+--------
+A paper cut, collaged identity to express the band's unique fusion of 
+trip-hop, pop-punk, metal. A *brief or truncated* site with content organized in a way that reflected the top needs of the user groups right on the home page, with no further navigation required.
+
+VO2MAX
+
+who, what, where
+----------------
+Client: VO2MAX: a boxing gym in framingham, MA
+Target Demographic: dedicated athetes, fitness newbies
+Goal: increase memberships
+what: branding, UI design
+
+problem
+-------
+Showcase their unique flavor of fitness: "train like a boxer"
+all the intensity and fun of boxing training, but without the bruises. 
+
+solution
+--------
+Gritty, screen-printed graphics over canvas to express the physciallity of the training, 
+with clean typography and a spacious layout to convey openess, empathy. (kinda BS)
+
+
+TURBO
+
+I did some aesthetic changes to the page but most of the work was in optimizing the page. (Not live)
+The current resource library has very long load times. It uses Isotope filtering methods for its views. It hides and shows 218 posts conditionally, rather than using WP_Query and pagination, which isn't the most efficient.
+
+my solution
+Filtering, searching, or using load more fires an AJAX request. The request passes in the post offset and post type to the server side script so that it can load the next wave of posts. The posts that have already been loaded are tracked using a hidden buffer.
+
+who, what, where
+----------------
+Client: Turbonomic, maker of hybrid cloud management software
+Target Demographic: CTOs
+Goal: increase amount of sales closed
+what: UI design, front-end development
+
+problem
+-------
+The director assumed that video content was going to be a key part in closing sales
+and I was asked to improve the video library's aesthetic and performance
+
+solution
+--------
+to make the widgets more visually appealing with photo backgrounds, and to ehance the performance of the part, which was initially rendering all 218 on the users end, 
+by using AJAX and WP_query to render only what was visible to the user at that moment.
+
+COGNITION 
+
+who, what, where
+----------------
+Client: Cognition, creator of Cockpit, a medical compliance software
+Target Demographic: CTOs, enginners
+Goal: increase amount of sales closed
+what: UI design, content-strategy, front-end development
+
+the problem
+-----------
+Cockpit is easy to use, but is complex to explain. Cognition had no trouble winning over engineers, but when the C-suite who would buy their product viewed their site, they would become confused and the sale would be lost.
+
+solution
+--------
+Utilize content first design and tile based design to break down complex concepts into digestible components. For the sites visuals: A contemporary flavor for the younger engineer demo, and an boldness for the older c-suite demo.
+
+NORTHEASTERN UNIVERSITY
+
+who, what, where
+----------------
+Client: NEU
+project: student life sub-site wordpress template and first site implementation
+what: wordpress development, wp-admin panel UX
+Target Demographic: students and student life admins
+Goal: complete the needed work on the template
+
+the problem
+-----------
+I was originally hired to do execute on 30 or so student life sites, all with a pre-developed theme. I learned that theme was done on a quick turn around time and still needed some work. 
+
+solution
+--------
+Much of the word on this project was done under the hood at the template and admin panel levels: fleshing out a design system, building new modules (in code), DRYing up the code base, etc.I Worked tightly with NEU's UX designer to improve the usability of both the student facing experience and the admin panel for the student life organization heads using the site. 
+
+REBIRTH FITNESS
+
+who, what, where
+----------------
+Client: Rebirth Fitness
+project: website
+what: UI design, some visual identity, front-end develpoment
+Target Demographic: fitness newbies
+Goal: increase memberships
+
+The problem
+-----------
+The target market of Rebirth is a crowd that has tried fitness before, but haven't acheived their goals. Founder Julian Cardoos needed a means of showing that market he could serve them as a mentor who will get them results, *not* as a drill sergeant.
+
+The solution
+------------
+Combine a soothing color scheme with sturdy typography to showcase Julian's tough but caring personal training.
+
+BODY BY MONIKA
+
+who, what, where
+----------------
+Client: bbm
+project: visual identity, and website
+what: UI design, visual identity, front-end develpoment
+Target Demographic: busy, type A, business women
+Goal: increase memberships
+
+problem
+-------
+Body by monika is a personal training program and community that exists to help women  push past perceived limits, and exceed their own expectations. Founder Monika wanted an identity and site that would look like her training does. Something that helps women come into their strength, and build female (not male!) muscle definition, a common concern of her prospetive clients.
+
+solution
+--------
+A site that speaks to the type A woman, bold, strong, but not masculine. Choose type and colors that reflect the #goals of these women, to be toned, strong, and not looking like a guy!
+
+
+DRIFT BRAVELY
+
+who, what, where
+----------------
+
+developed with massive help from HTGD
+project: Asteroids-like with procedural glitch effects
+what: Project lead, programming, game design, writing
+stack: HTML canvas/JS/node.js
+
+idea
+----
+A pilot drifting through space, lost in their own thoughts. A game inspired by, day dreaming, and being haunted by the past. Every shot fire cuts, pastes, and loops the screen back onto itself; to progress, the player needs to sort what is real from what is projection. 
+
+design choices
+--------------
+I thought combining pool-like elements into an asteroids like would make the game a little more fun. you can't destroy the asteroids by firing at them directly, you need to fire in the opposite direction, wrap the shot around the screen, and correctly judge the angle. We created the glitch effect with use of a second canvas that's contexutally pasted over the first one.
+
+HARD GLITCH
+
+who, what, where
+----------------
+developed for HTGD
+project: character sprites
+
+idea
+----
+The lead wanted to make a game that was visually similar to the game _beglitched_, but slightly less feminine, but with a little more tension, to match his vision of a computer glitch being hunted by The Machine. 
+
+design choices
+--------------
+I stuck to simple geomery for most of them, with machine like animation and flickering
+lights, remenscient of the machine Glitch, the player character, is trying to escape. Glitch, by contrast looks like pixel-junk, and the weirdest looking object on screen.
