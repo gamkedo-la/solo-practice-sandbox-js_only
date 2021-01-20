@@ -1,0 +1,22 @@
+LOG
+
+- added directional constants for keeping track of current/last direction moved/faced;
+- created basic images with arrows to show different facings for warrior
+- working on adding directionFacing images to loadingImages() correctly
+
+- directional facing warrior images loaded basically.
+- added change to warrior directional image to warrior.move() 
+
+
+
+### Give the Player Health so that they can be harmed.
+
+- created heart images
+- added hearts to be drawn to screen
+- FINALLY got health damage to work onKeyUp (key 1) with temporary invinincibility timer!
+- added spike floor image and logic to harm player when walked over.
+- added Potion AND Food images and logic to restore the player when picked-up
+
+FIXED!!--BUG-- Food currently will add hearts beyond the max(3). Needs fixing.
+
+- 
