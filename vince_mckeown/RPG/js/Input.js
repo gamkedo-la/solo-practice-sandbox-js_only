@@ -55,15 +55,19 @@ function keyReleased(evt) {
 
 function mouseclicked(evt) {
 	if(grid[tileOverIdx].elementType != WALL) {
-		grid[tileOverIdx].setGoal(); 
+		startPath(tileOverIdx, p1); 
     }
+}
+
+function startPath(toTile, pathFor){
+	grid[toTile].setGoal();
 	
-	p1.pathfindingNow = !p1.pathfindingNow;
+	pathFor.pathfindingNow = !pathFor.pathfindingNow;
 	if(endTile != null) {
-		p1.pathfindingNow = false;
+		pathFor.pathfindingNow = false;
 	}
-	if(p1.pathfindingNow == false) {
-		SetupPathfindingGridData(p1);
+	if(pathFor.pathfindingNow == false) {
+		SetupPathfindingGridData(pathFor);
 	}
 
     if (tileOverIdx < 0 || tileOverIdx >= roomGrid.length) { // invalid or off board

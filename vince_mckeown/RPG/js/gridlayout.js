@@ -12,6 +12,13 @@ function tileCoordToIndex(tileCol, tileRow) {
     return (tileCol + ROOM_COLS * tileRow);
 }
 
+function pixCoordToIndex(pX, pY){
+	var col = Math.floor(pX/TILE_W);
+	var row = Math.floor(pY/TILE_H);
+	
+	return tileCoordToIndex(col, row);
+}
+
 function drawPathingFindingTiles() {
     var tileCount = ROOM_COLS * ROOM_ROWS;
     for (var eachTil = 0; eachTil < tileCount; eachTil++) {

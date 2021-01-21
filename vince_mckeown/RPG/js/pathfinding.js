@@ -76,8 +76,9 @@ function hValCal(atColumn,atRow, toColumn,toRow, multWeight, geometric) { /////
 function PathfindingNextStep(whichPathfinder) {
     var tentativeDistance = 0;
 	var pathfinder = whichPathfinder;
+	var safetyBreak = 1000;
 
-      if(unvisitedList.length > 0) { //// "while Q is not empty:"
+      while(unvisitedList.length > 0 && safetyBreak-- > 0) { //// "while Q is not empty:"
         //// "u := vertex in Q with min dist[u]"
         var currentTile = null;
         var ctDistWithH; ///// a* with hVal heuristic added
@@ -113,7 +114,7 @@ function PathfindingNextStep(whichPathfinder) {
       
       } 
       
-      else { //// all nodes have been accounted for, work backward from end's tiles for path
+       { //// all nodes have been accounted for, work backward from end's tiles for path
              //// terminate the algorithm from taking further steps since we found what we needed
         if (endTile!=null) {
           console.log("Best distance found: " + endTile.distance);

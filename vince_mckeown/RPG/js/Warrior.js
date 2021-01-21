@@ -68,7 +68,7 @@ function warriorClass() {
 		var deltaY = Math.abs(targetY - this.y);
 		
 		this.keyHeld_East = this.keyHeld_West = this.keyHeld_North = this.keyHeld_South = false;
-		console.log("DeltaX:" + deltaX + " DeltaY:" + deltaY + " Speed:" + PLAYER_MOVE_SPEED);
+		//console.log("DeltaX:" + deltaX + " DeltaY:" + deltaY + " Speed:" + PLAYER_MOVE_SPEED);
 		
 		if(deltaX <= PLAYER_MOVE_SPEED){
 			this.x = targetX;

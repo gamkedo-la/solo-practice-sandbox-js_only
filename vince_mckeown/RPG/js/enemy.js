@@ -7,6 +7,7 @@ function enemyClass() {
   this.y;
   this.tilePath = [];
   this.pathfindingNow = false;
+  this.framesBeforeReThink = 100;
 
   // move states
   this.move_North = false;
@@ -40,6 +41,13 @@ function enemyClass() {
   } // end of reset
   
   this.move = function() {
+	if(this.framesBeforeReThink-- < 0){
+		this.framesBeforeReThink = 100;
+		var playerIdx = pixCoordToIndex(p1.x,p1.y);
+		startPath(playerIdx, this); 
+	}
+	
+	
     var nextX = this.x;
     var nextY = this.y;
 	
@@ -47,20 +55,17 @@ function enemyClass() {
 	var enemyRow = Math.floor(this.y/TILE_H);
 	
 	var enemyCurrentTileIndex = roomTileToIndex(enemyCol, enemyRow);
-	var playerCol = Math.floor(p1.x/TILE_W);
+	/*var playerCol = Math.floor(p1.x/TILE_W);
 	
 	if(enemyCol == playerCol){
-		console.log("Player is in the same Col as Enemy");
 		SetupPathfindingGridData(e1);
-		//var playerIdx = tileCoordToIndex(p1.x, p1.y);
-		grid[24].setGoal();
-	}
-	
-	console.log("Tile Path " + this.tilePath.length);
+		var playerIdx = pixCoordToIndex(p1.x,p1.y);
+		grid[playerIdx].setGoal();
+	}*/
 	
 	if(this.tilePath.length > 0){
+		console.log(this.tilePath.length, this.tilePath[0]);
 		var targetIndex = this.tilePath[0];
-		//console.log(targetIndex);
 		var targetC = targetIndex % ROOM_COLS;
 		var targetR = Math.floor(targetIndex / ROOM_COLS);
 		var targetX = targetC * TILE_W + (TILE_W * 0.5);

@@ -31,7 +31,7 @@ function moveEverything() {
         PathfindingNextStep(p1);
     }
 	if(e1.pathfindingNow){
-		e1.PathfindingNextStep(e1);
+		PathfindingNextStep(e1);
 	}
 	p1.move();
 	e1.move();
