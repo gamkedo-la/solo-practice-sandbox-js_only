@@ -10,6 +10,8 @@ function enemyClass() {
   this.pathfindingNow = false;
   this.framesBeforeReThink = AI_FRAME_THINK_TIME;
   this.moving = false;
+  this.patrolling = true;
+  this.resting = false;
   this.trackPlayerRange = 250;
 
   // move states
@@ -49,12 +51,16 @@ function enemyClass() {
 		this.framesBeforeReThink = AI_FRAME_THINK_TIME;
 		//check if within range of the player
 		var playerDistance = dist (p1.x, p1.y, this.x, this.y);
-		console.log("Player Distance: " + playerDistance + " Patrolling: " + this.patrolling);
+		console.log("Player Distance: " + playerDistance + " Patrolling: " + this.patrolling + " Resting: " + this.resting);
 		
-		if(playerDistance <= this.trackPlayerRange){
-			this.patrolling = false;
-		} else {
-			this.patrolling = true;
+		this.resting = this.patrolling = false;
+		
+		if(playerDistance >= this.trackPlayerRange){
+			if(randomIntFromInterval(0,10) < 4){
+				this.resting = true;
+			} else {
+				this.patrolling = true;
+			}
 		}
 		
 		if(this.patrolling){ //patrolling
@@ -63,6 +69,8 @@ function enemyClass() {
 			var patrolToLocation = pixCoordToIndex(patrolLocationX, patrolLocationY);
 			startPath(patrolToLocation, this);
 			
+		} else if (this.resting){
+			this.move_East = this.move_West = this.move_North = this.move_South = false;
 		} else { // tracking player
 			var playerIdx = pixCoordToIndex(p1.x,p1.y);
 			startPath(playerIdx, this); 
