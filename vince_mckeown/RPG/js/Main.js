@@ -27,12 +27,12 @@ function loadingDoneSoStartGame() {
 }
 
 function moveEverything() {
-    if (p1.pathfindingNow) {
+   /* if (p1.pathfindingNow) {
         PathfindingNextStep(p1);
     }
 	if(e1.pathfindingNow){
 		PathfindingNextStep(e1);
-	}
+	} */
 	p1.move();
 	e1.move();
 }

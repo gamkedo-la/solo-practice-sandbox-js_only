@@ -1,5 +1,6 @@
 // tuning constants
 const ENEMY_MOVE_SPEED = 4.0;
+const AI_FRAME_THINK_TIME = 100;
 
 function enemyClass() {
   // variables to keep track of position
@@ -7,7 +8,7 @@ function enemyClass() {
   this.y;
   this.tilePath = [];
   this.pathfindingNow = false;
-  this.framesBeforeReThink = 100;
+  this.framesBeforeReThink = AI_FRAME_THINK_TIME;
 
   // move states
   this.move_North = false;
@@ -42,7 +43,7 @@ function enemyClass() {
   
   this.move = function() {
 	if(this.framesBeforeReThink-- < 0){
-		this.framesBeforeReThink = 100;
+		this.framesBeforeReThink = AI_FRAME_THINK_TIME;
 		var playerIdx = pixCoordToIndex(p1.x,p1.y);
 		startPath(playerIdx, this); 
 	}
@@ -64,7 +65,7 @@ function enemyClass() {
 	}*/
 	
 	if(this.tilePath.length > 0){
-		console.log(this.tilePath.length, this.tilePath[0]);
+	//	console.log(this.tilePath.length, this.tilePath[0]);
 		var targetIndex = this.tilePath[0];
 		var targetC = targetIndex % ROOM_COLS;
 		var targetR = Math.floor(targetIndex / ROOM_COLS);

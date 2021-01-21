@@ -59,22 +59,7 @@ function mouseclicked(evt) {
     }
 }
 
-function startPath(toTile, pathFor){
-	grid[toTile].setGoal();
-	
-	pathFor.pathfindingNow = !pathFor.pathfindingNow;
-	if(endTile != null) {
-		pathFor.pathfindingNow = false;
-	}
-	if(pathFor.pathfindingNow == false) {
-		SetupPathfindingGridData(pathFor);
-	}
 
-    if (tileOverIdx < 0 || tileOverIdx >= roomGrid.length) { // invalid or off board
-        console.log("Not a valid location");
-		return;
-    }
-}
 
 function mousereleased(evt) {
     mouseDragging = false;
