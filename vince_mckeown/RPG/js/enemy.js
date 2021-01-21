@@ -1,6 +1,12 @@
 // tuning constants
-const ENEMY_MOVE_SPEED = 4.0;
+const ENEMY_MOVE_SPEED = 2.0;
 const AI_FRAME_THINK_TIME = 60;
+var enemyList = [];
+
+function addEnemy(){
+	var tempEnemy = new enemyClass();
+	enemyList.push(tempEnemy);
+}
 
 function enemyClass() {
   // variables to keep track of position
@@ -51,7 +57,6 @@ function enemyClass() {
 		this.framesBeforeReThink = AI_FRAME_THINK_TIME;
 		//check if within range of the player
 		var playerDistance = dist (p1.x, p1.y, this.x, this.y);
-		console.log("Player Distance: " + playerDistance + " Patrolling: " + this.patrolling + " Resting: " + this.resting);
 		
 		this.resting = this.patrolling = false;
 		
@@ -187,7 +192,7 @@ function enemyClass() {
   }
   
   this.draw = function() {
-    drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.x, this.y, 0.0 );
+    drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, 0.0 );
   }
 
 } // end of class

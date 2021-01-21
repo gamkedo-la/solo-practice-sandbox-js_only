@@ -165,5 +165,4 @@ function GridElement() {
       this.cameFrom = comingFrom;
     }
   }
-    
 }//end class declaration

@@ -1,5 +1,5 @@
 // tuning constants
-const PLAYER_MOVE_SPEED = 3.0;
+const PLAYER_MOVE_SPEED = 4.0;
 
 function warriorClass() {
   // variables to keep track of position

@@ -2,7 +2,6 @@
 var canvas, canvasContext;
 
 var p1 = new warriorClass();
-var e1 = new enemyClass();
 var pathFindingDisplay = false;
 
 window.onload = function() {
@@ -11,6 +10,11 @@ window.onload = function() {
 
     SetupPathfindingGridData(p1);
     loadImages();
+	for(var i = 0; i < roomGrid.length; i++){
+		if(roomGrid[i] == TILE_ENEMY){
+			addEnemy();
+		} 
+	}
 }
 
 function loadingDoneSoStartGame() {
@@ -22,19 +26,17 @@ function loadingDoneSoStartGame() {
     }, 1000 / framesPerSecond);
 
     p1.init(playerPic, "Blue");
-	e1.init(goblinPic, "red");
+	for(var i = 0; i < enemyList.length; i++){
+		enemyList[i].init(goblinPic, "red");
+	}
     initInput();
 }
 
 function moveEverything() {
-   /* if (p1.pathfindingNow) {
-        PathfindingNextStep(p1);
-    }
-	if(e1.pathfindingNow){
-		PathfindingNextStep(e1);
-	} */
 	p1.move();
-	e1.move();
+	for(var i = 0; i < enemyList.length; i++){
+		enemyList[i].move();
+	}
 }
 
 function drawEverything() {
@@ -43,5 +45,7 @@ function drawEverything() {
 		drawPathingFindingTiles();
     }
 	p1.draw();
-	e1.draw();
+	for(var i = 0; i < enemyList.length; i++){
+		enemyList[i].draw();
+	}
 }
