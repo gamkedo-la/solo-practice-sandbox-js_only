@@ -7,6 +7,7 @@ function warriorClass() {
   this.y;
   this.tilePath = [];
   this.pathfindingNow = false;
+  this.moving = false;
 
   // keyboard hold state variables, to use keys more like buttons
   this.keyHeld_North = false;
@@ -105,6 +106,11 @@ function warriorClass() {
 		}
 	} 
 	
+	if(this.move_North || this.move_East || this.move_South || this.move_West){
+		this.moving = true;
+	} else {
+		this.moving = false;
+	}
 	
     if(this.keyHeld_North) {
       nextY -= PLAYER_MOVE_SPEED;

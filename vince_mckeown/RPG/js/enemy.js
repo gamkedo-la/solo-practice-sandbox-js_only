@@ -1,6 +1,6 @@
 // tuning constants
 const ENEMY_MOVE_SPEED = 4.0;
-const AI_FRAME_THINK_TIME = 100;
+const AI_FRAME_THINK_TIME = 60;
 
 function enemyClass() {
   // variables to keep track of position
@@ -9,6 +9,8 @@ function enemyClass() {
   this.tilePath = [];
   this.pathfindingNow = false;
   this.framesBeforeReThink = AI_FRAME_THINK_TIME;
+  this.moving = false;
+  this.trackPlayerRange = 250;
 
   // move states
   this.move_North = false;
@@ -42,30 +44,41 @@ function enemyClass() {
   } // end of reset
   
   this.move = function() {
+	//pathfinding
 	if(this.framesBeforeReThink-- < 0){
 		this.framesBeforeReThink = AI_FRAME_THINK_TIME;
-		var playerIdx = pixCoordToIndex(p1.x,p1.y);
-		startPath(playerIdx, this); 
+		//check if within range of the player
+		var playerDistance = dist (p1.x, p1.y, this.x, this.y);
+		console.log("Player Distance: " + playerDistance + " Patrolling: " + this.patrolling);
+		
+		if(playerDistance <= this.trackPlayerRange){
+			this.patrolling = false;
+		} else {
+			this.patrolling = true;
+		}
+		
+		if(this.patrolling){ //patrolling
+			var patrolLocationX = randomIntFromInterval(0,800);
+			var patrolLocationY = randomIntFromInterval(0,600);
+			var patrolToLocation = pixCoordToIndex(patrolLocationX, patrolLocationY);
+			startPath(patrolToLocation, this);
+			
+		} else { // tracking player
+			var playerIdx = pixCoordToIndex(p1.x,p1.y);
+			startPath(playerIdx, this); 
+		}
 	}
-	
+
 	
     var nextX = this.x;
     var nextY = this.y;
 	
 	var enemyCol = Math.floor(this.x/TILE_W);
 	var enemyRow = Math.floor(this.y/TILE_H);
-	
+
 	var enemyCurrentTileIndex = roomTileToIndex(enemyCol, enemyRow);
-	/*var playerCol = Math.floor(p1.x/TILE_W);
-	
-	if(enemyCol == playerCol){
-		SetupPathfindingGridData(e1);
-		var playerIdx = pixCoordToIndex(p1.x,p1.y);
-		grid[playerIdx].setGoal();
-	}*/
-	
+		
 	if(this.tilePath.length > 0){
-	//	console.log(this.tilePath.length, this.tilePath[0]);
 		var targetIndex = this.tilePath[0];
 		var targetC = targetIndex % ROOM_COLS;
 		var targetR = Math.floor(targetIndex / ROOM_COLS);
@@ -75,7 +88,6 @@ function enemyClass() {
 		var deltaY = Math.abs(targetY - this.y);
 		
 		this.move_East = this.move_West = this.move_North = this.move_South = false;
-		//console.log("DeltaX:" + deltaX + " DeltaY:" + deltaY + " Speed:" + ENEMY_MOVE_SPEED);
 		
 		if(deltaX <= ENEMY_MOVE_SPEED){
 			this.x = targetX;
@@ -112,6 +124,11 @@ function enemyClass() {
 		}
 	} 
 	
+	if(this.move_North || this.move_East || this.move_South || this.move_West){
+		this.moving = true;
+	} else {
+		this.moving = false;
+	}
 	
     if(this.move_North) {
       nextY -= ENEMY_MOVE_SPEED;
@@ -139,7 +156,7 @@ function enemyClass() {
 	  case TILE_KEY:
         this.x = nextX;
         this.y = nextY;
-        break;
+		break;
       case TILE_DOOR:
 	  case TILE_DOOR_YELLOW_FRONT:
 	  case TILE_WALL_1:
