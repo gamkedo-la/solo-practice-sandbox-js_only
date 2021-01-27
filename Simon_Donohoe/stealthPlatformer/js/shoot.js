@@ -1,11 +1,12 @@
 const SHOT_SPEED = 6.0;
 const SHOT_LIFE = 30;
 const SHOT_DISPLAY_RADIUS = 2.0;
-var missShot = -10;
+let missShot = -10;
 
 shotClass.prototype = new movingWrapPositionClass();
 
 function shotClass(){
+	console.log("pew, pew");
 	this.x;
 	this.y;
 	this.readyToRemove = false;
