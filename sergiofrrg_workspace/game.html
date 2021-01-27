@@ -15,7 +15,9 @@ Code your first game
     var ballSpeedY = 4;
 
     var paddle1Y = 250;
+    var paddle2Y = 250;
     const PADDLE_HEIGHT = 100;
+    const PADDLE_THICKNESS = 10;
 
     function calculateMousePos(evt){
         var rect = canvas.getBoundingClientRect();
@@ -47,6 +49,7 @@ Code your first game
     }
 
     function ballReset(){
+        ballSpeedX = -ballSpeedX;
         ballX = canvas.width/2;
         ballY = canvas.height/2;
     }
@@ -55,20 +58,33 @@ Code your first game
         ballX = ballX + ballSpeedX;
         ballY = ballY + ballSpeedY;
         if(ballX > canvas.width){
-            ballSpeedX = -ballSpeedX;
-        }else if (ballX < 0)
-            ballSpeedX = -ballSpeedX;
+            if(ballY > paddle2Y && ballY < paddle2Y + PADDLE_HEIGHT){
+                ballSpeedX = -ballSpeedX;
+            }else{
+                ballReset();
+            }
+        }else if (ballX < 0){
+            if(ballY > paddle1Y && ballY < paddle1Y + PADDLE_HEIGHT){
+                ballSpeedX = -ballSpeedX;
+            }else{
+                ballReset();
+            }
+            
+        }
         if(ballY > canvas.height){
             ballSpeedY = -ballSpeedY;
-        }else if (ballY < 0)
+        }else if (ballY < 0){
             ballSpeedY = -ballSpeedY;
+        }
     }
 
     function drawEverything(){
         //background
         colorRect(0,0, canvas.width, canvas.height, 'black');
         //left paddle
-        colorRect(0,paddle1Y, 10, PADDLE_HEIGHT, 'white');
+        colorRect(0,paddle1Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'white');
+        //right paddle
+        colorRect(canvas.width - PADDLE_THICKNESS, paddle2Y, PADDLE_THICKNESS, PADDLE_HEIGHT, 'white');
         //ball
         colorCircle(ballX, ballY, 10, 0, Math.PI*2, true, 'white');
 
