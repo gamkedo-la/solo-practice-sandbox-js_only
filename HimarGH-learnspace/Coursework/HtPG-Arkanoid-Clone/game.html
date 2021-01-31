@@ -17,10 +17,10 @@ var ballSpeedX = 5;
 var ballSpeedY = 5;
 
 const BRICK_W = 80;
-const BRICK_H = 20;
+const BRICK_H = 40; // temporarily doubled
 const BRICK_GAP = 2;
 const BRICK_COLS = 10;
-const BRICK_ROWS = 14;
+const BRICK_ROWS = 7; // temporarily halved
 
 var brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
 
@@ -39,6 +39,12 @@ function updateMousePos(evt){
 	mouseY = evt.clientY - rect.top - root.scrollTop;
 
 	paddleX = mouseX - PADDLE_WIDTH/2;
+
+	//cheat hack to test ball 
+	ballX = mouseX;
+	ballY = mouseY;
+	ballSpeedX = 4;
+	ballSpeedY = -4;
 }
 
 function brickReset(){
@@ -77,7 +83,7 @@ function ballReset(){
 	ballY = canvas.height/2;
 }
 
-function moveAll(){
+function ballMove(){
 	ballX += ballSpeedX;
 	ballY += ballSpeedY;
 
@@ -96,7 +102,9 @@ function moveAll(){
 	if(ballY < 0){
 		ballSpeedY *= -1;
 	}
+}
 
+function ballBrickHandling(){
 	var ballBrickCol = Math.floor(ballX / BRICK_W);
 	var ballBrickRow = Math.floor(ballY / BRICK_H);
 	var brickIndexUnderBall = rowColToArrayIndex(ballBrickCol,ballBrickRow);
@@ -105,12 +113,38 @@ function moveAll(){
 	ballBrickRow >= 0 && ballBrickRow < BRICK_ROWS){
 		if(brickGrid[brickIndexUnderBall]){
 			brickGrid[brickIndexUnderBall] = false;
-			ballSpeedY *= -1;
+
+			var prevBallX = ballX - ballSpeedX;
+			var prevBallY = ballY - ballSpeedY;
+			var prevBrickCol = Math.floor(prevBallX / BRICK_W);
+			var prevBrickRow = Math.floor(prevBallY / BRICK_H);
+
+			var bothTestsFailed = true;
+
+			if(prevBrickCol != ballBrickCol) {
+				var adjBrickSide = rowColToArrayIndex(prevBrickCol,prevBrickRow);
+				if(brickGrid[adjBrickSide] == false) {
+					ballSpeedX *= -1;
+					bothTestsFailed = false;
+				} // end of verification (is there a brick next to it)
+			} // end of verification (has ball changed columns)
+			if(prevBrickRow != ballBrickRow) {
+				var adjBrickTopBot = rowColToArrayIndex(ballBrickCol, prevBrickRow);
+				if(brickGrid[adjBrickTopBot] == false){
+					ballSpeedY *= -1;
+					bothTestsFailed = false;
+				}
+			}
+
+			if(bothTestsFailed){
+				ballSpeedX *= -1;
+				ballSpeedY *= -1;
+			} // armpit case 
 		}
-	}
+	} //end of brick found
+} //end of ballBrickHandling func
 
-	//Determine position of paddle relative to ball for rebound mechanic
-
+function ballPaddleHandling(){
 	var paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE; //ball is below top of paddle
 	var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS; //ball is above bottom of paddle
 	var paddleLeftEdgeX = paddleX; //ball is right of the left side paddle
@@ -124,8 +158,15 @@ function moveAll(){
 		var centerOfPaddleX = paddleX + PADDLE_WIDTH/2;
 		var ballDistFromPaddleCenterX = ballX - centerOfPaddleX;
 		ballSpeedX = ballDistFromPaddleCenterX * 0.35;
-	}
+	} //Determine position of paddle relative to ball for rebound mechanic
+}
 
+function moveAll(){
+	ballMove();	
+
+	ballBrickHandling();
+
+	ballPaddleHandling();
 }
 
 function rowColToArrayIndex(col,row) {
@@ -148,7 +189,7 @@ function drawBricks() {
 function drawAll(){
 	colorRect(0,0, canvas.width, canvas.height,'black'); //Clear screen
 
-	colorCircle(ballX, ballY, 10, 'white'); //Draw ball
+	colorCircle(ballX, ballY, 8, 'white'); //Draw ball
 
 	colorRect(paddleX,canvas.height-PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_THICKNESS,'white'); //Draw paddle
 
