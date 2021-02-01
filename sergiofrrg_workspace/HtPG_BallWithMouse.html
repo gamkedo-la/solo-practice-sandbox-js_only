@@ -23,10 +23,10 @@
     var paddleX = 400;
 
     const BRICK_W = 80;
-    const BRICK_H = 20;
+    const BRICK_H = 40;
     const BRICK_GAP = 2;
     const BRICK_COLS = 10;
-    const BRICK_ROWS = 14;
+    const BRICK_ROWS = 7;
 
     var brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
 
@@ -41,6 +41,11 @@
         mouseY = evt.clientY - rect.top - root.scrollTop;
 
         paddleX = mouseX - PADDLE_WIDTH/2;
+
+        ballX = mouseX;
+        ballY = mouseY;
+        ballXSpeed = 4;
+        ballYSpeed = -4;
     }
 
     function brickReset(){
@@ -73,7 +78,7 @@
         ballY = canvas.height / 2;
     }
 
-    function moveAll(){
+    function ballMove(){
         ballX += ballXSpeed;
         ballY += ballYSpeed;
 
@@ -90,9 +95,14 @@
             ballYSpeed *= -1;
         };
 
+    }
+
+    function ballBrickHandling(){
         var ballBrickCol = Math.floor(ballX / BRICK_W); 
         var ballBrickRow = Math.floor(ballY / BRICK_H);
         var brickIndexUnderBall = rowColToArrayIndex(ballBrickCol, ballBrickRow);
+
+        var bothTestsFailed = true;
 
         colorText(ballBrickCol + "," + ballBrickRow + ":" + brickIndexUnderBall, mouseX, mouseY, "yellow");
         
@@ -102,10 +112,36 @@
         ballBrickRow < BRICK_ROWS){
             if(brickGrid[brickIndexUnderBall]){
                 brickGrid[brickIndexUnderBall] = false;
-                ballYSpeed *= -1;
+
+                var prevBallX = ballX - ballXSpeed;
+                var prevBallY = ballY - ballYSpeed;
+                var prevBrickCol = Math.floor(prevBallX / BRICK_W);
+                var prevBrickRow = Math.floor(prevBallY / BRICK_H);
+
+                if(prevBrickCol != ballBrickCol){
+                    var adjBrickSide = rowColToArrayIndex(prevBallX, ballBrickRow);
+                    if(!brickGrid[adjBrickSide]){
+                        ballXSpeed*=-1;
+                        bothTestsFailed = false;
+                    }
+                }
+                if(prevBrickRow != ballBrickRow){
+                    var adjBrickTopBot = rowColToArrayIndex(ballBrickCol, prevBrickRow);
+                    if(!brickGrid[adjBrickTopBot]){
+                        ballYSpeed*=-1;
+                        bothTestsFailed = false;
+                    }
+                }
+
+                if(bothTestsFailed){
+                    ballXSpeed *= -1;
+                    ballYSpeed *= -1;
+                }
             }
         }
+    }
 
+    function ballPaddleHandling(){
         var paddleTopEdgeY = canvas.height - PADDLE_DIST_FROM_EDGE;
         var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
         var paddleLeftEdgeX = paddleX;
@@ -123,7 +159,12 @@
             ballXSpeed = ballDistanceFromPaddleCenterX * 0.35;
             console.log(ballXSpeed);
         }
+    }
 
+    function moveAll(){
+        ballMove();
+        ballBrickHandling();
+        ballPaddleHandling();
     }
 
     function rowColToArrayIndex(col, row){
