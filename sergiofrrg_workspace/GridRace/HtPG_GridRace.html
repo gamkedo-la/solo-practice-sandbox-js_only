@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+</head>
+
+<body>
+
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+
+    var canvas, canvasContext;
+    var ballX = 75;
+    var ballXSpeed = 5;
+    var ballY = 75;
+    var ballYSpeed = 7;
+
+    const TRACK_W = 40;
+    const TRACK_H = 40;
+    const TRACK_GAP = 2;
+    const TRACK_COLS = 20;
+    const TRACK_ROWS = 15;
+
+    //var trackGrid = new Array(TRACK_COLS * TRACK_ROWS);
+    var trackGrid = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+                     1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+                     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+                     1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
+                     1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+                     1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+                     1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+                     1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+                     1, 2, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+                     1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+                     1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
+                     1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1,
+                     1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+                     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+                     
+    var mouseX; 
+    var mouseY;
+
+    function updateMousePos(evt){
+        var rect = canvas.getBoundingClientRect();
+        var root = document.documentElement;
+
+        mouseX = evt.clientX - rect.left - root.scrollLeft;
+        mouseY = evt.clientY - rect.top - root.scrollTop;
+    }
+
+    window.onload = function(){
+        canvas = document.getElementById("gameCanvas");
+        canvasContext = canvas.getContext('2d');
+
+        var framesPerSecond = 30;
+        setInterval(updateAll, 1000/framesPerSecond);
+
+        canvas.addEventListener("mousemove", updateMousePos);
+
+        ballReset();
+    }
+
+    function updateAll(){
+
+        moveAll();
+        drawAll();
+
+    }
+
+    function ballReset(){
+
+        for(var row = 0; row < TRACK_ROWS; row++){
+            for(var col = 0; col<TRACK_COLS; col++){
+
+                var arrayIndex = TRACK_COLS * row + col;
+
+                if(trackGrid[arrayIndex] == 2){
+                    trackGrid[arrayIndex] = 0;
+                    ballX = col * TRACK_W + TRACK_W/2;
+                    ballY = row * TRACK_H + TRACK_H/2;
+                }
+            }
+        }
+    }
+
+    function ballMove(){
+        ballX += ballXSpeed;
+        ballY += ballYSpeed;
+
+        if(ballX > canvas.width && ballXSpeed > 0.0){
+            ballXSpeed *= -1;
+        }else if(ballX < 0 && ballXSpeed < 0.0){
+            ballXSpeed *= -1;
+        };
+
+        if(ballY > canvas.height && ballYSpeed > 0.0){
+            //ballYSpeed *= -1;
+            ballReset();
+        }else if(ballY < 0){ //Top edge
+            ballYSpeed *= -1;
+        };
+
+    }
+
+    function isTRACKAtColRow(col, row){
+        if(col >= 0 && col < TRACK_COLS &&
+        row >= 0 && row < TRACK_ROWS){
+            var trackIndexUnderCoord = rowColToArrayIndex(col,row);
+            return trackGrid[trackIndexUnderCoord];
+        }else{
+            return false;
+        }
+    }
+
+    function ballTRACKHandling(){
+        var ballTrackCol = Math.floor(ballX / TRACK_W); 
+        var ballTrackRow = Math.floor(ballY / TRACK_H);
+        var trackIndexUnderBall = rowColToArrayIndex(ballTrackCol, ballTrackRow);
+
+        var bothTestsFailed = true;
+
+        colorText(ballTrackCol + "," + ballTrackRow + ":" + trackIndexUnderBall, mouseX, mouseY, "yellow");
+        
+        if(isTRACKAtColRow(ballTrackCol, ballTrackRow)){
+            if(trackGrid[trackIndexUnderBall] == 1){
+
+                var prevBallX = ballX - ballXSpeed;
+                var prevBallY = ballY - ballYSpeed;
+                var prevTrackCol = Math.floor(prevBallX / TRACK_W);
+                var prevTrackRow = Math.floor(prevBallY / TRACK_H);
+
+                if(prevTrackCol != ballTrackCol){
+                    var adjTrackSide = rowColToArrayIndex(prevBallX, ballTrackRow);
+                    if(trackGrid[adjTrackSide] == 0){
+                        ballXSpeed*=-1;
+                        bothTestsFailed = false;
+                    }
+                }
+                if(prevTrackRow != ballTrackRow){
+                    var adjTrackTopBot = rowColToArrayIndex(ballTrackCol, prevTrackRow);
+                    if(trackGrid[adjTrackTopBot] == 0){
+                        ballYSpeed*=-1;
+                        bothTestsFailed = false;
+                    }
+                }
+
+                if(bothTestsFailed){
+                    ballXSpeed *= -1;
+                    ballYSpeed *= -1;
+                }
+            }
+        }
+    }
+
+
+    function moveAll(){
+        //ballMove();
+        ballTRACKHandling();
+    }
+
+    function rowColToArrayIndex(col, row){
+        return col + TRACK_COLS * row;
+    }
+
+    function drawTracks(){
+
+        for(var row = 0; row < TRACK_ROWS; row++){
+            for(var col = 0; col<TRACK_COLS; col++){
+
+                var arrayIndex = TRACK_COLS * row + col;
+
+                if(trackGrid[arrayIndex] == 1)
+                    colorRect(TRACK_W * col,TRACK_H * row, TRACK_W - TRACK_GAP, TRACK_H - TRACK_GAP, "blue");
+            }
+        }
+    }
+
+    function drawAll(){
+        
+        colorRect(0, 0, canvas.width, canvas.height, "black");
+        colorCircle(ballX, ballY, 10, "white");
+
+        drawTracks();
+
+    }
+
+    function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
+        canvasContext.fillStyle = fillColor;
+        canvasContext.fillRect(topLeftX,topLeftY, boxWidth, boxHeight);
+    }
+
+    function colorCircle(centerX, centerY, radius, fillColor){
+        canvasContext.fillStyle = fillColor;
+        canvasContext.beginPath();
+        canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+        canvasContext.fill();
+    }
+
+    function colorText(showWords, textX, textY, fillColor){
+        canvasContext.fillStyle = fillColor;
+        canvasContext.fillText(showWords, textX, textY);
+    }
+
+</script>
+
+</body>
+</html>

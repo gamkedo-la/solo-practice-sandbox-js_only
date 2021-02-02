@@ -95,7 +95,7 @@
             ballXSpeed *= -1;
         };
 
-        if(ballY > canvas.height && ballYSpeed < 0.0){
+        if(ballY > canvas.height && ballYSpeed > 0.0){
             //ballYSpeed *= -1;
             ballReset();
         }else if(ballY < 0){ //Top edge
