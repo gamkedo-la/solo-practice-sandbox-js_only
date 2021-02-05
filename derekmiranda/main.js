@@ -11,7 +11,7 @@ const btnMap = {
   yz: yzBtn,
 }
 
-const ITERATIONS = 100000
+const ITERATIONS = 60000
 const RANGE = 100
 const STEP = RANGE / ITERATIONS
 const ZOOM = 10
