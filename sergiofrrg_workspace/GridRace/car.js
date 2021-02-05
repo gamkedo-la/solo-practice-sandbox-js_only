@@ -1,7 +1,3 @@
-
-var carPic = document.createElement("img");
-var carPicLoaded = false;
-
 var carX = 75;
 var carY = 75;
 var carSpeed = 0;
@@ -12,18 +8,8 @@ const DRIVE_POWER = 0.5;
 const REVERSE_POWER = 0.2; 
 const TURN_RATE = 0.03;
 
-function carImageLoad(){
-    carPic.onload = function(){
-        carPicLoaded = true;
-    }
-
-    carPic.src = "assets/pixelCarWithLights_player1.png";
-}
-
 function carDraw(){
-    if(carPicLoaded){
-        drawBitmapCenteredWithRotation(carPic, carX, carY, carAng);
-    }
+    drawBitmapCenteredWithRotation(carPic, carX, carY, carAng);
 }
 
 function carReset(){
