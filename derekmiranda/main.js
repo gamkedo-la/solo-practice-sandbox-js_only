@@ -1,11 +1,21 @@
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+const xyBtn = document.getElementById("xy");
+const xzBtn = document.getElementById("xz");
+const yzBtn = document.getElementById("yz");
+
+let currMode = 'xy'
+const btnMap = {
+  xy: xyBtn,
+  xz: xzBtn,
+  yz: yzBtn,
+}
 
 const ITERATIONS = 100000
 const RANGE = 100
 const STEP = RANGE / ITERATIONS
-const ZOOM = 20
-const OFFSET = 100
+const ZOOM = 10
+const OFFSET = canvas.width / 2
 
 const pts = [
   { x: 50, y: 50 },
@@ -23,16 +33,46 @@ function dot(x, y) {
 let x = 1
 let y = 1
 let z = 1
+function renderStrangeAttractor() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height)
+  for (let _ = 0; _ < ITERATIONS; _++) {
+    const i = currMode === 'yz' ? y : x
+    const j = currMode === 'xy' ? y : z
 
-function main() {
-  for (let i = 0; i < ITERATIONS; i++) {
-    dot(OFFSET + ZOOM * x, OFFSET + ZOOM * y)
+    const jOffset = currMode === 'xy' ? OFFSET : 0
+    dot(OFFSET + ZOOM * i, jOffset + ZOOM * j)
 
     // update x, y and z
     x += STEP * P*(y - x)
     y += STEP * (R*x - y - x*z)
     z += STEP * (x*y - B*z)
   }
+}
+
+function updateBtns() {
+  for (let btn of Object.values(btnMap)) {
+    if (btn === btnMap[currMode]) {
+      btn.disabled = true
+    } else {
+      btn.disabled = false
+    }
+  }
+}
+
+function setupListeners() {
+  Object.keys(btnMap).forEach(mode => {
+    btnMap[mode].addEventListener('click', () => {
+      currMode = mode
+      updateBtns()
+      renderStrangeAttractor()
+    })
+  })
+}
+
+function main() {
+  setupListeners()
+  updateBtns()
+  renderStrangeAttractor()
 }
 
 main();
