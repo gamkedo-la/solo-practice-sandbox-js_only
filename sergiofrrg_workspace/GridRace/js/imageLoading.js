@@ -1,6 +1,9 @@
 var carPic = document.createElement("img");
 var roadPic = document.createElement("img");
 var wallPic = document.createElement("img");
+var goalPic = document.createElement("img");
+var treePic = document.createElement("img");
+var flagPic = document.createElement("img");
 
 var picsToLoad = 0;
 
@@ -14,14 +17,17 @@ function countLoadedImagesAndLaunchIfReady(){
 
 function beginLoadingImage(imgVar, fileName){
     imgVar.onload = countLoadedImagesAndLaunchIfReady;
-    imgVar.src = fileName;
+    imgVar.src = "assets/"+fileName;
 }
 
 function loadImages(){
     var imageList = [
-         {varName: carPic, theFile: "assets/pixelCarWithLights_player1.png"},
-         {varName: roadPic, theFile: "assets/track_road.png"},
-         {varName: wallPic, theFile: "assets/track_wall.png"}
+         {varName: carPic, theFile: "pixelCarWithLights_player1.png"},
+         {varName: roadPic, theFile: "track_road.png"},
+         {varName: wallPic, theFile: "track_wall.png"},
+         {varName: goalPic, theFile: "track_goal.png"},
+         {varName: treePic, theFile: "track_tree.png"},
+         {varName: flagPic, theFile: "track_flag.png"}
     ];
 
     picsToLoad = imageList.length;
