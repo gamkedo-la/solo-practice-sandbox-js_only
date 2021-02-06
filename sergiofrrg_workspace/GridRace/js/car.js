@@ -11,6 +11,7 @@ function carClass(){
     this.speed = 0;
     this.ang = 0;
     this.myCarPic; //which picture to use.
+    this.name = "Untitled Car";
 
     this.keyHeld_Gas = false;
     this.keyHeld_Reverse = false;
@@ -34,9 +35,11 @@ function carClass(){
         drawBitmapCenteredWithRotation(this.myCarPic, this.x, this.y, this.ang);
     }
 
-    this.reset = function(whichImage){
+    this.reset = function(whichImage, carName){
 
         this.myCarPic = whichImage;
+        this.name = carName;
+        this.speed = 0;
 
         for(var row = 0; row < TRACK_ROWS; row++){
             for(var col = 0; col<TRACK_COLS; col++){
@@ -52,6 +55,7 @@ function carClass(){
                 } //end of player start if
             }
         }
+        console.log("No player start found");
     }
 
     this.move = function(){

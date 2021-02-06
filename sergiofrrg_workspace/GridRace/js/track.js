@@ -5,7 +5,7 @@ const TRACK_COLS = 20;
 const TRACK_ROWS = 15;
 
 //var trackGrid = new Array(TRACK_COLS * TRACK_ROWS);
-var trackGrid =    [1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+var levelOne =     [1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                     4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
                     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
                     1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
@@ -21,7 +21,7 @@ var trackGrid =    [1, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                     4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1,
                     4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
                     
-
+var trackGrid = [];
 const TRACK_ROAD = 0;
 const TRACK_WALL = 1;
 const TRACK_PLAYERSTART = 2;
@@ -29,13 +29,13 @@ const TRACK_GOAL = 3;
 const TRACK_TREE = 4;
 const TRACK_FLAG = 5;
 
-function isObstacleAtColRow(col, row){
+function returnTileTypeAtColRow(col, row){
     if(col >= 0 && col < TRACK_COLS &&
     row >= 0 && row < TRACK_ROWS){
         var trackIndexUnderCoord = rowColToArrayIndex(col,row);
-        return (trackGrid[trackIndexUnderCoord] != TRACK_ROAD);
+        return (trackGrid[trackIndexUnderCoord]);
     }else{
-        return false;
+        return TRACK_WALL;
     }
 }
 
@@ -44,7 +44,12 @@ function carTrackHandling(whichCar){
     var carTrackRow = Math.floor(whichCar.y / TRACK_H);
     var trackIndexUnderCar = rowColToArrayIndex(carTrackCol, carTrackRow);
 
-    if(isObstacleAtColRow(carTrackCol, carTrackRow)){
+    var tileHere = returnTileTypeAtColRow(carTrackCol, carTrackRow);
+
+    if(tileHere == TRACK_GOAL){
+        console.log(whichCar.name + " WINS!");
+        loadLevel(levelOne);
+    }else if(tileHere != TRACK_ROAD){
         whichCar.x -= Math.cos(whichCar.ang) * whichCar.speed;
         whichCar.y -= Math.sin(whichCar.ang) * whichCar.speed;
         whichCar.speed *= -0.5;
