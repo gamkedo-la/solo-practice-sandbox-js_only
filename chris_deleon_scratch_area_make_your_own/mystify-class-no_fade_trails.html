@@ -1,8 +1,12 @@
 <script>
-var howManyBlobs = 4;
-var minPt = 3; // can be as low as 2 if you want to support lines
-var maxPt = 4;
-const TRAIL_FRAMES = 30;
+function randRangIncl(min,max) {
+  return min + Math.floor(Math.random()*(1+max-min));
+}
+
+var howManyBlobs = randRangIncl(2,5);
+var minPt = randRangIncl(3,4); // can be as low as 2 if you want to support lines
+var maxPt = randRangIncl(4,5);
+const TRAIL_FRAMES = randRangIncl(15,80);
 var blobColors = ["cyan","lime","yellow","pink","white"];
 
 function bouncyPoint() {
@@ -42,7 +46,7 @@ function bouncyThing() {
   var myColor;
 
   this.setup = function() {
-    var pointCount = minPt + Math.floor(Math.random()*(1+maxPt-minPt));
+    var pointCount = randRangIncl(minPt,maxPt);
     
     for(var i=0;i<pointCount;i++) {
       var newPt = new bouncyPoint();
