@@ -1,0 +1,46 @@
+animationSpritesheet: undefined
+body: CollisionBody
+center: {x: 358.0000735, y: 237.817785}
+draw: ƒ ()
+edges: (6) [Edge, Edge, Edge, Edge, Edge, Edge]
+name: "rotating_gate"
+radius: 15.091180717161507
+rotate: ƒ (center, angle)
+type: "polygon"
+update: ƒ (deltaX, deltaY)
+__proto__: Object
+center:
+x: 358.0000735
+y: 237.817785
+__proto__: Object
+currFrame: 0
+currTiming: 0
+frameHeight: 0
+frameTimes: [64]
+frameWidth: 0
+frames: [0]
+height: 13.5454
+isAnimating: false
+loops: false
+name: "rotating_gate"
+oldVelocity: {x: 0, y: 0}
+oldX: 345.091
+oldY: 230.1816
+reflectance: 1
+reverses: false
+scale: 1
+score: 5
+sprite: img
+type: "rotating_gate"
+velocity: {x: 0, y: 0}
+vxAdjustment: 0
+vyAdjustment: 0
+width: 26.5455
+x: 345.091
+xAdjustment: 0
+y: 230.1816
+yAdjustment: 0
+framesPerRow: (...)
+hasAnimation: (...)
+timeRemainingOnFrame: (...)
+__proto__: Object
