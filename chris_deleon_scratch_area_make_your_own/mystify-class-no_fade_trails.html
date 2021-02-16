@@ -1,0 +1,116 @@
+<script>
+function randRangIncl(min,max) {
+  return min + Math.floor(Math.random()*(1+max-min));
+}
+
+var howManyBlobs = randRangIncl(2,5);
+var minPt = randRangIncl(3,4); // can be as low as 2 if you want to support lines
+var maxPt = randRangIncl(4,5);
+const TRAIL_FRAMES = randRangIncl(15,80);
+var blobColors = ["cyan","lime","yellow","pink","white"];
+
+function bouncyPoint() {
+  this.x,this.y; // exposed to simplify loop drawing
+  this.xHist = [];
+  this.yHist = [];
+  var xv,yv;
+  this.setup = function() {
+    this.x=randX();
+    this.y=randY();
+    xv = randVel();
+    yv = randVel();
+  }
+  this.update = function() {
+    this.xHist.push(this.x);
+    this.yHist.push(this.y);
+    if(this.xHist.length > TRAIL_FRAMES) {
+      this.xHist.shift();
+    }
+    if(this.yHist.length > TRAIL_FRAMES) {
+      this.yHist.shift();
+    }
+    this.x+=xv;
+    this.y+=yv;
+
+    if(this.x<0 || this.x>canv.width) {
+      xv*=-1;
+    }
+    if(this.y<0 || this.y>canv.height) {
+      yv*=-1;
+    }
+  }
+}
+
+function bouncyThing() {
+  var pointList = [];
+  var myColor;
+
+  this.setup = function() {
+    var pointCount = randRangIncl(minPt,maxPt);
+    
+    for(var i=0;i<pointCount;i++) {
+      var newPt = new bouncyPoint();
+      newPt.setup();
+      pointList.push(newPt);
+    }
+    myColor = blobColors[blobList.length % blobColors.length];
+  }
+  this.update = function() {
+    for(var i=0;i<pointList.length;i++) {
+      pointList[i].update();
+    }
+  }
+  this.draw = function() {
+    for(var trail=0; trail < pointList[0].xHist.length; trail++) {
+      ctx.strokeStyle=myColor;
+      ctx.beginPath();
+      ctx.moveTo(pointList[0].xHist[trail],pointList[0].yHist[trail]);
+      for(var i=1;i<pointList.length;i++) { // start at 1 for lineTo
+        ctx.lineTo(pointList[i].xHist[trail],pointList[i].yHist[trail]);
+      }
+      if(pointList.length > 2) {
+        ctx.lineTo(pointList[0].xHist[trail],pointList[0].yHist[trail]); // close shape
+      }
+      ctx.stroke();
+      ctx.closePath();
+    }
+  }
+}
+var blobList = [];
+
+function randX() {
+  return Math.random()*canv.width;
+}
+function randY() {
+  return Math.random()*canv.height;
+}
+function randVel() {
+  return 5-Math.random()*10;
+}
+
+window.onload=function() {
+  canv=document.createElement("canvas");
+  canv.width=1024;
+  canv.height=768;
+  ctx=canv.getContext("2d");
+  document.body.appendChild(canv);
+  ctx.fillRect(0,0,canv.width,canv.height);
+
+  for(var i=0;i<howManyBlobs;i++) {
+    var newBlob = new bouncyThing();
+    newBlob.setup();
+    blobList.push(newBlob);
+  }
+  
+  setInterval(update,1000/30);
+}
+function update() {
+  ctx.fillStyle="black";
+  ctx.fillRect(0,0,canv.width,canv.height);
+
+  for(var i=0;i<blobList.length;i++) {
+    blobList[i].update();
+    blobList[i].draw();
+  }
+}
+</script>
