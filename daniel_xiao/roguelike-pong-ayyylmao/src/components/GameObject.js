@@ -8,4 +8,19 @@ export default class GameObject {
       ...props,
     }
   }
+
+  get(key) {
+    return this.attributes[key];
+  }
+
+  set(key, value) {
+    this.attributes[key] = value;
+  }
+
+  draw(ctx) {
+  }
+
+  update() {
+
+  }
 }
