@@ -1,4 +1,6 @@
-export default class GameObject {
+import Model from 'components/Model';
+
+export default class GameObject extends Model {
   constructor(props = {}) {
     this.attributes = {
       x: 0,
@@ -7,14 +9,6 @@ export default class GameObject {
       height: 0,
       ...props,
     }
-  }
-
-  get(key) {
-    return this.attributes[key];
-  }
-
-  set(key, value) {
-    this.attributes[key] = value;
   }
 
   draw(ctx) {
