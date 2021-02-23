@@ -1,4 +1,19 @@
 body {
   height: 100vh;
-  background: green;
+  background: #0a0a0a;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#gameCanvas {
+  width: 300px;
+  height: 500px;
+  border: 2px solid #636363;
+}
+
+.title {
+  color: #c2dfff;
 }
