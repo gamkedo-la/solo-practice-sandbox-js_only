@@ -3,10 +3,16 @@ import Model from 'components/Model';
 export default class GameObject extends Model {
   constructor(props = {}) {
     super({
-      x: 0,
-      y: 0,
+      position: {
+        x: 0,
+        y: 0,
+      },
       width: 0,
       height: 0,
+      velocity: {
+        x: 0,
+        y: 0,
+      },
       ...props,
     });
   }
@@ -14,7 +20,7 @@ export default class GameObject extends Model {
   draw(ctx) {
   }
 
-  update() {
+  update(deltaTime) {
 
   }
 }

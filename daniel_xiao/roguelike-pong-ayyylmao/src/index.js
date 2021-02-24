@@ -4,4 +4,11 @@ import 'styles/main.css';
 
 CanvasController.init();
 
+playerController.init();
 playerController.get('gameobject').draw(CanvasController.context);
+
+function update() {
+  const deltaTime = timer.update();
+  playerController.update(deltaTime);
+  requestAnimationFrame(update);
+}
