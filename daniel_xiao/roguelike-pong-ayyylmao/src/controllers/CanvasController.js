@@ -1,7 +1,5 @@
-import Model from 'components/Model';
-
-let canvas;
-let context;
+export let canvas;
+export let context;
 
 export function init() {
   canvas = document.createElement('canvas');

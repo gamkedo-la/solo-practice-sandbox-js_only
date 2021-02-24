@@ -13,6 +13,7 @@ export default class Paddle extends GameObject {
       height,
     } = this.attributes;
 
+    ctx.fillStyle = '#cfffc1';
     ctx.fillRect(x, y, width, height);
   }
 }
