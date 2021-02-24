@@ -28,6 +28,7 @@ module.exports = {
   resolve: {
     alias: {
       components: path.resolve(__dirname, 'src/components/'),
+      constants: path.resolve(__dirname, 'src/constants/'),
       controllers: path.resolve(__dirname, 'src/controllers/'),
       styles: path.resolve(__dirname, 'src/styles/'),
     },
