@@ -7,8 +7,10 @@ export default class Paddle extends GameObject {
 
   draw(ctx) {
     const {
-      x,
-      y,
+      position: {
+        x,
+        y,
+      },
       width,
       height,
     } = this.attributes;

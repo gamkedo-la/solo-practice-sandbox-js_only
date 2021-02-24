@@ -11,3 +11,8 @@ export function init() {
   const gameContainer = document.getElementById('game-container');
   gameContainer.appendChild(canvas);
 }
+
+export function draw() {
+  context.fillStyle = '#222d67';
+  context.fillRect(0, 0, 300, 500);
+}

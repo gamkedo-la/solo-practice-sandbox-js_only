@@ -15,10 +15,12 @@ class PlayerController extends Model {
     });
 
     const newpaddle = new Paddle({
-      x: 150,
-      y: 450,
       width: 50,
       height: 15,
+      position: {
+        x: 150,
+        y: 450,
+      },
     });
 
     this.set('gameobject', newpaddle);
@@ -48,6 +50,14 @@ class PlayerController extends Model {
 
   update(deltaTime) {
     this.get('gameobject').update(deltaTime);
+
+    if (this.get('isPressLeft')) {
+      this.get('gameobject').updateVelocity({x: -1, y: 0});
+    }
+
+    if (this.get('isPressRight')) {
+      this.get('gameobject').updateVelocity({x: 1, y: 0});
+    }
   }
 
   // -- getters

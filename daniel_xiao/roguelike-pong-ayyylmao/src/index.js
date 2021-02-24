@@ -7,8 +7,20 @@ CanvasController.init();
 playerController.init();
 playerController.get('gameobject').draw(CanvasController.context);
 
+let prev = Date.now();
+let deltaTime = 0;
+const myInterval = setInterval(tick, 0);
+
+function tick() {
+    const now = Date.now();
+    deltaTime = now - prev;
+    prev = now;
+
+    update();
+}
+
 function update() {
-  const deltaTime = timer.update();
+  CanvasController.draw();
   playerController.update(deltaTime);
-  requestAnimationFrame(update);
+  playerController.get('gameobject').draw(CanvasController.context);
 }
