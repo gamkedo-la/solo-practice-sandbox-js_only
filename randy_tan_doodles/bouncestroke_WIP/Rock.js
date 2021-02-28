@@ -77,12 +77,16 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
 
                             let l = this.xMid > net.x;
                             let r = this.xMid < net.x + net.w;
-
-                            if (l) {
-                                this.vx = -15000 * dt;                                
+                                
+                            if (this.x > net.x) {
+                                if (l) {
+                                    this.vx = 15000 * dt;                                
+                                }
                             }
-                            else if (r) {
-                                this.vx = 15000 * dt;                                                                   
+                            if (this.x < net.x) {
+                                if (r) {
+                                    this.vx = -15000 * dt;                                                 
+                                }
                             }
                         }
                     }
