@@ -4,7 +4,7 @@ import Paddle from 'components/Paddle';
 import keycodes from 'constants/keycodes';
 
 export const PLAYER_STATE = {
-
+  MOVING: 'PLAYER_STATE.MOVING',
 };
 
 class PlayerController extends Model {
@@ -21,8 +21,6 @@ class PlayerController extends Model {
     });
 
     const newpaddle = new Paddle({
-      width: 50,
-      height: 15,
       position: {
         x: 150,
         y: 450,

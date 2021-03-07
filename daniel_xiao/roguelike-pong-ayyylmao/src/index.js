@@ -1,11 +1,12 @@
 import * as CanvasController from 'controllers/CanvasController';
-import playerController from 'controllers/PlayerController';
+import PlayerController from 'controllers/PlayerController';
+import BallController from 'controllers/BallController';
 import 'styles/main.css';
 
 CanvasController.init();
 
-playerController.init();
-playerController.get('gameobject').draw(CanvasController.context);
+PlayerController.init();
+BallController.init();
 
 let prev = Date.now();
 let deltaTime = 0;
@@ -21,6 +22,9 @@ function tick() {
 
 function update() {
   CanvasController.draw();
-  playerController.update(deltaTime);
-  playerController.get('gameobject').draw(CanvasController.context);
+  PlayerController.update(deltaTime);
+  PlayerController.get('gameobject').draw(CanvasController.context);
+
+  BallController.update(deltaTime);
+  BallController.get('gameobject').draw(CanvasController.context);
 }
