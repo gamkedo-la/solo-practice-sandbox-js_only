@@ -2,6 +2,8 @@ import {SPEED_MODIFIER} from 'constants/game_settings';
 
 import Model from 'components/Model';
 
+const VELOCITY_REDUCE = 0.5 * SPEED_MODIFIER;
+
 export default class GameObject extends Model {
   constructor(props = {}) {
     super({
@@ -70,6 +72,28 @@ export default class GameObject extends Model {
   /**
    * @param {Time} deltaTime
    */
+  reduceVelocity(deltaTime) {
+    const changeX = this.isVelocityLeft ? VELOCITY_REDUCE : VELOCITY_REDUCE * -1;
+    const changeY = this.isVelocityUp ? VELOCITY_REDUCE : VELOCITY_REDUCE * -1;
+
+    const nextVelocity = {
+      x: this.velocity.x + changeX * deltaTime,
+      y: this.velocity.y + changeY * deltaTime,
+    };
+
+    if (Math.abs(nextVelocity.x) < 0.01) {
+      nextVelocity.x = 0;
+    }
+
+    if (Math.abs(nextVelocity.y) < 0.01) {
+      nextVelocity.y = 0;
+    }
+
+    this.set('velocity', nextVelocity);
+  }
+  /**
+   * @param {Time} deltaTime
+   */
   updatePosition(deltaTime) {
     const xNext = this.position.x + (this.velocity.x * deltaTime);
     const yNext = this.position.y + (this.velocity.y * deltaTime);
@@ -84,16 +108,28 @@ export default class GameObject extends Model {
   }
 
   // -- getters
-  /**
-   * @returns {Point}
-   */
+  /** @type {Point} */
   get position() {
     return this.get('position');
   }
-  /**
-   * @returns {Point}
-   */
+  /** @type {Point} */
   get velocity() {
     return this.get('velocity');
+  }
+  /** @type {Boolean} */
+  get isVelocityLeft() {
+    return this.velocity.x < 0;
+  }
+  /** @type {Boolean} */
+  get isVelocityRight() {
+    return this.velocity.x > 0;
+  }
+  /** @type {Boolean} */
+  get isVelocityUp() {
+    return this.velocity.y < 0;
+  }
+  /** @type {Boolean} */
+  get isVelocityDown() {
+    return this.velocity.y > 0;
   }
 }

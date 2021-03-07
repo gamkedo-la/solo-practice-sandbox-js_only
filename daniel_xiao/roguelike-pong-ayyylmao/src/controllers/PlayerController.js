@@ -3,9 +3,15 @@ import Paddle from 'components/Paddle';
 
 import keycodes from 'constants/keycodes';
 
+export const PLAYER_STATE = {
+
+};
+
 class PlayerController extends Model {
   constructor(props = {}) {
     super({
+      state: '',
+
       gameobject: undefined,
 
       isPressLeft: false,
@@ -25,7 +31,9 @@ class PlayerController extends Model {
 
     this.set('gameobject', newpaddle);
   }
-
+  /**
+   *
+   */
   init() {
     window.addEventListener('keydown', (evt) => {
       if (evt.keyCode === keycodes.a || evt.keyCode === keycodes.arrowleft) {
@@ -47,20 +55,31 @@ class PlayerController extends Model {
       }
     });
   }
-
+  /**
+   * @param {Time} deltaTime
+   */
   update(deltaTime) {
-    this.get('gameobject').update(deltaTime);
+    this.gameobject.update(deltaTime);
 
     if (this.get('isPressLeft')) {
-      this.get('gameobject').updateVelocity({x: -1, y: 0});
+      this.gameobject.updateVelocity({x: -1, y: 0});
     }
 
     if (this.get('isPressRight')) {
-      this.get('gameobject').updateVelocity({x: 1, y: 0});
+      this.gameobject.updateVelocity({x: 1, y: 0});
+    }
+
+    if (!this.get('isPressLeft') && !this.get('isPressRight')) {
+      this.gameobject.reduceVelocity(deltaTime);
     }
   }
 
   // -- getters
+  /** @type {GameObject} */
+  get gameobject() {
+    return this.get('gameobject');
+  }
+  /** @type {Point} */
   get position() {
     return {
       x: this.get('gameobject').get('position').x,
