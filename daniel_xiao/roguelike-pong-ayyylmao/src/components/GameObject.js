@@ -107,8 +107,17 @@ export default class GameObject extends Model {
       y: yNext,
     };
 
+    if (nextPosition.x < 0) {
+      nextPosition.x = 0;
+      this.get('velocity').x *= -1;
+    }
+
+    if (nextPosition.x + this.get('width') > GAME_WIDTH) {
+      nextPosition.x = GAME_WIDTH - this.get('width');
+      this.get('velocity').x *= -1;
+    }
+
     this.set('position', nextPosition);
-    // console.log('nextPosition', nextPosition)
   }
   // -- position getters
   /** @type {Point} */
@@ -117,6 +126,22 @@ export default class GameObject extends Model {
       x: this.position.x + (this.get('width') / 2),
       y: this.position.y + (this.get('height') / 2),
     }
+  }
+  /** @type {Number} */
+  get left() {
+    return this.position.x;
+  }
+  /** @type {Number} */
+  get right() {
+    return this.position.x + this.get('width');
+  }
+  /** @type {Number} */
+  get top() {
+    return this.position.y;
+  }
+  /** @type {Number} */
+  get bottom() {
+    return this.position.y + this.get('height');
   }
   /** @type {Point} */
   get topleft() {
