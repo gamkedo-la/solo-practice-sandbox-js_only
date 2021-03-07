@@ -2,7 +2,14 @@ import GameObject from 'components/GameObject';
 
 export default class Paddle extends GameObject {
   constructor(props = {}) {
-    super(props);
+    super({
+      speed: 5,
+
+      width: 50,
+      height: 15,
+
+      ...props
+    });
   }
 
   draw(ctx) {

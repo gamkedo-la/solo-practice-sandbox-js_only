@@ -32,6 +32,16 @@ export default class GameObject extends Model {
         yMin: -2,
         yMax: 2,
       },
+
+      bounds: {
+        left: 0,
+        right: GAME_WIDTH,
+        top: 0,
+        bottom: GAME_HEIGHT,
+      },
+
+      flipReduction: -1,
+
       ...props,
     });
 
@@ -107,14 +117,28 @@ export default class GameObject extends Model {
       y: yNext,
     };
 
-    if (nextPosition.x < 0) {
-      nextPosition.x = 0;
-      this.get('velocity').x *= -0.3;
+    // too far left
+    if (nextPosition.x < this.get('bounds').left) {
+      nextPosition.x = this.get('bounds').left;
+      this.get('velocity').x *= this.get('flipReduction');
     }
 
-    if (nextPosition.x + this.get('width') > GAME_WIDTH) {
-      nextPosition.x = GAME_WIDTH - this.get('width');
-      this.get('velocity').x *= -0.3;
+    // too far right
+    if (nextPosition.x + this.get('width') > this.get('bounds').right) {
+      nextPosition.x = this.get('bounds').right - this.get('width');
+      this.get('velocity').x *= this.get('flipReduction');
+    }
+
+    // too far up
+    if (nextPosition.y < this.get('bounds').top) {
+      nextPosition.y = this.get('bounds').top;
+      this.get('velocity').y *= this.get('flipReduction');
+    }
+
+    // too far bottom
+    if (nextPosition.y + this.get('height') > this.get('bounds').bottom) {
+      nextPosition.y = this.get('bounds').bottom - this.get('height');
+      this.get('velocity').y *= this.get('flipReduction');
     }
 
     this.set('position', nextPosition);
