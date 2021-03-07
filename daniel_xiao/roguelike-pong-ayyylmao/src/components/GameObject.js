@@ -1,3 +1,5 @@
+import {SPEED_MODIFIER} from 'constants/game_settings';
+
 import Model from 'components/Model';
 
 export default class GameObject extends Model {
@@ -26,6 +28,10 @@ export default class GameObject extends Model {
       },
       ...props,
     });
+
+    // going to change the speed property with an adjustment because
+    // I want to use simple numbers for speed but even 1 is a bit strong
+    this.set('speed', this.get('speed') * SPEED_MODIFIER);
   }
 
   draw(ctx) {
