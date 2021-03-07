@@ -14,7 +14,7 @@ export default class GameObject extends Model {
       width: 0,
       height: 0,
 
-      speed: 1,
+      speed: 5,
 
       position: {
         x: 0,
@@ -109,12 +109,12 @@ export default class GameObject extends Model {
 
     if (nextPosition.x < 0) {
       nextPosition.x = 0;
-      this.get('velocity').x *= -1;
+      this.get('velocity').x *= -0.3;
     }
 
     if (nextPosition.x + this.get('width') > GAME_WIDTH) {
       nextPosition.x = GAME_WIDTH - this.get('width');
-      this.get('velocity').x *= -1;
+      this.get('velocity').x *= -0.3;
     }
 
     this.set('position', nextPosition);
