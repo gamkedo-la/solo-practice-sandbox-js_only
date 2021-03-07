@@ -1,4 +1,8 @@
-import {SPEED_MODIFIER} from 'constants/game_settings';
+import {
+  SPEED_MODIFIER,
+  GAME_WIDTH,
+  GAME_HEIGHT,
+} from 'constants/game_settings';
 
 import Model from 'components/Model';
 
@@ -106,12 +110,63 @@ export default class GameObject extends Model {
     this.set('position', nextPosition);
     // console.log('nextPosition', nextPosition)
   }
-
-  // -- getters
+  // -- position getters
+  /** @type {Point} */
+  get center() {
+    return {
+      x: this.position.x + (this.get('width') / 2),
+      y: this.position.y + (this.get('height') / 2),
+    }
+  }
+  /** @type {Point} */
+  get topleft() {
+    return {
+      x: this.position.x,
+      y: this.position.y,
+    }
+  }
+  /** @type {Point} */
+  get topright() {
+    return {
+      x: this.position.x + this.get('width'),
+      y: this.position.y,
+    }
+  }
+  /** @type {Point} */
+  get bottomleft() {
+    return {
+      x: this.position.x,
+      y: this.position.y + this.get('height'),
+    }
+  }
+  /** @type {Point} */
+  get bottomright() {
+    return {
+      x: this.position.x + this.get('width'),
+      y: this.position.y + this.get('height'),
+    }
+  }
   /** @type {Point} */
   get position() {
     return this.get('position');
   }
+  /** @type {Boolean} */
+  get isOutOfBoundsLeft() {
+    return this.position.x < 0;
+  }
+  /** @type {Boolean} */
+  get isOutOfBoundsRight() {
+    return this.position.x > GAME_WIDTH;
+  }
+  /** @type {Boolean} */
+  get isOutOfBoundsUp() {
+    return this.position.y < 0;
+  }
+  /** @type {Boolean} */
+  get isOutOfBoundsDown() {
+    return this.position.y > GAME_HEIGHT;
+  }
+  // -- velocity getters
   /** @type {Point} */
   get velocity() {
     return this.get('velocity');
