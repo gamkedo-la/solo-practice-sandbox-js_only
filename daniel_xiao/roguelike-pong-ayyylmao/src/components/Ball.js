@@ -4,9 +4,11 @@ import {
 
 import GameObject from 'components/GameObject';
 
-export default class Paddle extends GameObject {
+export default class Ball extends GameObject {
   constructor(props = {}) {
     super({
+      type: 'Ball',
+
       speed: 3,
 
       width: 10,
@@ -26,7 +28,9 @@ export default class Paddle extends GameObject {
       ...props,
     });
   }
-
+  /**
+   * @override
+   */
   draw(ctx) {
     const {
       position: {
@@ -39,5 +43,21 @@ export default class Paddle extends GameObject {
 
     ctx.fillStyle = '#cfffc1';
     ctx.fillRect(x, y, width, height);
+  }
+  /**
+   * @override
+   */
+  onCollide(gameObject) {
+    switch (gameObject.get('type')) {
+      case 'Paddle':
+        this.onCollidePaddle(gameObject);
+        break;
+    }
+  }
+  /**
+   * @param {GameObject} gameObject
+   */
+  onCollidePaddle(gameObject) {
+    this.get('velocity').y *= this.get('flipReduction');
   }
 }

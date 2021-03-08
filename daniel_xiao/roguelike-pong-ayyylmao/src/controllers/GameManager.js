@@ -58,7 +58,7 @@ export function checkCollisions() {
       }
 
       if (gameObject.isOverlapping(otherObject)) {
-        console.log('hit');
+        gameObject.onCollide(otherObject);
       }
     });
   });

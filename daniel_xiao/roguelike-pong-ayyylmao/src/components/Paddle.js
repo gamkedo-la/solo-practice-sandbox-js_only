@@ -3,6 +3,8 @@ import GameObject from 'components/GameObject';
 export default class Paddle extends GameObject {
   constructor(props = {}) {
     super({
+      type: 'Paddle',
+
       speed: 5,
 
       width: 50,

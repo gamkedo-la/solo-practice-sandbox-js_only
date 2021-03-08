@@ -12,6 +12,7 @@ export default class GameObject extends Model {
   constructor(props = {}) {
     super({
       id: '_' + Math.random().toString(36).substr(2, 9),
+      type: '',
 
       width: 0,
       height: 0,
@@ -153,6 +154,11 @@ export default class GameObject extends Model {
       this.right > gameObject.left &&
       this.top < gameObject.bottom &&
       this.bottom > gameObject.top;
+  }
+  /**
+   * @param {GameObject} gameObject
+   */
+  onCollide(gameObject) {
   }
   // -- position getters
   /** @type {Point} */
