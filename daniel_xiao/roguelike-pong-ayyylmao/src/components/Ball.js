@@ -15,15 +15,15 @@ export default class Ball extends GameObject {
       height: 10,
 
       velocity: {
-        x: 100 * SPEED_MODIFIER,
-        y: 100 * SPEED_MODIFIER,
+        x: 200 * SPEED_MODIFIER,
+        y: 200 * SPEED_MODIFIER,
       },
 
       velocityMax: {
-        xMin: -100,
-        xMax: 100,
-        yMin: -100,
-        yMax: 100,
+        xMin: -1500,
+        xMax: 1500,
+        yMin: -1500,
+        yMax: 1500,
       },
       ...props,
     });

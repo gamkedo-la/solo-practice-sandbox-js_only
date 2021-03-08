@@ -1,6 +1,9 @@
+import Ball from 'components/Ball';
+
+import {GAME_WIDTH, GAME_HEIGHT} from 'constants/game_settings';
+
 import * as CanvasController from 'controllers/CanvasController';
 import PlayerController from 'controllers/PlayerController';
-import BallController from 'controllers/BallController';
 
 let prev = Date.now();
 let deltaTime = 0;
@@ -13,13 +16,19 @@ export const GAMESTATE = {
 let stateCurr = GAMESTATE.PLAYING;
 let gameObjectList = [];
 
+const CurrentBall = new Ball({
+  position: {
+    x: GAME_WIDTH / 2,
+    y: GAME_HEIGHT / 2,
+  },
+});
+
 export function init() {
   CanvasController.init();
   PlayerController.init();
-  BallController.init();
 
   gameObjectList.push(PlayerController.gameobject);
-  gameObjectList.push(BallController.gameobject);
+  gameObjectList.push(CurrentBall);
 
   // activate updating
   const myInterval = setInterval(tick, 0);
@@ -45,8 +54,8 @@ export function draw() {
   PlayerController.update(deltaTime);
   PlayerController.get('gameobject').draw(CanvasController.context);
 
-  BallController.update(deltaTime);
-  BallController.get('gameobject').draw(CanvasController.context);
+  CurrentBall.update(deltaTime);
+  CurrentBall.draw(CanvasController.context);
 }
 
 export function checkCollisions() {
@@ -57,6 +66,7 @@ export function checkCollisions() {
         return;
       }
 
+      // collision
       if (gameObject.isOverlapping(otherObject)) {
         gameObject.onCollide(otherObject);
       }
