@@ -73,4 +73,8 @@ export function checkCollisions() {
       }
     });
   });
+
+  if (CurrentBall.bottom > GAME_HEIGHT - 10) {
+    PlayerController.hpDecrease(1);
+  }
 }

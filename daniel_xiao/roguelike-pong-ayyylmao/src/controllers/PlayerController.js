@@ -91,6 +91,18 @@ class PlayerController extends Model {
     ctx.font = '15px Arial';
     ctx.fillText(`HP: ${this.get('hp').curr}/${this.get('hp').max}`, GAME_WIDTH - 70, GAME_HEIGHT - 10);
   }
+  // -- methods
+  /**
+   * @param {Number} value
+   */
+  hpDecrease(value) {
+    const hp = this.get('hp');
+    const nextHpCurr = hp.curr - value;
+    this.set('hp', {
+      curr: nextHpCurr,
+      max: hp.max,
+    });
+  }
   // -- getters
   /** @type {GameObject} */
   get gameobject() {
