@@ -22,7 +22,7 @@ class PlayerController extends Model {
         max: 3,
       },
 
-      invincibilityTime: 250,
+      invincibilityTime: 300, //ms
 
       gameobject: undefined,
 
@@ -96,7 +96,17 @@ class PlayerController extends Model {
    * @param {Canvas Context} ctx
    */
   draw(ctx) {
-    this.gameobject.draw(ctx);
+    const {
+      position: {
+        x,
+        y,
+      },
+      width,
+      height,
+    } = this.gameobject.attributes;
+
+    ctx.fillStyle = this.isInvincible ? '#441e1e' : '#cfffc1';
+    ctx.fillRect(x, y, width, height);
 
     ctx.fillStyle = "white";
     ctx.font = '15px Arial';
