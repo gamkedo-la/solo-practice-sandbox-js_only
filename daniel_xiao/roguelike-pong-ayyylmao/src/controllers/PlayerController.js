@@ -27,8 +27,8 @@ class PlayerController extends CharacterController {
 
     const newpaddle = new Paddle({
       position: {
-        x: 150,
-        y: 450,
+        x: GAME_WIDTH / 2,
+        y: GAME_HEIGHT - 50,
       },
     });
 
@@ -57,6 +57,26 @@ class PlayerController extends CharacterController {
         this.set('isPressRight', false);
       }
     });
+  }
+  /**
+   * @param {Canvas Context} ctx
+   */
+  draw(ctx) {
+    const {
+      position: {
+        x,
+        y,
+      },
+      width,
+      height,
+    } = this.gameobject.attributes;
+
+    ctx.fillStyle = this.isInvincible ? '#963838' : '#cfffc1';
+    ctx.fillRect(x, y, width, height);
+
+    ctx.fillStyle = "white";
+    ctx.font = '15px Arial';
+    ctx.fillText(`HP: ${this.get('hp').curr}/${this.get('hp').max}`, GAME_WIDTH - 70, GAME_HEIGHT - 10);
   }
   /**
    * @param {Time} deltaTime

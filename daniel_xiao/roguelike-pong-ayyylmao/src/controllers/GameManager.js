@@ -3,6 +3,7 @@ import Ball from 'components/Ball';
 import {GAME_WIDTH, GAME_HEIGHT} from 'constants/game_settings';
 
 import * as CanvasController from 'controllers/CanvasController';
+import EnemyController from 'controllers/EnemyController';
 import PlayerController from 'controllers/PlayerController';
 
 let prev = Date.now();
@@ -25,8 +26,12 @@ const CurrentBall = new Ball({
 
 export function init() {
   CanvasController.init();
+  EnemyController.init();
   PlayerController.init();
 
+  EnemyController.set('target', CurrentBall);
+
+  gameObjectList.push(EnemyController.gameobject);
   gameObjectList.push(PlayerController.gameobject);
   gameObjectList.push(CurrentBall);
 
@@ -45,6 +50,7 @@ function tick() {
 export function update() {
   if (stateCurr === GAMESTATE.PAUSING) return;
 
+  EnemyController.update(deltaTime);
   PlayerController.update(deltaTime);
   CurrentBall.update(deltaTime);
 
@@ -54,6 +60,7 @@ export function update() {
 
 export function draw() {
   CanvasController.draw();
+  EnemyController.draw(CanvasController.context);
   PlayerController.draw(CanvasController.context);
 
   CurrentBall.draw(CanvasController.context);
