@@ -84,4 +84,8 @@ export function checkCollisions() {
   if (CurrentBall.bottom > GAME_HEIGHT - 10) {
     PlayerController.hpDecrease(1);
   }
+
+  if (CurrentBall.top < 10) {
+    EnemyController.hpDecrease(1);
+  }
 }

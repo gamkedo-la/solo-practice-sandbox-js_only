@@ -56,6 +56,10 @@ class EnemyController extends CharacterController {
 
     ctx.fillStyle = this.isInvincible ? '#963838' : '#cfffc1';
     ctx.fillRect(x, y, width, height);
+
+    ctx.fillStyle = "white";
+    ctx.font = '15px Arial';
+    ctx.fillText(`HP: ${this.get('hp').curr}/${this.get('hp').max}`, GAME_WIDTH - 70, 20);
   }
   /**
    * @param {Time} deltaTime
