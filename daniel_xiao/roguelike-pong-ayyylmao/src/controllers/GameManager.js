@@ -45,16 +45,17 @@ function tick() {
 export function update() {
   if (stateCurr === GAMESTATE.PAUSING) return;
 
+  PlayerController.update(deltaTime);
+  CurrentBall.update(deltaTime);
+
   checkCollisions();
   draw();
 }
 
 export function draw() {
   CanvasController.draw();
-  PlayerController.update(deltaTime);
-  PlayerController.get('gameobject').draw(CanvasController.context);
+  PlayerController.draw(CanvasController.context);
 
-  CurrentBall.update(deltaTime);
   CurrentBall.draw(CanvasController.context);
 }
 

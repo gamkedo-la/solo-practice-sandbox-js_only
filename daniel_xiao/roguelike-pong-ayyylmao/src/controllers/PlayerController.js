@@ -1,3 +1,8 @@
+import {
+  GAME_WIDTH,
+  GAME_HEIGHT,
+} from 'constants/game_settings';
+
 import Model from 'components/Model';
 import Paddle from 'components/Paddle';
 
@@ -11,6 +16,11 @@ class PlayerController extends Model {
   constructor(props = {}) {
     super({
       state: '',
+
+      hp: {
+        curr: 3,
+        max: 3,
+      },
 
       gameobject: undefined,
 
@@ -71,7 +81,16 @@ class PlayerController extends Model {
       this.gameobject.reduceVelocity(deltaTime);
     }
   }
+  /**
+   * @param {Canvas Context} ctx
+   */
+  draw(ctx) {
+    this.gameobject.draw(ctx);
 
+    ctx.fillStyle = "white";
+    ctx.font = '15px Arial';
+    ctx.fillText(`HP: ${this.get('hp').curr}/${this.get('hp').max}`, GAME_WIDTH - 70, GAME_HEIGHT - 10);
+  }
   // -- getters
   /** @type {GameObject} */
   get gameobject() {
