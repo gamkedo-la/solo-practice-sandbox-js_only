@@ -22,6 +22,8 @@ class PlayerController extends Model {
         max: 3,
       },
 
+      invincibilityTime: 250,
+
       gameobject: undefined,
 
       isPressLeft: false,
@@ -38,6 +40,9 @@ class PlayerController extends Model {
     });
 
     this.set('gameobject', newpaddle);
+
+    // for tracking
+    this.invincibilityCountdown = 0;
   }
   /**
    *
@@ -80,6 +85,12 @@ class PlayerController extends Model {
     if (!this.get('isPressLeft') && !this.get('isPressRight')) {
       this.gameobject.reduceVelocity(deltaTime);
     }
+
+    if (this.invincibilityCountdown > 0) {
+      this.invincibilityCountdown -= deltaTime;
+    } else {
+      this.invincibilityCountdown = 0;
+    }
   }
   /**
    * @param {Canvas Context} ctx
@@ -96,12 +107,16 @@ class PlayerController extends Model {
    * @param {Number} value
    */
   hpDecrease(value) {
+    if (this.isInvincible) return;
+
     const hp = this.get('hp');
     const nextHpCurr = hp.curr - value;
     this.set('hp', {
+      ...hp,
       curr: nextHpCurr,
-      max: hp.max,
     });
+
+    this.invincibilityCountdown = this.get('invincibilityTime');
   }
   // -- getters
   /** @type {GameObject} */
@@ -114,6 +129,10 @@ class PlayerController extends Model {
       x: this.get('gameobject').get('position').x,
       y: this.get('gameobject').get('position').y,
     }
+  }
+  /** @type {Boolean} */
+  get isInvincible() {
+    return this.invincibilityCountdown > 0;
   }
 }
 
