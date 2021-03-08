@@ -11,6 +11,8 @@ const VELOCITY_REDUCE = 0.5 * SPEED_MODIFIER;
 export default class GameObject extends Model {
   constructor(props = {}) {
     super({
+      id: '_' + Math.random().toString(36).substr(2, 9),
+
       width: 0,
       height: 0,
 
@@ -142,6 +144,15 @@ export default class GameObject extends Model {
     }
 
     this.set('position', nextPosition);
+  }
+  /**
+   * @param {GameObject} gameObject
+   */
+  isOverlapping(gameObject) {
+    return this.left < gameObject.right &&
+      this.right > gameObject.left &&
+      this.top < gameObject.bottom &&
+      this.bottom > gameObject.top;
   }
   // -- position getters
   /** @type {Point} */
