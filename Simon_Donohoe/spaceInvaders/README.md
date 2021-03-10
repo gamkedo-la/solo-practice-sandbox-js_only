@@ -1,1 +1,1 @@
-Building a basic spaceinvaders game with some pixelart.
+Building a basic space battle game with some pixelart.
