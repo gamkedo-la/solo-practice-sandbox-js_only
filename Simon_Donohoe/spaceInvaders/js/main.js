@@ -1,7 +1,7 @@
 // save the canvas for dimensions, and its 2d context for drawing to it
 var canvas, canvasContext;
 
-var p1 = new warriorClass();
+var p1 = new warriorClass(); //may need to delete
 
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
@@ -18,7 +18,6 @@ function loadingDoneSoStartGame() {
       drawEverything();
     }, 1000/framesPerSecond);
   
-  p1.init(playerPic, "Blue"); 
   initInput();  
 }
 
@@ -27,7 +26,7 @@ function moveEverything() {
 }
 
 function drawEverything() {
-  drawTracks();
+  // drawTracks();
   
   p1.draw(); 
 }

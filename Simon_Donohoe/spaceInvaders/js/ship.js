@@ -24,9 +24,8 @@ function warriorClass() {
     this.controlKeyForTurnRight = rightKey;
   }
 
-  this.init = function(whichGraphic,whichName) { 
+  this.init = function(whichGraphic) { 
     this.myBitmap = whichGraphic;
-    this.myName = whichName;
     this.reset(); 
   }
   
@@ -34,21 +33,21 @@ function warriorClass() {
     this.speed = 0; 
     this.ang = -0.5 * Math.PI; 
   
-    if(this.homeX == undefined) {
+    if(this.x == undefined) {
       for(var i=0; i<trackGrid.length; i++) {
         if( trackGrid[i] == TRACK_PLAYER) {
           var tileRow = Math.floor(i/TRACK_COLS);
           var tileCol = i%TRACK_COLS;
-          this.homeX = tileCol * TRACK_W + 0.5*TRACK_W;
-          this.homeY = tileRow * TRACK_H + 0.5*TRACK_H;
+          this.x = tileCol * TRACK_W + 0.5*TRACK_W;
+          this.y = tileRow * TRACK_H + 0.5*TRACK_H;
           trackGrid[i] = TRACK_ROAD;
           break; // found it, so no need to keep searching 
         } // end of if
       } // end of for
     } // end of if position not saved yet 
     
-    this.x = this.homeX; 
-    this.y = this.homeY; 
+    this.x = this.x; 
+    this.y = this.y; 
 
   } // end of reset 
   
@@ -71,26 +70,25 @@ function warriorClass() {
       this.speed -= REVERSE_POWER; 
     }
     
-    var nextX = this.x + Math.cos(this.ang) * this.speed;  x3
-    var nextY = this.y + Math.sin(this.ang) * this.speed;  x3
+    var nextX = this.x + Math.cos(this.ang) * this.speed; 
+    var nextY = this.y + Math.sin(this.ang) * this.speed; 
     
-    var drivingIntoTileType = getTrackAtPixelCoord(nextX,nextY);
+    // var drivingIntoTileType = getTrackAtPixelCoord(nextX,nextY);
     
-    if( drivingIntoTileType == TRACK_ROAD ) {
-      this.x = nextX; 
-      this.y = nextY; 
-    } else if( drivingIntoTileType == TRACK_GOAL ) {
-      document.getElementById("debugText").innerHTML = this.myName + " won the race";
-      this.reset(); 
-    } else {
-      this.speed = 0.0; 
-    }
+    // if( drivingIntoTileType == TRACK_ROAD ) {
+    //   this.x = nextX; 
+    //   this.y = nextY; 
+    // } else if( drivingIntoTileType == TRACK_GOAL ) {
+    //   document.getElementById("debugText").innerHTML = this.myName + " won the race";
+    //   this.reset(); 
+    // } else {
+    //   this.speed = 0.0; 
+    // }
 
     this.speed *= GROUNDSPEED_DECAY_MULT; 
   }
   
   this.draw = function() { 
-     x3
     drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.x, this.y, this.ang );
   }
 
