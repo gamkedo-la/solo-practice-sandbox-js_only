@@ -11,31 +11,36 @@ const VELOCITY_REDUCE = 0.5 * SPEED_MODIFIER;
 export default class GameObject extends Model {
   constructor(props = {}) {
     super({
+      /* @type {String} */
       id: '_' + Math.random().toString(36).substr(2, 9),
+      /* @type {String} */
       type: '',
 
+      /* @type {Number} */
       width: 0,
+      /* @type {Number} */
       height: 0,
-
+      /* @type {Number} */
       speed: 5,
-
+      /* @type {Point} */
       position: {
         x: 0,
         y: 0,
       },
 
+      /* @type {Point} */
       velocity: {
         x: 0,
         y: 0,
       },
-
+      /* @type {Object} */
       velocityMax: {
         xMin: -2,
         xMax: 2,
         yMin: -2,
         yMax: 2,
       },
-
+      /* @type {Object} */
       bounds: {
         left: 0,
         right: GAME_WIDTH,
@@ -43,6 +48,7 @@ export default class GameObject extends Model {
         bottom: GAME_HEIGHT,
       },
 
+      /* @type {Number} probably always negative */
       flipReduction: -1,
 
       ...props,
@@ -52,10 +58,14 @@ export default class GameObject extends Model {
     // I want to use simple numbers for speed but even 1 is a bit strong
     this.set('speed', this.get('speed') * SPEED_MODIFIER);
   }
-
+  /**
+   * @param {Context.2D} ctx
+   */
   draw(ctx) {
   }
-
+  /**
+   * @param {Time} deltaTime
+   */
   update(deltaTime) {
     this.updatePosition(deltaTime);
   }
