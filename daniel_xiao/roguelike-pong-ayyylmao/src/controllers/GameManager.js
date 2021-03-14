@@ -29,7 +29,7 @@ export function init() {
   EnemyController.init();
   PlayerController.init();
 
-  EnemyController.set('target', CurrentBall);
+  EnemyController.set('ball', CurrentBall);
 
   gameObjectList.push(EnemyController.gameobject);
   gameObjectList.push(PlayerController.gameobject);

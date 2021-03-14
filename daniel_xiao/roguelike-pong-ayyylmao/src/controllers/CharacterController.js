@@ -13,16 +13,19 @@ export const CHARACTER_STATE = {
 export default class CharacterController extends Model {
   constructor(props = {}) {
     super({
+      /* @type {CHARACTER_STATE} */
       state: CHARACTER_STATE.MOVING,
-
+      /* @type {Stat} */
       hp: {
         curr: 3,
         max: 3,
       },
-
-      invincibilityTime: 300, //ms
-
+      /* @type {Number} in ms */
+      invincibilityTime: 300,
+      /* @type {GameObject} */
       gameobject: undefined,
+
+      ...props
     });
 
     // for tracking
@@ -71,7 +74,7 @@ export default class CharacterController extends Model {
     this.invincibilityCountdown = this.get('invincibilityTime');
   }
   /**
-   *
+   * @param {Time} deltaTime
    */
   updateInvincibility(deltaTime) {
     if (this.invincibilityCountdown > 0) {

@@ -14,17 +14,27 @@ export const ENEMY_STATE = {
 class EnemyController extends CharacterController {
   constructor(props = {}) {
     super({
+      /* @override */
       state: ENEMY_STATE.MOVING,
-
+      /* @override */
       hp: {
         curr: 3,
         max: 3,
       },
-
+      /* @override */
       invincibilityTime: 300, //ms
+      /* @type {GameObject} what is this enemy chasing */
+      ball: undefined,
 
-      target: undefined, // gameobject
+      /* @type {Point} what is the position */
+      targetPos: undefined,
+      /* @type {Number} how long before updating `targetPos` */
+      retargetTime: 300,
+
+      ...props
     });
+
+    this.retargetCountdown = 0;
 
     const newpaddle = new Paddle({
       position: {
@@ -67,6 +77,8 @@ class EnemyController extends CharacterController {
   update(deltaTime) {
     this.updateState(deltaTime);
 
+    this.updateTargeting(deltaTime);
+
     this.gameobject.update(deltaTime);
 
     this.updateInvincibility(deltaTime);
@@ -83,17 +95,33 @@ class EnemyController extends CharacterController {
     }
   }
   /**
+   * @param {Time} deltaTime
+   */
+  updateTargeting(deltaTime) {
+    if (this.retargetCountdown <= 0) {
+      const target = this.get('ball');
+      if (target !== undefined) {
+        this.set('targetPos', target.center);
+      }
+
+      this.retargetCountdown = this.get('retargetTime');
+
+    } else {
+      this.retargetCountdown -= deltaTime;
+    }
+  }
+  /**
    *
    */
   moveTowardsTarget() {
-    const target = this.get('target');
-    if (target === undefined) return;
+    const targetPos = this.get('targetPos');
+    if (targetPos === undefined) return;
 
-    if (this.gameobject.center.x < target.center.x) {
+    if (this.gameobject.center.x < targetPos.x) {
       this.gameobject.updateVelocity({x: -1, y: 0});
     }
 
-    if (this.gameobject.center.x > target.center.x) {
+    if (this.gameobject.center.x > targetPos.x) {
       this.gameobject.updateVelocity({x: 1, y: 0});
     }
   }
