@@ -80,6 +80,16 @@ export function draw() {
 
   CurrentBall.draw(CanvasController.context);
 }
+function drawPause() {
+  const ctx = CanvasController.context;
+  ctx.fillStyle = "rgba(0, 0, 0, 0.4)";
+  ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
+
+  ctx.fillStyle = "white";
+  ctx.font = '25px Arial';
+  ctx.textAlign = "center";
+  ctx.fillText('Paused', GAME_WIDTH / 2, GAME_HEIGHT / 2);
+}
 
 export function checkCollisions() {
   gameObjectList.forEach((gameObject) => {
@@ -111,6 +121,7 @@ export function checkCollisions() {
 export function togglePause() {
   if (stateCurr !== GAMESTATE.PAUSING) {
     stateCurr = GAMESTATE.PAUSING;
+    drawPause();
   } else {
     stateCurr = GAMESTATE.PLAYING;
   }
