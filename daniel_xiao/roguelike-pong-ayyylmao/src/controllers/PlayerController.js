@@ -96,11 +96,7 @@ class PlayerController extends CharacterController {
       this.gameobject.reduceVelocity(deltaTime);
     }
 
-    if (this.invincibilityCountdown > 0) {
-      this.invincibilityCountdown -= deltaTime;
-    } else {
-      this.invincibilityCountdown = 0;
-    }
+    this.updateInvincibility(deltaTime);
   }
   // -- methods
 

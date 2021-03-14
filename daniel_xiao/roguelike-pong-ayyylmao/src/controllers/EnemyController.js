@@ -69,13 +69,9 @@ class EnemyController extends CharacterController {
 
     this.gameobject.update(deltaTime);
 
-    this.moveTowardsTarget();
+    this.updateInvincibility(deltaTime);
 
-    if (this.invincibilityCountdown > 0) {
-      this.invincibilityCountdown -= deltaTime;
-    } else {
-      this.invincibilityCountdown = 0;
-    }
+    this.moveTowardsTarget();
   }
   /**
    * @param {Time} deltaTime

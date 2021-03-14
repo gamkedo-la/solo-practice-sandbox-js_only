@@ -70,6 +70,16 @@ export default class CharacterController extends Model {
 
     this.invincibilityCountdown = this.get('invincibilityTime');
   }
+  /**
+   *
+   */
+  updateInvincibility(deltaTime) {
+    if (this.invincibilityCountdown > 0) {
+      this.invincibilityCountdown -= deltaTime;
+    } else {
+      this.invincibilityCountdown = 0;
+    }
+  }
   // -- getters
   /** @type {GameObject} */
   get gameobject() {
