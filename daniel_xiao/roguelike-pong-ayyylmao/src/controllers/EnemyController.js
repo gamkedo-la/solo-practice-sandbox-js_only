@@ -29,7 +29,7 @@ class EnemyController extends CharacterController {
       /* @type {Point} what is the position */
       targetPos: undefined,
       /* @type {Number} how long before updating `targetPos` */
-      retargetTime: 300,
+      retargetTime: 450,
 
       ...props
     });
@@ -117,11 +117,18 @@ class EnemyController extends CharacterController {
     const targetPos = this.get('targetPos');
     if (targetPos === undefined) return;
 
-    if (this.gameobject.center.x < targetPos.x) {
-      this.gameobject.updateVelocity({x: -1, y: 0});
+    // stop trying to move if ball is already behind me
+    const target = this.get('ball');
+    if (target.center.y < this.gameobject.center.y) {
+      this.gameobject.updateVelocity({x: 0, y: 0});
+      return;
     }
 
     if (this.gameobject.center.x > targetPos.x) {
+      this.gameobject.updateVelocity({x: -1, y: 0});
+    }
+
+    if (this.gameobject.center.x < targetPos.x) {
       this.gameobject.updateVelocity({x: 1, y: 0});
     }
   }
