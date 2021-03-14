@@ -60,22 +60,29 @@ export default class Ball extends GameObject {
    * @param {GameObject} gameObject
    */
   onCollidePaddle(gameObject) {
+    const nextVelocity = {
+      x: this.get('velocity').x,
+      y: this.get('velocity').y,
+    }
+
     this.get('velocity').y *= this.get('flipReduction'); // flip it
+
+    // if the ball is going too fast, start reducing any extreme movement
+    if (Math.abs(nextVelocity.x) > 0.8) {
+      nextVelocity.x *= 0.8;
+    }
+
+    if (Math.abs(nextVelocity.y) > 0.8) {
+      nextVelocity.y *= 0.8;
+    }
 
     // utilize some of the paddle's horizontal movement
     // sort of like in table tennis
     const paddleVelocity = gameObject.get('velocity');
-    const xAbsorb = paddleVelocity.x * 0.2;
+    const xTransfer = Math.min(Math.max(paddleVelocity.x * 0.2, 0), 0.1);
+    nextVelocity.x += xTransfer;
 
-    // too little or too much
-    if (Math.abs(xAbsorb) < 0.01 || Math.abs(xAbsorb) > 0.1) {
-      return;
-    }
-
-    const nextVelocity = {
-      x: this.get('velocity').x + xAbsorb,
-      y: this.get('velocity').y,
-    }
+    // finally set the new value
     this.set('velocity', nextVelocity);
   }
 }
