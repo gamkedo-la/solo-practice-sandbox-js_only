@@ -1,5 +1,6 @@
 import Ball from 'components/Ball';
 
+import keycodes from 'constants/keycodes';
 import {GAME_WIDTH, GAME_HEIGHT} from 'constants/game_settings';
 
 import * as CanvasController from 'controllers/CanvasController';
@@ -25,6 +26,15 @@ const CurrentBall = new Ball({
 });
 
 export function init() {
+  this.initGameObjects();
+
+  this.initActions();
+
+  // activate updating
+  const myInterval = setInterval(tick, 0);
+}
+
+export function initGameObjects() {
   CanvasController.init();
   EnemyController.init();
   PlayerController.init();
@@ -34,9 +44,14 @@ export function init() {
   gameObjectList.push(EnemyController.gameobject);
   gameObjectList.push(PlayerController.gameobject);
   gameObjectList.push(CurrentBall);
+}
 
-  // activate updating
-  const myInterval = setInterval(tick, 0);
+export function initActions() {
+  window.addEventListener('keydown', (evt) => {
+    if (evt.keyCode === keycodes.p || evt.keyCode === keycodes.escape) {
+      this.togglePause();
+    }
+  });
 }
 
 function tick() {
@@ -87,5 +102,16 @@ export function checkCollisions() {
 
   if (CurrentBall.top < 10) {
     EnemyController.hpDecrease(1);
+  }
+}
+
+/**
+ *
+ */
+export function togglePause() {
+  if (stateCurr !== GAMESTATE.PAUSING) {
+    stateCurr = GAMESTATE.PAUSING;
+  } else {
+    stateCurr = GAMESTATE.PLAYING;
   }
 }
