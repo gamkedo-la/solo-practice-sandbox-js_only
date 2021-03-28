@@ -3,10 +3,10 @@ const canvasWidth  = canvas.width;
 const canvasHeight = canvas.height;
 const ctx = canvas.getContext('2d');
 
-const BRICK_WIDTH = 100;
-const BRICK_HEIGHT = 100;
-const BRICK_COLS = 8;
-const BRICK_ROWS = 6;
+const BRICK_WIDTH = 50;
+const BRICK_HEIGHT = 50;
+const BRICK_COLS = 16;
+const BRICK_ROWS = 12;
 const BRICK_GAP = 2;
 document.addEventListener('keydown', handleKey);
 
