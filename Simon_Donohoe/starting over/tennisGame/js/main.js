@@ -37,7 +37,7 @@ window.onload = function(){
 
   canvas.addEventListener("mousemove", function(evt) {
     let mousePos = calculateMousePos(evt);
-    paddle1Y = mousePos.y - (PADDLE_HEIGHT/2); 
+    paddle2Y = mousePos.y - (PADDLE_HEIGHT/2); 
   });
 }
 
@@ -45,6 +45,7 @@ function ballReset(){
   // center the ball on the canvas
   ballX = canvas.width / 2;
   ballY = canvas.height / 2;
+  ballSpeedX *= -1;
 }
 
 function moveEverything(){
@@ -96,5 +97,5 @@ function drawEverything() {
 }
 
 /*
-continue on page 73 of file:///C:/Users/simon/Downloads/Hands-On%20Intro%20to%20Game%20Programming%20textbook%20and%20code%20(more%20game%20types)/Hands-On%20Intro%205/Hands-On%20Intro%20to%20Game%20Programming-v5.pdf
+continue on page 74 of file:///C:/Users/simon/Downloads/Hands-On%20Intro%20to%20Game%20Programming%20textbook%20and%20code%20(more%20game%20types)/Hands-On%20Intro%205/Hands-On%20Intro%20to%20Game%20Programming-v5.pdf
 */
