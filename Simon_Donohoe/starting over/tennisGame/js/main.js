@@ -10,7 +10,8 @@ const PADDLE_WIDTH = 10, PADDLE_HEIGHT = 100;
 let paddle1X = 0, paddle1Y=250;
 let paddle2Y = 250; 
 
-
+console.log(paddle1Y);
+    console.log(paddle2Y);
 
 function calculateMousePos(evt) {
   let rect = canvas.getBoundingClientRect(), root = document.documentElement;
@@ -37,7 +38,9 @@ window.onload = function(){
 
   canvas.addEventListener("mousemove", function(evt) {
     let mousePos = calculateMousePos(evt);
+    paddle1Y = mousePos.y - (PADDLE_HEIGHT/2); 
     paddle2Y = mousePos.y - (PADDLE_HEIGHT/2); 
+    
   });
 }
 
@@ -58,7 +61,11 @@ function moveEverything(){
   }
 
   if(ballX > canvas.width){ // if ball has moved beyond the right edge
-    ballSpeedX *= -1; // reverse ball direction along x-axis
+    if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT) {
+      ballSpeedX *= -1; // reverse ball direction along x-axis
+    }else{ 
+      ballReset();
+    }
   }
 
   if(ballY < 0){ // if ball has moved beyond the top edge
@@ -94,6 +101,8 @@ function drawEverything() {
 
   // draw a white circle (ball)
   colorCircle(ballX, ballY, 10, "#ffffff");
+
+  canvasContext.fillText("Scoreboard goes here.", 300 ,50);
 }
 
 /*
