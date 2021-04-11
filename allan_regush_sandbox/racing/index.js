@@ -10,6 +10,21 @@ const BRICK_ROWS = 12;
 const BRICK_GAP = 2;
 document.addEventListener('keydown', handleKey);
 
+const map = [
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+]
+
 const gameState = {
   p1 : {
     x: 0,
@@ -50,13 +65,19 @@ function render() {
   drawGrid();
 }
 
+function trackTileToIndex(tileCol, tileRow) {
+  return (tileCol + BRICK_COLS*tileRow);
+}
+
+
 function drawGrid() {
   for(let col = 0; col < BRICK_COLS; ++col) {
     for(let row = 0; row < BRICK_ROWS; ++row) {
       const brickLeftEdgeX = col * BRICK_WIDTH;
       const brickTopEdgeY = row *  BRICK_HEIGHT;
-      drawRectangle(brickLeftEdgeX, brickTopEdgeY,
-        BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT - BRICK_GAP, 'blue');
+      if (map[trackTileToIndex(col, row)] != 0) 
+        drawRectangle(brickLeftEdgeX, brickTopEdgeY,
+          BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT - BRICK_GAP, 'blue');
     }
   }
 }
