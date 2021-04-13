@@ -7,6 +7,10 @@ let ballSpeedX =6, ballSpeedY = 8;
 // paddle position variables
 const PADDLE_WIDTH = 10, PADDLE_HEIGHT = 100;
 
+// scoreboard
+let player1Score = 0;
+let player2Score = 0;
+
 let paddle1X = 0, paddle1Y=250;
 let paddle2Y = 250; 
 
@@ -56,6 +60,7 @@ function moveEverything(){
     if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
       ballSpeedX *= -1; // reverse ball direction along x-axis
     }else{ 
+      player2Score += 1;
       ballReset();
     }
   }
@@ -64,6 +69,7 @@ function moveEverything(){
     if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT) {
       ballSpeedX *= -1; // reverse ball direction along x-axis
     }else{ 
+      player1Score += 1;
       ballReset();
     }
   }
@@ -102,9 +108,9 @@ function drawEverything() {
   // draw a white circle (ball)
   colorCircle(ballX, ballY, 10, "#ffffff");
 
-  canvasContext.fillText("Scoreboard goes here.", 300 ,50);
+  canvasContext.fillText("Player 1  " + player1Score + "   " + player2Score + "  Player 2", 350, 30);
 }
 
 /*
-continue on page 74 of file:///C:/Users/simon/Downloads/Hands-On%20Intro%20to%20Game%20Programming%20textbook%20and%20code%20(more%20game%20types)/Hands-On%20Intro%205/Hands-On%20Intro%20to%20Game%20Programming-v5.pdf
+continue on page 78 of file:///C:/Users/simon/Downloads/Hands-On%20Intro%20to%20Game%20Programming%20textbook%20and%20code%20(more%20game%20types)/Hands-On%20Intro%205/Hands-On%20Intro%20to%20Game%20Programming-v5.pdf
 */
