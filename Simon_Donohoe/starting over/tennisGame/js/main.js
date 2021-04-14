@@ -59,6 +59,9 @@ function moveEverything(){
   if(ballX < 0){ // if ball has moved beyond the left edge
     if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
       ballSpeedX *= -1; // reverse ball direction along x-axis
+
+      let reboundAngleY = ballY - (paddle1Y+PADDLE_HEIGHT/2);
+      ballSpeedY = reboundAngleY * 0.3;
     }else{ 
       player2Score += 1;
       ballReset();
@@ -68,6 +71,9 @@ function moveEverything(){
   if(ballX > canvas.width){ // if ball has moved beyond the right edge
     if(ballY > paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT) {
       ballSpeedX *= -1; // reverse ball direction along x-axis
+
+      let reboundAngleY = ballY - (paddle1Y+PADDLE_HEIGHT/2);
+      ballSpeedY = reboundAngleY * 0.3;
     }else{ 
       player1Score += 1;
       ballReset();
@@ -112,5 +118,5 @@ function drawEverything() {
 }
 
 /*
-continue on page 78 of file:///C:/Users/simon/Downloads/Hands-On%20Intro%20to%20Game%20Programming%20textbook%20and%20code%20(more%20game%20types)/Hands-On%20Intro%205/Hands-On%20Intro%20to%20Game%20Programming-v5.pdf
+continue on page 80 of file:///C:/Users/simon/Downloads/Hands-On%20Intro%20to%20Game%20Programming%20textbook%20and%20code%20(more%20game%20types)/Hands-On%20Intro%205/Hands-On%20Intro%20to%20Game%20Programming-v5.pdf
 */
