@@ -7,6 +7,7 @@ let ballSpeedX =6, ballSpeedY = 8;
 // paddle position variables
 const PADDLE_WIDTH = 10, PADDLE_HEIGHT = 100;
 
+const PADDLE_SPEED = 6;
 // scoreboard
 let player1Score = 0;
 let player2Score = 0;
@@ -43,7 +44,7 @@ window.onload = function(){
   canvas.addEventListener("mousemove", function(evt) {
     let mousePos = calculateMousePos(evt);
     paddle1Y = mousePos.y - (PADDLE_HEIGHT/2); 
-    paddle2Y = mousePos.y - (PADDLE_HEIGHT/2); 
+    // paddle2Y = mousePos.y - (PADDLE_HEIGHT/2); 
     
   });
 }
@@ -56,6 +57,7 @@ function ballReset(){
 }
 
 function moveEverything(){
+  moveComputerPaddle();
   if(ballX < 0){ // if ball has moved beyond the left edge
     if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
       ballSpeedX *= -1; // reverse ball direction along x-axis
@@ -92,6 +94,14 @@ function moveEverything(){
   ballY += ballSpeedY; // move the ball based on its current vertical speed
 }
 
+function moveComputerPaddle(){
+  if(ballY > (PADDLE_HEIGHT/2)){
+    paddle2Y = ballY - PADDLE_SPEED;
+  }else if(ballY < (PADDLE_HEIGHT/2)){
+    paddle2Y = ballY + PADDLE_SPEED;
+  }
+   
+}
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
   canvasContext.fillStyle = fillColor;
   canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
@@ -118,5 +128,5 @@ function drawEverything() {
 }
 
 /*
-continue on page 80 of file:///C:/Users/simon/Downloads/Hands-On%20Intro%20to%20Game%20Programming%20textbook%20and%20code%20(more%20game%20types)/Hands-On%20Intro%205/Hands-On%20Intro%20to%20Game%20Programming-v5.pdf
+continue on page 81 of file:///C:/Users/simon/Downloads/Hands-On%20Intro%20to%20Game%20Programming%20textbook%20and%20code%20(more%20game%20types)/Hands-On%20Intro%205/Hands-On%20Intro%20to%20Game%20Programming-v5.pdf
 */
