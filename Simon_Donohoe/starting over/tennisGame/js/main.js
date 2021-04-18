@@ -7,7 +7,7 @@ let ballSpeedX =6, ballSpeedY = 8;
 // paddle position variables
 const PADDLE_WIDTH = 10, PADDLE_HEIGHT = 100;
 
-const PADDLE_SPEED = 6;
+const COMPUTER_PADDLE_SPEED = 6;
 // scoreboard
 let player1Score = 0;
 let player2Score = 0;
@@ -95,12 +95,13 @@ function moveEverything(){
 }
 
 function moveComputerPaddle(){
-  if(ballY > (PADDLE_HEIGHT/2)){
-    paddle2Y = ballY - PADDLE_SPEED;
-  }else if(ballY < (PADDLE_HEIGHT/2)){
-    paddle2Y = ballY + PADDLE_SPEED;
+  let paddle2Center = paddle2Y + (PADDLE_HEIGHT/2);
+
+  if(ballY < paddle2Center){
+    paddle2Y = paddle2Y - COMPUTER_PADDLE_SPEED;
+  }else if(ballY > paddle2Center){
+    paddle2Y = paddle2Y + COMPUTER_PADDLE_SPEED;
   }
-   
 }
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
   canvasContext.fillStyle = fillColor;
