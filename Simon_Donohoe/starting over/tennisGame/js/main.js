@@ -11,6 +11,8 @@ const COMPUTER_PADDLE_SPEED = 6;
 // scoreboard
 let player1Score = 0;
 let player2Score = 0;
+const WINNING_SCORE = 3;
+let showTheWinner = false;
 
 let paddle1X = 0, paddle1Y=250;
 let paddle2Y = 250; 
@@ -26,6 +28,17 @@ function calculateMousePos(evt) {
   let mouseY = evt.clientY - rect.left - root.scrollTop;
   
   return {x:mouseX, y:mouseY};
+}
+
+function handleMouseClick(evt) {
+  if(showTheWinner) {
+    // scoreboardReset();
+    player1Score = 0;
+    player2Score = 0;
+    ballReset();
+    
+    showTheWinner = false;
+  }
 }
 
 window.onload = function(){
@@ -47,17 +60,30 @@ window.onload = function(){
     // paddle2Y = mousePos.y - (PADDLE_HEIGHT/2); 
     
   });
+  canvasContext.textAlign	=	'center';
 }
 
 function ballReset(){
+  if(player1Score >= WINNING_SCORE || player2Score >= WINNING_SCORE){
+    showTheWinner = true;
+  }
   // center the ball on the canvas
   ballX = canvas.width / 2;
   ballY = canvas.height / 2;
   ballSpeedX *= -1;
 }
 
+// function scoreboardReset(){
+//   player1Score = 0, player2Score = 0;
+// }
+
 function moveEverything(){
+  if(showTheWinner){
+    return;
+  }
+
   moveComputerPaddle();
+
   if(ballX < 0){ // if ball has moved beyond the left edge
     if(ballY > paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT) {
       ballSpeedX *= -1; // reverse ball direction along x-axis
@@ -95,11 +121,17 @@ function moveEverything(){
 }
 
 function moveComputerPaddle(){
+  // computer ai center of paddle
   let paddle2Center = paddle2Y + (PADDLE_HEIGHT/2);
 
-  if(ballY < paddle2Center){
+  // computer ai deadzone
+  const COMPUTER_PLAYER_DEADZONE = 35;
+  let topDeadZone = paddle2Center - COMPUTER_PLAYER_DEADZONE;
+  let bottomDeadZone = paddle2Center + COMPUTER_PLAYER_DEADZONE;
+
+  if(ballY < topDeadZone){
     paddle2Y = paddle2Y - COMPUTER_PADDLE_SPEED;
-  }else if(ballY > paddle2Center){
+  }else if(ballY > bottomDeadZone){
     paddle2Y = paddle2Y + COMPUTER_PADDLE_SPEED;
   }
 }
@@ -117,17 +149,31 @@ function colorCircle(centerX, centerY, radius, fillColor){
 function drawEverything() { 
   colorRect(0,0,canvas.width,canvas.height,"#000000"); // clear the game view by filling it with black
 
-  // draw a paddle for player1 (left side)
-  colorRect(paddle1X,  paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, "#ffffff");
-  // draw a paddle for player2 (right side)
-  colorRect(canvas.width - PADDLE_WIDTH, paddle2Y, PADDLE_WIDTH, PADDLE_HEIGHT,"#ffffff");
+  if(showTheWinner){
+    if(player1Score >= WINNING_SCORE){
+      canvasContext.fillText("Player 1 wins by " + (player1Score - player2Score) + ".", canvas.width/2, canvas.height/2);
+    }else if(player2Score >= WINNING_SCORE){
+      canvasContext.fillText("Player 2 wins by " + (player2Score - player1Score) + ".", canvas.width/2, canvas.height/2);
+    }
+  }else{
+    // draw a paddle for player1 (left side)
+    colorRect(paddle1X,  paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, "#ffffff");
+    // draw a paddle for player2 (right side)
+    colorRect(canvas.width - PADDLE_WIDTH, paddle2Y, PADDLE_WIDTH, PADDLE_HEIGHT,"#ffffff");
 
-  // draw a white circle (ball)
-  colorCircle(ballX, ballY, 10, "#ffffff");
+    // draw a white circle (ball)
+    colorCircle(ballX, ballY, 10, "#ffffff");
+  }
 
-  canvasContext.fillText("Player 1  " + player1Score + "   " + player2Score + "  Player 2", 350, 30);
+  // draw a scoreboard
+  canvasContext.fillText("Player 1  " + player1Score + "   " + player2Score + "  Player 2", canvas.width/2, 70);
+  
+  // start a new game if score is reached
+  // if((player1Score >= WINNING_SCORE) || (player2Score >= WINNING_SCORE)){
+  //   matchWinner();
+  // }
 }
 
 /*
-continue on page 81 of file:///C:/Users/simon/Downloads/Hands-On%20Intro%20to%20Game%20Programming%20textbook%20and%20code%20(more%20game%20types)/Hands-On%20Intro%205/Hands-On%20Intro%20to%20Game%20Programming-v5.pdf
+continue on page 83 of file:///C:/Users/simon/Downloads/Hands-On%20Intro%20to%20Game%20Programming%20textbook%20and%20code%20(more%20game%20types)/Hands-On%20Intro%205/Hands-On%20Intro%20to%20Game%20Programming-v5.pdf
 */
