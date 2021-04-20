@@ -2,7 +2,7 @@ let canvas, canvasContext; // save the canvas for dimensions, and its 2d context
 
 // ball variables
 let ballX = 75, ballY = 75; // track of ball position
-let ballSpeedX =6, ballSpeedY = 8;
+let ballSpeedX =6, ballSpeedY = 7;
 
 // paddle position variables
 const PADDLE_WIDTH = 10, PADDLE_HEIGHT = 100;
@@ -152,9 +152,14 @@ function drawEverything() {
   if(showTheWinner){
     if(player1Score >= WINNING_SCORE){
       canvasContext.fillText("Player 1 wins by " + (player1Score - player2Score) + ".", canvas.width/2, canvas.height/2);
+      
+      console.log("Player 1 wins");
     }else if(player2Score >= WINNING_SCORE){
       canvasContext.fillText("Player 2 wins by " + (player2Score - player1Score) + ".", canvas.width/2, canvas.height/2);
+      
+      console.log("Player 2 wins");
     }
+    canvasContext.fillText("Click the left mouse butten to start a new game.", canvas.width/2, canvas.height - 20);
   }else{
     // draw a paddle for player1 (left side)
     colorRect(paddle1X,  paddle1Y, PADDLE_WIDTH, PADDLE_HEIGHT, "#ffffff");
@@ -163,6 +168,12 @@ function drawEverything() {
 
     // draw a white circle (ball)
     colorCircle(ballX, ballY, 10, "#ffffff");
+
+    // draw a net down the middle of the play area
+
+    for(let i=0; i<canvas.height; i=i+40){
+       colorRect(canvas.width/2, i, 2, 20, "#ffffff");
+    }
   }
 
   // draw a scoreboard
