@@ -3,6 +3,11 @@ let ballX = 75, ballY = 75;
 let ballSpeedX = 2;
 let ballSpeedY = 2;
 
+// paddle variables
+let playerPaddleX = 400;
+const PADDLE_WIDTH = 100;
+const PADDLE_HEIGHT = 10;
+
 // canvas variables
 let canvas, canvasContext;
 
@@ -16,6 +21,11 @@ window.onload = function(){
     moveEverything();
     drawEverything();
   }, 1000/framesPerSecond);
+
+  canvas.addEventListener('mousemove', function(evt){
+    let mousePos = calculateMousePos(evt);
+    playerPaddleX = mousePos.x - (PADDLE_WIDTH/2); // for center of paddle
+  });
 }
 
 function moveEverything(){
@@ -30,16 +40,39 @@ function moveEverything(){
   ballY += ballSpeedY;
 }
 
+function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
+  canvasContext.fillStyle = fillColor;
+  canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+}
+
+function colorCircle(centerX, centerY, radius, fillColor){
+  canvasContext.fillStyle = fillColor;
+  canvasContext.beginPath();
+  canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+  canvasContext.fill();
+}
+
 function drawEverything(){
   // fill game canvas with black
-  canvasContext.fillStyle = "black";
-  canvasContext.fillRect(0,0, canvas.width, canvas.height);
+  colorRect(0, 0, canvas.width, canvas.height, "black");
 
   // draw a circle(game ball)
-  canvasContext.fillStyle = "white";
-  canvasContext.beginPath();
-  canvasContext.arc(ballX, ballY, 10, 0, Math.PI*2, true);
-  canvasContext.fill();
+  colorCircle(ballX, ballY, 10, "white");
+
+  // draw a player paddle1
+  colorRect(350, playerPaddleX, PADDLE_WIDTH, PADDLE_HEIGHT, "white");
+}
+
+function calculateMousePos(evt) {
+  let rect = canvas.getBoundingClientRect(), root = document.documentElement;
+
+  // account for the margins, canvas position on page, scroll amount, etc.
+  let mouseX = evt.clientX - rect.left - root.scrollLeft;
+  let mouseY = evt.clientY - rect.top - root.scrollTop;
+  return{
+    x: mouseX,
+    y: mouseY
+  };
 }
 
 // page 53
