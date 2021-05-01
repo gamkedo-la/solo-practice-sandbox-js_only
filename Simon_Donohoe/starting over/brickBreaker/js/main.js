@@ -1,15 +1,37 @@
-// ball variables
-let ballX = 75, ballY = 75;
-let ballSpeedX = 2;
-let ballSpeedY = 2;
+// canvas variables
+let canvas, canvasContext;
 
-// paddle variables
+// ball variables/constants
+let ballX = 75, ballY = 75;
+let ballSpeedX = 5, ballSpeedY = 7;
+const BALLDIAMETER = 10;
+
+// paddle variables/constants
 let playerPaddleX = 400;
+const PLAYERPADDLEY = 540;
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 10;
 
-// canvas variables
-let canvas, canvasContext;
+// brick constants
+const BRICK_W = 80;
+const BRICK_H = 20;
+const BRICK_GAP = 2;
+const BRICK_COLS = 10;
+const BRICK_ROWS = 14;
+
+function calculateMousePos(evt) {
+  let rect = canvas.getBoundingClientRect(), root = document.documentElement;
+
+  // account for the margins, canvas position on page, scroll amount, etc.
+  let mouseX = evt.clientX - rect.left - root.scrollLeft;
+  let mouseY = evt.clientY - rect.top - root.scrollTop;
+
+  // console.log(mouseX, mouseY);
+  return{
+    x: mouseX,
+    y: mouseY
+  };
+}
 
 window.onload = function(){
   // game canvas
@@ -29,12 +51,33 @@ window.onload = function(){
 }
 
 function moveEverything(){
-  if(ballX > canvas.width || ballX < 0){ // if the ball has moved past the left or right edge
+  if(ballX > canvas.width || ballX < 0){ // if the ball hits the left or right edge
     ballSpeedX *= -1; // reverse the balls direction
   }
-  if(ballY > canvas.height || ballY < 0){ // if the ball moves past the top or bottom
+
+  if(ballY < 0){ // if the ball hits the top
     ballSpeedY *= -1; // reverse the balls direction
   }
+
+  if(ballY > canvas.height){ // if the ball passes the bottom of the canvas
+    ballX = 75, ballY = 75; // reset the ball
+  }
+
+  if(ballSpeedY > 0) {
+    if(ballY >= PLAYERPADDLEY && ballY <= PLAYERPADDLEY + PADDLE_HEIGHT){
+      if(ballX + (BALLDIAMETER/2)>= playerPaddleX && ballX + (BALLDIAMETER/2)<= playerPaddleX + PADDLE_WIDTH){
+        
+        console.log(ballX)
+        console.log(ballX + (BALLDIAMETER/2))
+
+        ballSpeedY *= -1;
+
+        let paddleEdgeHit = ballX - (playerPaddleX + PADDLE_WIDTH / 2);
+        ballSpeedX = paddleEdgeHit * 0.35;
+      }
+    }
+  }
+
   // move the ball to the right
   ballX += ballSpeedX;
   ballY += ballSpeedY;
@@ -52,27 +95,29 @@ function colorCircle(centerX, centerY, radius, fillColor){
   canvasContext.fill();
 }
 
+function drawBricks(){
+  for(let eachCol = 0; eachCol < BRICK_COLS; eachCol++){
+    for(let eachRow = 0; eachRow < BRICK_ROWS; eachRow++){
+      let brickLeftEdgeX = eachCol * BRICK_W;
+      let brickTopEdgeY = eachRow * BRICK_H;
+
+      colorRect(brickLeftEdgeX, brickTopEdgeY, BRICK_W - BRICK_GAP, BRICK_H - BRICK_GAP, 'blue');
+    }
+  }
+}
+
 function drawEverything(){
   // fill game canvas with black
   colorRect(0, 0, canvas.width, canvas.height, "black");
 
   // draw a circle(game ball)
-  colorCircle(ballX, ballY, 10, "white");
+  colorCircle(ballX, ballY, BALLDIAMETER, "white");
 
   // draw a player paddle1
-  colorRect(350, playerPaddleX, PADDLE_WIDTH, PADDLE_HEIGHT, "white");
+  colorRect(playerPaddleX, PLAYERPADDLEY, PADDLE_WIDTH, PADDLE_HEIGHT, "white");
+
+  // draw brick field
+  drawBricks();
 }
 
-function calculateMousePos(evt) {
-  let rect = canvas.getBoundingClientRect(), root = document.documentElement;
-
-  // account for the margins, canvas position on page, scroll amount, etc.
-  let mouseX = evt.clientX - rect.left - root.scrollLeft;
-  let mouseY = evt.clientY - rect.top - root.scrollTop;
-  return{
-    x: mouseX,
-    y: mouseY
-  };
-}
-
-// page 53
+// page 95
