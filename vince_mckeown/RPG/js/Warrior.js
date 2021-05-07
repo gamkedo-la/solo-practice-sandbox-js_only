@@ -1,11 +1,13 @@
 // tuning constants
-const PLAYER_MOVE_SPEED = 3.0;
+const PLAYER_MOVE_SPEED = 4.0;
 
 function warriorClass() {
   // variables to keep track of position
   this.x;
   this.y;
   this.tilePath = [];
+  this.pathfindingNow = false;
+  this.moving = false;
 
   // keyboard hold state variables, to use keys more like buttons
   this.keyHeld_North = false;
@@ -67,7 +69,7 @@ function warriorClass() {
 		var deltaY = Math.abs(targetY - this.y);
 		
 		this.keyHeld_East = this.keyHeld_West = this.keyHeld_North = this.keyHeld_South = false;
-		console.log("DeltaX:" + deltaX + " DeltaY:" + deltaY + " Speed:" + PLAYER_MOVE_SPEED);
+		//console.log("DeltaX:" + deltaX + " DeltaY:" + deltaY + " Speed:" + PLAYER_MOVE_SPEED);
 		
 		if(deltaX <= PLAYER_MOVE_SPEED){
 			this.x = targetX;
@@ -104,6 +106,11 @@ function warriorClass() {
 		}
 	} 
 	
+	if(this.move_North || this.move_East || this.move_South || this.move_West){
+		this.moving = true;
+	} else {
+		this.moving = false;
+	}
 	
     if(this.keyHeld_North) {
       nextY -= PLAYER_MOVE_SPEED;

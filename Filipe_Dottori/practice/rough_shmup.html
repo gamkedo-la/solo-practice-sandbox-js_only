@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+</head>
+<body>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+<script>
+// document holds a reference to the document object containing the html code. It's part of window.
+// getElementById returns a reference to the element and it's attributes, in this case the game canvas, height and width.
+// getContext('2D') returns a 2d drawing context. The context 2d is waht will be used for drawing.
+var canvas = document.getElementById('gameCanvas');
+var canvasContext = canvas.getContext('2d');
+
+const FPS = 60;
+
+const PLAYER_HEIGHT = 50;
+const PLAYER_WIDTH = 100;
+const PLAYER_DIST_FROM_BOTTOM = 60;
+var playerX = canvas.width/2 - PLAYER_WIDTH/2;
+var playerY = canvas.height - PLAYER_DIST_FROM_BOTTOM;
+
+var bulletFired = false;
+var bulletRadius = 5;
+var bulletX = playerX + PLAYER_WIDTH/2;
+var bulletY = playerY;
+var bulletSpeedY = 10;
+
+const ENEMY_HEIGHT = 50;
+const ENEMY_WIDTH = 100;
+var enemyMoveRange = 80;
+
+const ENEMY1_START_POS = canvas.width/2 - ENEMY_WIDTH/2;
+var enemy1X = ENEMY1_START_POS;
+var enemy1Y = 100;
+var enemy1Speed = 3;
+var enemy1Alive = true;
+
+const ENEMY2_START_POS = ENEMY1_START_POS - 3 * enemyMoveRange;
+var enemy2X = ENEMY2_START_POS;
+var enemy2Y = 100;
+var enemy2Speed = 3;
+var enemy2Alive = true;
+
+const ENEMY3_START_POS = ENEMY1_START_POS + 3 * enemyMoveRange;
+var enemy3X = ENEMY3_START_POS;
+var enemy3Y = 100;
+var enemy3Speed = 3;
+var enemy3Alive = true;
+
+// The evt argument is holding a reference to the MouseEvent object from the event listener.
+function updateMousePos(evt)
+{
+	// getBoundingClientRect() return the properties of the rectangle that contains the element
+	// it's being called on. In this case, the canvas.
+	var rect = canvas.getBoundingClientRect();
+
+	// documentElement returns a reference to the element that is the root of the document.
+	// In this case, the html file.
+	var root = document.documentElement;
+
+	// clientX is a property of MouseEvent that specifies the X position of the cursor.
+	// This position is relative to the current viewable part of the page (viewport). For example, if the
+	// page is scrolled to the right and the origin is out of view, the topmost corner will
+	// still return clientX = 0;
+	// The left property of the canvas rect contains the distance between the canvas absolute x origin
+	// and it's current x origin, relative to the scrolled page, ie. a negative number;
+	// By subtracting rect.left from clientX, we are correcting for scrolling in the mouse's X position.
+	// The scrollLeft returns how many pixels to the right the document screen has been scrolled (from it's left edge).
+	// In Chris' tutorial he subtracts both scrollLeft and rect.left, but by playing around, I think this was a mistake.
+	// In doing so, both seem to cancel each other out, resulting in the exact problem we where trying to avoid.
+	var mouseX = evt.clientX - rect.left; //- root.scrollLeft;
+	playerX = mouseX - PLAYER_WIDTH/2;
+}
+
+function fireBullet()
+{
+	if(!bulletFired)
+	{
+		bulletFired = true;
+		bulletX = playerX + PLAYER_WIDTH/2;
+		bulletY = playerY;
+	}
+}
+
+function update()
+{
+	if(bulletFired)
+	{
+		bulletY -= bulletSpeedY;
+	}
+
+	if(bulletY < 0 - bulletRadius)
+	{
+		bulletFired = false;
+	}
+
+	// Enemy 1
+	if(
+		bulletX > enemy1X && // to the right of enemy's left edge
+		bulletX < enemy1X + ENEMY_WIDTH && // to the left of enemy's right edge
+		bulletY > enemy1Y && //above enemy's top edge
+		bulletY < enemy1Y + ENEMY_HEIGHT // bellow enemy's bottom edge
+		)
+	{
+		enemy1Alive = false;
+	}
+
+	if(enemy1X > ENEMY1_START_POS + enemyMoveRange || enemy1X < ENEMY1_START_POS - enemyMoveRange)
+	{
+		enemy1Speed *= -1;
+	}
+	if(enemy1Alive)
+	{
+		enemy1X += enemy1Speed;
+	}
+
+	// Enemy 2
+	if(
+		bulletX > enemy2X && // to the right of enemy's left edge
+		bulletX < enemy2X + ENEMY_WIDTH && // to the left of enemy's right edge
+		bulletY > enemy2Y && //above enemy's top edge
+		bulletY < enemy2Y + ENEMY_HEIGHT // bellow enemy's bottom edge
+		)
+	{
+		enemy2Alive = false;
+	}
+
+	if(enemy2X > ENEMY2_START_POS + enemyMoveRange || enemy2X < ENEMY2_START_POS - enemyMoveRange)
+	{
+		enemy2Speed *= -1;
+	}
+	if(enemy2Alive)
+	{
+		enemy2X += enemy2Speed;
+	}
+
+	// Enemy 3
+	if(
+		bulletX > enemy3X && // to the right of enemy's left edge
+		bulletX < enemy3X + ENEMY_WIDTH && // to the left of enemy's right edge
+		bulletY > enemy3Y && //above enemy's top edge
+		bulletY < enemy3Y + ENEMY_HEIGHT // bellow enemy's bottom edge
+		)
+	{
+		enemy3Alive = false;
+	}
+
+	if(enemy3X > ENEMY3_START_POS + enemyMoveRange || enemy3X < ENEMY3_START_POS - enemyMoveRange)
+	{
+		enemy3Speed *= -1;
+	}
+	if(enemy3Alive)
+	{
+		enemy3X += enemy3Speed;
+	}
+}
+
+function colorRect(originX,originY,width,height,color)
+{
+	canvasContext.fillStyle = color;
+	canvasContext.fillRect(originX,originY, width,height);
+}
+
+function colorCirc(posX,posY,radius,color)
+{
+	canvasContext.fillStyle = color;
+	canvasContext.beginPath();
+	canvasContext.arc(posX,posY, radius, 0,Math.PI*2, true);
+	canvasContext.fill();
+}
+
+function draw()
+{
+	// Screen background
+	colorRect(0,0, canvas.width,canvas.height, 'black');
+
+	colorRect(playerX, playerY, PLAYER_WIDTH, PLAYER_HEIGHT, 'white');
+	
+	if(bulletFired)
+	{
+		colorCirc(bulletX,bulletY,bulletRadius,'white');
+	}
+
+	if(enemy1Alive)
+	{
+		colorRect(enemy1X,enemy1Y, ENEMY_WIDTH,ENEMY_HEIGHT, 'white');
+	}
+
+	if(enemy2Alive)
+	{
+		colorRect(enemy2X,enemy2Y, ENEMY_WIDTH,ENEMY_HEIGHT, 'white');
+	}
+
+	if(enemy3Alive)
+	{
+		colorRect(enemy3X,enemy3Y, ENEMY_WIDTH,ENEMY_HEIGHT, 'white');
+	}
+}
+
+function restartGame()
+{
+	canvas.removeEventListener('mousedown', restartGame);
+	bulletFired = false;
+	bulletY = playerY;
+	enemy1X = ENEMY1_START_POS;
+	enemy2X = ENEMY2_START_POS;
+	enemy3X = ENEMY3_START_POS;
+	enemy1Speed = Math.abs(enemy1Speed);
+	enemy2Speed = Math.abs(enemy2Speed);
+	enemy3Speed = Math.abs(enemy3Speed);
+	enemy1Alive = true;
+	enemy2Alive = true;
+	enemy3Alive = true;
+}
+
+function gameOver()
+{
+	colorRect(0,0, canvas.width,canvas.height, 'black');
+	canvasContext.fillStyle = 'white';
+	canvasContext.fillText("Game Over!", 400, 300);
+	canvasContext.fillText("Click to restart", 395, 350);
+
+	canvas.addEventListener('mousedown', restartGame);
+}
+
+function gameLoop()
+{
+	if(enemy1Alive || enemy2Alive || enemy3Alive)
+	{
+		// Input
+
+		// addEventListener() will send a notification to another object, whenever an event happens 
+		// to the target it's being called on, in this case the mousemove event and the canvas target.
+		// The object being passed is a callback function, it will be called whenever the event happens.
+		// The event listener will also create an instance of the object corresponding ot the event,
+		// in this case a MouseEvent. This will be passed as the first argument of the callback function
+		// and can be used to access certain atributes.
+		canvas.addEventListener('mousemove', updateMousePos);
+		canvas.addEventListener('mousedown', fireBullet);
+
+		update();
+
+		draw();
+	}
+	else
+	{
+		gameOver();
+	}
+}
+
+// This is an event that happens when the window finishes loading and call the assigned function.
+// window is a global variable that holds a reference to the window running the code (ie. a browser tab).
+// onload is a property, in between a variable and a function. It will hold the reference to
+// the function to be called when the windows finishes loading.
+// function() is an inline function, meaning it's being created at runtime and being assigned to a variable.
+window.onload = function()
+{
+	setInterval(gameLoop, 1000/FPS);
+}
+</script>
+</body>
+</html>

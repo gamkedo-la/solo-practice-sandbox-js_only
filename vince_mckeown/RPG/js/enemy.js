@@ -1,13 +1,26 @@
 // tuning constants
-const ENEMY_MOVE_SPEED = 4.0;
+const ENEMY_MOVE_SPEED = 2.0;
+const AI_FRAME_THINK_TIME = 60;
+var enemyList = [];
+
+function addEnemy(){
+	var tempEnemy = new enemyClass();
+	enemyList.push(tempEnemy);
+}
 
 function enemyClass() {
   // variables to keep track of position
   this.x;
   this.y;
   this.tilePath = [];
+  this.pathfindingNow = false;
+  this.framesBeforeReThink = AI_FRAME_THINK_TIME;
+  this.moving = false;
+  this.patrolling = true;
+  this.resting = false;
+  this.trackPlayerRange = 250;
 
-  // hold move states
+  // move states
   this.move_North = false;
   this.move_East = false;
   this.move_South = false;
@@ -20,7 +33,6 @@ function enemyClass() {
   }
   
   this.reset = function() {
-    this.keysHeld = 0;
     if(this.homeX == undefined) {
       for(var i=0; i<roomGrid.length; i++) {
         if( roomGrid[i] == TILE_ENEMY) {
@@ -40,24 +52,47 @@ function enemyClass() {
   } // end of reset
   
   this.move = function() {
+	//pathfinding
+	if(this.framesBeforeReThink-- < 0){
+		this.framesBeforeReThink = AI_FRAME_THINK_TIME;
+		//check if within range of the player
+		var playerDistance = dist (p1.x, p1.y, this.x, this.y);
+		
+		this.resting = this.patrolling = false;
+		
+		if(playerDistance >= this.trackPlayerRange){
+			if(randomIntFromInterval(0,10) < 4){
+				this.resting = true;
+			} else {
+				this.patrolling = true;
+			}
+		}
+		
+		if(this.patrolling){ //patrolling
+			var patrolLocationX = randomIntFromInterval(0,800);
+			var patrolLocationY = randomIntFromInterval(0,600);
+			var patrolToLocation = pixCoordToIndex(patrolLocationX, patrolLocationY);
+			startPath(patrolToLocation, this);
+			
+		} else if (this.resting){
+			this.move_East = this.move_West = this.move_North = this.move_South = false;
+		} else { // tracking player
+			var playerIdx = pixCoordToIndex(p1.x,p1.y);
+			startPath(playerIdx, this); 
+		}
+	}
+
+	
     var nextX = this.x;
     var nextY = this.y;
 	
 	var enemyCol = Math.floor(this.x/TILE_W);
 	var enemyRow = Math.floor(this.y/TILE_H);
-	
+
 	var enemyCurrentTileIndex = roomTileToIndex(enemyCol, enemyRow);
-	var playerCol = Math.floor(p1.x/TILE_W);
-	
-	if(enemyCol == playerCol){
-		SetupPathfindingGridData(e1);
-		//var playerIdx = tileCoordToIndex(p1.x, p1.y);
-		grid[24].setGoal();
-	}
-	
+		
 	if(this.tilePath.length > 0){
 		var targetIndex = this.tilePath[0];
-		//console.log(targetIndex);
 		var targetC = targetIndex % ROOM_COLS;
 		var targetR = Math.floor(targetIndex / ROOM_COLS);
 		var targetX = targetC * TILE_W + (TILE_W * 0.5);
@@ -66,7 +101,6 @@ function enemyClass() {
 		var deltaY = Math.abs(targetY - this.y);
 		
 		this.move_East = this.move_West = this.move_North = this.move_South = false;
-		//console.log("DeltaX:" + deltaX + " DeltaY:" + deltaY + " Speed:" + ENEMY_MOVE_SPEED);
 		
 		if(deltaX <= ENEMY_MOVE_SPEED){
 			this.x = targetX;
@@ -103,6 +137,11 @@ function enemyClass() {
 		}
 	} 
 	
+	if(this.move_North || this.move_East || this.move_South || this.move_West){
+		this.moving = true;
+	} else {
+		this.moving = false;
+	}
 	
     if(this.move_North) {
       nextY -= ENEMY_MOVE_SPEED;
@@ -130,7 +169,7 @@ function enemyClass() {
 	  case TILE_KEY:
         this.x = nextX;
         this.y = nextY;
-        break;
+		break;
       case TILE_DOOR:
 	  case TILE_DOOR_YELLOW_FRONT:
 	  case TILE_WALL_1:
@@ -153,7 +192,7 @@ function enemyClass() {
   }
   
   this.draw = function() {
-    drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.x, this.y, 0.0 );
+    drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, 0.0 );
   }
 
 } // end of class

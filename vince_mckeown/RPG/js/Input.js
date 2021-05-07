@@ -55,22 +55,11 @@ function keyReleased(evt) {
 
 function mouseclicked(evt) {
 	if(grid[tileOverIdx].elementType != WALL) {
-		grid[tileOverIdx].setGoal(); 
-    }
-	
-	pathfindingNow = !pathfindingNow;
-	if(endTile != null) {
-		pathfindingNow = false;
-	}
-	if(pathfindingNow == false) {
-		SetupPathfindingGridData(p1);
-	}
-
-    if (tileOverIdx < 0 || tileOverIdx >= roomGrid.length) { // invalid or off board
-        console.log("Not a valid location");
-		return;
+		startPath(tileOverIdx, p1); 
     }
 }
+
+
 
 function mousereleased(evt) {
     mouseDragging = false;

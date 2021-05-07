@@ -1,14 +1,10 @@
 var unvisitedList = [];
-var endTile = null;
-var pathfindingNow = false;
 
 function SetupPathfindingGridData(whichPathfinder) {
     var endR = -1;
     var endC = -1;
 
     unvisitedList = [];
-    endTile = null;
-    pathfindingNow = false;
 	var pathfinder = whichPathfinder;
 
     if(grid.length > 0) { // non-zero, copy over player set walls into tileGrid for reset
@@ -47,8 +43,6 @@ function SetupPathfindingGridData(whichPathfinder) {
         }
     }
 	
-	var sourceTile = grid[tileCoordToIndex(10, 10)] = new GridElement();
-
      ///// different pass now that endR and endC are set, find h
 
     for (var eachCol = 0; eachCol < ROOM_COLS; eachCol++) { /////
@@ -73,11 +67,25 @@ function hValCal(atColumn,atRow, toColumn,toRow, multWeight, geometric) { /////
   }
 }
 
+function startPath(toTile, pathFor){
+	
+    if (toTile< 0 || toTile >= roomGrid.length) { // invalid or off board
+        console.log("Not a valid location");
+		return;
+    }
+	
+	SetupPathfindingGridData(pathFor);
+	grid[toTile].setGoal();
+	PathfindingNextStep(pathFor);
+}
+
 function PathfindingNextStep(whichPathfinder) {
     var tentativeDistance = 0;
 	var pathfinder = whichPathfinder;
+	var safetyBreak = 1000;
+	var endTile = null;
 
-      if(unvisitedList.length > 0) { //// "while Q is not empty:"
+      while(unvisitedList.length > 0 && safetyBreak-- > 0) { //// "while Q is not empty:"
         //// "u := vertex in Q with min dist[u]"
         var currentTile = null;
         var ctDistWithH; ///// a* with hVal heuristic added
@@ -113,10 +121,10 @@ function PathfindingNextStep(whichPathfinder) {
       
       } 
       
-      else { //// all nodes have been accounted for, work backward from end's tiles for path
+       { //// all nodes have been accounted for, work backward from end's tiles for path
              //// terminate the algorithm from taking further steps since we found what we needed
         if (endTile!=null) {
-          console.log("Best distance found: " + endTile.distance);
+          //console.log("Best distance found: " + endTile.distance);
 			if(endTile.distance == INFINITY_START_DISTANCE){
 				console.log("No Valid Path Found");
 			} else {
@@ -133,7 +141,6 @@ function PathfindingNextStep(whichPathfinder) {
 			  }
 			}
 		}
-        pathfindingNow = false;
       }
 }
 

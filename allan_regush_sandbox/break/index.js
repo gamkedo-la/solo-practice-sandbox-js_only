@@ -9,6 +9,8 @@ const BRICK_HEIGHT = 20;
 const BRICK_GAP = 2;
 const BRICK_COLS = 10;
 const BRICK_ROWS = 14;
+const BRICK_TOTAL = BRICK_COLS * BRICK_ROWS;
+let bricksleft = 0;
 
 let brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
 
@@ -149,7 +151,14 @@ function isBrickAtTileCoord(col, row) {
 }
 
 function resetBricks() {
-    for(let i = 0; i < BRICK_COLS * BRICK_ROWS; ++i) {
+    bricksleft = 0;
+    let i = 0;
+    for(; i < 3 * BRICK_COLS; ++i) {
+        brickGrid[i] = false;
+        
+    }
+    for(; i < BRICK_TOTAL; ++i) {
+        ++bricksleft;
         brickGrid[i] = true;
     }
 }
