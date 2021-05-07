@@ -12,12 +12,13 @@ const PLAYERPADDLEY = 540;
 const PADDLE_WIDTH = 100;
 const PADDLE_HEIGHT = 10;
 
-// brick constants
+// brick variables/constants
 const BRICK_W = 80;
 const BRICK_H = 20;
 const BRICK_GAP = 2;
 const BRICK_COLS = 10;
 const BRICK_ROWS = 14;
+let brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
 
 function calculateMousePos(evt) {
   let rect = canvas.getBoundingClientRect(), root = document.documentElement;
@@ -48,6 +49,8 @@ window.onload = function(){
     let mousePos = calculateMousePos(evt);
     playerPaddleX = mousePos.x - (PADDLE_WIDTH/2); // for center of paddle
   });
+
+  resetBricks();
 }
 
 function moveEverything(){
@@ -98,10 +101,12 @@ function colorCircle(centerX, centerY, radius, fillColor){
 function drawBricks(){
   for(let eachCol = 0; eachCol < BRICK_COLS; eachCol++){
     for(let eachRow = 0; eachRow < BRICK_ROWS; eachRow++){
-      let brickLeftEdgeX = eachCol * BRICK_W;
-      let brickTopEdgeY = eachRow * BRICK_H;
+      if(isBrickAtTileCoord(eachCol, eachRow)){
+        let brickLeftEdgeX = eachCol * BRICK_W;
+        let brickTopEdgeY = eachRow * BRICK_H;
 
-      colorRect(brickLeftEdgeX, brickTopEdgeY, BRICK_W - BRICK_GAP, BRICK_H - BRICK_GAP, 'blue');
+        colorRect(brickLeftEdgeX, brickTopEdgeY, BRICK_W - BRICK_GAP, BRICK_H - BRICK_GAP, 'blue');
+      }
     }
   }
 }
@@ -118,6 +123,21 @@ function drawEverything(){
 
   // draw brick field
   drawBricks();
+}
+
+function resetBricks() {
+  for (var i = 0; i < BRICK_COLS * BRICK_ROWS; i++) {
+    if(Math.random() < 0.5){
+    brickGrid[i] = 1;
+    } else {
+      brickGrid[i] = 0;
+    }
+  }
+}
+
+function isBrickAtTileCoord(brickTileCol, brickTileRow){
+  let brickIndex = brickTileCol + BRICK_COLS * brickTileRow;
+  return(brickGrid[brickIndex] == 1);
 }
 
 // page 95
