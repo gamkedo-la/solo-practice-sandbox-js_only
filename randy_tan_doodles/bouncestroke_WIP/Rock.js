@@ -1,4 +1,12 @@
 const Rock = function(cvs = canvas, ctx = canvasContext) {
+    const BOUNCE_X = 9000;
+    const BOUNCE_Y = 9000
+
+    const ANGULAR_VELOCITY = 5;
+
+    const MAX_SPEED_X = 600;
+    const MAX_SPEED_Y = 600;
+
     this.x = 0;
     this.y = 0;
     this.vx = 0;
@@ -28,7 +36,7 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
         if (this.imgLoaded) {
             this.x += this.vx * dt;
 
-            this.vy += 9.81;            
+            this.vy += 9.81;
             this.y += this.vy * dt;
 
             this.x1 = this.x + 14;
@@ -38,38 +46,32 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
             
             this.xMid = this.x1 + (this.x2 - this.x1) / 2;
 
-            for (let c = 0; c < col.length; c++) {
-                if (col[c] != undefined) {
-                    
-                    if (col[c].name == "stroke tool") {
-                        if (col[c].points && col[c].points.length > 4) {
-                            for (let i = 0; i < col[c].points.length; i++) {
-                                let p = col[c].points[i];                    
-                                
+            col.forEach(c => {
+                if (c) {                    
+                    if (c.name == "stroke tool") {
+                        if (c.points && c.points.length > 4) {
+                            c.points.forEach(p => {
                                 if (this.colCheck.isColliding(p.x, p.y, p.x, p.y, 
-                                                            this.x1, this.y1, this.x2, this.y2)) {
-                                    this.vy += -15000 * dt;
+                                    this.x1, this.y1, this.x2, this.y2)) {
+                                        
+                                    this.vy += -BOUNCE_Y * dt;
 
                                     if (p.x > this.xMid) {
-                                        this.vx -= 15000 * dt;
-                                        this.angularVelocity += 20;
-                                        break;  
+                                        this.vx += -BOUNCE_X * dt;
+                                        this.angularVelocity += ANGULAR_VELOCITY;                                        
                                     }
 
                                     if (p.x < this.xMid) {
-                                        this.vx += 15000 * dt;
-                                        this.angularVelocity -= 20;
-                                        break;
+                                        this.vx += BOUNCE_X * dt;
+                                        this.angularVelocity -= ANGULAR_VELOCITY;                                        
                                     }
-
-                                    break;
                                 }
-                            }
+                            });
                         }
                     }
 
-                    if (col[c].name == "net") {
-                        let net = col[c];
+                    if (c.name == "net") {
+                        let net = c;
                         if (this.colCheck.isColliding(this.x2, this.y2, this.x1, this.y1,
                                                       net.x, net.y, net.x + net.w, net.y + net.h)) {
                             
@@ -80,19 +82,19 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
                                 
                             if (this.x > net.x) {
                                 if (l) {
-                                    this.vx = 15000 * dt;                                
+                                    this.vx = BOUNCE_X * dt;                                
                                 }
                             }
                             if (this.x < net.x) {
                                 if (r) {
-                                    this.vx = -15000 * dt;                                                 
+                                    this.vx = -BOUNCE_X * dt;                                                 
                                 }
                             }
                         }
                     }
 
                 }
-            }
+            });
             
             if (this.x1 < 0) {
                 this.vx = Math.abs(this.vx) * 0.75;
@@ -101,11 +103,19 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
                 this.vx = -Math.abs(this.vx) * 0.75;
             }
 
-            if (this.vy > cvs.height * 0.5) {
-                this.vy = this.y > cvs.height - this.img.height * 0.5 ? -35000 * dt : this.vy;
+            if (this.y1 <= -100) {
+                this.vy = Math.abs(this.vy);
             }
-            else {
-                this.vy = this.y < 0 ? 10000 * dt : this.vy;
+            if (this.y2 > cvs.height) {                
+                this.vy += -35000 * dt;
+            }
+
+            if (Math.abs(this.vx) > MAX_SPEED_X) {
+                this.vx = Math.sign(this.vx) * Math.abs(MAX_SPEED_X);
+            }
+
+            if (Math.abs(this.vy) > MAX_SPEED_Y) {
+                this.vy = Math.sign(this.vy) * Math.abs(MAX_SPEED_Y);
             }
 
             this.currentRotationRad += this.angularVelocity * dt;
