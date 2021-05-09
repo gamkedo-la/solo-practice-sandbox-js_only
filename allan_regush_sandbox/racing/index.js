@@ -18,7 +18,7 @@ const map = [
   1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
   1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
   1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
-  1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+  1, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
   1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
   1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
   1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -63,6 +63,7 @@ function render() {
   ctx.fillStyle = 'blue';
   ctx.fillRect(gameState.p1.x, gameState.p1.y, 10, 10);
   drawGrid();
+  drawPlayer();
 }
 
 function trackTileToIndex(tileCol, tileRow) {
@@ -75,11 +76,24 @@ function drawGrid() {
     for(let row = 0; row < BRICK_ROWS; ++row) {
       const brickLeftEdgeX = col * BRICK_WIDTH;
       const brickTopEdgeY = row *  BRICK_HEIGHT;
-      if (map[trackTileToIndex(col, row)] != 0) 
+      const index = map[trackTileToIndex(col, row)];
+      if (index === 2) {
+        drawRectangle(brickLeftEdgeX, brickTopEdgeY,
+          BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT - BRICK_GAP, 'green');
+          map[trackTileToIndex(col, row)] = 0;
+          gameState.p1.x = brickLeftEdgeX;
+          gameState.p1.y = brickTopEdgeY;
+      }
+      if (index === 1)
         drawRectangle(brickLeftEdgeX, brickTopEdgeY,
           BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT - BRICK_GAP, 'blue');
     }
   }
+}
+
+function drawPlayer() {
+  drawRectangle(gameState.p1.x, gameState.p1.y,
+    BRICK_WIDTH - BRICK_GAP, BRICK_HEIGHT - BRICK_GAP, 'green');
 }
 
 function blackoutCanvas() {
