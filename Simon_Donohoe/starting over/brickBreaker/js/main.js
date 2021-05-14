@@ -2,8 +2,8 @@
 let canvas, canvasContext;
 
 // ball variables/constants
-let ballX = 75, ballY = 75;
-let ballSpeedX = 5, ballSpeedY = 7;
+let ballX = 400, ballY = 400;
+let ballSpeedX = 2, ballSpeedY = 5;
 const BALLDIAMETER = 10;
 
 // paddle variables/constants
@@ -63,7 +63,7 @@ function moveEverything(){
   }
 
   if(ballY > canvas.height){ // if the ball passes the bottom of the canvas
-    ballX = 75, ballY = 75; // reset the ball
+    ballX = 400, ballY = 400; // reset the ball
   }
 
   if(ballSpeedY > 0) {
@@ -81,6 +81,7 @@ function moveEverything(){
     }
   }
 
+  removeBrickAtPixelCoord(ballX, ballY);
   // move the ball to the right
   ballX += ballSpeedX;
   ballY += ballSpeedY;
@@ -127,17 +128,35 @@ function drawEverything(){
 
 function resetBricks() {
   for (var i = 0; i < BRICK_COLS * BRICK_ROWS; i++) {
-    if(Math.random() < 0.5){
     brickGrid[i] = 1;
-    } else {
-      brickGrid[i] = 0;
-    }
   }
 }
 
+function brickTileToIndex(brickColumn, brickRow){
+  return (brickColumn + BRICK_COLS * brickRow);
+}
+
 function isBrickAtTileCoord(brickTileCol, brickTileRow){
-  let brickIndex = brickTileCol + BRICK_COLS * brickTileRow;
+  let brickIndex = brickTileToIndex(brickTileCol, brickTileRow);
   return(brickGrid[brickIndex] == 1);
 }
 
-// page 95
+function removeBrickAtPixelCoord(pixelX, pixelY) {
+  // two variables to find out which brick was hit
+  let brickColumn = pixelX / BRICK_W; 
+  let brickRow = pixelY / BRICK_H;
+
+  // using Math.floor to round the number down
+  brickColumn = Math.floor(brickColumn); 
+  brickRow = Math.floor(brickRow);
+
+  if(brickColumn < 0 || brickColumn >= BRICK_COLS || brickRow < 0 || brickRow >= BRICK_ROWS){
+    return;
+  }
+
+  let brickIndex = brickTileToIndex(brickColumn, brickRow);
+
+  brickGrid[brickIndex] = 0;
+}
+
+// page 110
