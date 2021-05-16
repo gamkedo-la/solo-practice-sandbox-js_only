@@ -20,7 +20,6 @@ function playerClass() {
     }
 
     this.init = function () {
-        colorCircle(this.x, this.y, 20, 0, "Black");
         this.reset();
     }
 
