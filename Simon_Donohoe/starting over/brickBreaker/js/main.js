@@ -81,7 +81,8 @@ function moveEverything(){
     }
   }
 
-  removeBrickAtPixelCoord(ballX, ballY);
+  breakAndBounceOffBrickAtPixelCoord(ballX, ballY);
+
   // move the ball to the right
   ballX += ballSpeedX;
   ballY += ballSpeedY;
@@ -141,7 +142,7 @@ function isBrickAtTileCoord(brickTileCol, brickTileRow){
   return(brickGrid[brickIndex] == 1);
 }
 
-function removeBrickAtPixelCoord(pixelX, pixelY) {
+function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY) {
   // two variables to find out which brick was hit
   let brickColumn = pixelX / BRICK_W; 
   let brickRow = pixelY / BRICK_H;
@@ -151,12 +152,26 @@ function removeBrickAtPixelCoord(pixelX, pixelY) {
   brickRow = Math.floor(brickRow);
 
   if(brickColumn < 0 || brickColumn >= BRICK_COLS || brickRow < 0 || brickRow >= BRICK_ROWS){
-    return;
+    return false;
   }
 
   let brickIndex = brickTileToIndex(brickColumn, brickRow);
 
-  brickGrid[brickIndex] = 0;
+  if(brickGrid[brickIndex] == 1){
+    let prevBallX = ballX - ballSpeedX;
+    let prevBallY = ballY - ballSpeedY;
+    let prevBrickColumn = Math.floor(prevBallX / BRICK_W);
+    let prevBrickRow = Math.floor(prevBallY / BRICK_H);
+
+    if(prevBrickColumn != brickColumn){
+      ballSpeedX *= -1;
+    }
+    if(prevBrickRow != brickRow){
+      ballSpeedY *= -1;
+    }
+    
+    brickGrid[brickIndex] = 0;
+  }
 }
 
-// page 110
+// page 115
