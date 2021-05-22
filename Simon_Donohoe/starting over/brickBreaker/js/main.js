@@ -158,19 +158,37 @@ function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY) {
   let brickIndex = brickTileToIndex(brickColumn, brickRow);
 
   if(brickGrid[brickIndex] == 1){
+    // ok, so we know we overlap a brick now
+    // let's backtrack to see whether we changed rows or cols on way in
     let prevBallX = ballX - ballSpeedX;
     let prevBallY = ballY - ballSpeedY;
     let prevBrickColumn = Math.floor(prevBallX / BRICK_W);
     let prevBrickRow = Math.floor(prevBallY / BRICK_H);
 
-    if(prevBrickColumn != brickColumn){
-      ballSpeedX *= -1;
+    let bothTestsFailed = true;
+
+    if(prevBrickColumn != brickColumn){// must have come in horizontally
+      let adjacentBrickIndex = brickTileToIndex(prevBrickColumn, brickRow);
+      // make sure the side we want to reflect off isn't blocked!
+      if(brickGrid[adjacentBrickIndex] != 1){
+        ballSpeedX *= -1;
+        bothTestsFailed = false;
+      }
     }
-    if(prevBrickRow != brickRow){
+    if(prevBrickRow != brickRow){// must have come in vertically
+      let adjacentBrickIndex = brickTileToIndex(brickColumn, prevBrickRow);
+      // make sure the side we want to reflect off isn't blocked!
+      if(brickGrid[adjacentBrickIndex] != 1){
+        ballSpeedY *= -1;
+        bothTestsFailed = false;
+      }
+    }
+    // we hit an "armpit" on the inside corner, flip both to avoid going into it
+    if(bothTestsFailed){
+      ballSpeedX *= -1;
       ballSpeedY *= -1;
     }
-    
-    brickGrid[brickIndex] = 0;
+    brickGrid[brickIndex] = 0; // remove brick that got hit
   }
 }
 
