@@ -51,8 +51,8 @@ window.onload = function(){
     playerPaddleX = mousePos.x - (PADDLE_WIDTH/2); // for center of paddle
 
     // for testing purposes
-    ballX = mousePos.x;
-    ballY = mousePos.y;
+    // ballX = mousePos.x;
+    // ballY = mousePos.y;
   });
 
   resetBricks();
@@ -80,7 +80,7 @@ function moveEverything(){
         if(totalBrickCount == 0){
           resetBricks();
         }
-        
+
         let paddleEdgeHit = ballX - (playerPaddleX + PADDLE_WIDTH / 2);
         ballSpeedX = paddleEdgeHit * 0.35;
       }
@@ -134,10 +134,19 @@ function drawEverything(){
 }
 
 function resetBricks() {
-  for (var i = 0; i < BRICK_COLS * BRICK_ROWS; i++) {
-    brickGrid[i] = 1;
+  totalBrickCount = 0;
+
+  for(let eachCol = 0; eachCol < BRICK_COLS; eachCol++){
+    for(let eachRow = 0; eachRow < BRICK_ROWS; eachRow++){
+      let arrayIndex = brickTileToIndex(eachCol, eachRow);
+      if(eachRow >= 3){
+        brickGrid[arrayIndex] = 1;
+        totalBrickCount++;
+      } else {
+        brickGrid[arrayIndex] = 0;
+      }
+    }
   }
-  totalBrickCount = BRICK_COLS * BRICK_ROWS;
 }
 
 function brickTileToIndex(brickColumn, brickRow){
