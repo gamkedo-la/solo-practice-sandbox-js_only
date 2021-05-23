@@ -19,6 +19,7 @@ const BRICK_GAP = 2;
 const BRICK_COLS = 10;
 const BRICK_ROWS = 14;
 let brickGrid = new Array(BRICK_COLS * BRICK_ROWS);
+let totalBrickCount;
 
 function calculateMousePos(evt) {
   let rect = canvas.getBoundingClientRect(), root = document.documentElement;
@@ -48,6 +49,10 @@ window.onload = function(){
   canvas.addEventListener('mousemove', function(evt){
     let mousePos = calculateMousePos(evt);
     playerPaddleX = mousePos.x - (PADDLE_WIDTH/2); // for center of paddle
+
+    // for testing purposes
+    ballX = mousePos.x;
+    ballY = mousePos.y;
   });
 
   resetBricks();
@@ -70,11 +75,12 @@ function moveEverything(){
     if(ballY >= PLAYERPADDLEY && ballY <= PLAYERPADDLEY + PADDLE_HEIGHT){
       if(ballX + (BALLDIAMETER/2)>= playerPaddleX && ballX + (BALLDIAMETER/2)<= playerPaddleX + PADDLE_WIDTH){
         
-        console.log(ballX)
-        console.log(ballX + (BALLDIAMETER/2))
-
         ballSpeedY *= -1;
 
+        if(totalBrickCount == 0){
+          resetBricks();
+        }
+        
         let paddleEdgeHit = ballX - (playerPaddleX + PADDLE_WIDTH / 2);
         ballSpeedX = paddleEdgeHit * 0.35;
       }
@@ -106,7 +112,7 @@ function drawBricks(){
       if(isBrickAtTileCoord(eachCol, eachRow)){
         let brickLeftEdgeX = eachCol * BRICK_W;
         let brickTopEdgeY = eachRow * BRICK_H;
-
+        
         colorRect(brickLeftEdgeX, brickTopEdgeY, BRICK_W - BRICK_GAP, BRICK_H - BRICK_GAP, 'blue');
       }
     }
@@ -131,6 +137,7 @@ function resetBricks() {
   for (var i = 0; i < BRICK_COLS * BRICK_ROWS; i++) {
     brickGrid[i] = 1;
   }
+  totalBrickCount = BRICK_COLS * BRICK_ROWS;
 }
 
 function brickTileToIndex(brickColumn, brickRow){
@@ -189,6 +196,8 @@ function breakAndBounceOffBrickAtPixelCoord(pixelX, pixelY) {
       ballSpeedY *= -1;
     }
     brickGrid[brickIndex] = 0; // remove brick that got hit
+    totalBrickCount--;
+    console.log(totalBrickCount);
   }
 }
 
