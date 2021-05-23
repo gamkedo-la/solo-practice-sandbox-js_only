@@ -3,6 +3,7 @@ canvas.id = "gameCanvas";
 const canvasContext = canvas.getContext("2d");
 canvas.width = 1280;
 canvas.height = 600;
+const ASPECT_RATIO = 16/9;
 document.body.appendChild(canvas);
 const wd = window;
 requestAnimationFrame = wd.requestAnimationFrame || wd.webkitRequestAnimationFrame || wd.msRequestAnimationFrame || wd.mozRequestAnimationFrame;

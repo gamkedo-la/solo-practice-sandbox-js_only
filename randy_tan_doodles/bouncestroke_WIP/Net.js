@@ -6,7 +6,8 @@ const Net = function(cvs = canvas, ctx = canvasContext) {
     this.y = cvs.height - this.h;
 
     this.update = dt => {        
-        
+        this.x = cvs.width * 0.5;
+        this.y = cvs.height - this.h;
     };
 
     this.render = dt => {
