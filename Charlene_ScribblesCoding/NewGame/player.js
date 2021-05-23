@@ -19,7 +19,9 @@ function playerClass() {
         this.controlKeyForWest = westKey;
     }
 
-    this.init = function () {
+    this.init = function (graphic, name) {
+        this.myBitmap = graphic;
+        this.myName = name;
         this.reset();
     }
 
@@ -52,7 +54,6 @@ function playerClass() {
     }
 
     this.draw = function () {
-        colorCircle(this.x, this.y, 20, 0, "Black");
+        drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, 0.0);
     }
-
 }
