@@ -15,7 +15,7 @@ let InputMouse = function (cvs = canvas) {
     };
 
     this.mouseup = e => {
-        this.isDown = false;        
+        this.isDown = false;
         this.getXY(e);
     };
 

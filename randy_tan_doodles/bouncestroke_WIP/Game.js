@@ -8,6 +8,14 @@ window.addEventListener('focus', e => {
     then = Date.now();
     requestAnimationFrame(main);
 });
+window.addEventListener('load', e => {
+    canvas.height = window.innerHeight;
+    canvas.width = canvas.height * ASPECT_RATIO;
+});
+window.addEventListener('resize', e => {
+    canvas.height = window.innerHeight;
+    canvas.width = canvas.height * ASPECT_RATIO;
+});
 
 canvas.addEventListener('touchforcechange', e => {
     e.preventDefault();
