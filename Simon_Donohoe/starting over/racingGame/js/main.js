@@ -2,9 +2,8 @@
 let canvas, canvasContext;
 
 // car variables/constants
-let carX = 400, carY = 400;
-let carSpeedX = 2, carSpeedY = 5;
-const CARDIAMETER = 10;
+let carX = 75, carY = 75;
+let carSpeedX = 0, carSpeedY = 0;
 
 // track variables/constants
 const TRACK_W = 40;
@@ -12,8 +11,22 @@ const TRACK_H = 40;
 const TRACK_GAP = 1;
 const TRACK_COLS = 20;
 const TRACK_ROWS = 15;
-let trackGrid = new Array(TRACK_COLS * TRACK_ROWS);
-let totalTrackCount;
+let trackGrid =
+[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+  1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+  1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
+  1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1,
+  1, 0, 0, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1,
+  1, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+  1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
+  1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+  1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+  1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+  1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
+  1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
+  1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
 function calculateMousePos(evt) {
   let rect = canvas.getBoundingClientRect(), root = document.documentElement;
@@ -39,8 +52,7 @@ window.onload = function(){
     moveEverything();
     drawEverything();
   }, 1000/framesPerSecond);
-
-  resetTracks();
+  carReset();
 }
 
 function moveEverything(){
@@ -53,14 +65,10 @@ function moveEverything(){
   }
 
   if(carY > canvas.height){ // if the car passes the bottom of the canvas
-    carX = 400, carY = 400; // reset the car
+    carReset(); // reset the car
   }
 
-  if(carSpeedY > 0) {
-    
-  }
-
-  breakAndBounceOffTrackAtPixelCoord(carX, carY);
+  bounceOffTrackAtPixelCoord(carX, carY);
 
   // move the car to the right
   carX += carSpeedX;
@@ -79,7 +87,7 @@ function colorCircle(centerX, centerY, radius, fillColor){
   canvasContext.fill();
 }
 
-function drawTracks(){
+function drawTrack(){
   for(let eachCol = 0; eachCol < TRACK_COLS; eachCol++){
     for(let eachRow = 0; eachRow < TRACK_ROWS; eachRow++){
       if(isTrackAtTileCoord(eachCol, eachRow)){
@@ -97,22 +105,10 @@ function drawEverything(){
   colorRect(0, 0, canvas.width, canvas.height, "black");
 
   // draw a circle(game car)
-  colorCircle(carX, carY, CARDIAMETER, "white");
+  colorCircle(carX, carY, 10, "white");
 
   // draw track field
-  drawTracks();
-}
-
-function resetTracks() {
-  totalTrackCount = 0;
-
-  for(let eachCol = 0; eachCol < TRACK_COLS; eachCol++){
-    for(let eachRow = 0; eachRow < TRACK_ROWS; eachRow++){
-      let arrayIndex = trackTileToIndex(eachCol, eachRow);
-        trackGrid[arrayIndex] = 1;
-        totalTrackCount++;
-    }
-  }
+  drawTrack();
 }
 
 function trackTileToIndex(trackColumn, trackRow){
@@ -124,7 +120,7 @@ function isTrackAtTileCoord(trackTileCol, trackTileRow){
   return(trackGrid[trackIndex] == 1);
 }
 
-function breakAndBounceOffTrackAtPixelCoord(pixelX, pixelY) {
+function bounceOffTrackAtPixelCoord(pixelX, pixelY) {
   // two variables to find out which track was hit
   let trackColumn = pixelX / TRACK_W; 
   let trackRow = pixelY / TRACK_H;
@@ -170,10 +166,12 @@ function breakAndBounceOffTrackAtPixelCoord(pixelX, pixelY) {
       carSpeedX *= -1;
       carSpeedY *= -1;
     }
-    trackGrid[trackIndex] = 0; // remove track that got hit
-    totalTrackCount--;
-    console.log(totalTrackCount);
   }
 }
 
-// page 125
+function carReset(){
+  carX = canvas.width/2+50;
+  carY = canvas.width/2;
+}
+
+// page 128
