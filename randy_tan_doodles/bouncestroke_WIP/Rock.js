@@ -125,9 +125,11 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
             
             if (this.x1 < 0) {
                 this.vx = Math.abs(this.vx) * 0.75;
+                this.is_squishing = true;
             }
             else if (this.x2 > cvs.width) {
                 this.vx = -Math.abs(this.vx) * 0.75;
+                this.is_squishing = true;
             }
 
             if (this.y1 <= -100) {
