@@ -17,6 +17,16 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
     this.x2 = 0;
     this.y2 = 0;
 
+    this.scale_original_x = 1;
+    this.scale_original_y = 1;
+    this.scale_x = this.scale_original_x;
+    this.scale_y = this.scale_original_y;
+    this.squish_rate_x = 0.01;
+    this.squish_rate_y = 0.01;
+    this.squish_min_x = 0.8;
+    this.squish_min_y = 0.7;
+    this.is_squishing = false;
+
     this.currentRotationRad = 0;
     this.angularVelocity = 0;
     this.angularDampening = 0.2;
@@ -58,7 +68,7 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
 
                                     if (p.x > this.xMid) {
                                         this.vx += -BOUNCE_X * dt;
-                                        this.angularVelocity += ANGULAR_VELOCITY;                                        
+                                        this.angularVelocity += ANGULAR_VELOCITY;                                    
                                     }
 
                                     if (p.x < this.xMid) {
@@ -95,6 +105,23 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
 
                 }
             });
+
+            if (this.is_squishing) {                
+                if (this.scale_y > 0 && this.scale_y > this.squish_min_y) {
+                    this.scale_x += this.squish_rate_x;
+                    this.scale_y += -this.squish_rate_y;
+                }
+                else {
+                    this.is_squishing = false;
+                }
+            }
+            else {
+                if (this.scale_y < this.scale_original_y) {
+                    this.scale_x += -this.squish_rate_x;
+                    this.scale_y += this.squish_rate_y;
+                }
+            }
+
             
             if (this.x1 < 0) {
                 this.vx = Math.abs(this.vx) * 0.75;
@@ -108,7 +135,8 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
             }
             if (this.y2 > cvs.height) {                
                 this.vy += -35000 * dt;
-            }
+                this.is_squishing = true;
+            }            
 
             if (Math.abs(this.vx) > MAX_SPEED_X) {
                 this.vx = Math.sign(this.vx) * Math.abs(MAX_SPEED_X);
@@ -121,7 +149,7 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
             this.currentRotationRad += this.angularVelocity * dt;
 
             if (this.angularVelocity > 0.1) {
-                this.angularVelocity += -this.angularDampening;                
+                this.angularVelocity += -this.angularDampening;          
             }
             else if (this.angularVelocity < -0.1) {
                 this.angularVelocity += this.angularDampening;
@@ -135,6 +163,7 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
             
             ctx.translate(this.x1 + 10, this.y1 + 15);
             ctx.rotate(this.currentRotationRad * Math.PI / 180);
+            ctx.scale(this.scale_x, this.scale_y);
             Draw.image(this.img, 0, 0, 176, 185, -this.img.width * 0.25, -this.img.height * 0.25, 176 * 0.5, 185 * 0.5);
 
             ctx.restore();
