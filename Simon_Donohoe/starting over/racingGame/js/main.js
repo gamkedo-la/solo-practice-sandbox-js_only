@@ -5,6 +5,9 @@ let canvas, canvasContext;
 let carX = 75, carY = 75;
 let carSpeedX = 0, carSpeedY = 0;
 
+let carPic = document.createElement("img");
+let carPicLoaded = false;
+
 // track variables/constants
 const TRACK_W = 40;
 const TRACK_H = 40;
@@ -47,6 +50,12 @@ window.onload = function(){
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
 
+  // load car image
+  carPic.onload = function(){
+    carPicLoaded = true; // don't try to display until it's loaded
+  }
+  carPic.src = "./img/player1.png";
+
   let framesPerSecond = 60;
   setInterval(function(){ 
     moveEverything();
@@ -80,11 +89,17 @@ function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
   canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
 }
 
-function colorCircle(centerX, centerY, radius, fillColor){
-  canvasContext.fillStyle = fillColor;
-  canvasContext.beginPath();
-  canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
-  canvasContext.fill();
+// function colorCircle(centerX, centerY, radius, fillColor){
+//   canvasContext.fillStyle = fillColor;
+//   canvasContext.beginPath();
+//   canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+//   canvasContext.fill();
+// }
+
+function carDraw() {
+  if(carPicLoaded) {
+    canvasContext.drawImage(carPic, carX - carPic.width / 2, carY - carPic.height / 2)
+  }
 }
 
 function drawTrack(){
@@ -105,7 +120,8 @@ function drawEverything(){
   colorRect(0, 0, canvas.width, canvas.height, "black");
 
   // draw a circle(game car)
-  colorCircle(carX, carY, 10, "white");
+  // colorCircle(carX, carY, 10, "white");
+  carDraw();
 
   // draw track field
   drawTrack();
