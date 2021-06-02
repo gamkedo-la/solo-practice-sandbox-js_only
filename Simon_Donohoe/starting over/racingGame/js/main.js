@@ -4,9 +4,9 @@ let canvas, canvasContext;
 // car variables/constants
 let carX = 75, carY = 75;
 let carSpeedX = 0, carSpeedY = 0;
-
-let carPic = document.createElement("img");
+let carPic = document.createElement("img"); // make the car an image
 let carPicLoaded = false;
+let carAng = 0; // angle of car rotation
 
 // track variables/constants
 const TRACK_W = 40;
@@ -96,9 +96,18 @@ function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
 //   canvasContext.fill();
 // }
 
+function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY, withAngle) {
+  canvasContext.save(); // allows us to undo translate movement and rotate spin
+  canvasContext.translate(atX, atY); // sets the point where our graphic will go
+  canvasContext.rotate(withAngle); //sets the rotation
+  canvasContext.drawImage(graphic, -graphic.width / 2, -graphic.height / 2); // center, draw
+  canvasContext.restore(); //undo the translation movement and rotation since save()
+}
+
 function carDraw() {
+  carAng += 0.2;
   if(carPicLoaded) {
-    canvasContext.drawImage(carPic, carX - carPic.width / 2, carY - carPic.height / 2)
+    drawBitmapCenteredAtLocationWithRotation(carPic, carX, carY, carAng);
   }
 }
 
@@ -190,4 +199,4 @@ function carReset(){
   carY = canvas.width/2;
 }
 
-// page 128
+// page 133
