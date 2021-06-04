@@ -2,11 +2,16 @@
 let canvas, canvasContext;
 
 // car variables/constants
+const GROUNDSPEED_DECAY_MULT = 0.94;
+const DRIVE_POWER = 0.5;
+const REVERSE_POWER = -0.2;
+const TURN_RATE = 0.03;
+const MIN_TURN_SPEED = 0.5;
 let carX = 75, carY = 75;
 let carSpeed = 0;
+let carAng = -0.5 * Math.PI; // angle of car rotation
 let carPic = document.createElement("img"); // make the car an image
 let carPicLoaded = false;
-let carAng = 0; // angle of car rotation
 
 // track variables/constants
 const TRACK_W = 40;
@@ -25,11 +30,14 @@ let trackGrid =
   1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
   1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
   1, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-  1, 0, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1,
+  1, 2, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1,
   1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
   1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
   1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+  const TRACK_ROAD = 0;
+  const TRACK_WALL = 1;
+  const TRACK_PLAYER = 2;
 
 // arrow keys for player1 car movement
 const KEY_UP_ARROW = 38;
@@ -57,40 +65,32 @@ function calculateMousePos(evt) {
     y: mouseY
   };
 }
+function setKeyHoldState(thisKey, setTo) {
+  if(thisKey == KEY_UP_ARROW){
+    keyHeld_Gas = setTo;
+  }
+  if(thisKey == KEY_DOWN_ARROW){
+    keyHeld_Reverse = setTo;
+  }
+  if(thisKey == KEY_LEFT_ARROW){
+    keyHeld_TurnLeft = setTo;
+  }
+  if(thisKey == KEY_RIGHT_ARROW){
+    keyHeld_TurnRight = setTo;
+  }
+}
 
 function keyPressed(evt) {
-  document.getElementById("debugText").innerHTML = "KeyCode Pushed: " + evt.keyCode;
+  // document.getElementById("debugText").innerHTML = "KeyCode Pushed: " + evt.keyCode;
 
-  if(evt.keyCode == KEY_UP_ARROW){
-    keyHeld_Gas = true;
-  }
-  if(evt.keyCode == KEY_DOWN_ARROW){
-    keyHeld_Reverse = true;
-  }
-  if(evt.keyCode == KEY_LEFT_ARROW){
-    keyHeld_TurnLeft = true;
-  }
-  if(evt.keyCode == KEY_RIGHT_ARROW){
-    keyHeld_TurnRight = true;  
-  }
+  setKeyHoldState(evt.keyCode, true);
 
-  evt.preventDefault();
+  evt.preventDefault(); // without this, arrow keys scroll the browser
 }
 function keyReleased(evt) {
-  document.getElementById("debugText").innerHTML = "KeyCode Released: " + evt.keyCode;
+  // document.getElementById("debugText").innerHTML = "KeyCode Released: " + evt.keyCode;
 
-  if(evt.keyCode == KEY_UP_ARROW){
-    keyHeld_Gas = false;
-  }
-  if(evt.keyCode == KEY_DOWN_ARROW){
-    keyHeld_Reverse = false;
-  }
-  if(evt.keyCode == KEY_LEFT_ARROW){
-    keyHeld_TurnLeft = false;
-  }
-  if(evt.keyCode == KEY_RIGHT_ARROW){
-    keyHeld_TurnRight = false;  
-  }
+  setKeyHoldState(evt.keyCode, false);
 }
 
 window.onload = function(){
@@ -122,16 +122,18 @@ function moveEverything(){
   }
 
   if(keyHeld_Gas){
-    carSpeed += 0.5;
+    carSpeed += DRIVE_POWER;
   }
   if(keyHeld_Reverse){
-    carSpeed += -0.5;
+    carSpeed += REVERSE_POWER;
   }
-  if(keyHeld_TurnLeft){
-    carAng += -0.03 * Math.PI; // same as: carAng -= 0.03* Math.PI;
-  }
-  if(keyHeld_TurnRight){
-    carAng += 0.03 * Math.PI; 
+  if(Math.abs(carSpeed) >= MIN_TURN_SPEED) {
+    if(keyHeld_TurnLeft){
+    carAng += -TURN_RATE * Math.PI; // same as: carAng -= 0.03* Math.PI;
+    }
+    if(keyHeld_TurnRight){
+      carAng += TURN_RATE * Math.PI; 
+    }
   }
 
   // bounceOffTrackAtPixelCoord(carX, carY);
@@ -139,6 +141,8 @@ function moveEverything(){
   // move the car to the right
   carX += Math.cos(carAng) * carSpeed;
   carY += Math.sin(carAng) * carSpeed;
+
+  carSpeed = carSpeed * GROUNDSPEED_DECAY_MULT;
 }
 
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
@@ -161,7 +165,7 @@ function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY, withAngle) 
   canvasContext.restore(); //undo the translation movement and rotation since save()
 }
 
-function carDraw() {
+function drawCar() {
   // carAng += 0.2;
   if(carPicLoaded) {
     drawBitmapCenteredAtLocationWithRotation(carPic, carX, carY, carAng);
@@ -187,7 +191,7 @@ function drawEverything(){
 
   // draw a circle(game car)
   // colorCircle(carX, carY, 10, "white");
-  carDraw();
+  drawCar();
 
   // draw track field
   drawTrack();
@@ -252,8 +256,17 @@ function bounceOffTrackAtPixelCoord(pixelX, pixelY) {
 }
 
 function carReset(){
-  carX = canvas.width/2+50;
-  carY = canvas.width/2;
+  for(let i = 0; i < trackGrid.length; i++){
+    if(trackGrid[i] == TRACK_PLAYER) {
+      let tileRow = Math.floor(i/TRACK_COLS);
+      let tileCol = i%TRACK_COLS;
+      carX = tileCol * TRACK_W + 0.5*TRACK_W;
+      carY = tileRow * TRACK_H + 0.5*TRACK_H;
+      trackGrid[i] = TRACK_ROAD;
+      document.getElementById("debugText").innerHTML = "Car starting at tile: ("+tileCol+", "+tileRow+") " + "Pixel coordinate: ("+carX+", "+carY+")";
+      break; //found it so no need to keep searching
+    }
+  }
 }
 
 // page 147
