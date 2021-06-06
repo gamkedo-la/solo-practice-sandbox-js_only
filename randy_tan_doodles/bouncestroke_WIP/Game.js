@@ -65,9 +65,9 @@ const reset = () => {
 
 };
 const update = dt => {
-    net.update(dt);
     sun.update(dt);
     rock.update(dt, [stroke, net]);
+    net.update(dt);
     stroke.update(dt, inputMouse, rock);
 
     // console.log(stroke.x1 + " " + stroke.y1 + " to " + stroke.x2 + " " + stroke.y2);

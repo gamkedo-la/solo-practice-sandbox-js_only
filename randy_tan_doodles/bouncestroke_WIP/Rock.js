@@ -67,11 +67,13 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
                                     this.vy += -BOUNCE_Y * dt;
 
                                     if (p.x > this.xMid) {
+                                        this.is_squishing = true;
                                         this.vx += -BOUNCE_X * dt;
                                         this.angularVelocity += ANGULAR_VELOCITY;                                    
                                     }
 
                                     if (p.x < this.xMid) {
+                                        this.is_squishing = true;
                                         this.vx += BOUNCE_X * dt;
                                         this.angularVelocity -= ANGULAR_VELOCITY;                                        
                                     }
@@ -92,11 +94,13 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
                                 
                             if (this.x > net.x) {
                                 if (l) {
-                                    this.vx = BOUNCE_X * dt;                                
+                                    this.is_squishing = true;
+                                    this.vx = BOUNCE_X * dt;                     
                                 }
                             }
                             if (this.x < net.x) {
                                 if (r) {
+                                    this.is_squishing = true;
                                     this.vx = -BOUNCE_X * dt;                                                 
                                 }
                             }
