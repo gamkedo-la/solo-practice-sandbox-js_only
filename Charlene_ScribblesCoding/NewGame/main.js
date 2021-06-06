@@ -25,6 +25,8 @@ function moveEverything() {
 }
 
 function drawEverything() {
+  drawWorld();
+
   drawRect(10, 0, 0, canvas.width, canvas.height, "Black");
   colorCircle(canvas.width / 2, canvas.height / 2, 150, "Red");
   player.draw();

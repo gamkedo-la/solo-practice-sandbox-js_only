@@ -22,7 +22,9 @@ function loadImageForTrackCode(tileCode, fileName) {
 
 function loadImages() {
     var imageList = [
-        { varName: playerPic, theFile: "warrior.png" }
+        { varName: playerPic, theFile: "warrior.png" },
+        { pathType: WALL, theFIle: "world_wall.png" },
+        { pathType: PATH, theFile: "world_ground.png" }
     ];
 
     picsToLoad = imageList.length;
