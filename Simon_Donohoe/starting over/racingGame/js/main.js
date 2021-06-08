@@ -116,10 +116,10 @@ window.onload = function(){
 }
 
 function moveEverything(){
-  if(carX > canvas.width || carX < 0 || carY > canvas.height || carY < 0){ // if the car hits the left or right edge
-    // carSpeed *= -1; // reverse the cars direction
-    carSpeed = 0;
-  }
+  // if(carX > canvas.width || carX < 0 || carY > canvas.height || carY < 0){ // if the car hits the left or right edge
+  //   // carSpeed *= -1; // reverse the cars direction
+  //   carSpeed = 0;
+  // }
 
   if(keyHeld_Gas){
     carSpeed += DRIVE_POWER;
@@ -127,6 +127,7 @@ function moveEverything(){
   if(keyHeld_Reverse){
     carSpeed += REVERSE_POWER;
   }
+
   if(Math.abs(carSpeed) >= MIN_TURN_SPEED) {
     if(keyHeld_TurnLeft){
     carAng += -TURN_RATE * Math.PI; // same as: carAng -= 0.03* Math.PI;
@@ -136,11 +137,19 @@ function moveEverything(){
     }
   }
 
-  // bounceOffTrackAtPixelCoord(carX, carY);
+  let nextX = carX + Math.cos(carAng) * carSpeed;
+  let nextY = carY + Math.sin(carAng) * carSpeed; 
+
+  if(checkForTrackAtPixelCoord(nextX, nextY)){
+    carX = nextX;
+    carY = nextY;
+  } else {
+    carSpeed = -0.5 * carSpeed;
+  }
 
   // move the car to the right
-  carX += Math.cos(carAng) * carSpeed;
-  carY += Math.sin(carAng) * carSpeed;
+  // carX += Math.cos(carAng) * carSpeed;
+  // carY += Math.sin(carAng) * carSpeed;
 
   carSpeed = carSpeed * GROUNDSPEED_DECAY_MULT;
 }
@@ -175,7 +184,7 @@ function drawCar() {
 function drawTrack(){
   for(let eachCol = 0; eachCol < TRACK_COLS; eachCol++){
     for(let eachRow = 0; eachRow < TRACK_ROWS; eachRow++){
-      if(isTrackAtTileCoord(eachCol, eachRow)){
+      if(isWallAtTileCoord(eachCol, eachRow)){
         let trackLeftEdgeX = eachCol * TRACK_W;
         let trackTopEdgeY = eachRow * TRACK_H;
         
@@ -201,12 +210,12 @@ function trackTileToIndex(trackColumn, trackRow){
   return (trackColumn + TRACK_COLS * trackRow);
 }
 
-function isTrackAtTileCoord(trackTileCol, trackTileRow){
+function isWallAtTileCoord(trackTileCol, trackTileRow){
   let trackIndex = trackTileToIndex(trackTileCol, trackTileRow);
-  return(trackGrid[trackIndex] == 1);
+  return(trackGrid[trackIndex] == TRACK_WALL);
 }
 
-function bounceOffTrackAtPixelCoord(pixelX, pixelY) {
+function checkForTrackAtPixelCoord(pixelX, pixelY) {
   // two variables to find out which track was hit
   let trackColumn = pixelX / TRACK_W; 
   let trackRow = pixelY / TRACK_H;
@@ -221,38 +230,7 @@ function bounceOffTrackAtPixelCoord(pixelX, pixelY) {
 
   let trackIndex = trackTileToIndex(trackColumn, trackRow);
 
-  if(trackGrid[trackIndex] == 1){
-    // ok, so we know we overlap a track now
-    // let's backtrack to see whether we changed rows or cols on way in
-    let prevCarX = carX - carSpeedX;
-    let prevCarY = carY - carSpeedY;
-    let prevTrackColumn = Math.floor(prevCarX / TRACK_W);
-    let prevTrackRow = Math.floor(prevCarY / TRACK_H);
-
-    let bothTestsFailed = true;
-
-    if(prevTrackColumn != trackColumn){// must have come in horizontally
-      let adjacentTrackIndex = trackTileToIndex(prevTrackColumn, trackRow);
-      // make sure the side we want to reflect off isn't blocked!
-      if(trackGrid[adjacentTrackIndex] != 1){
-        carSpeedX *= -1;
-        bothTestsFailed = false;
-      }
-    }
-    if(prevTrackRow != trackRow){// must have come in vertically
-      let adjacentTrackIndex = trackTileToIndex(trackColumn, prevTrackRow);
-      // make sure the side we want to reflect off isn't blocked!
-      if(trackGrid[adjacentTrackIndex] != 1){
-        carSpeedY *= -1;
-        bothTestsFailed = false;
-      }
-    }
-    // we hit an "armpit" on the inside corner, flip both to avoid going into it
-    if(bothTestsFailed){
-      carSpeedX *= -1;
-      carSpeedY *= -1;
-    }
-  }
+  return (trackGrid[trackIndex] == TRACK_ROAD);
 }
 
 function carReset(){
@@ -269,4 +247,4 @@ function carReset(){
   }
 }
 
-// page 147
+// page 159
