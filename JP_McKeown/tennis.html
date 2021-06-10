@@ -1,3 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Module demo</title>
+</head>
+<body>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
 var canvas;
 var canvasContext;
 canvas = document.getElementById("gameCanvas");
@@ -82,7 +93,10 @@ function drawNet() {
     colourRect(canvas.width / 2 - 1, i, 2, 20, "white");
   }
 }
+
+
 function drawAll() {
+
   colourRect(0, 0, canvas.width, canvas.height, "black");
   if (showEnd) {
     canvasContext.fillStyle = "white";
@@ -94,13 +108,16 @@ function drawAll() {
     canvasContext.fillText("Click to play again", 300, 300);
     return;
   }
+
   colourCirc(bx, by, bw / 2, "red");
   colourRect(p1x, p1y, PW, PH, "white");
   colourRect(p2x, p2y, PW, PH, "white");
   drawNet();
 
-  canvasContext.fillText("Score: " + score1, 100, 100);
-  canvasContext.fillText("Score: " + score2, canvas.width - 100, 100);
+  canvasContext.font = `24px Verdana`;
+  canvasContext.fillStyle = 'yellow';
+  canvasContext.fillText("Score: " + score1, 190, 70);
+  canvasContext.fillText("Score: " + score2, canvas.width - 300, 70);
 }
 
 function ballReset() {
@@ -161,3 +178,6 @@ function moveAll() {
     ballSpeedY = -ballSpeedY;
   }
 }
+</script>
+</body>
+</html>
