@@ -1,7 +1,7 @@
 // track variables/constants
 const TRACK_W = 40;
 const TRACK_H = 40;
-const TRACK_GAP = 1;
+// const TRACK_GAP = 1;
 const TRACK_COLS = 20;
 const TRACK_ROWS = 15;
 let trackGrid =
@@ -27,11 +27,13 @@ let trackGrid =
 function drawTrack(){
   for(let eachCol = 0; eachCol < TRACK_COLS; eachCol++){
     for(let eachRow = 0; eachRow < TRACK_ROWS; eachRow++){
+      let trackLeftEdgeX = eachCol * TRACK_W;
+      let trackTopEdgeY = eachRow * TRACK_H;
+      
       if(isWallAtTileCoord(eachCol, eachRow)){
-        let trackLeftEdgeX = eachCol * TRACK_W;
-        let trackTopEdgeY = eachRow * TRACK_H;
-        
-        colorRect(trackLeftEdgeX, trackTopEdgeY, TRACK_W - TRACK_GAP, TRACK_H - TRACK_GAP, 'blue');
+        canvasContext.drawImage(trackPicWall, trackLeftEdgeX, trackTopEdgeY);
+      } else {
+        canvasContext.drawImage(trackPicRoad, trackLeftEdgeX, trackTopEdgeY);
       }
     }
   }

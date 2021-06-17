@@ -7,8 +7,6 @@ const MIN_TURN_SPEED = 0.5;
 let carX = 75, carY = 75;
 let carSpeed = 0;
 let carAng = -0.5 * Math.PI; // angle of car rotation
-let carPic = document.createElement("img"); // make the car an image
-let carPicLoaded = false;
 
 function moveCar(){
   if(keyHeld_Gas){
@@ -37,14 +35,11 @@ function moveCar(){
     carSpeed = -0.5 * carSpeed;
   }
 
-  carSpeed = carSpeed * GROUNDSPEED_DECAY_MULT;
+  carSpeed *= GROUNDSPEED_DECAY_MULT;
 }
 
 function drawCar() {
-  // carAng += 0.2;
-  if(carPicLoaded) {
     drawBitmapCenteredAtLocationWithRotation(carPic, carX, carY, carAng);
-  }
 }
 
 function carReset(){

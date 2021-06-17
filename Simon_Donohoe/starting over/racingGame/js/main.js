@@ -5,6 +5,8 @@ window.onload = function(){
   // game canvas
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
+
+  loadImages();
 }
 
 function loadingDoneSoStartGame() {
