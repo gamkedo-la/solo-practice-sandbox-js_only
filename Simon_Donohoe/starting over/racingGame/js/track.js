@@ -32,41 +32,31 @@ function drawTrack(){
     for(let eachRow = 0; eachRow < TRACK_ROWS; eachRow++){
       let trackLeftEdgeX = eachCol * TRACK_W;
       let trackTopEdgeY = eachRow * TRACK_H;
-
       let trackIndex = trackTileToIndex(eachCol, eachRow);
       let trackTypeHere = trackGrid[trackIndex];
-      let useImg;
+      // let useImg;
 
-      let trackIndex = trackTileToIndex(eachCol, eachRow);
-      let trackTypeHere = trackGrid[trackIndex];
-      let useImg;
-     
-      switch(trackTypeHere){
-        case TRACK_ROAD:
-          useImg = trackPicRoad;
-          break;
-        case TRACK_WALL:
-          useImg = trackPicWall;
-          break;
-        case TRACK_GOAL:
-          useImg = trackPicGoal;
-          break;
-        case TRACK_TREE:
-          useImg = trackPicTree;
-          break;
-        case TRACK_FLAG:
-        default:
-          useImg = trackPicFlag;
-          break;
-      }
-      canvasContext.drawImage(useImg,trackLeftEdgeX,	trackTopEdgeY);
-      }
+      // switch(trackTypeHere){
+      //   case TRACK_ROAD:
+      //     useImg = trackPicRoad;
+      //     break;
+      //   case TRACK_WALL:
+      //     useImg = trackPicWall;
+      //     break;
+      //   case TRACK_GOAL:
+      //     useImg = trackPicGoal;
+      //     break;
+      //   case TRACK_TREE:
+      //     useImg = trackPicTree;
+      //     break;
+      //   case TRACK_FLAG:
+      //   default:
+      //     useImg = trackPicFlag;
+      //     break;
+      // }
       
-      if(isWallAtTileCoord(eachCol, eachRow)){
-        canvasContext.drawImage(trackPicWall, trackLeftEdgeX, trackTopEdgeY);
-      } else {
-        canvasContext.drawImage(trackPicRoad, trackLeftEdgeX, trackTopEdgeY);
-      }
+      // canvasContext.drawImage(useImg, trackLeftEdgeX,	trackTopEdgeY);
+      canvasContext.drawImage(trackPics[trackTypeHere], trackLeftEdgeX,	trackTopEdgeY);
     }
   }
 }
