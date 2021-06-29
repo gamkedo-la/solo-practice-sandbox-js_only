@@ -1,0 +1,22 @@
+button {
+    background-color: green;
+    border: none;
+    color: white;
+    padding: 4px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-family: inherit;
+    font-size: 24px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
+.button_danger {
+    background-color: red;
+}
+
+.button_safe {
+    background-color: blue;
+}
