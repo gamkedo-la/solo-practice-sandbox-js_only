@@ -18,23 +18,16 @@ function countLoadedImageAndLaunchIfReady() {
 
 function beginLoadingImage(imgVar, fileName){
   imgVar.onload = countLoadedImageAndLaunchIfReady;
-  imgVar.src = "./img/"+fileName;
+  imgVar.src = "img/"+fileName;
 }
 
 function loadImageForTrackCode(trackCode, fileName) {
-  trackPics[trackCode] = document.createElement('img');
+  trackPics[trackCode] = document.createElement("img");
   beginLoadingImage(trackPics[trackCode], fileName);
 }
 
 function loadImages() {
-  let imageList = [
-    {varName:carPic, theFile:"player1.png"},
-    {varName:TRACK_ROAD, theFile:"track_road.png"},
-    {varName:TRACK_WALL, theFile:"track_wall.png"},
-    {varName:TRACK_GOAL, theFile: "track_goal.png"},
-    {varName:TRACK_TREE, theFile:"track_tree.png"},
-    {varName:TRACK_FLAG, theFile:"track_flag.png"}
-  ];
+  let imageList = [{varName:carPic, theFile:"player1.png"}, {trackType:TRACK_ROAD, theFile:"track_road.png"}, {trackType:TRACK_WALL, theFile:"track_wall.png"}, {trackType:TRACK_GOAL, theFile: "track_goal.png"}, {trackType:TRACK_TREE, theFile:"track_tree.png"}, {trackType:TRACK_FLAG, theFile:"track_flag.png"}];
 
   picsToLoad = imageList.length; // sets it to 3, since 3 Object literals in array
 

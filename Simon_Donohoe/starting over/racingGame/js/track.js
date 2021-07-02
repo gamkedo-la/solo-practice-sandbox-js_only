@@ -13,61 +13,23 @@ let trackGrid =
   1, 0, 0, 1, 1, 0, 0, 1, 4, 4, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1,
   1, 0, 0, 1, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
   1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-  1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1, 0, 0, 1,
+  1, 0, 2, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1, 0, 0, 1,
   1, 0, 0, 1, 0, 0, 5, 0, 0, 0, 5, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-  1, 2, 0, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1,
+  1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1,
   1, 1, 5, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
   0, 3, 0, 0, 0, 0, 1, 4, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
   0, 3, 0, 0, 0, 0, 1, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-  1, 1, 5, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1];
-  const TRACK_ROAD = 0;
-  const TRACK_WALL = 1;
-  const TRACK_PLAYER = 2;
-  const TRACK_GOAL = 3;
-  const TRACK_TREE = 4;
-  const TRACK_FLAG = 5;
+  1, 1, 5, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1];
 
-function drawTrack(){
-  for(let eachCol = 0; eachCol < TRACK_COLS; eachCol++){
-    for(let eachRow = 0; eachRow < TRACK_ROWS; eachRow++){
-      let trackLeftEdgeX = eachCol * TRACK_W;
-      let trackTopEdgeY = eachRow * TRACK_H;
-      let trackIndex = trackTileToIndex(eachCol, eachRow);
-      let trackTypeHere = trackGrid[trackIndex];
-      // let useImg;
-
-      // switch(trackTypeHere){
-      //   case TRACK_ROAD:
-      //     useImg = trackPicRoad;
-      //     break;
-      //   case TRACK_WALL:
-      //     useImg = trackPicWall;
-      //     break;
-      //   case TRACK_GOAL:
-      //     useImg = trackPicGoal;
-      //     break;
-      //   case TRACK_TREE:
-      //     useImg = trackPicTree;
-      //     break;
-      //   case TRACK_FLAG:
-      //   default:
-      //     useImg = trackPicFlag;
-      //     break;
-      // }
-      
-      // canvasContext.drawImage(useImg, trackLeftEdgeX,	trackTopEdgeY);
-      canvasContext.drawImage(trackPics[trackTypeHere], trackLeftEdgeX,	trackTopEdgeY);
-    }
-  }
-}
-
+const TRACK_ROAD = 0;
+const TRACK_WALL = 1;
+const TRACK_PLAYER = 2;
+const TRACK_GOAL = 3;
+const TRACK_TREE = 4;
+const TRACK_FLAG = 5;
+  
 function trackTileToIndex(trackColumn, trackRow){
   return (trackColumn + TRACK_COLS * trackRow);
-}
-
-function isWallAtTileCoord(trackTileCol, trackTileRow){
-  let trackIndex = trackTileToIndex(trackTileCol, trackTileRow);
-  return(trackGrid[trackIndex] == TRACK_WALL);
 }
 
 function checkForTrackAtPixelCoord(pixelX, pixelY) {
@@ -87,3 +49,30 @@ function checkForTrackAtPixelCoord(pixelX, pixelY) {
 
   return (trackGrid[trackIndex] == TRACK_ROAD);
 }
+
+function drawTrack(){
+  let trackIndex = 0;
+  let trackLeftEdgeX = 0;
+  let trackTopEdgeY = 0;
+
+    for(let eachRow = 0; eachRow < TRACK_ROWS; eachRow++){
+      trackLeftEdgeX = 0;
+      
+      for(let eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
+        let trackTypeHere = trackGrid[trackIndex]; //getting the track code for this tile
+        
+        canvasContext.drawImage(trackPics[trackTypeHere], trackLeftEdgeX,	trackTopEdgeY);
+
+        trackIndex++; // increment which index we're going to next check for in the track
+
+        trackLeftEdgeX += TRACK_W; // jump horizontal draw position to next tile over by tile width
+    }
+
+    trackTopEdgeY += TRACK_H; // jump horizontal draw position down by one full tile height
+  }
+}
+
+// function isWallAtTileCoord(trackTileCol, trackTileRow){
+//   let trackIndex = trackTileToIndex(trackTileCol, trackTileRow);
+//   return(trackGrid[trackIndex] == TRACK_WALL);
+// }

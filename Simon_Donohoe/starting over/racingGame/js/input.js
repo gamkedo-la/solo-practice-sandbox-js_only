@@ -10,6 +10,11 @@ let keyHeld_Reverse = false;
 let keyHeld_TurnLeft = false;
 let keyHeld_TurnRight = false;
 
+function initInput() {
+  document.addEventListener('keydown', keyPressed);
+  document.addEventListener('keyup', keyReleased);
+}
+
 function setKeyHoldState(thisKey, setTo) {
   if(thisKey == KEY_UP_ARROW){
     keyHeld_Gas = setTo;
@@ -32,13 +37,9 @@ function keyPressed(evt) {
 
   evt.preventDefault(); // without this, arrow keys scroll the browser
 }
+
 function keyReleased(evt) {
   // document.getElementById("debugText").innerHTML = "KeyCode Released: " + evt.keyCode;
 
   setKeyHoldState(evt.keyCode, false);
-}
-
-function initInput() {
-  document.addEventListener('keydown', keyPressed);
-  document.addEventListener('keyup', keyReleased);
 }

@@ -1,6 +1,8 @@
 // canvas variables
 let canvas, canvasContext;
 
+let p1 = new carClass();
+
 window.onload = function(){
   // game canvas
   canvas = document.getElementById('gameCanvas');
@@ -11,18 +13,18 @@ window.onload = function(){
 
 function loadingDoneSoStartGame() {
   // set up our game logic and render to happen 30 times per second
-  let framesPerSecond = 60;
+  let framesPerSecond = 30;
   setInterval(function(){ 
     moveEverything();
     drawEverything();
   }, 1000/framesPerSecond);
 
-  carInit();
+  p1.carInit();
   initInput();
 }
 
 function moveEverything(){
-  moveCar();
+  p1.moveCar();
 }
 
 function drawEverything(){
@@ -34,7 +36,7 @@ function drawEverything(){
 
   // draw a circle(game car)
   // colorCircle(carX, carY, 10, "white");
-  drawCar();
+  p1.drawCar();
 }
 
-// page 180
+// page 191
