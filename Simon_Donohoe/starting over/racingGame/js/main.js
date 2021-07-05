@@ -39,4 +39,4 @@ function drawEverything(){
   p1.drawCar();
 }
 
-// page 191
+// page 195
