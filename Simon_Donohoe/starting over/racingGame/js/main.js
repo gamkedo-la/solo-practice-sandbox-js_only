@@ -2,6 +2,7 @@
 let canvas, canvasContext;
 
 let p1 = new carClass();
+let p2 = new carClass();
 
 window.onload = function(){
   // game canvas
@@ -19,24 +20,24 @@ function loadingDoneSoStartGame() {
     drawEverything();
   }, 1000/framesPerSecond);
 
-  p1.carInit();
+  p2.carInit(car2Pic, "Green Car");
+  p1.carInit(carPic, "Blue Car");
+  
   initInput();
 }
 
 function moveEverything(){
   p1.moveCar();
+  p2.moveCar();
 }
 
 function drawEverything(){
-  // // fill game canvas with black
-  // colorRect(0, 0, canvas.width, canvas.height, "black");
-
   // draw track field
   drawTrack();
 
-  // draw a circle(game car)
-  // colorCircle(carX, carY, 10, "white");
+  // draw cars
   p1.drawCar();
+  p2.drawCar();
 }
 
-// page 195
+// page 198

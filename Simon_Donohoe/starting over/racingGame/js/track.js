@@ -13,7 +13,7 @@ let trackGrid =
   1, 0, 0, 1, 1, 0, 0, 1, 4, 4, 1, 1, 0, 0, 0, 1, 1, 0, 0, 1,
   1, 0, 0, 1, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
   1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-  1, 0, 2, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1, 0, 0, 1,
+  1, 2, 2, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1, 0, 0, 1,
   1, 0, 0, 1, 0, 0, 5, 0, 0, 0, 5, 0, 0, 1, 0, 0, 1, 0, 0, 1,
   1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1,
   1, 1, 5, 1, 0, 0, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
@@ -32,7 +32,7 @@ function trackTileToIndex(trackColumn, trackRow){
   return (trackColumn + TRACK_COLS * trackRow);
 }
 
-function checkForTrackAtPixelCoord(pixelX, pixelY) {
+function getTrackAtPixelCoord(pixelX, pixelY) {
   // two variables to find out which track was hit
   let trackColumn = pixelX / TRACK_W; 
   let trackRow = pixelY / TRACK_H;
@@ -41,13 +41,14 @@ function checkForTrackAtPixelCoord(pixelX, pixelY) {
   trackColumn = Math.floor(trackColumn); 
   trackRow = Math.floor(trackRow);
 
+  // first check whether the car is within any part of the track wall
   if(trackColumn < 0 || trackColumn >= TRACK_COLS || trackRow < 0 || trackRow >= TRACK_ROWS){
-    return false;
+    return TRACK_WALL; // avoid invalid array access, treat out of bounds as wall
   }
 
   let trackIndex = trackTileToIndex(trackColumn, trackRow);
 
-  return (trackGrid[trackIndex] == TRACK_ROAD);
+  return trackGrid[trackIndex];
 }
 
 function drawTrack(){
