@@ -1,50 +1,54 @@
 window.onload = function() {
-    
-    canvas = document.createElement('canvas');
-    canvas.width = GAME_WIDTH;
-    canvas.height = GAME_HEIGHT;
-    document.body.appendChild(canvas);
-    ctx = canvas.getContext('2d');
-  
-    // render display
-    var framesPerSecond = 30;
-    setInterval(function() {
-        moveAll();
-        drawAll();
-      }, 1000/framesPerSecond);
-  
-    canvas.addEventListener('mousemove', updateMousePos);
+  canvas = document.createElement('canvas');
+  ctx = canvas.getContext('2d');
+  div = document.getElementById('canvas-container')
+  div.appendChild(canvas);
+  canvas.width = GAME_WIDTH;
+  canvas.height = GAME_HEIGHT;
 
-    tileReset();
-    ballReset();
-    // createEveryBall();
+  let framesPerSecond = 30;
+  setInterval(function() {
+      moveAll();
+      drawAll();
+    }, 1000/framesPerSecond);
+
+  createEveryBall();
+
+  // drawRect(0, 0, canvas.width, canvas.height, 'black');
+  // drawText('Nano Flask', 200, 200, 'white', '30px Arial');
+  // initializeInput();
+  // loadImages();
+  // menu.initialize();
+
+  canvas.addEventListener('mousemove', function(evt) {
+    var mousePos = calculateMousePos(evt);
+    col = xToCol(mousePos.x);
+    row = yToRow(mousePos.y);
+    document.getElementById("debugText").innerHTML = "Tile "+col+","+row+"  Pixel "+mousePos.x+","+mousePos.y;
+  } ); 
+};
+
+function createEveryBall() {
+  for( var i=0;i<BALL_COUNT;i++) {
+    ballList.push(new ballClass());
+  }
 }
-    
-function moveAll() {
-    ballMove();
-    ballBrickHandling();
-} 
-  
-function drawAll() {
-    // clear screen
-    colorRect(0, 0, GAME_WIDTH, GAME_HEIGHT, 'black'); 
-    
-    // draw ball
-    colorCircle(ballX, ballY, ballSize, 'yellow');
-  
-    drawTiles();
-    drawUI();
-  
-    if(mouseBrickMode) {
-      // write mouse label
-      var mouseTileCol = Math.floor(mouseX / TILE_WIDTH);
-      var mouseTileRow = Math.floor(mouseY / TILE_HEIGHT);
 
-      // only show if within tiled area
-      if(mouseTileCol < TILE_COLS) {
-        var tileIndexMouse = colRowTileIndex(mouseTileCol, mouseTileRow);
-        colorText(mouseTileCol + ',' + mouseTileRow + ': ' + tileIndexMouse + ' s' + tileGrid[tileIndexMouse], mouseX, mouseY, 'red'); 
-      }
-    }
-    colorText('UI here',640,100,'yellow');
+function moveAll() {
+  for(var i=0;i<ballList.length;i++) {
+      ballList[i].move();
+  }    
+}
+
+function drawAll() {
+  drawWorld();
+  // drawFlask();
+  for(var i=0;i<ballList.length;i++) {
+      ballList[i].draw();
+  }
+}
+
+initializeInput = function() {
+}
+loadImages = function() {
 }

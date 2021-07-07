@@ -1,20 +1,16 @@
-const BALL_COUNT = 1;
-const BALL_RADIUS = 5;
-const BALL_COLOUR = 'red';
-
 function ballClass() {
-  var tempRandAng = Math.random()*Math.PI*2.0;
-  var tempRandSpeed = 3.0+Math.random()*0.5;
-  
+  var tempRandAng = Math.random() * Math.PI *2.0;
+  var tempRandSpeed = 3.0 + Math.random() *1.5;
+
   this.speedX = Math.cos(tempRandAng)*tempRandSpeed;
   this.speedY = Math.sin(tempRandAng)*tempRandSpeed;
-  
-  this.findNewRandPosition = function() {
-    this.x = Math.random() * GAME_WIDTH;
-    this.y = Math.random()*GAME_HEIGHT;
+
+  this.placeInFlask = function() {
+    this.x = FLASK_LEFT + Math.floor(Math.random() * (TILE_W * FLASK_SIZE - 2*BALL_OFFSET));
+    this.y = FLASK_TOP + Math.floor(Math.random() * (TILE_H * FLASK_SIZE - 2*BALL_OFFSET));
   }
-  
-  this.findNewRandPosition(); // note: calling that function as part of initialization
+
+  this.placeInFlask(); // calling function as part of initialization
       
   this.move = function() {
     if(this.x < 0) { // if ball has moved beyond the left edge
@@ -32,77 +28,64 @@ function ballClass() {
     if(this.y > GAME_HEIGHT) { // if ball has moved beyond the bottom edge
       this.speedY *= -1;
     }
-    
-    this.bounceOffWalls();
+
+    this.obstacleBounce();
   
     this.x += this.speedX;
     this.y += this.speedY;
   }
 
-  this.isOnWall = function() {
-    return isBrickAtPixelPosition(this.x, this.y);
+  this.draw = function() {
+    drawCircle(this.x, this.y, BALL_RADIUS, BALL_COLOUR);
   }
 
-  this.bounceOffWalls = function() {
-    var tileCol = this.x / BRICK_W;
-    var tileRow = this.y / BRICK_H;
-    
-    // using Math.floor to round down to the nearest whole number
-    tileCol = Math.floor( tileCol );
-    tileRow = Math.floor( tileRow );
+  this.obstacleBounce = function() {
+    let col = Math.floor(this.x / TILE_W);
+    let row = Math.floor(this.y / TILE_H);
 
-    // first check whether the ball is within any part of the brick wall
-    if(tileCol < 0 || tileCol >= BRICK_COLS ||
-       tileRow < 0 || tileRow >= BRICK_ROWS) {
+    // first check whether ball is within lab boundary
+    if(col < 0 || col >= WORLD_COLS ||
+       row < 0 || row >= WORLD_ROWS) {
        return false;
     }
     
-    var brickIndex = brickTileToIndex(tileCol, tileRow);
+    var tileIndex = tileToIndex(col, row);
    
-    if(brickGrid[brickIndex] == 1) {
-      // ok, so we know we overlap a brick now.
+    if(worldGrid[tileIndex] == TILE_SHIELD) {
+      // particle overlaps shield
       // let's backtrack to see whether we changed rows or cols on way in
       var prevX = this.x-this.speedX;
       var prevY = this.y-this.speedY;
-      var prevTileCol = Math.floor(prevX / BRICK_W);
-      var prevTileRow = Math.floor(prevY / BRICK_H);
+      var prevTileCol = Math.floor(prevX / TILE_W);
+      var prevTileRow = Math.floor(prevY / TILE_H);
       var bothTestsFailed = true;
-      if(prevTileCol != tileCol) { // must have come in horizontally
-        var adjacentBrickIndex = brickTileToIndex(prevTileCol, tileRow);
+
+      if(prevTileCol != col) { // must have come in horizontally
+        var adjacentTileIndex = tileToIndex(prevTileCol, row);
         // make sure the side we want to reflect off isn't blocked!
-        if(brickGrid[adjacentBrickIndex] != 1) {
+        if(worldGrid[adjacentTileIndex] != TILE_SHIELD) {
           this.speedX *= -1;
           bothTestsFailed = false;
+          impactShield(tileIndex);
         }
       }
-      if(prevTileRow != tileRow) { // must have come in vertically
-        var adjacentBrickIndex = brickTileToIndex(tileCol, prevTileRow);
+
+      if(prevTileRow != row) { // must have come in vertically
+        var adjacentTileIndex = tileToIndex(col, prevTileRow);
         // make sure the side we want to reflect off isn't blocked!
-        if(brickGrid[adjacentBrickIndex] != 1) {
+        if(worldGrid[adjacentTileIndex] != TILE_SHIELD) {
           this.speedY *= -1;
           bothTestsFailed = false;
+          impactShield(tileIndex);
         }
       }
       // we hit an "armpit" on the inside corner, this blocks going into it
       if(bothTestsFailed) {
         this.speedX *= -1;
         this.speedY *= -1;
+        impactShield(tileIndex);
       }
     }
   }
   
-  this.draw = function() {
-      colorCircle(this.x, this.y, BALL_RADIUS, BALL_COLOUR);
-  }
 } // end of ball class
-
-var ballList = [];
-
-function createEveryBall() {
-  for( var i=0;i<BALL_COUNT;i++) {
-    ballList.push(new ballClass());
-    while(ballList[i].isOnWall()) {
-      ballList[i].findNewRandPosition();
-    }
-  }
-}

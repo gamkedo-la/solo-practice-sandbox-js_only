@@ -1,87 +1,119 @@
-function drawUI() {
-  colorRect(TILED_RIGHT,0,GAME_WIDTH-TILED_RIGHT,GAME_HEIGHT,'green');
-}
+const TILE_FLOOR = 0;
+const TILE_FLASK = 1;
+const TILE_SHIELD = 2;
+const TILE_PIPE_H = 3;
+const TILE_PIPE_V = 4;
+const TILE_DAMPER = 5;
+// const TILE_ROCK = ;
+// const TILE_TUNNEL = ; 
+// only if I work out how to have more than one base tile for transparent overlay, 
+// otherrwise use TILE_FLOOR for the access tunnel and any deflective tunnels.
 
-function drawTiles() {
-  let strength = 0;
-  for(var row=0; row < TILE_ROWS; row++) {
-      for(var col=0; col < TILE_COLS; col++) {
-  
-        var arrayIndex = colRowTileIndex(col, row);
-        var tileLeftEdgeX = col * TILE_WIDTH;
-        var tileTopEdgeY = row * TILE_HEIGHT;
+// const TILE_MOBILESHIELD = ;
+// const TILE_NEUTRALIZER;
+// const TILE_DEFLECTOR;
+// const TILE_IGNITER;
+// const TILE_FACTORY;
+// const TILE_ = ;
 
-        strength = tileGrid[arrayIndex];
-        if(strength > 0) {
-          colorRect(tileLeftEdgeX, tileTopEdgeY, TILE_W, TILE_H, TILE_STRENGTH_COLOR[strength]);
-        } 
+
+var worldGrid =
+  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+
+var strengthGrid =
+  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 20, 70, 70, 70, 20, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 70, 0, 0, 0, 70, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 70, 0, 0, 0, 70, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 70, 0, 0, 0, 70, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 20, 70, 70, 70, 20, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+
+function drawWorld() {
+  let arrayIndex = 0;
+	let drawTileX = 0;
+	let drawTileY = 0;
+  for(let row = 0; row < WORLD_ROWS; row++) {
+    for(let col = 0; col < WORLD_COLS; col++) {
+
+      let arrayIndex = tileToIndex(col, row); 
+      let tileKindHere = worldGrid[arrayIndex];
+
+      if(tileKindHere == TILE_FLOOR) {
+        drawLineRect(drawTileX, drawTileY, TILE_W, TILE_H, '#ffffbf', '#dddddd');
+      } else if(tileKindHere == TILE_FLASK) {
+        drawFillRect(drawTileX, drawTileY, TILE_W, TILE_H, '#ffffff');
+      } else if(tileKindHere == TILE_SHIELD) {
+        drawShield(drawTileX, drawTileY, strengthGrid[arrayIndex]);
       }
-    }
+
+      drawTileX += TILE_W;
+      arrayIndex++;
+    } // end col
+
+    drawTileY += TILE_H;
+    drawTileX = 0;
+  } // end row
+
 }
 
-function makeShield() {
-  // there must be  math formula, given topleft grid position and size of rectangle
-  // to get a list of array index positions where to draw; instead crazy hack below
-  let flaskLeftCol = TILED_CENTRE_COL - FLASK_SIZE/2 - 1;
-  let flaskTopRow = TILED_CENTRE_COL - FLASK_SIZE/2 -1;
-
-  let start = colRowTileIndex(flaskLeftCol, flaskTopRow);
-  for(i= 0; i<FLASK_SIZE; i++) {
-    tileGrid[start + i] = 5;
-  }
-  for(i=0; i<FLASK_SIZE; i++) {
-    tileGrid[start + i*15] = 5;
-  }
-  let end = colRowTileIndex(flaskLeftCol + FLASK_SIZE-1, flaskTopRow + FLASK_SIZE-1);
-  for(i= 0; i<FLASK_SIZE; i++) {
-    tileGrid[end - i] = 5;
-  }  
-  for(i= 0; i<FLASK_SIZE; i++) {
-    tileGrid[end - i*15] = 5;
-  }  
+function drawShield(x, y, strength) {
+  // let strengthTint = '#0000' + strength.toString(16);
+  // RGB gradient only works for greyscale, need HSL
+  // low strength -> higher lightness 
+  let lightness = SHIELD_LIGHTNESS - strength;
+  let strengthTint = 'hsl(240, 100%, ' + lightness + '%)'; 
+  // console.log(strengthTint)
+  drawLineRect(x, y, TILE_W, TILE_H, strengthTint, 'black');
 }
 
-// make void first then overwrite with shield
-// or make shield fill whole flask, then overwrite void
-function makeVoid() {
-  let flaskLeftCol = TILED_CENTRE_COL - FLASK_SIZE/2 - 1;
-  let flaskTopRow = TILED_CENTRE_COL - FLASK_SIZE/2 -1;
-  let start = colRowTileIndex(flaskLeftCol, flaskTopRow);
-
-  for(i=0; i<FLASK_SIZE*FLASK_SIZE; i++) {
-      tileGrid.fill(0, start + i*TILE_COLS, start + FLASK_SIZE + i*TILE_COLS);
+function impactShield(tileIndex) {
+  strengthGrid[tileIndex]--;
+  if(strengthGrid[tileIndex] == 0) {
+    worldGrid[tileIndex] = 1;
   }
 }
 
-function tileReset() {
-  // should not tie strength to tile contents because I want other objects
-  tilesRemain = 0;
-  tileGrid.fill(0,0); // begin as Lab
-  makeVoid();
-  makeShield();
-
-
-  // Test fills all tiles with shielding 
-  // for(var i = 0 ; i < TILES; i++) {
-  //   tileGrid[i] = 5;
-  //   tilesRemain++;
-  // }
+function isFlaskAtTileCoord(tileCol, tileRow) {
+  var tileIndex = tileToIndex(tileCol, tileRow);
+  return (worldGrid[tileIndex] == TILE_FLASK);
 }
 
-// gets index number of tile
-function colRowTileIndex(col, row) {
-  return col + TILE_COLS * row;
+function tileToIndex(col, row) {
+  return(col + WORLD_ROWS * row);
 }
-  
-function isTileAtColRow(col, row) {
-    if(col >= 0 && col < TILE_COLS && row >= 0 && row < TILE_ROWS) {
-        var tileIndex = colRowTileIndex(col, row);
-        if(tileGrid[tileIndex] > 0) {
-          return tileGrid[tileIndex];
-        } else {
-          return false;
-        }
-    } else {
-        return false;
-    }
+
+function xToCol(x) {
+  // given pixel coordinate find tile column
+  let col = Math.floor(x / TILE_W);
+  return col;
 }
+
+function yToRow(y) {
+  // given pixel coordinate find tile row
+  let row = Math.floor(y / TILE_H);
+  return row;
+}
+
