@@ -1,6 +1,6 @@
 function ballClass() {
   var tempRandAng = Math.random() * Math.PI *2.0;
-  var tempRandSpeed = 3.0 + Math.random() *1.5;
+  var tempRandSpeed = BALL_INIT_SPEED + Math.random() * 1.5;
 
   this.speedX = Math.cos(tempRandAng)*tempRandSpeed;
   this.speedY = Math.sin(tempRandAng)*tempRandSpeed;
@@ -36,7 +36,11 @@ function ballClass() {
   }
 
   this.draw = function() {
-    drawCircle(this.x, this.y, BALL_RADIUS, BALL_COLOUR);
+    drawCircle(this.x, this.y, BALL_RADIUS, ballColour);
+  }
+
+  this.showStrength = function() {
+    drawText(this.x, this.y, );
   }
 
   this.obstacleBounce = function() {
@@ -51,7 +55,8 @@ function ballClass() {
     
     var tileIndex = tileToIndex(col, row);
    
-    if(worldGrid[tileIndex] == TILE_SHIELD) {
+    // if(worldGrid[tileIndex] == TILE_SHIELD) {
+    if(worldGrid[tileIndex] == TILE_SHIELD || worldGrid[tileIndex] == TILE_CORNER_SHIELD) {
       // particle overlaps shield
       // let's backtrack to see whether we changed rows or cols on way in
       var prevX = this.x-this.speedX;
@@ -63,7 +68,8 @@ function ballClass() {
       if(prevTileCol != col) { // must have come in horizontally
         var adjacentTileIndex = tileToIndex(prevTileCol, row);
         // make sure the side we want to reflect off isn't blocked!
-        if(worldGrid[adjacentTileIndex] != TILE_SHIELD) {
+        // if(worldGrid[adjacentTileIndex] != TILE_SHIELD) {
+        if(worldGrid[adjacentTileIndex] != TILE_SHIELD && worldGrid[adjacentTileIndex] != TILE_CORNER_SHIELD) {
           this.speedX *= -1;
           bothTestsFailed = false;
           impactShield(tileIndex);
@@ -73,7 +79,8 @@ function ballClass() {
       if(prevTileRow != row) { // must have come in vertically
         var adjacentTileIndex = tileToIndex(col, prevTileRow);
         // make sure the side we want to reflect off isn't blocked!
-        if(worldGrid[adjacentTileIndex] != TILE_SHIELD) {
+        // if(worldGrid[adjacentTileIndex] != TILE_SHIELD) {
+        if(worldGrid[adjacentTileIndex] != TILE_SHIELD && worldGrid[adjacentTileIndex] != TILE_CORNER_SHIELD) {
           this.speedY *= -1;
           bothTestsFailed = false;
           impactShield(tileIndex);

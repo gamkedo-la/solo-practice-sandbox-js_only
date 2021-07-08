@@ -1,11 +1,12 @@
 const TILE_FLOOR = 0;
 const TILE_FLASK = 1;
 const TILE_SHIELD = 2;
-const TILE_PIPE_H = 3;
-const TILE_PIPE_V = 4;
-const TILE_DAMPER = 5;
-// const TILE_ROCK = ;
-// const TILE_TUNNEL = ; 
+const TILE_CORNER_SHIELD = 3;
+const TILE_PIPE_H = 6;
+const TILE_PIPE_V = 7;
+const TILE_DAMPER = 12;
+// const TILE_ROCK = 4;
+// const TILE_TUNNEL = 5; 
 // only if I work out how to have more than one base tile for transparent overlay, 
 // otherrwise use TILE_FLOOR for the access tunnel and any deflective tunnels.
 
@@ -16,40 +17,40 @@ const TILE_DAMPER = 5;
 // const TILE_FACTORY;
 // const TILE_ = ;
 
-
 var worldGrid =
   [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 3, 2, 2, 2, 3, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 2, 1, 1, 1, 2, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 3, 2, 2, 2, 3, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
 
-var strengthGrid =
-  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 20, 70, 70, 70, 20, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 70, 0, 0, 0, 70, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 70, 0, 0, 0, 70, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 70, 0, 0, 0, 70, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 20, 70, 70, 70, 20, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+// var strengthGrid =
+//   [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 10, 40, 40, 40, 10, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 10, 40, 40, 40, 10, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
+// var strengthArray = [];
 
 function drawWorld() {
   let arrayIndex = 0;
@@ -65,9 +66,9 @@ function drawWorld() {
         drawLineRect(drawTileX, drawTileY, TILE_W, TILE_H, '#ffffbf', '#dddddd');
       } else if(tileKindHere == TILE_FLASK) {
         drawFillRect(drawTileX, drawTileY, TILE_W, TILE_H, '#ffffff');
-      } else if(tileKindHere == TILE_SHIELD) {
-        drawShield(drawTileX, drawTileY, strengthGrid[arrayIndex]);
-      }
+      } // } else if(tileKindHere == TILE_SHIELD) {
+      //   colourShield(drawTileX, drawTileY, strengthGrid[arrayIndex]);
+      // }
 
       drawTileX += TILE_W;
       arrayIndex++;
@@ -76,23 +77,23 @@ function drawWorld() {
     drawTileY += TILE_H;
     drawTileX = 0;
   } // end row
-
 }
 
-function drawShield(x, y, strength) {
-  // let strengthTint = '#0000' + strength.toString(16);
-  // RGB gradient only works for greyscale, need HSL
-  // low strength -> higher lightness 
-  let lightness = SHIELD_LIGHTNESS - strength;
-  let strengthTint = 'hsl(240, 100%, ' + lightness + '%)'; 
-  // console.log(strengthTint)
-  drawLineRect(x, y, TILE_W, TILE_H, strengthTint, 'black');
-}
+// function colourShield(x, y, strength) {
+//   // let strengthTint = '#0000' + strength.toString(16);
+//   // RGB gradient only works for greyscale, need HSL
+//   // low strength -> higher lightness 
+//   let lightness = SHIELD_LIGHTNESS - strength;
+//   let strengthTint = 'hsl(240, 100%, ' + lightness + '%)'; 
+//   // console.log(strengthTint)
+//   drawLineRect(x, y, TILE_W, TILE_H, strengthTint, 'black');
+// }
 
-function impactShield(tileIndex) {
-  strengthGrid[tileIndex]--;
-  if(strengthGrid[tileIndex] == 0) {
-    worldGrid[tileIndex] = 1;
+function tileToShield(tile) {
+  for(let i=0; i < shieldList.length; i++) {
+    if(shieldList[i].tileIndex == tile) {
+      return i;
+    }
   }
 }
 

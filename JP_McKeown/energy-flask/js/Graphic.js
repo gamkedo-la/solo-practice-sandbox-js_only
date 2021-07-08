@@ -19,7 +19,7 @@ function drawCircle(centerX, centerY, radius, fillColour) {
 }
 
 function drawText(content, textX, textY, fillColour, font) {
-	ctx.font = '24px Arial';
+	ctx.font = font;
 	ctx.fillStyle = fillColour;
 	ctx.fillText(content, textX, textY);
 }
