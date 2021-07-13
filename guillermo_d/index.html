@@ -9,15 +9,40 @@
 <body>
     <canvas id="gameCanvas" width="800" height="600"></canvas>
     <script>
+        var ballX = 75, ballY = 75;
         var canvas;
         var canvasContext;
+        var ballSpeedX = 6;
+        var ballSpeedY = 6;
 
         window.onload = function () {
             // save canvas for dimensions, 2d context for drawing to it
             canvas = document.getElementById('gameCanvas');
             canvasContext = canvas.getContext('2d');
 
-            drawEverything();
+            // next few lines set up game logic and render 30 times/second
+            var framesPerSecond = 30;
+            setInterval(function () {
+                moveEverything();
+                drawEverything();
+            }, 1000 / framesPerSecond);
+        }
+
+        function moveEverything() {
+            if (ballX > canvas.width) {
+                ballSpeedX *= -1;
+            }
+            if (ballX < 0) {
+                ballSpeedX *= -1;
+            }
+            if (ballY < 0) {
+                ballSpeedY *= -1;
+            }
+            if (ballY > canvas.height) {
+                ballSpeedY *= -1;
+            }
+            ballY += ballSpeedY;
+            ballX += ballSpeedX;
         }
 
         function drawEverything() {
@@ -25,10 +50,14 @@
             canvasContext.fillStyle = 'black';
             canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
+            // player's paddle
+            canvasContext.fillStyle = 'white';
+            canvasContext.fillRect(300, 580, 100, 10);
+
             //draw white circle
             canvasContext.fillStyle = "white";
             canvasContext.beginPath();
-            canvasContext.arc(75, 75, 80, 0, Math.PI * 2, true);
+            canvasContext.arc(ballX, ballY, 10, 0, Math.PI * 2, true);
             canvasContext.fill();
         }
     </script>
