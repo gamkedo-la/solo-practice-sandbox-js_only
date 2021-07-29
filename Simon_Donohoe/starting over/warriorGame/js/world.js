@@ -1,10 +1,8 @@
-// track variables/constants
-const TRACK_W = 50;
-const TRACK_H = 50;
-// const TRACK_GAP = 1;
-const TRACK_COLS = 16;
-const TRACK_ROWS = 12;
-let trackGrid =
+//world/room constants and variables
+const ROOM_ROWS = 12;
+const ROOM_COLS = 16;
+
+let roomGrid =
 [ 
   4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
   4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
@@ -20,55 +18,58 @@ let trackGrid =
   1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 
 ];
 
-const TRACK_ROAD = 0;
-const TRACK_WALL = 1;
-const TRACK_PLAYER = 2;
-const TRACK_GOAL = 3;
-const TRACK_TREE = 4;
-const TRACK_FLAG = 5;
-const TRACK_KEY = 6;
+const TILE_W = 50;
+const TILE_H = 50;
+
+const TILE_GROUND = 0;
+const TILE_WALL = 1;
+const TILE_PLAYER = 2;
+const TILE_GOAL = 3;
+const TILE_TREE = 4;
+const TILE_DOOR = 5;
+const TILE_KEY = 6;
   
-function trackTileToIndex(trackColumn, trackRow){
-  return (trackColumn + TRACK_COLS * trackRow);
+function roomTileToIndex(tileColumn, tileRow){
+  return (tileColumn + ROOM_COLS * tileRow);
 }
 
-function getTrackAtPixelCoord(pixelX, pixelY) {
-  // two variables to find out which track was hit
-  let trackColumn = pixelX / TRACK_W; 
-  let trackRow = pixelY / TRACK_H;
+function getTileAtPixelCoord(pixelX, pixelY) {
+  // two variables to find out which tile was hit
+  let tileColumn = pixelX / TILE_W; 
+  let tileRow = pixelY / TILE_H;
 
   // using Math.floor to round the number down
-  trackColumn = Math.floor(trackColumn); 
-  trackRow = Math.floor(trackRow);
+  tileColumn = Math.floor(tileColumn); 
+  tileRow = Math.floor(tileRow);
 
-  // first check whether the car is within any part of the track wall
-  if(trackColumn < 0 || trackColumn >= TRACK_COLS || trackRow < 0 || trackRow >= TRACK_ROWS){
-    return TRACK_WALL; // avoid invalid array access, treat out of bounds as wall
+  // first check whether the car is within any part of the tile wall
+  if(tileColumn < 0 || tileColumn >= ROOM_COLS || tileRow < 0 || tileRow >= ROOM_ROWS){
+    return TILE_WALL; // avoid invalid array access, treat out of bounds as wall
   }
 
-  let trackIndex = trackTileToIndex(trackColumn, trackRow);
+  let tileIndex = roomTileToIndex(tileColumn, tileRow);
 
-  return trackGrid[trackIndex];
+  return roomGrid[tileIndex];
 }
 
-function drawTrack(){
-  let trackIndex = 0;
-  let trackLeftEdgeX = 0;
-  let trackTopEdgeY = 0;
+function drawRoom(){
+  let tileIndex = 0;
+  let tileLeftEdgeX = 0;
+  let tileTopEdgeY = 0;
 
-    for(let eachRow = 0; eachRow < TRACK_ROWS; eachRow++){
-      trackLeftEdgeX = 0;
+    for(let eachRow = 0; eachRow < ROOM_ROWS; eachRow++){
+      tileLeftEdgeX = 0;
       
-      for(let eachCol = 0; eachCol < TRACK_COLS; eachCol++) {
-        let trackTypeHere = trackGrid[trackIndex]; //getting the track code for this tile
+      for(let eachCol = 0; eachCol < ROOM_COLS; eachCol++) {
+        let tileTypeHere = roomGrid[tileIndex]; //getting the tile code for this tile
         
-        canvasContext.drawImage(trackPics[trackTypeHere], trackLeftEdgeX,	trackTopEdgeY);
+        canvasContext.drawImage(tilePics[tileTypeHere], tileLeftEdgeX,	tileTopEdgeY);
 
-        trackIndex++; // increment which index we're going to next check for in the track
+        tileIndex++; // increment which index we're going to next check for in the tile
 
-        trackLeftEdgeX += TRACK_W; // jump horizontal draw position to next tile over by tile width
+        tileLeftEdgeX += TILE_W; // jump horizontal draw position to next tile over by tile width
     }
 
-    trackTopEdgeY += TRACK_H; // jump horizontal draw position down by one full tile height
+    tileTopEdgeY += TILE_H; // jump horizontal draw position down by one full tile height
   }
 }

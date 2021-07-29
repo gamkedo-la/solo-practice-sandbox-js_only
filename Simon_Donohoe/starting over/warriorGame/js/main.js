@@ -28,11 +28,11 @@ function moveEverything(){
 }
 
 function drawEverything(){
-  // draw track field
-  drawTrack();
+  // draw room
+  drawRoom();
 
   // draw warrior
   p1.draw();
 }
 
-// page 221
+// page 230

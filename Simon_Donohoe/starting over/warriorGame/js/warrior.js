@@ -27,17 +27,14 @@ function warriorClass() {
   }
 
   this.reset = function() {
-    this.speed = 0;
-    this.ang = -0.5 * Math.PI; // angle of warrior rotation
-
     if(this.homeX == undefined) {
-      for(let i = 0; i < trackGrid.length; i++) {
-        if(trackGrid[i] == TRACK_PLAYER) {
-          let tileRow = Math.floor(i / TRACK_COLS);
-          let tileCol = i % TRACK_COLS;
-          this.homeX = tileCol * TRACK_W + 0.5*TRACK_W;
-          this.homeY = tileRow * TRACK_H + 0.5*TRACK_H;
-          trackGrid[i] = TRACK_ROAD;
+      for(let i = 0; i < roomGrid.length; i++) {
+        if(roomGrid[i] == TILE_PLAYER) {
+          let tileRow = Math.floor(i / ROOM_COLS);
+          let tileCol = i % ROOM_COLS;
+          this.homeX = tileCol * TILE_W + 0.5 * TILE_W;
+          this.homeY = tileRow * TILE_H + 0.5 * TILE_H;
+          roomGrid[i] = TILE_GROUND;
           break; //found it so no need to keep searching
         }
       }
@@ -63,12 +60,12 @@ function warriorClass() {
       nextX -= PLAYER_MOVE_SPEED;
     }
     
-    let walkIntoTileType = getTrackAtPixelCoord(nextX, nextY);
+    let walkIntoTileType = getTileAtPixelCoord(nextX, nextY);
 
-    if(walkIntoTileType == TRACK_ROAD){
+    if(walkIntoTileType == TILE_GROUND){
       this.x = nextX;
       this.y = nextY;
-    } else if(walkIntoTileType == TRACK_GOAL) {
+    } else if(walkIntoTileType == TILE_GOAL) {
       document.getElementById("debugText").innerHTML = this.myName + " won.";
       this.reset();
     } 
