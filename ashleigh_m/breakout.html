@@ -46,7 +46,7 @@ function updateMousePos(evt) {
 	/*
 	ballX = mouseX;
 	ballY = mouseY;
-	ballSpeedX = 3;
+	ballSpeedX = 4;
 	ballSpeedY = 4;
 	*/
 
@@ -130,7 +130,7 @@ function ballBrickHandling(){
 			var previousBallX = ballX - ballSpeedX;
 			var previousBallY = ballY - ballSpeedY;
 			var previousBrickCol = Math.floor(previousBallX / BRICK_W);
-			var previousBrickRow = Math.floor(previousBallY / BRICK_W);
+			var previousBrickRow = Math.floor(previousBallY / BRICK_H);
 
 			var bothTestsFailed = true;
 
@@ -152,6 +152,7 @@ function ballBrickHandling(){
 			if(bothTestsFailed){
 				ballSpeedX *= -1;
 				ballSpeedY *= -1;
+				brickGrid[brickIndexUnderBall] = true;
 			}
 	
 			console.log(bothTestsFailed);
