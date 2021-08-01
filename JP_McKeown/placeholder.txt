@@ -1,2 +1,0 @@
-File created in github, then cloned to local git.
-Edit locally then commit and push to github.
