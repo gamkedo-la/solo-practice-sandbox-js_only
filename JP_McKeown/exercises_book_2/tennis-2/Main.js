@@ -1,0 +1,227 @@
+var canvas;
+var ctx;
+
+let ballX = 75;
+let ballY = 75;
+const _INIT_SPEED_X = 4;
+const _INIT_SPEED_Y = 3.0;
+let ballSpeedX = _INIT_SPEED_X;
+let ballSpeedY = _INIT_SPEED_Y * ( Math.random() * 2 - 1);
+
+const _AI_MOVE_SPEED = 2;
+
+const _PADDLE_HEIGHT = 100;
+const _PADDLE_THICKNESS = 10;
+let paddle1Y = 200;
+let paddle2Y = 200;
+const _ANGLE_ADJUST = 0.1;
+
+let player1score = 0;
+let player2score = 0;
+const _WIN_SCORE = 5;
+let winner;
+
+let gameLaunched = false;
+let gameOver = false;
+
+function handleMouseClick(evt) {
+    if(!gameLaunched) {
+        gameLaunched = true;
+    } else if (gameOver) {
+        player1score = 0;
+        player2score = 0;
+        gameOver = false;
+    }
+}
+
+window.onload = function() {
+    // window.onload gets run automatically when the page finishes loading
+    canvas = document.getElementById('gameCanvas');
+    ctx = canvas.getContext('2d');
+    ctx.textAlign = 'center';
+
+    canvas.addEventListener('mousedown', handleMouseClick);
+
+    canvas.addEventListener('mousemove', function(evt) {
+        var mousePos = calculateMousePos(evt);
+        paddle1Y = mousePos.y - _PADDLE_HEIGHT/2;
+    } );
+
+    requestAnimationFrame(gameLoop);
+}
+
+function gameLoop(timeStamp) {
+    moveAll();
+    drawAll();
+    requestAnimationFrame(gameLoop);
+}
+
+function moveComputerPaddle() {
+    var paddle2Ycentre = paddle2Y + _PADDLE_HEIGHT/2;
+    const AI_SIT_STILL_MARGIN = 35;
+
+    if(paddle2Ycentre > ballY + AI_SIT_STILL_MARGIN) {
+        paddle2Y -= _AI_MOVE_SPEED;
+    }
+    if(paddle2Ycentre < ballY - AI_SIT_STILL_MARGIN) {
+        paddle2Y += _AI_MOVE_SPEED;
+    }
+}
+
+function moveAll() {
+
+    if(!gameLaunched) { return; }
+    if(gameOver) { return; }
+    
+    moveComputerPaddle();
+
+    var deltaY; // how far from centre of paddle
+
+    if(ballX < 0) {
+
+        if(ballY > paddle1Y && ballY < paddle1Y + _PADDLE_HEIGHT) {
+            ballSpeedX *= -1;
+            hitSound.play();
+
+            var paddle1Ycentre = paddle1Y + _PADDLE_HEIGHT/2;
+            deltaY = ballY - paddle1Ycentre;
+            ballSpeedY = deltaY * _ANGLE_ADJUST; 
+
+        } else {
+            scoreSound.play();
+            player2score++;
+            resetBall();
+        }
+    }
+    if(ballX > canvas.width) {
+
+        if(ballY > paddle2Y && ballY < paddle2Y + _PADDLE_HEIGHT) {
+            ballSpeedX *= -1;
+            hitSound.play();
+
+            let paddle2Ycentre = paddle2Y + _PADDLE_HEIGHT/2;
+            deltaY = ballY - paddle2Ycentre;
+            ballSpeedY = deltaY * _ANGLE_ADJUST; 
+        } else {
+            scoreSound.play();
+            player1score++;
+            resetBall();
+        }
+    }
+    if(ballY < 0) {
+        bounceSound.play();
+        ballSpeedY *= -1;
+    }
+    if(ballY > canvas.height) {
+        bounceSound.play();
+        ballSpeedY *= -1;
+    }
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
+}
+
+function drawAll() {
+    blankCanvas(ctx);
+    drawScore1(player1score, 'white');
+    drawScore2(player2score, 'white');
+
+    if(!gameLaunched) {
+        ctx.fillText('Tennis with AI player', canvas.width/2, 100);
+        ctx.fillText('Click here to continue', canvas.width/2, 150);
+    } else if(gameOver) {
+        ctx.fillText('Player ' + winner + ' won', canvas.width/2, 100);
+        ctx.fillText('Click here to continue', canvas.width/2, 150);
+    } else {
+        drawNet();
+        drawPaddle();
+        drawPaddleR();
+        drawBall();
+    }
+}
+
+function resetBall() {
+    if(player1score >= _WIN_SCORE || player2score >= _WIN_SCORE) {
+        gameOver = true;
+        if(player1score >= _WIN_SCORE) {
+            winner = 1;
+        }
+        if(player2score >= _WIN_SCORE) {
+            winner = 2;
+        }
+    }
+    // reverse so player scored against serves
+    ballSpeedX = -ballSpeedX;
+    // ballSpeedY = _INITIAL_SPEED_Y * Math.random() - _INITIAL_SPEED/2; 
+    ballSpeedY = _INIT_SPEED_Y * ( Math.random() * 2 - 1); 
+
+    ballX = canvas.width/2;
+    ballY = canvas.height/2;
+}
+
+function alignPaddle(evt) {
+    var mousePos = calculateMousePos(evt);
+    paddle1Y = mousePos.y - _PADDLE_HEIGHT/2;
+}
+
+function drawNet() {
+    var leftX = canvas.width/2;
+    var rightX = canvas.width/2;
+    var bottomY = canvas.height;
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 4;
+    ctx.setLineDash([5,5]);
+    ctx.beginPath();
+    ctx.moveTo(leftX, 0);
+    ctx.lineTo(rightX, bottomY);
+    ctx.stroke();
+}
+function drawPaddle() {
+    colourRectangle(0, paddle1Y, _PADDLE_THICKNESS, _PADDLE_HEIGHT, 'white');
+}
+function drawPaddleR() {
+    colourRectangle(canvas.width-_PADDLE_THICKNESS, paddle2Y, _PADDLE_THICKNESS, _PADDLE_HEIGHT, 'white');
+}
+
+function drawBall() {
+    colourCircle(ballX, ballY, 10, 'yellow');
+}
+
+function colourCircle(centreX, centreY, radius, colour) {
+    ctx.fillStyle = colour;
+    ctx.beginPath();
+    ctx.arc(centreX, centreY, radius, 0, Math.PI*2, true);
+    ctx.fill();    
+}
+function colourRectangle(leftX, topY, rightX, bottomY, colour) {
+    ctx.fillStyle = colour;
+    ctx.fillRect(leftX, topY, rightX, bottomY);
+}
+function drawScore1(txt, colour) {
+    ctx.fillStyle = colour;
+    ctx.font = '24px Verdana';
+    ctx.fillText(txt, 100, 100);
+}
+function drawScore2(txt, colour) {
+    ctx.fillStyle = colour;
+    ctx.font = '24px Verdana';
+    // -width not needed as ctx.textAlign = center
+    // var width = ctx.measureText(txt).width;
+    ctx.fillText(txt, canvas.width-100, 100);
+}
+
+function blankCanvas(ctx) {
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+function calculateMousePos(evt) {
+    var rect = canvas.getBoundingClientRect(), root = document.documentElement;
+    // account for margins, canvas position, scrolling etc
+    // works for scroll and position without last adjustment
+    // - root.scrollLeft -root.scrollTop
+    var mouseX = evt.clientX - rect.left;
+    var mouseY = evt.clientY - rect.top;
+    return {
+        x: mouseX,
+        y: mouseY,
+    }
+}
