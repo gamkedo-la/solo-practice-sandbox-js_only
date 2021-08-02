@@ -2,6 +2,10 @@ let audioFormat;
 let audible = true;
 let hitsound, bounceSound, scoreSound;
 
+hitSound = new soundOverlapsClass('../audio/tennis_hit');
+bounceSound = new soundOverlapsClass('../audio/tennis_bounce');
+scoreSound = new soundOverlapsClass('../audio/tennis_missed');
+
 function setFormat() {
     var audio = new Audio();
     if (audio.canPlayType("audio/mp3")) {
@@ -30,15 +34,6 @@ function soundOverlapsClass(filepath) {
         }
         altSoundTurn = !altSoundTurn; // toggle
     }
-} 
-if(audible) {
-    hitSound = new soundOverlapsClass('../audio/tennis_hit');
-    bounceSound = new soundOverlapsClass('../audio/tennis_bounce');
-    scoreSound = new soundOverlapsClass('../audio/tennis_missed');
-} else {
-    hitSound = new soundOverlapsClass('../audio/tennis_bounce');
-    bounceSound = new soundOverlapsClass('../audio/tennis_bounce');
-    scoreSound = new soundOverlapsClass('../audio/tennis_bounce');
 }
 
 function BackgroundMusicClass() {
