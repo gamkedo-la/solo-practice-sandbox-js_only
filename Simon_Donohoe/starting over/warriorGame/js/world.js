@@ -4,18 +4,18 @@ const ROOM_COLS = 16;
 
 let roomGrid =
 [ 
-  4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4,
-  4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 1, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-  1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
-  1, 0, 0, 0, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 0, 1,
-  1, 0, 6, 1, 1, 0, 1, 1, 4, 4, 1, 1, 0, 0, 0, 1,
-  1, 0, 0, 1, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 1,
-  1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1,
-  1, 0, 2, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
-  1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1,
-  1, 1, 1, 1, 3, 3, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1,
-  1, 1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+  1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 5, 0, 1, 1, 1, 1,
+  1, 0, 6, 0, 6, 0, 1, 0, 2, 0, 1, 0, 1, 6, 6, 1,
+  1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 5, 1, 1,
+  1, 1, 1, 5, 1, 1, 1, 0, 6, 0, 1, 0, 0, 0, 1, 1,
+  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 6, 0, 1, 1,
+  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+  1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 6, 0, 1, 1,
+  1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+  1, 0, 5, 0, 5, 0, 5, 0, 3, 0, 1, 1, 1, 1, 1, 1,
+  1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 4,
+  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4, 4
 ];
 
 const TILE_W = 50;
@@ -27,13 +27,17 @@ const TILE_PLAYER = 2;
 const TILE_GOAL = 3;
 const TILE_TREE = 4;
 const TILE_DOOR = 5;
-const TILE_KEY = 6;
+const TILE_KEY = 6; 
+
+function tileTypeHasTransparency(checkTileType) {
+  return (checkTileType == TILE_GOAL || checkTileType == TILE_KEY || checkTileType == TILE_DOOR || checkTileType == TILE_TREE);
+}
   
 function roomTileToIndex(tileColumn, tileRow){
   return (tileColumn + ROOM_COLS * tileRow);
 }
 
-function getTileAtPixelCoord(pixelX, pixelY) {
+function getTileIndexAtPixelCoord(pixelX, pixelY) {
   // two variables to find out which tile was hit
   let tileColumn = pixelX / TILE_W; 
   let tileRow = pixelY / TILE_H;
@@ -43,13 +47,13 @@ function getTileAtPixelCoord(pixelX, pixelY) {
   tileRow = Math.floor(tileRow);
 
   // first check whether the car is within any part of the tile wall
-  if(tileColumn < 0 || tileColumn >= ROOM_COLS || tileRow < 0 || tileRow >= ROOM_ROWS){
-    return TILE_WALL; // avoid invalid array access, treat out of bounds as wall
-  }
+  if(tileColumn < 0 || tileColumn >= ROOM_COLS || tileRow < 0 || tileRow >= ROOM_ROWS) {
+    document.getElementById("debugText").innerHTML = "out of bounds: " + pixelX + ", " + pixelY;
+    return undefined;
+  } 
 
   let tileIndex = roomTileToIndex(tileColumn, tileRow);
-
-  return roomGrid[tileIndex];
+  return tileIndex;
 }
 
 function drawRoom(){
@@ -63,6 +67,10 @@ function drawRoom(){
       for(let eachCol = 0; eachCol < ROOM_COLS; eachCol++) {
         let tileTypeHere = roomGrid[tileIndex]; //getting the tile code for this tile
         
+        if(tileTypeHasTransparency(tileTypeHere)){
+          canvasContext.drawImage(tilePics[TILE_GROUND], tileLeftEdgeX, tileTopEdgeY);
+        }
+
         canvasContext.drawImage(tilePics[tileTypeHere], tileLeftEdgeX,	tileTopEdgeY);
 
         tileIndex++; // increment which index we're going to next check for in the tile

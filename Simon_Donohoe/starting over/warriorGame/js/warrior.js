@@ -27,6 +27,7 @@ function warriorClass() {
   }
 
   this.reset = function() {
+    this.keysHeld = 0;
     if(this.homeX == undefined) {
       for(let i = 0; i < roomGrid.length; i++) {
         if(roomGrid[i] == TILE_PLAYER) {
@@ -60,15 +61,39 @@ function warriorClass() {
       nextX -= PLAYER_MOVE_SPEED;
     }
     
-    let walkIntoTileType = getTileAtPixelCoord(nextX, nextY);
+    let walkIntoTileIndex = getTileIndexAtPixelCoord(nextX, nextY);
+    let walkIntoTileType = TILE_WALL;
 
-    if(walkIntoTileType == TILE_GROUND){
-      this.x = nextX;
-      this.y = nextY;
-    } else if(walkIntoTileType == TILE_GOAL) {
-      document.getElementById("debugText").innerHTML = this.myName + " won.";
-      this.reset();
+    if(walkIntoTileType != undefined){
+      walkIntoTileType = roomGrid[walkIntoTileIndex];
     } 
+
+    switch(walkIntoTileType){
+      case TILE_GROUND:
+        this.x = nextX;
+        this.y = nextY;
+        break;
+      case TILE_GOAL:
+        document.getElementById("debugText").innerHTML = this.myName + " won";
+        this.reset();
+        break;
+      case TILE_DOOR:
+        if(this.keysHeld > 0){
+          this.keysHeld--; // one less key
+          document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
+          roomGrid[walkIntoTileIndex] = TILE_GROUND; // remove door
+        }
+        break;
+      case TILE_KEY:
+        this.keysHeld++; // gain key
+      document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
+      roomGrid[walkIntoTileIndex] = TILE_GROUND; // remove key
+      break;
+      case TILE_WALL:
+        default:
+          // any other tile type number was found... do nothing, for now
+          break;
+    }
   }
 
   this.draw = function() {
