@@ -44,7 +44,7 @@ function loadImages() {
         {trackType: WORLD_KEY, theFile:"key2.png"},
         {trackType: WORLD_DOOR, theFile:"track_door.png"},
         {trackType: WORLD_LOWERTUNNEL, theFile:"world_lowerTunnel.png"},
-       
+        {trackType: WORLD_SWORD, theFile:"sword.png"},
         {trackType: WORLD_TRAP, theFile:"world_trap.png"}
         
 
