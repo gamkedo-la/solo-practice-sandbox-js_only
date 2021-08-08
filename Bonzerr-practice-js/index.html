@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X3RIMA ADVENTURES</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Press Start 2P', cursive;
+            margin: 0;
+        }
+
+        .canvas {
+            height: 110vh;
+            background-color: rgb(7, 14, 6);
+            display: block;
+            text-align: center;
+
+            color: black;
+            padding-top: 1%;
+            border: 10px solid black;
+        }
+
+        h1 {
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        p {
+            color: #fff;
+            font-size: 3px;
+        }
+
+        #hash{
+            color:black;
+            text-align:center;
+            
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div class="canvas">
+        <h1>X3rima ADVENTURES</h1>
+        
+        <canvas id="gameCanvas" width="800" height="600" >
+            <!-- height="500" width="900"-->
+           
+        </canvas>
+        <!-- <p id="hash">482c811da5d5b4bc6d497ffa98491e38</p>  -->
+        <!-- <audio  autoplay>
+            <source src="sidhayaAlabYouriff.wav" type="audio/wav">
+        </audio> -->
+        <!-- <p id="life" style="color:white;font-size:medium;">Life Span</p> -->
+        <p id="debugText" style="color:white;font-size:medium;">Key count will be displayed here.</p>
+    </div>
+   
+    <script src="js/GraphicsCommon.js"></script>
+    <script src="js/ImageLoading.js"></script>
+    <script src="js/Hero.js"></script>
+    <script src="js/World.js"></script>
+    <script src="js/Input.js"></script>
+    <script src="js/Main.js"></script>   
+    
+
+    
+</body>
+
+</html>
