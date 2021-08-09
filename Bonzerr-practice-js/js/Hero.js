@@ -1,6 +1,6 @@
 // const GROUNDSPEED_DECAY_MULT = 0.94;
-const DRIVE_POWER = 0.5;
-const REVERSE_POWER = 0.2;
+// const DRIVE_POWER = 0.5;
+// const REVERSE_POWER = 0.2;
 // const TURN_RATE = 0.06;
 // const MIN_SPEED_TO_TURN = 0.5;
 const PLAYER_MOVEMENT_SPEED = 3.0;
@@ -167,25 +167,24 @@ function heroClass() {
         }
         break;
       case WORLD_KEY:
-        console.log(this.name + " THIS IS THE KEY");
+        // console.log(this.name + " THIS IS THE KEY");
+        // this.keysHeld;
         this.keysHeld++;
         this.updateKeyReadout();
+        var audio = new Audio('keyCollectionSound2.wav')
+        audio.play();
         trackGrid[walkIntoTileIndex] = WORLD_ROAD;
         break;
 
       case WORLD_LADDER:
         if (this.keyHeld_Gas) {
-          // this.speed += DRIVE_POWER;
           nextY -= PLAYER_MOVEMENT_SPEED + 20;
           console.log("keyHeld_Gas");
-          // trackGrid[walkIntoTileIndex] = WORLD_ROAD;
         }
         break;
       case WORLD_LADDER_CONNECTOR:
         if (this.keyHeld_Gas && WORLD_LADDER_CONNECTOR) {
-          // this.speed += DRIVE_POWER;
           nextY -= PLAYER_MOVEMENT_SPEED + 20;
-
           console.log("keyHeld_Gas");
         }
         break;
