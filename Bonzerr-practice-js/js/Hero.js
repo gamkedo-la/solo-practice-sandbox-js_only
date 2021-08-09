@@ -1,6 +1,6 @@
 // const GROUNDSPEED_DECAY_MULT = 0.94;
-const DRIVE_POWER = 0.5;
-const REVERSE_POWER = 0.2;
+// const DRIVE_POWER = 0.5;
+// const REVERSE_POWER = 0.2;
 // const TURN_RATE = 0.06;
 // const MIN_SPEED_TO_TURN = 0.5;
 const PLAYER_MOVEMENT_SPEED = 3.0;
