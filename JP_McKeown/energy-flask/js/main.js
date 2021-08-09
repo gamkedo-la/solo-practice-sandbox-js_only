@@ -39,36 +39,43 @@ function moveAll() {
 }
 
 function drawAll() {
-    // blank main area
-    drawFillRect(0,0,GAME_WIDTH,GAME_HEIGHT,'black');
     // blank right bar
     drawFillRect(GAME_WIDTH,0,UI_WIDTH,GAME_HEIGHT,'black');
     document.querySelector('#state').innerText = 'State = ' + gameState;
     
     switch (gameState) {
         case STATE_LAUNCH:
+                // blank main area
+    drawFillRect(0,0,GAME_WIDTH,GAME_HEIGHT,'black');
             drawText('Keys to press:', GAME_WIDTH+40, 100, 'white', '18px Verdana');
             drawText('spacebar = begin', GAME_WIDTH+40, 150, 'white', '18px Verdana');
             drawText('t = topup shields', GAME_WIDTH+40, 200, 'white', '18px Verdana');
             break;
     
         case STATE_MENU:
+                // blank main area
+    drawFillRect(0,0,GAME_WIDTH,GAME_HEIGHT,'black');
             drawMenu();
             break;
         case STATE_OPTIONS:
+                // blank main area
+    drawFillRect(0,0,GAME_WIDTH,GAME_HEIGHT,'black');
             drawOptions();
             break;
         case STATE_CREDITS:
+                // blank main area
+    drawFillRect(0,0,GAME_WIDTH,GAME_HEIGHT,'black');
             drawCredits();
             break;
-        case STATE_PAUSE:
-            drawPause();
+
+        case STATE_PATH:
+            drawVisits();
             break;
     
         case STATE_REACTOR:
             drawWorld();
-            drawMoney();
-            showEnergy();
+            writeMoney();
+            writeEnergy();
             
             for(var i=0;i<shieldList.length;i++) {
                 shieldList[i].drawStrength();
@@ -84,10 +91,16 @@ function drawAll() {
 }
 
 function drawMenu() {
-    drawText('Energy Flask', MENU_X, MENU_Y, HEADING_SIZE, 'white');
-    drawText('Start game', MENU_X, MENU_Y+100, MENU_SIZE, 'white');
+    if(!gameRunning) {
+        drawText('Energy Flask', MENU_X, MENU_Y, HEADING_SIZE, 'white');
+        drawText('Start', MENU_X, MENU_Y+100, MENU_SIZE, 'white');
+    } else {
+        drawText('Energy Flask - paused', MENU_X, MENU_Y, HEADING_SIZE, 'white');
+        drawText('Resume', MENU_X, MENU_Y+100, MENU_SIZE, 'white');
+    }   
     drawText('Options', MENU_X, MENU_Y+180, MENU_SIZE, 'white');
     drawText('Credits', MENU_X, MENU_Y+260, MENU_SIZE, 'white');
+    drawText('Path', MENU_X, MENU_Y+340, MENU_SIZE, 'white');
 }
 
 function drawOptions() {
@@ -95,13 +108,7 @@ function drawOptions() {
     drawText('Mute', MENU_X, MENU_Y+100, MENU_SIZE, 'white');
     drawText('Volume', MENU_X, MENU_Y+180, MENU_SIZE, 'white');
     drawText('Difficulty', MENU_X, MENU_Y+260, MENU_SIZE, 'white');
-}
-
-function drawPause() {
-    drawText('Paused', MENU_X, MENU_Y, HEADING_SIZE, 'white');
-    drawText('Resume', MENU_X, MENU_Y+100, MENU_SIZE, 'white');
-    drawText('Cheats', MENU_X, MENU_Y+180, MENU_SIZE, 'white');
-    drawText('Menu', MENU_X, MENU_Y+260, MENU_SIZE, 'white');
+    drawText('Cheats', MENU_X, MENU_Y+340, MENU_SIZE, 'white');
 }
 
 function drawCredits() {

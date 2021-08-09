@@ -4,7 +4,8 @@ function ballClass() {
 
   this.speedX = Math.cos(tempRandAng)*tempRandSpeed;
   this.speedY = Math.sin(tempRandAng)*tempRandSpeed;
-
+    this.history = [];
+    
   this.placeInFlask = function() {
     this.x = FLASK_LEFT + Math.floor(Math.random() * (TILE_W * FLASK_SIZE - 2*BALL_OFFSET));
     this.y = FLASK_TOP + Math.floor(Math.random() * (TILE_H * FLASK_SIZE - 2*BALL_OFFSET));
@@ -51,18 +52,22 @@ function ballClass() {
     if(col < 0 || col >= WORLD_COLS ||
        row < 0 || row >= WORLD_ROWS) {
        return false;
+    }   
+    var tileIndex = tileToIndex(col, row);
+
+    // let's backtrack to see whether we changed rows or cols on way in
+    var prevX = this.x-this.speedX;
+    var prevY = this.y-this.speedY;
+    var prevTileCol = Math.floor(prevX / TILE_W);
+    var prevTileRow = Math.floor(prevY / TILE_H);
+
+    // store tile path of ball
+    if(prevTileCol != col || prevTileRow != row) {
+        this.history.push(tileIndex);
     }
     
-    var tileIndex = tileToIndex(col, row);
-   
-    // if(worldGrid[tileIndex] == TILE_SHIELD) {
     if(worldGrid[tileIndex] == TILE_SHIELD || worldGrid[tileIndex] == TILE_CORNER_SHIELD) {
       // particle overlaps shield
-      // let's backtrack to see whether we changed rows or cols on way in
-      var prevX = this.x-this.speedX;
-      var prevY = this.y-this.speedY;
-      var prevTileCol = Math.floor(prevX / TILE_W);
-      var prevTileRow = Math.floor(prevY / TILE_H);
       var bothTestsFailed = true;
 
       if(prevTileCol != col) { // must have come in horizontally
@@ -94,5 +99,4 @@ function ballClass() {
       }
     }
   }
-  
 } // end of ball class

@@ -52,13 +52,20 @@ function keyPressed(evt) {
             else if(key == KEY_G) {
                 gameState = STATE_GUIDE;
             }
+            else if(key == KEY_P) {
+                gameState = STATE_PATH;
+            }
+            else if(key == KEY_R) {
+                gameState = STATE_REACTOR;
+            }
             else if(key == KEY_S) {
                 gameState = STATE_REACTOR;
+                gameRunning = true;
             }
             break;
 
         case STATE_REACTOR:
-            if(key == KEY_ESC) {
+            if(key == KEY_ESC || key == KEY_M) {
                 gameState = STATE_MENU;
             }
             else if(key == KEY_P || key == KEY_SPACE) {
@@ -66,32 +73,27 @@ function keyPressed(evt) {
             }
             break;
 
-        case STATE_PAUSE:
+        case STATE_PATH:
             if(key == KEY_ESC || key == KEY_M) {
                 gameState = STATE_MENU;
-            }
-            else if(key == KEY_R) {
-                gameState = STATE_REACTOR;
-            }
-            else if(key == KEY_H) {
-                gameState = STATE_HELP;
+                pathsDrawn = false;
             }
             break;
 
         case STATE_OPTIONS:
-            if(key == KEY_ESC) {
+            if(key == KEY_ESC || key == KEY_M) {
                 gameState = STATE_MENU;
             }
             break;
 
         case STATE_CREDITS:
-            if(key == KEY_ESC) {
+            if(key == KEY_ESC || key == KEY_M) {
                 gameState = STATE_MENU;
             }
             break;
             
         case STATE_GUIDE:
-            if(key == KEY_ESC) {
+            if(key == KEY_ESC || key == KEY_M) {
                 gameState = STATE_MENU;
             }
             break;

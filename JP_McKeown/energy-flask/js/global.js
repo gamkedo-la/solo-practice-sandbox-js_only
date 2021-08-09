@@ -1,12 +1,14 @@
 var canvas, ctx;
+let gameRunning = false;
 var editMode = true;
+let pathsDrawn = false;
 
 const STATE_CREDITS = -8;
 const STATE_OPTIONS = -7;
 const STATE_GUIDE = -6;
-const STATE_LAUNCH = -2;
-const STATE_MENU = -1;
-const STATE_PAUSE = 0;
+const STATE_PATH = -2;
+const STATE_LAUNCH = -1;
+const STATE_MENU = 0;
 const STATE_PLAY = 7;
 const STATE_DIALOG = 1;
 const STATE_SPEND = 2;
@@ -19,6 +21,7 @@ const TILE_W = 48;
 const TILE_H = 48;
 const WORLD_COLS = 15;
 const WORLD_ROWS = 15;
+const TILES = WORLD_COLS * WORLD_ROWS;
 
 const UI_WIDTH = 300;
 const GAME_WIDTH = WORLD_COLS * TILE_W;
@@ -54,8 +57,8 @@ const FLASK_TOP = BALL_OFFSET + 7.5*TILE_H - (FLASK_SIZE / 2) * TILE_H;
 const SHIELD_LIGHTNESS = 100;  
 const SHIELD_COUNT = 16;
 var shieldList = [];
-const SHIELD_WALL_INIT_STRENGTH = 40;
-const SHIELD_CORNER_INIT_STRENGTH = 5;
+const SHIELD_WALL_INIT_STRENGTH = 4;
+const SHIELD_CORNER_INIT_STRENGTH = 1;
 
 const MONEY_INIT = 100;
 var money = MONEY_INIT;
