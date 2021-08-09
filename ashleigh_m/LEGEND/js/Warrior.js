@@ -1,9 +1,9 @@
-const PLAYER_MOVE_SPEED = 50;
+const PLAYER_MOVE_SPEED = 3.0;
 
 function warriorClass(){
 	this.x = 75;
 	this.y = 75;
-	this.speed = 5;
+	this.speed = 0;
 
 	this.keyHeld_Up = false;
 	this.keyHeld_Down = false;
