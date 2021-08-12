@@ -20,22 +20,30 @@ function loadImageForTileCode(tileCode, fileName) {
 	beginLoadingImage(worldPics[tileCode], fileName);
 }
 
+/*
+const TILE_FLOOR = 0;
+const TILE_WALL = 1;
+const TILE_PLAYERSTART = 2;
+const TILE_DOOR = 3;
+const TILE_KEY = 4;
+const TILE_GOAL = 5;
+*/
+
 function loadImages() {
 	var imageList = [
-		{varName: warriorPic, theFile: "player1car.png"},
-		{tileType: TILE_ROAD, theFile: "track_road.png"},
-		{tileType: TILE_WALL, theFile: "track_wall.png"},
-		{tileType: TILE_GOAL, theFile: "track_goal.png"},
-		{tileType: TILE_TREE, theFile: "track_tree.png"},
-		{tileType: TILE_FLAG, theFile: "track_flag.png"},
-		{tileType: TILE_DISCO, theFile: "track_disco.png"}
+		{varName: warriorPic, theFile: "warrior.png"},
+		{tileType: TILE_FLOOR, theFile: "world_floor.png"},
+		{tileType: TILE_WALL, theFile: "world_wall.png"},
+		{tileType: TILE_DOOR, theFile: "world_door.png"},
+		{tileType: TILE_KEY, theFile: "world_key.png"},
+		{tileType: TILE_GOAL, theFile: "world_goal.png"}
 		];
 
 	picsToLoad = imageList.length;
 
 	for(var i=0;i<imageList.length;i++) {
 		if(imageList[i].varName != undefined) {
-			beginLoadingImage(imageList[i].varName, imageList[i].theFile);
+			beginLoadingImage(imageList[i].varName, imageList[i].theFile); //maybe this isn't working?
 		} else {
 			loadImageForTileCode(imageList[i].tileType, imageList[i].theFile);
 		}

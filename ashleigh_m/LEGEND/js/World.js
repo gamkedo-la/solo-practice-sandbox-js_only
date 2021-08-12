@@ -1,32 +1,28 @@
-const TILE_W = 40;
-const TILE_H = 40;
+const TILE_W = 50;
+const TILE_H = 50;
 const TILE_GAP = 2;
-const WORLD_COLS = 20;
-const WORLD_ROWS = 15;
-var levelOne = [6, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 4,
-				 4, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-				 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-				 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1,
-				 1, 0, 0, 0, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 1,
-				 1, 0, 0, 0, 0, 0, 0, 1, 4, 4, 1, 1, 0, 0, 0, 0, 1, 0, 0, 1,
-				 1, 0, 0, 0, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1,
-				 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 5, 0, 0, 1, 0, 0, 1,
-				 1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-				 1, 0, 0, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-				 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 5, 0, 0, 1,
-				 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1,
-				 0, 3, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1,
-				 0, 3, 0, 0, 0, 0, 1, 4, 4, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1,
-				 1, 1, 1, 1, 1, 1, 1, 4, 4, 4, 4, 4, 4, 4, 1, 1, 1, 1, 1, 4];
+const WORLD_COLS = 16;
+const WORLD_ROWS = 12;
+var levelOne = [4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+				4, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+				4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+				1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
+				1, 0, 0, 0, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 0, 1,
+				1, 0, 0, 1, 1, 0, 0, 1, 4, 4, 1, 1, 0, 0, 0, 1,
+				1, 0, 0, 1, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 1,
+				1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 5, 0, 1,
+				1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1,
+				1, 2, 0, 1, 0, 0, 5, 0, 0, 0, 5, 0, 0, 1, 0, 1,
+				1, 0, 0, 1, 3, 3, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1,
+				1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 var worldGrid = [];
 
-const TILE_ROAD = 0;
+const TILE_FLOOR = 0;
 const TILE_WALL = 1;
 const TILE_PLAYERSTART = 2;
-const TILE_GOAL = 3;
-const TILE_TREE = 4;
-const TILE_FLAG = 5;
-const TILE_DISCO = 6;
+const TILE_DOOR = 3;
+const TILE_KEY = 4;
+const TILE_GOAL = 5;
 
 function returnTileTypeAtColRow(col, row) {
 	if(col >= 0 && col < WORLD_COLS &&
@@ -39,8 +35,8 @@ function returnTileTypeAtColRow(col, row) {
 }
 
 function getTileTypeAtPixelCoord(atX, atY) { //changed from warrior world handling
-	var warriorWorldCol = Math.floor(warrior.x / TILE_W);
-	var warriorWorldRow = Math.floor(warrior.y / TILE_H);
+	var warriorWorldCol = Math.floor(atX / TILE_W);
+	var warriorWorldRow = Math.floor(atY / TILE_H);
 	//var worldIndexUnderWarrior = rowColToArrayIndex(warriorWorldCol, warriorWorldRow);
 
 	if(warriorWorldCol >= 0 && warriorWorldCol < WORLD_COLS &&
@@ -55,6 +51,16 @@ function rowColToArrayIndex(col, row) {
 	return col + WORLD_COLS * row;
 }
 
+function tileUsesTransparency(tile){
+	if(tile == 3 ||
+       tile == 4 || 
+	   tile == 5){
+		return true;
+	} else {
+		return false;
+	}
+}
+
 function drawWorld() {
 
 	for(var eachRow=0;eachRow<WORLD_ROWS;eachRow++) {
@@ -63,7 +69,10 @@ function drawWorld() {
 			var arrayIndex = rowColToArrayIndex(eachCol, eachRow); 
 			var tileKindHere = worldGrid[arrayIndex];
 			var useImg = worldPics[tileKindHere];
-
+			if(tileUsesTransparency(tileKindHere)){
+				canvasContext.drawImage(worldPics[0], //draw floor under transparent images
+					TILE_W*eachCol,TILE_H*eachRow);				
+			} 
 			canvasContext.drawImage(useImg,
 					TILE_W*eachCol,TILE_H*eachRow);
 
