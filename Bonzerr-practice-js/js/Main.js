@@ -1,69 +1,60 @@
-        var canvas, canvasContext; 
-        
-        var blackCar = new heroClass();
-        // var blueCar = new heroClass();
+var canvas, canvasContext;
 
-        window.onload = function () {
-            canvas = document.getElementById('gameCanvas');
-            canvasContext = canvas.getContext('2d');
-           
-            colorRect(0,0,canvas.width,canvas.height, 'black');
-            colorText("LOADING IMAGES",canvas.width/2,canvas.height/2,'white');
-           
-            loadImages();
-        }
+var blueHero = new heroClass();
+// var blueCar = new heroClass();
 
-        function imageLoadingDoneSoStartGame(){
-            var framesPersecond = 30;
-            setInterval(updateAll, 1000 / framesPersecond);
-            
-            setupInput();
-            var audio = new Audio('Intro-BeepBox-Song.wav')
-            audio.play();
-            loadLevel(levelList[levelNow]);
-            // trackGrid = levelOne;
-            // blueCar.reset(otherCarPic, "Machine Raider");
-            // blackCar.reset(heroPic, "Black Fire");
-           
-          
-        }
+window.onload = function () {
+  canvas = document.getElementById("gameCanvas");
+  canvasContext = canvas.getContext("2d");
 
-        function nextLevel(){
-             levelNow++;
-             if(levelNow >= levelList.length){
-                 levelNow = 0;
-             }
-             loadLevel(levelList[levelNow]);
-         }
+  colorRect(0, 0, canvas.width, canvas.height, "black");
+  colorText("LOADING IMAGES", canvas.width / 2, canvas.height / 2, "white");
 
-        function loadLevel(whichLevel){
-            trackGrid = whichLevel.slice();
-            // blueCar.reset(otherCarPic, "Machine Raider");
-            blackCar.reset(heroPic, "Black Fire");
+  loadImages();
+};
 
-            //trackGrid[30] = 5;
-            //console.log(whichLevel[30]);
-           
-        }
-        
-        function updateAll() {
-            moveAll();
-            drawAll();
-        }
+function imageLoadingDoneSoStartGame() {
+  var framesPersecond = 30;
+  setInterval(updateAll, 1000 / framesPersecond);
 
-        function moveAll() {
-            blackCar.move();
-            // blueCar.move();
-        }
+  setupInput();
+  var audio = new Audio("Intro-BeepBox-Song.wav");
+  audio.play();
+  loadLevel(levelList[levelNow]);
+  // worldGrid = levelOne;
+  // blueCar.reset(otherCarPic, "Machine Raider");
+  // blueHero.reset(heroPic, "Black Fire");
+}
 
+function nextLevel() {
+  levelNow++;
+  if (levelNow >= levelList.length) {
+    levelNow = 0;
+  }
+  loadLevel(levelList[levelNow]);
+}
 
-        function drawAll() {
-            drawTracks();
-            blackCar.draw();
-            // blueCar.draw();
-           
-           
-        }
+function loadLevel(whichLevel) {
+  worldGrid = whichLevel.slice();
+  // blueCar.reset(otherCarPic, "Machine Raider");
+  blueHero.reset(heroPic, "Black Fire");
 
+  //worldGrid[30] = 5;
+  //console.log(whichLevel[30]);
+}
 
+function updateAll() {
+  moveAll();
+  drawAll();
+}
 
+function moveAll() {
+  blueHero.move();
+  // blueCar.move();
+}
+
+function drawAll() {
+  drawTracks();
+  blueHero.draw();
+  // blueCar.draw();
+}

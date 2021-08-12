@@ -92,7 +92,7 @@ var levelOne = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
         //     if(col >=  0 && col < WORLD_COLS &&
         //         row >= 0 && row < WORLD_ROWS){
         //             var trackIndexUnderCoord = rowColToArrayIndex(col,row);
-        //             return (trackGrid[trackIndexUnderCoord] != WORLD_ROAD);
+        //             return (worldGrid[trackIndexUnderCoord] != WORLD_ROAD);
         //         } else {
         //             return false;
         //         }
@@ -103,7 +103,7 @@ var levelOne = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
             if(col >=  0 && col < WORLD_COLS &&
                 row >= 0 && row < WORLD_ROWS){
                     var trackIndexUnderCoord = rowColToArrayIndex(col,row);
-                    return trackGrid[trackIndexUnderCoord];
+                    return worldGrid[trackIndexUnderCoord];
                 } else {
                     return WORLD_WALL;
                 }
@@ -146,11 +146,11 @@ var levelOne = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
     //    }// end of heroTrackHandling function
 
     function getTileIndexAtPixelCoord(atX, atY) {
-        var warriorWorldCol = Math.floor(atX / WORLD_W);
+        var heroWorldCol = Math.floor(atX / WORLD_W);
         var warriorWorldRow = Math.floor(atY / WORLD_H);
-        var worldIndexUnderWarrior = rowColToArrayIndex(warriorWorldCol, warriorWorldRow);
+        var worldIndexUnderWarrior = rowColToArrayIndex(heroWorldCol, warriorWorldRow);
     
-        if(warriorWorldCol >= 0 && warriorWorldCol < WORLD_COLS &&
+        if(heroWorldCol >= 0 && heroWorldCol < WORLD_COLS &&
             warriorWorldRow >= 0 && warriorWorldRow < WORLD_ROWS) {
             return worldIndexUnderWarrior;
         } // end of valid col and row
@@ -180,7 +180,7 @@ var levelOne = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
           for (var eachCol=0;eachCol<WORLD_COLS;eachCol++) {
 		    
               var arrayIndex = rowColToArrayIndex(eachCol, eachRow); 
-              var tileKindHere = trackGrid[arrayIndex];
+              var tileKindHere = worldGrid[arrayIndex];
               var useImg = trackPics[tileKindHere];
            
 
