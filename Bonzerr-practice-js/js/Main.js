@@ -16,7 +16,6 @@ window.onload = function () {
 function imageLoadingDoneSoStartGame() {
   var framesPersecond = 30;
   setInterval(updateAll, 1000 / framesPersecond);
-
   setupInput();
   var audio = new Audio("Intro-BeepBox-Song.wav");
   audio.play();

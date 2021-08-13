@@ -21,14 +21,14 @@
         }
 
         .canvas {
-            height: 110vh;
-            background-color: rgb(7, 14, 6);
+            height: 101vh;
+            background-color: rgb(41, 44, 41);
             display: block;
             text-align: center;
 
             color: black;
             padding-top: 1%;
-            border: 10px solid black;
+            border: 5px solid black;
         }
 
         h1 {
@@ -46,6 +46,44 @@
             text-align:center;
             
         }
+
+        #debugText{
+            font-size: 12px;
+            position: absolute;
+            top: 5%;
+            left: 85%;
+        }
+
+        .items{
+            font-size: 12px;
+            position: absolute;
+            top: 5%;
+            left: 2%;
+        }
+
+        #slingshot{
+            font-size: 12px;
+            position: absolute;
+            top: 10%;
+            left: 2%;
+
+        }
+
+        #sword{
+            font-size: 12px;
+            position: absolute;
+            top: 13%;
+            left: 2%;
+
+        }
+
+        #arrow{
+            font-size: 12px;
+            position: absolute;
+            top: 16%;
+            left: 2%;
+
+        }
     </style>
 </head>
 
@@ -53,7 +91,7 @@
 
 
     <div class="canvas">
-        <h1>X3rima ADVENTURES</h1>
+        <h1>LEVEL TUNNELS</h1>
         
         <canvas id="gameCanvas" width="800" height="600" >
             <!-- height="500" width="900"-->
@@ -65,6 +103,10 @@
         </audio> -->
         <!-- <p id="life" style="color:white;font-size:medium;">Life Span</p> -->
         <p id="debugText" style="color:white;font-size:medium;">Key count will be displayed here.</p>
+        <p class="items">Items Collected:</p>
+        <p id="slingshot"></p>
+        <p id="sword"></p>
+        <p id="arrow"></p>
     </div>
    
     <script src="js/GraphicsCommon.js"></script>

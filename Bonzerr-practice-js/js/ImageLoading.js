@@ -46,6 +46,9 @@ function loadImages() {
     { trackType: WORLD_LOWERTUNNEL, theFile: "world_lowerTunnel.png" },
     { trackType: WORLD_SWORD, theFile: "sword.png" },
     { trackType: WORLD_TRAP, theFile: "world_trap.png" },
+    { trackType: WORLD_ARROW, theFile: "world_arrow3.png" }
+    
+
   ];
 
   picsToLoad = imageList.length;
