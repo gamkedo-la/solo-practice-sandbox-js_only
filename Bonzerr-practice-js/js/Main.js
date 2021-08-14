@@ -57,3 +57,4 @@ function drawAll() {
   blueHero.draw();
   // blueCar.draw();
 }
+

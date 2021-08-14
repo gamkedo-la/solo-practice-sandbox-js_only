@@ -32,8 +32,10 @@ function loadImageForTrackCode(trackCode, fileName) {
 }
 
 function loadImages() {
+ 
   var imageList = [
-    { varName: heroPic, theFile: "rocketMan3.png" },
+    { varName: heroPic, theFile: "rocketman3.png"},
+    
 
     // {trackType: WORLD_UPPERROAD, theFile:"world_road3.png"},
     { trackType: WORLD_ROAD, theFile: "track_road2.png" },

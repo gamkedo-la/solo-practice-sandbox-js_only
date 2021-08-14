@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>X3RIMA ADVENTURES</title>
+    <title>ROBO EXPLORER</title>
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
@@ -41,27 +41,32 @@
             font-size: 3px;
         }
 
-        #hash{
-            color:black;
-            text-align:center;
-            
+        #hash {
+            color: black;
+            text-align: center;
+
         }
 
-        #debugText{
-            font-size: 12px;
+        #debugText {
+            font-size: 15px;
             position: absolute;
-            top: 5%;
+            top: 8%;
             left: 85%;
         }
 
-        .items{
+
+
+        .items {
             font-size: 12px;
+            /* background-color:rgba(8, 196, 55, 0.959); */
+            border-radius: 2%;
+            /* padding: 1%; */
             position: absolute;
-            top: 5%;
+            top: 7%;
             left: 2%;
         }
 
-        #slingshot{
+        #slingshot {
             font-size: 12px;
             position: absolute;
             top: 10%;
@@ -69,7 +74,7 @@
 
         }
 
-        #sword{
+        #sword {
             font-size: 12px;
             position: absolute;
             top: 13%;
@@ -77,11 +82,54 @@
 
         }
 
-        #arrow{
+        #arrow {
             font-size: 12px;
+
             position: absolute;
             top: 16%;
             left: 2%;
+
+        }
+
+        /****************************Media Querry for 1024 Screens**************/
+        @media only screen and (max-width: 1024px) {
+            #debugText {
+                font-size: .5rem;
+                top: 10%;
+                left: 92%;
+            }
+
+            .items {
+                font-size: .5rem;
+                /* background-color:rgba(8, 196, 55, 0.959); */
+                top: 10%;
+                left: 1%;
+                width: 9%;
+                display: inline-block;
+            }
+
+            #slingshot {
+                font-size: .4rem;
+                top: 14%;
+                left: 1%;
+
+            }
+
+            #sword {
+                font-size: .4rem;
+                top: 16%;
+                left: 1%;
+
+            }
+
+            #arrow {
+                font-size: .4rem;
+                top: 18%;
+                left: 1%;
+
+            }
+
+
 
         }
     </style>
@@ -92,32 +140,32 @@
 
     <div class="canvas">
         <h1>LEVEL TUNNELS</h1>
-        
-        <canvas id="gameCanvas" width="800" height="600" >
+
+        <canvas id="gameCanvas" width="800" height="600">
             <!-- height="500" width="900"-->
-           
+
         </canvas>
         <!-- <p id="hash">482c811da5d5b4bc6d497ffa98491e38</p>  -->
         <!-- <audio  autoplay>
             <source src="sidhayaAlabYouriff.wav" type="audio/wav">
         </audio> -->
         <!-- <p id="life" style="color:white;font-size:medium;">Life Span</p> -->
-        <p id="debugText" style="color:white;font-size:medium;">Key count will be displayed here.</p>
+        <p id="debugText" style="color:white;">Key count will be displayed here.</p>
         <p class="items">Items Collected:</p>
         <p id="slingshot"></p>
         <p id="sword"></p>
         <p id="arrow"></p>
     </div>
-   
+
     <script src="js/GraphicsCommon.js"></script>
     <script src="js/ImageLoading.js"></script>
     <script src="js/Hero.js"></script>
     <script src="js/World.js"></script>
     <script src="js/Input.js"></script>
-    <script src="js/Main.js"></script>   
-    
+    <script src="js/Main.js"></script>
 
-    
+
+
 </body>
 
 </html>

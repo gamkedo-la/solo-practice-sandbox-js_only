@@ -1,3 +1,4 @@
+//NOTE TO SELF FOR GIT UPDATE myCarPic to myHeroPic Aug 13, 2021- Will remove later
 // const GROUNDSPEED_DECAY_MULT = 0.94;
 // const DRIVE_POWER = 0.5;
 // const REVERSE_POWER = 0.2;
@@ -13,9 +14,14 @@ function heroClass() {
 
   this.x = 75;
   this.y = 75;
+
+  this.width = 40;
+  this.height = 40;
+  this.frameX = 0;
+  this.frameY = 0;
   // this.ang = 0;
   // this.speed = 0;
-  this.myCarPic;
+  this.myHeroPic;
   this.name = "Untitled Explorer";
   this.keysHeld = 0;
   this.items = 0;
@@ -53,7 +59,7 @@ function heroClass() {
 
   this.reset = function (whichImage, heroName) {
     this.name = heroName;
-    this.myCarPic = whichImage;
+    this.myHeroPic = whichImage;
     this.keysHeld = 0;
     // this.life = 3;
     this.updateKeyReadout();
@@ -99,8 +105,10 @@ function heroClass() {
     var nextY = this.y;
 
     if (this.keyHeld_Jump) {
+      // beginLoadingImage(rocketBooster);
       nextY -= JUMP_POWER;
       console.log("JUMP_POWER");
+     
     } else {
       nextY += GRAVITY + 10;
       // if(this.keyHeld_Jump == false){
@@ -220,7 +228,21 @@ function heroClass() {
     }
   };
 
-  this.draw = function () {
-    drawBitmapCenteredWithRotation(this.myCarPic, this.x, this.y, this.ang);
+
+  function animate(){
+    this.myHeroPic,
+    this.width,
+    this.height,
+    this.frameX,
+    this.frameY
+
   };
+  
+
+  this.draw = function () {
+    drawBitmapCenteredWithRotation(this.myHeroPic, this.x, this.y, this.ang);
+   
+  };
+
+ 
 }
