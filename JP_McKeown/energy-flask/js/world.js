@@ -34,24 +34,6 @@ var worldGrid =
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
 
-// var strengthGrid =
-//   [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 10, 40, 40, 40, 10, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 40, 0, 0, 0, 40, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 10, 40, 40, 40, 10, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-//     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
-// var strengthArray = [];
-
 function drawWorld() {
   let arrayIndex = 0;
 	let drawTileX = 0;
@@ -78,16 +60,6 @@ function drawWorld() {
     drawTileX = 0;
   } // end row
 }
-
-// function colourShield(x, y, strength) {
-//   // let strengthTint = '#0000' + strength.toString(16);
-//   // RGB gradient only works for greyscale, need HSL
-//   // low strength -> higher lightness 
-//   let lightness = SHIELD_LIGHTNESS - strength;
-//   let strengthTint = 'hsl(240, 100%, ' + lightness + '%)'; 
-//   // console.log(strengthTint)
-//   drawLineRect(x, y, TILE_W, TILE_H, strengthTint, 'black');
-// }
 
 function tileToShield(tile) {
   for(let i=0; i < shieldList.length; i++) {
@@ -117,4 +89,3 @@ function yToRow(y) {
   let row = Math.floor(y / TILE_H);
   return row;
 }
-
