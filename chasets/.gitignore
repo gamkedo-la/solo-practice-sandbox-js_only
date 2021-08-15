@@ -3,3 +3,9 @@ node_modules/
 .idea/
 .vscode/
 *.swp
+.eslintrc.js
+package-lock.json
+package.json
+tags/
+tags
+tags.lock
