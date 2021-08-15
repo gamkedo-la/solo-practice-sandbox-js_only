@@ -3,6 +3,10 @@ const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
+let timetToNextEnemy = 0;
+let enemyInterval = 500;
+let lastTime = 0;
+
 let enemies = [];
 
 class Enemy {
@@ -26,8 +30,15 @@ const enemy = new Enemy();
 
 function animate(timestamp) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    enemy.update();
-    enemy.draw();
+    let deltaTime = timestamp - lastTime;
+    lastTime = timestamp;
+    timetToNextEnemy += deltaTime;
+    if (timetToNextEnemy > enemyInterval) {
+        enemies.push(new Enemy());
+        timetToNextEnemy = 0;
+    };
+    [...enemies].forEach(object => object.update());
+    [...enemies].forEach(object => object.draw());
     requestAnimationFrame(animate);
 }
-animate();
+animate(0);
