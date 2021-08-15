@@ -11,7 +11,7 @@ const GRAVITY = 0;
 function heroClass() {
   // var sound = document.getElementById("heroSound");
   // var play = 0;
-
+ 
   this.x = 75;
   this.y = 75;
 
@@ -108,6 +108,7 @@ function heroClass() {
       // beginLoadingImage(rocketBooster);
       nextY -= JUMP_POWER;
       console.log("JUMP_POWER");
+     
      
     } else {
       nextY += GRAVITY + 10;
