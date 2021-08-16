@@ -9,13 +9,17 @@ window.onload = function() {
     canvas = document.getElementById('gameCanvas');
     canvasContext = canvas.getContext('2d');
 
+    drawRect(0, 0, 800, 600, 'black');
+    drawText("LOADING IMAGES", canvas.width/2, canvas.height/2, 'white');
+
+    loadImages();
+}
+
+function imageLoadingDoneSoStartGame () {
     var framesPerSecond = 30;
     setInterval(updateAll, 1000/framesPerSecond);  
 
     setupInput();
-
-    trackLoadImages();
-    carImageLoad();
     carReset();
 }
 
