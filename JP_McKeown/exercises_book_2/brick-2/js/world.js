@@ -55,60 +55,59 @@ function isBrickAtTileCoord(brickTileCol, brickTileRow) {
   return (brickGrid[brickIndex] == 1);
 }
   
-  function breakAndBounceOffBrickAtPixelCoord(pixelX,pixelY) {
-      var tileCol = pixelX / BRICK_W;
-      var tileRow = pixelY / BRICK_H;
-  
-      // we'll use Math.floor to round down to the nearest whole number
-      tileCol = Math.floor( tileCol );
-      tileRow = Math.floor( tileRow );
-  
-      // first check whether the ball is within any part of the brick wall
-      if(tileCol < 0 || tileCol >= BRICK_COLS ||
-          tileRow < 0 || tileRow >= BRICK_ROWS) {
-          return false; // bail out of function to avoid illegal array position usage
+function breakAndBounceOffBrickAtPixelCoord(pixelX,pixelY) {
+  var tileCol = pixelX / BRICK_W;
+  var tileRow = pixelY / BRICK_H;
+
+  // we'll use Math.floor to round down to the nearest whole number
+  tileCol = Math.floor( tileCol );
+  tileRow = Math.floor( tileRow );
+
+  // first check whether the ball is within any part of the brick wall
+  if(tileCol < 0 || tileCol >= BRICK_COLS ||
+      tileRow < 0 || tileRow >= BRICK_ROWS) {
+      return false; // bail out of function to avoid illegal array position usage
+  }
+  var brickIndex = brickTileToIndex(tileCol, tileRow);
+
+  if(brickGrid[brickIndex] == 1) {
+      // now we know we overlap a brick let's
+      // backtrack to see whether we changed rows or cols on way in
+      var prevBallX = ballX-ballSpeedX;
+      var prevBallY = ballY-ballSpeedY;
+      var prevTileCol = Math.floor(prevBallX / BRICK_W);
+      var prevTileRow = Math.floor(prevBallY / BRICK_H);
+
+      var bothTestsFailed = true;
+
+      if(prevTileCol != tileCol) { // must have come in horizontally
+      var adjacentBrickIndex = brickTileToIndex(prevTileCol, tileRow);
+      // make sure the side we want to reflect off isn't blocked!
+        if(brickGrid[adjacentBrickIndex] != 1) {
+            ballSpeedX *= -1;
+            bothTestsFailed = false;
+        }
       }
-  
-      var brickIndex = brickTileToIndex(tileCol, tileRow);
-  
-      if(brickGrid[brickIndex] == 1) {
-          // now we know we overlap a brick let's
-          // backtrack to see whether we changed rows or cols on way in
-          var prevBallX = ballX-ballSpeedX;
-          var prevBallY = ballY-ballSpeedY;
-          var prevTileCol = Math.floor(prevBallX / BRICK_W);
-          var prevTileRow = Math.floor(prevBallY / BRICK_H);
-  
-          var bothTestsFailed = true;
-  
-          if(prevTileCol != tileCol) { // must have come in horizontally
-          var adjacentBrickIndex = brickTileToIndex(prevTileCol, tileRow);
+
+      if(prevTileRow != tileRow) { // must have come in vertically
+          var adjacentBrickIndex = brickTileToIndex(tileCol, prevTileRow);
           // make sure the side we want to reflect off isn't blocked!
           if(brickGrid[adjacentBrickIndex] != 1) {
-              ballSpeedX *= -1;
+              ballSpeedY *= -1;
               bothTestsFailed = false;
           }
-          }
-  
-          if(prevTileRow != tileRow) { // must have come in vertically
-              var adjacentBrickIndex = brickTileToIndex(tileCol, prevTileRow);
-              // make sure the side we want to reflect off isn't blocked!
-              if(brickGrid[adjacentBrickIndex] != 1) {
-                  ballSpeedY *= -1;
-                  bothTestsFailed = false;
-              }
-          }
-  
-          // we hit an "armpit" on the inside corner, this blocks going into it
-          if(bothTestsFailed) {
-              ballSpeedX *= -1;
-              ballSpeedY *= -1;
-          }
-  
-          brickGrid[brickIndex] = 0;
-          bricksLeft--;
-  
-          score += 100;
-          writeScore();
       }
+
+      // we hit an "armpit" on the inside corner, this blocks going into it
+      if(bothTestsFailed) {
+          ballSpeedX *= -1;
+          ballSpeedY *= -1;
+      }
+
+      brickGrid[brickIndex] = 0;
+      bricksLeft--;
+
+      score += 100;
+      writeUI();
   }
+}

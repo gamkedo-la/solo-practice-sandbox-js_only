@@ -1,25 +1,25 @@
 'use strict';
 // variables to keep track of ball position
-var ballX = 75, ballY = 75;
+let ballX, ballY;
 const BALL_SPEED_X_INITIAL = 3;
-const BALL_SPEED_Y_INITIAL = 5;
+const BALL_SPEED_Y_INITIAL = 5; //5
 let ballSpeedX; // = BALL_SPEED_X_INITIAL;
 let ballSpeedY; // = BALL_SPEED_Y_INITIAL;
 
 function moveBall() {
   // ball starts near paddle ready to move toward bricks
   if(ballReady){
-    ballX = paddleX + PADDLE_WIDTH/2 + 2;
+    ballX = paddleX + PADDLE_WIDTH/2 - 5;
     ballY = PADDLE_Y - 30;
-    ballReady = false;
+    // ballReady = false;
     return;
   }
 
-  if(ballX < 0 && ballSpeedX < 0) { // if ball has moved beyond the left edge
+  if(ballX < 0 && ballSpeedX < 0) { // if ball has moved beyond left edge
       ballSpeedX *= -1; // reverse ball's horizontal direction
   }
 
-  if(ballX > canvas.width && ballSpeedX > 0) { // if ball has moved beyond the right edge
+  if(ballX > canvas.width && ballSpeedX > 0) { // if ball has moved beyond right edge
       ballSpeedX *= -1; // reverse ball's horizontal direction
   }
 
@@ -43,7 +43,8 @@ function moveBall() {
   }
 
   if(ballY > canvas.height) { // if ball has moved beyond the bottom edge
-        resetBall();
+    loseLife();
+    resetBall();
   }
 
   breakAndBounceOffBrickAtPixelCoord(ballX, ballY);
@@ -53,16 +54,17 @@ function moveBall() {
 }
 
 function resetBall() {
-  // center ball on screen
-  // ballX = canvas.width/2;
-  // ballY = canvas.height/2;
   ballSpeedX = BALL_SPEED_X_INITIAL;
   ballSpeedY = BALL_SPEED_Y_INITIAL;
-  ballReady = true;
+  ballReady = true;  
+}
 
+function loseLife() {
   livesRemaining--;
   if(livesRemaining <= 0) {
-      resetGame();
+    gameState = STATE_MENU;
+    finalScore = score;
   }
-  writeScore();
+  writeUI();
+  drawUI();
 }
