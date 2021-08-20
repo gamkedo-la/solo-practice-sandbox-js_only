@@ -29,6 +29,7 @@
             color: black;
             padding-top: 1%;
             border: 5px solid black;
+            position: relative;
         }
 
         h1 {
@@ -90,6 +91,50 @@
             left: 2%;
 
         }
+/****************************************************************************/
+        /* .text{
+            background-color: white;
+            box-shadow:5px 5px 0px black;            
+            height: 100px;
+            width: 200px;
+            position: absolute;
+            top:80%;
+            left: 82%;
+        } */
+        .text span {
+            opacity: 0;
+        }
+
+        .text span.revealed {
+            opacity: 1;
+        }
+
+        .text span.blue {
+            color: #0d398b;
+        }
+
+        .text span.red {
+            color: #ff0000;
+        }
+
+
+        .text {
+            font-size: 1rem;
+            word-spacing: 0.2em;
+            margin: 0 auto;
+            padding: 1.5em;
+            border-bottom: solid #08131b;
+            position: relative;
+            line-height: 1.2em;
+        }
+
+        /* .corner {
+            position: absolute;
+            width: 5%;
+            right: 1vw;
+            bottom: 0;
+            transform: translateY(80%);
+        } */
 
         /****************************Media Querry for 1024 Screens**************/
         @media only screen and (max-width: 1024px) {
@@ -129,6 +174,12 @@
 
             }
 
+            #spear {
+                font-size: .4rem;
+                top: 20%;
+                left: 1%;
+
+            }
 
 
         }
@@ -155,7 +206,14 @@
         <p id="slingshot"></p>
         <p id="sword"></p>
         <p id="arrow"></p>
+        <p id="spear"></p>
+
     </div>
+    <div class="text">
+        <!--Added expressive speech textbox prototype
+    https://codepen.io/punkydrewster713/pen/zYKdywP-->
+    </div>
+
 
     <script src="js/GraphicsCommon.js"></script>
     <script src="js/ImageLoading.js"></script>
@@ -165,6 +223,62 @@
     <script src="js/Input.js"></script>
     <script src="js/Main.js"></script>
 
+    <script>
+        var container = document.querySelector(".text");
+        var speeds = {
+            pause: 500,
+            slow: 120,
+            normal: 70,
+            fast: 40
+        }
+
+
+        var textLines = [
+            { speed: speeds.slow, string: "The world is in chaos," },
+            { speed: speeds.pause, string: "", pause: true },
+            { speed: speeds.normal, string: "old technology has been lost." },
+            { speed: speeds.fast, string: "The people needs you", classes: ["blue"] },
+            { speed: speeds.normal, string: "To explore and find items for their survival!!" }
+        ];
+
+        var characters = [];
+        textLines.forEach((line, index) => {
+            if (index < textLines.length - 1) {
+                line.string += " "; //Add a space between lines
+            }
+
+            line.string.split("").forEach((character) => {
+                var span = document.createElement("span");
+                span.textContent = character;
+                container.appendChild(span);
+                characters.push({
+                    span: span,
+                    isSpace: character === " " && !line.pause,
+                    delayAfter: line.speed,
+                    classes: line.classes || []
+                });
+            });
+        });
+
+        function revealOneCharacter(list) {
+            var next = list.splice(0, 1)[0];
+            next.span.classList.add("revealed");
+            next.classes.forEach((c) => {
+                next.span.classList.add(c);
+            });
+            var delay = next.isSpace && !next.pause ? 0 : next.delayAfter;
+
+            if (list.length > 0) {
+                setTimeout(function () {
+                    revealOneCharacter(list);
+                }, delay);
+            }
+        }
+
+        setTimeout(() => {
+            revealOneCharacter(characters);
+        }, 600)
+    </script>
 
 
 </body>

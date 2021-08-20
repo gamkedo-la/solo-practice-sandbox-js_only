@@ -34,7 +34,7 @@ function loadImageForTrackCode(trackCode, fileName) {
 function loadImages() {
  
   var imageList = [
-    { varName: heroPic, theFile: "rocketman3.png"},
+    { varName: heroPic, theFile: "rocketMan3.png"},
     
 
     // {trackType: WORLD_UPPERROAD, theFile:"world_road3.png"},
@@ -48,7 +48,10 @@ function loadImages() {
     { trackType: WORLD_LOWERTUNNEL, theFile: "world_lowerTunnel.png" },
     { trackType: WORLD_SWORD, theFile: "sword.png" },
     { trackType: WORLD_TRAP, theFile: "spike1.png" },
+    { trackType: WORLD_SPEAR, theFile: "spear2.png" },
+    { trackType: WORLD_RAT, theFile: "rat.png" },
     { trackType: WORLD_ARROW, theFile: "world_arrow3.png" }
+  
     
 
   ];
