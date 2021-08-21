@@ -95,7 +95,7 @@ function heroClass() {
   };
 
   this.updateSwordReadout = function () {
-    document.getElementById("sword").innerHTML = "2. Magic Sword";
+    document.getElementById("sword").innerHTML = "2. Sword";
   };
 
   this.updateArrowReadout = function () {
