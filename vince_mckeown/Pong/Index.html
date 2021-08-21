@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta content="text/html;charset=utf-8"	http-equiv="Content-Type">
+    <meta content="utf-8"	http-equiv="encoding">
+</head>
+<body>
+    <script>
+        var canvas;
+        var canvasContext;
+        var ballX = 75, ballY = 75;
+        var ballSpeedX = 10, ballSpeedY = 4;
+        var paddle1Height = 100, paddle1Width = 10, paddle1X = 0, paddle1Y = 0;
+        var paddle2Height = 100, paddle2Width = 10, paddle2X = 800 - paddle2Width, paddle2Y = 250;
+        var player1Score = 0, player2Score = 0;
+
+        window.onload = function() {
+            canvas = document.getElementById('gameCanvas');    
+            canvasContext = canvas.getContext('2d');
+
+            canvas.addEventListener('mousemove', function(evt) {
+				var	mousePos = calculateMousePos(evt);
+				paddle2Y = mousePos.y - (paddle1Height/2); // minus	half height to center it
+            });
+
+            var framesPerSecond = 30;
+
+            setInterval(callBothMoveAndDraw, 1000/framesPerSecond);     
+        }
+
+        function callBothMoveAndDraw(){
+            moveEverything();
+            drawEverything();
+        }
+
+        function moveEverything(){
+
+            if( ballY > canvas.height || ballY < 0){
+                    ballSpeedY *= -1;
+            }
+
+            if(ballX < 0){
+                if( ballY > paddle1Y && ballY < paddle1Y + paddle1Height) {
+                        ballSpeedX *= -1;
+                } else {
+                    player2Score += 1;
+                    ballReset();
+                }
+            }
+
+            if(ballX > canvas.width){
+                if( ballY > paddle2Y && ballY < paddle2Y + paddle1Height) {
+                        ballSpeedX *= -1;
+                } else {
+                    player1Score += 1;
+                    ballReset();
+                }
+            }
+            
+            ballX += ballSpeedX;
+            ballY += ballSpeedY
+
+        }
+
+        function ballReset(){
+            ballX = canvas.width/2;          
+            ballY = canvas.height/2;
+            ballSpeedX *= -1;
+        }
+
+        function drawEverything(){
+            //blanks out the screen
+            colorRect(0, 0, canvas.width, canvas.height, 'black');
+
+            //rectangle
+            colorRect(paddle1X, paddle1Y, paddle1Width, paddle1Height, 'white');
+            colorRect(paddle2X, paddle2Y, paddle2Width, paddle2Height, 'white');
+
+            //ball
+            colorCircle(ballX, ballY, 10, 'white');
+
+            colorText(player1Score, 20, 20, 'green');
+            colorText(player2Score, canvas.width - 20, 20, 'green');
+
+        }
+
+        function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
+            canvasContext.fillStyle = fillColor || "black";
+            canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+        }
+
+        function colorCircle(centerX, centerY, radius, fillColor){
+            canvasContext.fillStyle = fillColor || 'white';
+            canvasContext.beginPath();
+            canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
+            canvasContext.fill();
+        }
+
+        function colorText(showWords, textX, textY, fillColor, fontStyle) {
+            canvasContext.textAlign = "left";
+            canvasContext.fillStyle = fillColor;
+            canvasContext.font = fontStyle || "14px Arial Black";
+            canvasContext.fillText(showWords, textX, textY);
+        }
+
+        function calculateMousePos(evt){
+            let rect = canvas.getBoundingClientRect(), root = document.documentElement;
+
+            var mouseX = evt.clientX - rect.left - root.scrollLeft;
+            var mouseY = evt.clientY - rect.top - root.scrollTop;
+            return {
+                x: mouseX,
+                y: mouseY
+            };   
+        }
+
+    </script>
+</body>
+<canvas id = "gameCanvas" width="800" height="600"></canvas>
+</html>
