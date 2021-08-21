@@ -12,7 +12,12 @@
         var ballSpeedX = 10, ballSpeedY = 4;
         var paddle1Height = 100, paddle1Width = 10, paddle1X = 0, paddle1Y = 0;
         var paddle2Height = 100, paddle2Width = 10, paddle2X = 800 - paddle2Width, paddle2Y = 250;
+        var paddle1YCenter = paddle1Y + paddle1Height/2;
+        var paddle2YCenter = paddle2Y + paddle2Height/2;
         var player1Score = 0, player2Score = 0;
+
+        const ANGLE_ADJUST = 0.1;
+        const AI_PADDLE_MOVEMENT = 8;
 
         window.onload = function() {
             canvas = document.getElementById('gameCanvas');    
@@ -20,7 +25,7 @@
 
             canvas.addEventListener('mousemove', function(evt) {
 				var	mousePos = calculateMousePos(evt);
-				paddle2Y = mousePos.y - (paddle1Height/2); // minus	half height to center it
+				paddle1Y = mousePos.y - (paddle1Height/2); // minus	half height to center it
             });
 
             var framesPerSecond = 30;
@@ -35,13 +40,17 @@
 
         function moveEverything(){
 
+            ai_paddle2Movement();
+
             if( ballY > canvas.height || ballY < 0){
                     ballSpeedY *= -1;
             }
 
             if(ballX < 0){
                 if( ballY > paddle1Y && ballY < paddle1Y + paddle1Height) {
-                        ballSpeedX *= -1;
+                    ballSpeedX *= -1;
+                    let ballDeltaY = ballY - paddle1YCenter;
+                    ballSpeedY = ballDeltaY * ANGLE_ADJUST;  
                 } else {
                     player2Score += 1;
                     ballReset();
@@ -49,8 +58,10 @@
             }
 
             if(ballX > canvas.width){
-                if( ballY > paddle2Y && ballY < paddle2Y + paddle1Height) {
-                        ballSpeedX *= -1;
+                if( ballY > paddle2Y && ballY < paddle2Y + paddle2Height) {
+                    ballSpeedX *= -1;
+                    let ballDeltaY = ballY - paddle2YCenter;
+                    ballSpeedY = ballDeltaY * ANGLE_ADJUST; 
                 } else {
                     player1Score += 1;
                     ballReset();
@@ -58,14 +69,38 @@
             }
             
             ballX += ballSpeedX;
-            ballY += ballSpeedY
+            ballY += ballSpeedY;
 
+        }
+
+        function ai_paddle2Movement(){
+            let paddle2WaitAdjust = 30; // wait is adjusted to pixels up and down
+            
+            paddle2YCenter = paddle2Y + paddle2Height/2;
+
+            
+            if(ballSpeedX > 0){
+                if(ballY > paddle2YCenter + paddle2WaitAdjust){
+                    paddle2Y += AI_PADDLE_MOVEMENT;
+                } else if (ballY < paddle2YCenter - paddle2WaitAdjust) {
+                    paddle2Y -= AI_PADDLE_MOVEMENT;
+                }
+            } else {
+                if(paddle2YCenter - paddle2WaitAdjust > canvas.height/2){
+                    paddle2Y -= AI_PADDLE_MOVEMENT;
+                    console.log("ball Y: " + ballY + " paddle 2Y Center: " + paddle2YCenter + paddle2WaitAdjust + " Down");
+                } else if (paddle2YCenter + paddle2WaitAdjust < canvas.height/2) {
+                    paddle2Y += AI_PADDLE_MOVEMENT;
+                    console.log("ball Y: " + ballY + " paddle 2Y Center: " + paddle2YCenter - paddle2WaitAdjust + " Up");
+                }
+            } 
         }
 
         function ballReset(){
             ballX = canvas.width/2;          
             ballY = canvas.height/2;
             ballSpeedX *= -1;
+            ballSpeedY *= -1;
         }
 
         function drawEverything(){
