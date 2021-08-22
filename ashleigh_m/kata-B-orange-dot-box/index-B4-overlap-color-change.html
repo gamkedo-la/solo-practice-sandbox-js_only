@@ -1,0 +1,50 @@
+<script>
+// We're skipping HTML5 formal setup here. Browsers assume it. Focus is on the JS logic
+
+var canvas, canvasContext;
+var mouseX = -100, mouseY = -100; // default defined so not on screen corner like (0,0)
+
+var boxLeft = 150, boxTop = 80;
+var boxWidth = 50, boxHeight = 20;
+
+function calculateMousePos(evt) {
+    var rect = canvas.getBoundingClientRect();
+
+    mouseX = evt.clientX - rect.left;
+    mouseY = evt.clientY - rect.top;
+}
+
+function handleClick() {
+    console.log("click received");
+}
+
+window.onload = function () {
+    canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+    canvas.width = 800;
+    canvas.height = 600;
+    canvas.addEventListener('mousedown', handleClick);
+    canvas.addEventListener('mousemove', calculateMousePos);
+
+    canvasContext = canvas.getContext("2d");
+
+    setInterval(frameUpdate, 1000 / 30);
+}
+
+function frameUpdate() 
+{
+    canvasContext.fillStyle="black";
+    canvasContext.fillRect(0,0,canvas.width,canvas.height);
+
+    canvasContext.fillStyle="#EFBE00";
+    canvasContext.fillRect(mouseX-3,mouseY-3,7,7);
+
+    if(mouseX > boxLeft && mouseX < boxLeft+boxWidth &&
+        mouseY > boxTop && mouseY < boxTop+boxHeight) {
+        canvasContext.fillStyle="#FFFFFF";
+    }
+
+    canvasContext.fillRect(boxLeft,boxTop,boxWidth,boxHeight);
+}
+
+</script>

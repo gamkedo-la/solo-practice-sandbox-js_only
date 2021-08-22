@@ -1,0 +1,83 @@
+
+<script>
+
+// We're skipping HTML5 formal setup here. Browsers assume it. Focus is on the JS logic
+
+var canvas, canvasContext;
+
+function handleClick() {
+    console.log('transX: ' + transX);
+    console.log('transY: ' + transY);
+    console.log('transW: ' + transW);
+    console.log('transH: ' + transH);
+    transW = mouseX - transX;
+    transH = mouseY - transY;
+}
+
+var mouseX = -100
+var mouseY = -100; // default defined so not on screen corner like (0,0)
+
+var transX = 500; 
+var transY = 500; 
+var transW = 100; 
+var transH = 100; 
+var transColor = "#EFBE00";
+
+var transTop;
+var transRight;
+var transBottom;
+var transLeft;
+
+function calculateMousePos(evt) {
+    var rect = canvas.getBoundingClientRect();
+    mouseX = evt.clientX - rect.left;
+    mouseY = evt.clientY - rect.top;
+
+    /*
+    if((Math.abs(mouseX) > transX && Math.abs(mouseX) < transX+Math.abs(transW))&&
+       (Math.abs(mouseY) > transY && Math.abs(mouseY) < transY+Math.abs(transH))){
+        transColor = 'white';
+    } else {
+        transColor = "#EFBE00";
+    }
+    */
+}
+
+window.onload = function () {
+
+    canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+    canvasContext = canvas.getContext("2d");
+    canvas.width = 800; 
+    canvas.height = 600;
+
+    canvas.addEventListener('mousedown', handleClick);
+    canvas.addEventListener('mousemove', calculateMousePos);
+
+    setInterval(frameUpdate, 1000 / 30);
+
+}
+
+function drawAll(){
+
+    colorRect(0, 0, canvas.width, canvas.height, 'black');
+    colorRect(mouseX-3, mouseY-3, 7, 7, "#EFBE00");
+    colorRect(transX, transY, transW, transH, transColor);
+}
+
+function moveAll(){}
+
+function frameUpdate() {
+    moveAll();
+    drawAll();
+}
+
+function colorRect(x, y, w, h, color){
+    canvasContext.fillStyle = color;
+    canvasContext.fillRect(x, y, w, h);
+}
+
+</script>
+
+
+

@@ -5,6 +5,8 @@ function warriorClass(){
 	this.y = 75;
 	this.speed = 0;
 
+	this.keysOnHand = 0;
+
 	this.keyHeld_Up = false;
 	this.keyHeld_Down = false;
 	this.keyHeld_Left = false;
@@ -54,6 +56,16 @@ function warriorClass(){
 		if(walkIntoTileIndex == TILE_GOAL) {
 			console.log(this.name + " WINS!");
 			loadLevel(levelOne);
+		} else if(walkIntoTileIndex == TILE_KEY) {
+			this.keysOnHand++; //kinda workin
+			//replaceTileWith(nextX, nextY, TILE_FLOOR);
+			worldGrid[walkIntoTileIndex] = TILE_FLOOR;
+			console.log(this.keysOnHand); 
+		} else if(walkIntoTileIndex == TILE_DOOR){
+			if(this.keysOnHand != 0){
+				this.keysOnHand--;
+				replaceTileWith(nextX, nextY, TILE_FLOOR);
+			}
 		} else if(walkIntoTileIndex == TILE_FLOOR) {
 			this.x = nextX;
 			this.y = nextY;

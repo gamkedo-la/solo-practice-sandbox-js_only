@@ -3,26 +3,26 @@ const TILE_H = 50;
 const TILE_GAP = 2;
 const WORLD_COLS = 16;
 const WORLD_ROWS = 12;
-var levelOne = [4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-				4, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-				4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-				1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
-				1, 0, 0, 0, 1, 1, 1, 4, 4, 4, 4, 1, 1, 1, 0, 1,
-				1, 0, 0, 1, 1, 0, 0, 1, 4, 4, 1, 1, 0, 0, 0, 1,
-				1, 0, 0, 1, 0, 0, 0, 0, 1, 4, 1, 0, 0, 0, 0, 1,
-				1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 5, 0, 1,
-				1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1,
-				1, 2, 0, 1, 0, 0, 5, 0, 0, 0, 5, 0, 0, 1, 0, 1,
-				1, 0, 0, 1, 3, 3, 1, 1, 0, 0, 0, 0, 0, 1, 0, 1,
-				1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+var levelOne =  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+	1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 5, 0, 1, 1, 1, 1,
+	1, 0, 4, 0, 4, 0, 1, 0, 2, 0, 1, 0, 1, 4, 4, 1,
+	1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 5, 1, 5, 1, 1,
+	1, 1, 1, 5, 1, 1, 1, 0, 4, 0, 1, 0, 0, 0, 1, 1,
+	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 4, 0, 1, 1,
+	1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+	1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 4, 0, 1, 1,
+	1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1,
+	1, 0, 5, 0, 5, 0, 5, 0, 3, 0, 1, 1, 1, 1, 1, 1,
+	1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1,
+	1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 var worldGrid = [];
 
 const TILE_FLOOR = 0;
 const TILE_WALL = 1;
 const TILE_PLAYERSTART = 2;
-const TILE_DOOR = 3;
+const TILE_GOAL = 3;
 const TILE_KEY = 4;
-const TILE_GOAL = 5;
+const TILE_DOOR = 5;
 
 function returnTileTypeAtColRow(col, row) {
 	if(col >= 0 && col < WORLD_COLS &&
@@ -49,6 +49,13 @@ function getTileTypeAtPixelCoord(atX, atY) { //changed from warrior world handli
 
 function rowColToArrayIndex(col, row) {
 	return col + WORLD_COLS * row;
+}
+
+function replaceTileWith(x, y, replacement){
+	var warriorWorldCol = Math.floor(x/TILE_W);
+	var warriorWorldRow = Math.floor(y/TILE_H);
+	var arrayIndex = rowColToArrayIndex(warriorWorldCol, warriorWorldRow); 
+	worldGrid[arrayIndex] = replacement;
 }
 
 function tileUsesTransparency(tile){
