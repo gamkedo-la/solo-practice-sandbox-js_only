@@ -105,8 +105,10 @@ function moveAll() {
 function drawAll() {
   drawTracks();
   blueHero.draw();
-  colorCircle(ghostX, ghostY, 10, 'black');
-  
+  colorCircle(ghostX, ghostY, 18, 'black');
+  colorCircle(ghostX, ghostY, 12, 'red');
+  colorCircle(ghostX+2, ghostY, 5, 'white');
+  colorCircle(ghostX, ghostY, 2, 'black');
   
  
 }
