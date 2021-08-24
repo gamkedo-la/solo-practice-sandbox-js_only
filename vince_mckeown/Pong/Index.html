@@ -14,10 +14,12 @@
         var paddle2Height = 100, paddle2Width = 10, paddle2X = 800 - paddle2Width, paddle2Y = 250;
         var paddle1YCenter = paddle1Y + paddle1Height/2;
         var paddle2YCenter = paddle2Y + paddle2Height/2;
-        var player1Score = 0, player2Score = 0;
+        var player1Score = 0, player2Score = 0, player1Wins = false, player2Wins = false;
+		var gamePaused = false;
 
         const ANGLE_ADJUST = 0.1;
         const AI_PADDLE_MOVEMENT = 8;
+		const WINNING_SCORE = 3;
 
         window.onload = function() {
             canvas = document.getElementById('gameCanvas');    
@@ -39,39 +41,55 @@
         }
 
         function moveEverything(){
+		
+			if(!gamePaused){
 
-            ai_paddle2Movement();
+				ai_paddle2Movement();
 
-            if( ballY > canvas.height || ballY < 0){
-                    ballSpeedY *= -1;
-            }
+				if( ballY > canvas.height || ballY < 0){
+						ballSpeedY *= -1;
+				}
 
-            if(ballX < 0){
-                if( ballY > paddle1Y && ballY < paddle1Y + paddle1Height) {
-                    ballSpeedX *= -1;
-                    let ballDeltaY = ballY - paddle1YCenter;
-                    ballSpeedY = ballDeltaY * ANGLE_ADJUST;  
-                } else {
-                    player2Score += 1;
-                    ballReset();
-                }
-            }
+				if(ballX < 0){
+					if( ballY > paddle1Y && ballY < paddle1Y + paddle1Height) {
+						ballSpeedX *= -1;
+						let ballDeltaY = ballY - paddle1YCenter;
+						ballSpeedY = ballDeltaY * ANGLE_ADJUST;  
+					} else {
+						player2Score += 1;
+						checkForWinner()
+						ballReset();
+					}
+				}
 
-            if(ballX > canvas.width){
-                if( ballY > paddle2Y && ballY < paddle2Y + paddle2Height) {
-                    ballSpeedX *= -1;
-                    let ballDeltaY = ballY - paddle2YCenter;
-                    ballSpeedY = ballDeltaY * ANGLE_ADJUST; 
-                } else {
-                    player1Score += 1;
-                    ballReset();
-                }
-            }
-            
-            ballX += ballSpeedX;
-            ballY += ballSpeedY;
+				if(ballX > canvas.width){
+					if( ballY > paddle2Y && ballY < paddle2Y + paddle2Height) {
+						ballSpeedX *= -1;
+						let ballDeltaY = ballY - paddle2YCenter;
+						ballSpeedY = ballDeltaY * ANGLE_ADJUST; 
+					} else {
+						player1Score += 1;
+						checkForWinner()
+						ballReset();
+					}
+				}
+				
+				ballX += ballSpeedX;
+				ballY += ballSpeedY;
+			}
 
         }
+		
+		function checkForWinner(){
+			console.log(player1Score);
+			if(player1Score == WINNING_SCORE){
+				player1Wins = true;
+			}
+			if(player2Score == WINNING_SCORE){
+				colorText("Player 2 wins!", 320, 320, 'white');
+				player2Wins = true;
+			}
+		}
 
         function ai_paddle2Movement(){
             let paddle2WaitAdjust = 30; // wait is adjusted to pixels up and down
@@ -88,10 +106,8 @@
             } else {
                 if(paddle2YCenter - paddle2WaitAdjust > canvas.height/2){
                     paddle2Y -= AI_PADDLE_MOVEMENT;
-                    console.log("ball Y: " + ballY + " paddle 2Y Center: " + paddle2YCenter + paddle2WaitAdjust + " Down");
                 } else if (paddle2YCenter + paddle2WaitAdjust < canvas.height/2) {
                     paddle2Y += AI_PADDLE_MOVEMENT;
-                    console.log("ball Y: " + ballY + " paddle 2Y Center: " + paddle2YCenter - paddle2WaitAdjust + " Up");
                 }
             } 
         }
@@ -102,6 +118,14 @@
             ballSpeedX *= -1;
             ballSpeedY *= -1;
         }
+		
+		function resetGame(){
+			player1Score = 0;
+			player2Score = 0;
+			player1Wins = false;
+			player2Wins = false;
+			gamePaused = true;
+		}
 
         function drawEverything(){
             //blanks out the screen
@@ -116,7 +140,15 @@
 
             colorText(player1Score, 20, 20, 'green');
             colorText(player2Score, canvas.width - 20, 20, 'green');
-
+			
+			if(player1Wins){
+				colorText("Player 1 wins!", 320, 320, 'white');
+				resetGame();
+			}
+			if(player2Wins){
+				colorText("Player 2 wins!", 320, 320, 'white');
+				resetGame();
+			}
         }
 
         function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
