@@ -2,6 +2,7 @@
 let canvas, canvasContext;
 
 let p1 = new warriorClass();
+let p2 = new enemyClass();
 
 window.onload = function(){
   // game canvas
@@ -20,11 +21,13 @@ function loadingDoneSoStartGame() {
   }, 1000/framesPerSecond);
 
   p1.init(playerPic, "Blue");
+  p2.init(enemyPic, "Green");
   initInput();
 }
 
 function moveEverything(){
   p1.move();
+  p2.move();
 }
 
 function drawEverything(){
@@ -33,6 +36,7 @@ function drawEverything(){
 
   // draw warrior
   p1.draw();
+  p2.draw();
 }
 
 // page 246

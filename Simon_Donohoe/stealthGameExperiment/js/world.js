@@ -28,6 +28,7 @@ const TILE_GOAL = 3;
 const TILE_TREE = 4;
 const TILE_DOOR = 5;
 const TILE_KEY = 6; 
+const TILE_ENEMY = 7;
 
 function tileTypeHasTransparency(checkTileType) {
   return (checkTileType == TILE_GOAL || checkTileType == TILE_KEY || checkTileType == TILE_DOOR || checkTileType == TILE_TREE);

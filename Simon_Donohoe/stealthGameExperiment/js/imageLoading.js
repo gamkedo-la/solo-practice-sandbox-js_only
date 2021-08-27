@@ -1,4 +1,5 @@
 let playerPic = document.createElement("img"); // make the car an image
+let enemyPic = document.createElement("img"); // make the car an image
 
 let tilePics = [];
 
@@ -23,7 +24,8 @@ function loadImageForTileCode(tileCode, fileName) {
 
 function loadImages() {
   let imageList = [
-    {varName:playerPic, theFile:"warrior.png"}, {tileType:TILE_GROUND, theFile:"world_ground.png"}, {tileType:TILE_WALL, theFile:"world_wall.png"}, {tileType:TILE_GOAL, theFile: "world_goal.png"}, {tileType:TILE_TREE, theFile:"world_tree.png"}, {tileType:TILE_DOOR, theFile:"world_door.png"}, {tileType:TILE_KEY, theFile:"world_key.png"}
+    {varName:playerPic, theFile:"warrior.png"},
+    {varName:enemyPic, theFile:"enemy.png"}, {tileType:TILE_GROUND, theFile:"world_ground.png"}, {tileType:TILE_WALL, theFile:"world_wall.png"}, {tileType:TILE_GOAL, theFile: "world_goal.png"}, {tileType:TILE_TREE, theFile:"world_tree.png"}, {tileType:TILE_DOOR, theFile:"world_door.png"}, {tileType:TILE_KEY, theFile:"world_key.png"}
   ];
 
   picsToLoad = imageList.length; // sets it to 3, since 3 Object literals in array
