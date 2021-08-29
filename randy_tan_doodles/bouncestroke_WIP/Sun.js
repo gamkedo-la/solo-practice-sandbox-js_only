@@ -1,12 +1,14 @@
 const Sun = function(cvs = canvas, ctx = canvasContext) {
-    this.x = 100;
-    this.y = 100;    
+    this.x = 50;
+    this.y = 200;    
 
     this.img = document.createElement("img");
     this.img.src = "sun_sheet.png";
     this.imgLoaded = false;
 
     this.sprite = null;
+
+    this.moveDirectionY = -1;
 
     this.img.onload = () => {
         this.imgLoaded = true;        
@@ -15,7 +17,18 @@ const Sun = function(cvs = canvas, ctx = canvasContext) {
 
     this.update = (dt, col) => {
         if (this.imgLoaded) {
-            
+            this.x += 10 * dt;
+            this.y += this.moveDirectionY * 5 * dt;
+
+            if (this.x > cvs.width + 130) {
+                this.x = -128;
+            }
+            if (this.y < 50) {
+                this.moveDirectionY = 1;
+            }
+            if (this.y > 200) {
+                this.moveDirectionY = -1;
+            }
         }
     };
 
