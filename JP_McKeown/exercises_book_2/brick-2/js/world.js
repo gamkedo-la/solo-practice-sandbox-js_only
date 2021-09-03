@@ -14,7 +14,47 @@ const PADDLE_THICKNESS = 10;
 const PADDLE_Y = 540;
 var paddleX = 400;
 
+const TILE_BRICK = 1;
+var worldGrid =
+  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ];
+var worldGrid =
+  [ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0, 0, 0, 1, 1, 1, 1, 0, 0, 0,
+    0, 0, 1, 1, 1, 1, 1, 1, 0, 0,
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+    1, 1, 1, 0, 1, 1, 0, 1, 1, 1,
+    1, 1, 1, 0, 1, 1, 0, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 0, 1, 1, 1, 1, 1, 1, 0, 1,
+    1, 1, 0, 1, 1, 1, 1, 0, 1, 1,
+    1, 1, 1, 0, 0, 0, 0, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
+    0, 0, 0, 1, 1, 1, 1, 0, 0, 0 ];
 function resetBricks() {
+  bricksLeft = 0;
+  for(var i = 0; i < BRICK_COLS*BRICK_ROWS; i++) {
+    //var brickIndex = brickTileToIndex(eachCol, eachRow);
+    brickGrid[i] = worldGrid[i];
+    bricksLeft++;
+  }
+} // end resetBricks
+
+function resetBricksSolid() {
   bricksLeft = 0;
   for(var eachRow = 0; eachRow < BRICK_ROWS; eachRow++) {
     for (var eachCol = 0; eachCol < BRICK_COLS; eachCol++) {
@@ -27,7 +67,7 @@ function resetBricks() {
       } // end no brick in this row    
     } // end eachCol
   } // end eachRow
-} // end resetBricks
+} // end resetBricksSolid
 
 function drawBricks() {
   for(var eachCol=0; eachCol<BRICK_COLS; eachCol++) { // in each column...
