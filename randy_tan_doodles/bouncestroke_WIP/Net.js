@@ -5,12 +5,32 @@ const Net = function(cvs = canvas, ctx = canvasContext) {
     this.x = cvs.width * 0.5;
     this.y = cvs.height - this.h;
 
-    this.update = dt => {        
+    this.colCheck = new Collision();
+
+    this.update = (dt, col) => {        
         this.x = cvs.width * 0.5;
         this.y = cvs.height - this.h;
+
+        col.forEach(c => {
+            if (c) {      
+                if (c.name == "stroke tool") {
+
+                }
+                
+                if (c.name == "rock") {
+                    if (this.colCheck.isColliding(
+                        this.x, this.y, this.w, this.h,
+                        c.x1, c.y1, c.x2, c.y2)) {
+                            
+                        }
+                }
+            }
+        });
     };
 
     this.render = dt => {
         Draw.rect(this.x, this.y, this.w, this.h, "black");
+        Draw.outlineRect(this.x, this.y, this.w, this.h, "Magenta", 2);
+
     };
 };

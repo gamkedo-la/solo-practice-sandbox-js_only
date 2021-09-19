@@ -7,6 +7,8 @@ const Rock = function(cvs = canvas, ctx = canvasContext) {
     const MAX_SPEED_X = 600;
     const MAX_SPEED_Y = 600;
 
+    this.name = "rock";
+
     this.x = 0;
     this.y = 0;
     this.vx = 0;
