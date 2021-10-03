@@ -11,6 +11,8 @@ heartCard.src = "assets/heart_card.png";
 
 var heartCardArray = [];
 var spawnCounter = 0;
+var players = [];
+var numOfPlayers;
 
 window.onload = function () {
   canvas = document.getElementById('gameCanvas');
@@ -26,6 +28,26 @@ window.onload = function () {
 
 function moveEverything() {
 
+}
+
+function set4Players() {
+  numOfPlayers = 4;
+  document.getElementById("debug").innerHTML = numOfPlayers + " players";
+}
+
+function set3Players() {
+  numOfPlayers = 3;
+  document.getElementById("debug").innerHTML = numOfPlayers + " players";
+}
+
+function set2Players() {
+  numOfPlayers = 2;
+  document.getElementById("debug").innerHTML = numOfPlayers + " players";
+}
+
+function set1Player() {
+  numOfPlayers = 1;
+  document.getElementById("debug").innerHTML = numOfPlayers + " players";
 }
 
 function spawnCard(e) {
