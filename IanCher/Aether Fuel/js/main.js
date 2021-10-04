@@ -12,6 +12,7 @@ function updateMousePos(evt)
 
     mouseX = evt.clientX - rect.left - root.scrollLeft;
     mouseY = evt.clientY - rect.top - root.scrollTop;
+    mouseIdx = mouseIdx = getTrackIdxFromXY(mouseX, mouseY);
 }
 
 window.onload = function()
@@ -75,6 +76,9 @@ function drawAll()
 
     // Restore the context
     canvasContext.restore();
+
+    // Editor
+    editorDraw();
 }
 
 function clearScreen()

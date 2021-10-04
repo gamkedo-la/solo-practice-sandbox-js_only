@@ -8,7 +8,12 @@ const KEY_W = 87;
 const KEY_A = 65;
 const KEY_S = 83;
 
+const KEY_NUM_ROW_1 = 49;
+const KEY_NUM_ROW_2 = 50;
+const KEY_NUM_ROW_3 = 51;
+
 var mouseX, mouseY;
+var mouseIdx = 0;
 
 function keySet(keyEvt, whichCar, setTo)
 {
@@ -34,6 +39,9 @@ function keyPressed(evt)
 {
     keySet(evt, redCar, true);
     evt.preventDefault();
+    
+    // Editor
+    editorKey(evt.keyCode);
 }
 
 function keyReleased(evt)
@@ -41,9 +49,16 @@ function keyReleased(evt)
     keySet(evt, redCar, false);
 }
 
+function handleClick(evt)
+{
+    editorClick();
+}
+
 function setupInput()
 {
     canvas.addEventListener("mousemove", updateMousePos);
+    canvas.addEventListener("mousedown", handleClick);
+
     document.addEventListener("keydown", keyPressed);
     document.addEventListener("keyup", keyReleased);
 
