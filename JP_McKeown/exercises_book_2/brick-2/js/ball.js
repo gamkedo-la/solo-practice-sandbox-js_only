@@ -1,4 +1,6 @@
 'use strict';
+const BALL_RADIUS = 20;
+
 // variables to keep track of ball position
 let ballX, ballY;
 const BALL_SPEED_X_INITIAL = 3;
@@ -10,7 +12,7 @@ function moveBall() {
   // ball starts near paddle ready to move toward bricks
   if(ballReady){
     ballX = paddleX + PADDLE_WIDTH/2 - 5;
-    ballY = PADDLE_Y - 30;
+    ballY = PADDLE_Y - 15;
     // ballReady = false;
     return;
   }
@@ -47,7 +49,12 @@ function moveBall() {
     resetBall();
   }
 
-  breakAndBounceOffBrickAtPixelCoord(ballX, ballY);
+  ballLeftHit(ballX, ballY);
+  ballRightHit(ballX, ballY);
+  ballTopHit(ballX, ballY);
+  ballBottomHit(ballX, ballY);
+
+  // breakAndBounceOffBrickAtPixelCoord(ballX, ballY);
 
   ballX += ballSpeedX; // move the ball based on its current horizontal speed 
   ballY += ballSpeedY; // same as above, but for vertical
@@ -67,4 +74,29 @@ function loseLife() {
   }
   writeUI();
   drawUI();
+}
+
+function ballLeftHit(ballX, ballY) {
+  var ballLeft = ballX - BALL_RADIUS;
+  if(isBrickAtPixel(ballLeft, ballY)) {
+    ballSpeedX = ballSpeedX * -1;
+  }
+}
+function ballRightHit(ballX, ballY) {
+  var ballRight = ballX + BALL_RADIUS;
+  if(isBrickAtPixel(ballRight, ballY)) {
+    ballSpeedX = ballSpeedX * -1;
+  }
+}
+function ballTopHit(ballX, ballY) {
+  var ballTop = ballY - BALL_RADIUS;
+  if(isBrickAtPixel(ballX, ballTop)) {
+    ballSpeedY = ballSpeedY * -1;
+  }
+}
+function ballBottomHit(ballX, ballY) {
+  var ballBottom = ballY + BALL_RADIUS;
+  if(isBrickAtPixel(ballX, ballBottom)) {
+    ballSpeedY = ballSpeedY * -1;
+  }
 }

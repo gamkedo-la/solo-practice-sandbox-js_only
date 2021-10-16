@@ -66,9 +66,9 @@ function drawUI() {
     drawBitmapCenteredAtLocationWithRotation(lifePic, UI_X + i*40, UI_Y, 0);
   }
   if(finalScore > 0) {
-    drawText('Score ' + finalScore, 500, UI_Y+15, 32, 'white')
+    drawText('Score ' + finalScore, 500, UI_Y+12, 28, 'white')
   } else {
-    drawText('Score ' + score, 500, UI_Y+15, 32, 'white')
+    drawText('Score ' + score, 500, UI_Y+12, 28, 'white')
   }
 }
 
@@ -86,7 +86,6 @@ function drawEverything() {
     case STATE_MENU:
       drawMenu();
       break;
-    
     case STATE_PLAY:
       drawPlay();
       break;
@@ -101,7 +100,7 @@ function drawPlay() {
   drawUI();
 
   // draw the ball
-  colorCircle(ballX, ballY, 10, 'white');
+  colorCircle(ballX, ballY, BALL_RADIUS, 'white');
 }
 
 const MENU_X = 100;

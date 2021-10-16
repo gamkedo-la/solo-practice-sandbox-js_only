@@ -45,6 +45,7 @@ var worldGrid =
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     0, 1, 1, 1, 1, 1, 1, 1, 1, 0,
     0, 0, 0, 1, 1, 1, 1, 0, 0, 0 ];
+    
 function resetBricks() {
   bricksLeft = 0;
   for(var i = 0; i < BRICK_COLS*BRICK_ROWS; i++) {
@@ -95,6 +96,28 @@ function isBrickAtTileCoord(brickTileCol, brickTileRow) {
   return (brickGrid[brickIndex] == 1);
 }
   
+function isBrickAtPixel(pixelX, pixelY) {
+  var tileCol = pixelX / BRICK_W;
+  var tileRow = pixelY / BRICK_H;
+
+  // we'll use Math.floor to round down to the nearest whole number
+  tileCol = Math.floor( tileCol );
+  tileRow = Math.floor( tileRow );
+
+  // first check whether the ball is within any part of the brick wall
+  if(tileCol < 0 || tileCol >= BRICK_COLS ||
+      tileRow < 0 || tileRow >= BRICK_ROWS) {
+      return false; // bail out of function to avoid illegal array position usage
+  }
+  var brickIndex = brickTileToIndex(tileCol, tileRow);
+
+  if(brickGrid[brickIndex] == 1) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function breakAndBounceOffBrickAtPixelCoord(pixelX,pixelY) {
   var tileCol = pixelX / BRICK_W;
   var tileRow = pixelY / BRICK_H;
