@@ -11,8 +11,12 @@ heartCard.src = "assets/heart_card.png";
 
 var heartCardArray = [];
 var spawnCounter = 0;
-var players = [];
+var isGameOver = false;
+var players;
 var numOfPlayers;
+var turns = 0;
+
+var playerScoreArray = [];
 
 window.onload = function () {
   canvas = document.getElementById('gameCanvas');
@@ -21,33 +25,43 @@ window.onload = function () {
   canvas.addEventListener('click', spawnCard);
 
   setInterval(function () {
-    moveEverything();
-    drawEverything();
+    if (!isGameOver) {
+      moveEverything();
+      drawEverything();
+    }
   }, 1000 / framesPerSecond);
 }
 
 function moveEverything() {
-
+  if (turns == 10) {
+    isGameOver = true;
+  } else {
+    playerScore(numOfPlayers);
+  }
 }
 
 function set4Players() {
   numOfPlayers = 4;
   document.getElementById("debug").innerHTML = numOfPlayers + " players";
+  document.getElementById("player_controller").style.display = "none";
 }
 
 function set3Players() {
   numOfPlayers = 3;
   document.getElementById("debug").innerHTML = numOfPlayers + " players";
+  document.getElementById("player_controller").style.display = "none";
 }
 
 function set2Players() {
   numOfPlayers = 2;
   document.getElementById("debug").innerHTML = numOfPlayers + " players";
+  document.getElementById("player_controller").style.display = "none";
 }
 
 function set1Player() {
   numOfPlayers = 1;
-  document.getElementById("debug").innerHTML = numOfPlayers + " players";
+  document.getElementById("debug").innerHTML = numOfPlayers + " player";
+  document.getElementById("player_controller").style.display = "none";
 }
 
 function spawnCard(e) {
@@ -55,8 +69,11 @@ function spawnCard(e) {
   posX = pos.x;
   posY = pos.y;
 
-  heartCardArray.push({x: posX, y: posY});
-  console.log(heartCardArray);
+  if (!isGameOver) {
+    heartCardArray.push({x: posX, y: posY});
+    turns++;
+    console.log("Turns left: " + turns)
+  }
 }
 
 function getMousePos(evt) {
@@ -73,6 +90,10 @@ function getMousePos(evt) {
   };
 }
 
+function playerScore(num) {
+  
+}
+
 function drawEverything() {
   // <-- background --> //
   colorRect(0, 0, canvas.width, canvas.height, 'black');
@@ -80,5 +101,10 @@ function drawEverything() {
 
   for (let i = spawnCounter; i < heartCardArray.length; i++) {
     drawPicture(heartCard, heartCardArray[i].x, heartCardArray[i].y, 100, 100);
+  }
+
+  if (isGameOver) {
+    canvasContext.font = '36px serif';
+    canvasContext.fillText("Game over! 10 heart cards on board!", 70, 90);
   }
 }
