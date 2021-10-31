@@ -25,6 +25,7 @@ class Enemy {
     }
     update(){
         this.x -= this.directionX;
+        this.y += this.directionY;
         if (this.x < 0 - this.width) this.markedForDeletion = true;
     }
     draw(){
