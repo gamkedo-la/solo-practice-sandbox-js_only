@@ -12,9 +12,12 @@ heartCard.src = "assets/heart_card.png";
 var heartCardArray = [];
 var spawnCounter = 0;
 var isGameOver = false;
+var isGameStarted = false;
 var players;
 var numOfPlayers;
+var numOfTurns = 12;
 var turns = 0;
+var round = 1;
 
 var playerScoreArray = [];
 
@@ -25,18 +28,18 @@ window.onload = function () {
   canvas.addEventListener('click', spawnCard);
 
   setInterval(function () {
-    if (!isGameOver) {
+    if (!isGameOver && isGameStarted) {
       moveEverything();
       drawEverything();
+    } else if (isGameOver) {
+      gameOverScreen();
     }
   }, 1000 / framesPerSecond);
 }
 
 function moveEverything() {
-  if (turns == 10) {
+  if (turns == numOfTurns) {
     isGameOver = true;
-  } else {
-    playerScore(numOfPlayers);
   }
 }
 
@@ -44,24 +47,28 @@ function set4Players() {
   numOfPlayers = 4;
   document.getElementById("debug").innerHTML = numOfPlayers + " players";
   document.getElementById("player_controller").style.display = "none";
+  isGameStarted = true;
 }
 
 function set3Players() {
   numOfPlayers = 3;
   document.getElementById("debug").innerHTML = numOfPlayers + " players";
   document.getElementById("player_controller").style.display = "none";
+  isGameStarted = true;
 }
 
 function set2Players() {
   numOfPlayers = 2;
   document.getElementById("debug").innerHTML = numOfPlayers + " players";
   document.getElementById("player_controller").style.display = "none";
+  isGameStarted = true;
 }
 
 function set1Player() {
   numOfPlayers = 1;
   document.getElementById("debug").innerHTML = numOfPlayers + " player";
   document.getElementById("player_controller").style.display = "none";
+  isGameStarted = true;
 }
 
 function spawnCard(e) {
@@ -69,10 +76,10 @@ function spawnCard(e) {
   posX = pos.x;
   posY = pos.y;
 
-  if (!isGameOver) {
+  if (!isGameOver && isGameStarted) {
     heartCardArray.push({x: posX, y: posY});
     turns++;
-    console.log("Turns left: " + turns)
+    playerScore();
   }
 }
 
@@ -90,8 +97,17 @@ function getMousePos(evt) {
   };
 }
 
-function playerScore(num) {
-  
+function playerScore() {
+  if (turns % numOfPlayers == 0) {
+    document.getElementById("debug").innerHTML = "Round " + round;
+    round++;
+  }
+}
+
+function gameOverScreen() {
+  canvasContext.font = '36px serif';
+  canvasContext.fillText("Game over! " + numOfTurns + " heart cards on board!", 70, 90);
+  document.getElementById("debug").innerHTML = "Game Over";
 }
 
 function drawEverything() {
@@ -101,10 +117,5 @@ function drawEverything() {
 
   for (let i = spawnCounter; i < heartCardArray.length; i++) {
     drawPicture(heartCard, heartCardArray[i].x, heartCardArray[i].y, 100, 100);
-  }
-
-  if (isGameOver) {
-    canvasContext.font = '36px serif';
-    canvasContext.fillText("Game over! 10 heart cards on board!", 70, 90);
   }
 }
