@@ -37,9 +37,11 @@ function moveEverything() {
 	for(var i = 0; i < enemyList.length; i++){
 		enemyList[i].move();
 	}
+	updatedCameraPosition();
 }
 
 function drawEverything() {
+	shiftForCameraPan();
     drawRoom();
 	if(pathFindingDisplay){
 		drawPathingFindingTiles();
@@ -48,4 +50,5 @@ function drawEverything() {
 	for(var i = 0; i < enemyList.length; i++){
 		enemyList[i].draw();
 	}
+	finishedCameraPan();
 }

@@ -143,7 +143,7 @@ function warriorClass() {
         this.reset();
         break;
       case TILE_DOOR:
-	  case TILE_DOOR_YELLOW_FRONT:
+	  case TILE_DOOR_YELLOW_FRONT_BOTTOM:
         console.log("Door");
 		if(this.keysHeld > 0) {
           this.keysHeld--; // one less key
@@ -165,7 +165,7 @@ function warriorClass() {
 	  case TILE_WALL_5:
 	  case TILE_WALL_6:
 	  case TILE_WALL_7:	
-      case TILE_WALL_8:
+    case TILE_WALL_8:
 	  case TILE_WALL_9:
 	  case TILE_WALL_10:
 	  case TILE_WALL_11:

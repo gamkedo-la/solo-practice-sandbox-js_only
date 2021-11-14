@@ -25,9 +25,8 @@ function loadImages() {
 
   var imageList = [
     {varName:playerPic, theFile:"warrior.png"},
-	{varName:goblinPic, theFile:"goblin.png"},
-	
-    
+  	{varName:goblinPic, theFile:"goblin.png"},
+
     {tileType:TILE_GROUND, theFile:"world_ground.png"},
     {tileType:TILE_WALL_1, theFile:"dungeonWall_1.png"},
     {tileType:TILE_WALL_2, theFile:"dungeonWall_2.png"},
@@ -35,17 +34,20 @@ function loadImages() {
     {tileType:TILE_WALL_4, theFile:"dungeonWall_4.png"},
     {tileType:TILE_WALL_5, theFile:"dungeonWall_5.png"},
     {tileType:TILE_WALL_6, theFile:"dungeonWall_6.png"},
-	{tileType:TILE_WALL_7, theFile:"dungeonWall_7.png"},
+	  {tileType:TILE_WALL_7, theFile:"dungeonWall_7.png"},
     {tileType:TILE_WALL_8, theFile:"dungeonWall_8.png"},
     {tileType:TILE_WALL_9, theFile:"dungeonWall_9.png"},
-	{tileType:TILE_WALL_10, theFile:"dungeonWall_10.png"},
-	{tileType:TILE_WALL_11, theFile:"dungeonWall_11.png"},
-	{tileType:TILE_WALL_12, theFile:"dungeonWall_12.png"},
-	{tileType:TILE_WALL_13, theFile:"dungeonWall_13.png"},
-	{tileType:TILE_WALL_14, theFile:"dungeonWall_14.png"},
+    {tileType:TILE_WALL_10, theFile:"dungeonWall_10.png"},
+    {tileType:TILE_WALL_11, theFile:"dungeonWall_11.png"},
+    {tileType:TILE_WALL_12, theFile:"dungeonWall_12.png"},
+    {tileType:TILE_WALL_13, theFile:"dungeonWall_13.png"},
+    {tileType:TILE_WALL_14, theFile:"dungeonWall_14.png"},
+    {tileType:TILE_WALL_15, theFile:"dungeonWall_15.png"},
+    {tileType:TILE_WALL_16, theFile:"dungeonWall_16.png"},
     {tileType:TILE_GOAL, theFile:"world_goal.png"},
     {tileType:TILE_KEY, theFile:"world_key.png"},
-    {tileType:TILE_DOOR_YELLOW_FRONT, theFile:"yellowDoor_Front.png"},	
+    {tileType:TILE_DOOR_YELLOW_FRONT_TOP, theFile:"yellowDoor_Front_Top.png"},	
+    {tileType:TILE_DOOR_YELLOW_FRONT_BOTTOM, theFile:"yellowDoor_Front_Bottom.png"},
     {tileType:TILE_DOOR, theFile:"world_door.png"}
     ];
 

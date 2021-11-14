@@ -171,7 +171,8 @@ function enemyClass() {
         this.y = nextY;
 		break;
       case TILE_DOOR:
-	  case TILE_DOOR_YELLOW_FRONT:
+	  case TILE_DOOR_YELLOW_FRONT_TOP:
+	  case TILE_DOOR_YELLOW_FRONT_BOTTOM:  
 	  case TILE_WALL_1:
 	  case TILE_WALL_2:
 	  case TILE_WALL_3:

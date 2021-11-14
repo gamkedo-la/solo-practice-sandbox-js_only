@@ -98,7 +98,8 @@ function GridElement() {
 		updatedElementType == TILE_WALL_12 ||
 		updatedElementType == TILE_WALL_13 ||
 		updatedElementType == TILE_WALL_14 ||
-		updatedElementType == TILE_DOOR_YELLOW_FRONT
+		updatedElementType == TILE_DOOR_YELLOW_FRONT_BOTTOM ||
+    updatedElementType == TILE_DOOR_YELLOW_FRONT_TOP 
 		){
 			return WALL;		
     } else if (updatedElementType == TILE_PLAYER){

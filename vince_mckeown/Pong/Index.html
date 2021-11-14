@@ -134,12 +134,16 @@
             //rectangle
             colorRect(paddle1X, paddle1Y, paddle1Width, paddle1Height, 'white');
             colorRect(paddle2X, paddle2Y, paddle2Width, paddle2Height, 'white');
+			
+			if(gamePaused){
+				return;
+			}
 
-            //ball
-            colorCircle(ballX, ballY, 10, 'white');
+				//ball
+				colorCircle(ballX, ballY, 10, 'white');
 
-            colorText(player1Score, 20, 20, 'green');
-            colorText(player2Score, canvas.width - 20, 20, 'green');
+				colorText(player1Score, 20, 20, 'green');
+				colorText(player2Score, canvas.width - 20, 20, 'green');
 			
 			if(player1Wins){
 				colorText("Player 1 wins!", 320, 320, 'white');
