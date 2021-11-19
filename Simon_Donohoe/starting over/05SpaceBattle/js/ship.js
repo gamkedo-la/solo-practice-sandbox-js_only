@@ -1,21 +1,17 @@
 // tuning constants 
-const GROUNDSPEED_DECAY_MULT = 0.94;
-const DRIVE_POWER = 0.5;
-const REVERSE_POWER = 0.2;
+const SPACESPEED_DECAY_MULT = 0.99;
+const THRUST_POWER = 0.15;
 const TURN_RATE = 0.03;
-const MIN_TURN_SPEED = 0.5;
 
 function shipClass() {
   // keyboard hold state variables, to use keys more like buttons
   this.keyHeld_Gas = false;
-  this.keyHeld_Reverse = false;
   this.keyHeld_TurnLeft = false;
   this.keyHeld_TurnRight = false;
 
   // key controls used for this  
-  this.setupControls = function(forwardKey,backKey,leftKey,rightKey) {
+  this.setupControls = function(forwardKey,leftKey,rightKey) {
     this.controlKeyForGas = forwardKey;
-    this.controlKeyForReverse = backKey;
     this.controlKeyForTurnLeft = leftKey;
     this.controlKeyForTurnRight = rightKey;
   }
@@ -26,10 +22,10 @@ function shipClass() {
   }
   
   this.reset = function() { 
+    this.driftX = this.driftY = 0.0;
     // variables for player starting position 
     this.x = canvas.width/2; 
     this.y = canvas.height/2; 
-    this.speed = 0; 
     this.ang = -0.5 * Math.PI; 
   } // end of reset 
 
@@ -48,30 +44,27 @@ function shipClass() {
   }
 
   this.move = function() { 
-    // only allow turning while it's moving 
-    if(Math.abs(this.speed) > MIN_TURN_SPEED) { 
-      if(this.keyHeld_TurnLeft) {
-        this.ang -= TURN_RATE*Math.PI; 
-      }
+    if(this.keyHeld_TurnLeft) {
+      this.ang -= TURN_RATE*Math.PI; 
+    }
 
-      if(this.keyHeld_TurnRight) {
-        this.ang += TURN_RATE*Math.PI; 
-      }
+    if(this.keyHeld_TurnRight) {
+      this.ang += TURN_RATE*Math.PI; 
     }
     
     if(this.keyHeld_Gas) {
-      this.speed += DRIVE_POWER; 
-    }
-    if(this.keyHeld_Reverse) {
-      this.speed -= REVERSE_POWER; 
+      this.driftX += Math.cos(this.ang) * THRUST_POWER;
+      this.driftY += Math.sin(this.ang) * THRUST_POWER;
     }
     
-    this.x += Math.cos(this.ang) * this.speed;  
-    this.y += Math.sin(this.ang) * this.speed;  
+    
+    this.x += this.driftX;  
+    this.y += this.driftY;  
 
     this.handleScreenWrap();
 
-    this.speed *= GROUNDSPEED_DECAY_MULT; 
+    this.driftX *= SPACESPEED_DECAY_MULT; 
+    this.driftY *= SPACESPEED_DECAY_MULT; 
   }
   
   this.draw = function() { 
