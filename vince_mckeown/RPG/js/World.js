@@ -5,12 +5,12 @@ const ROOM_ROWS = 24;
 var roomGrid =
     [ 11, 1, 1, 1,35, 1,20,19,20, 1, 1, 1, 1, 1, 1, 1,16, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9,
       11,21,21,21,34,21,23,22,23,21,21,21,21,21,21,21,15,21,21,21,21,21,21,21,21,21,21,21,21,21,21, 9,
-      11, 2, 0, 0,33, 0, 0, 0, 0, 0,30, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,      
-      11,31,31,31,31, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11,32,32,32,32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11, 1, 1, 1, 1, 1, 1,19, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11,21,21,21,21,21,21,22,21,21,21,21,21,21,21,21,21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11, 2, 4, 0,33, 0, 0, 0, 0, 0,30, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11,31,31,36,31, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,      
+      11,32,32,37,32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11, 1, 1, 1, 1, 1, 1,24, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11,21,21,21,21,21,21,25,21,21,21,21,21,21,21,21,21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
@@ -54,12 +54,19 @@ const TILE_WALL_16 = 23;
 const TILE_KEY = 4;
 const TILE_DOOR_YELLOW_FRONT_TOP = 19;
 const TILE_DOOR_YELLOW_FRONT_BOTTOM = 22;
+const TILE_DOOR_YELLOW_FRONT_TOP_OPEN = 24;
+const TILE_DOOR_YELLOW_FRONT_BOTTOM_OPEN = 25;
 const TILE_ENEMY = 30;
 const TILE_PRISON_WALL_1 = 31;
 const TILE_PRISON_WALL_2 = 32;
 const TILE_PRISON_WALL_3 = 33;
 const TILE_PRISON_WALL_4 = 34;
 const TILE_PRISON_WALL_5 = 35;
+const TILE_PRISON_GATE_TOP = 36;
+const TILE_PRISON_GATE_BOTTOM = 37;
+const TILE_PRISON_GATE_TOP_OPEN = 38;
+const TILE_PRISON_GATE_BOTTOM_OPEN = 39;
+
 
 function roomTileToIndex(tileCol, tileRow) {
   return (tileCol + ROOM_COLS*tileRow);
@@ -90,8 +97,14 @@ function tileTypeHasTransparency(checkTileType) {
           checkTileType == TILE_PRISON_WALL_1 ||
           checkTileType == TILE_PRISON_WALL_2 ||
           checkTileType == TILE_PRISON_WALL_3 ||
+          checkTileType == TILE_PRISON_GATE_TOP ||
+          checkTileType == TILE_PRISON_GATE_BOTTOM ||
+          checkTileType == TILE_PRISON_GATE_TOP_OPEN ||
+          checkTileType == TILE_PRISON_GATE_BOTTOM_OPEN ||
 		      checkTileType == TILE_DOOR_YELLOW_FRONT_BOTTOM ||
           checkTileType == TILE_DOOR_YELLOW_FRONT_TOP ||
+          checkTileType == TILE_DOOR_YELLOW_FRONT_BOTTOM_OPEN ||
+          checkTileType == TILE_DOOR_YELLOW_FRONT_TOP_OPEN ||
           checkTileType == TILE_DOOR);
 }
 

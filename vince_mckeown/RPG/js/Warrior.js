@@ -1,6 +1,18 @@
 // tuning constants
 const PLAYER_MOVE_SPEED = 4.0;
 
+/*this will move to another file
+need to resolve first row */
+function findTileAboveCurrent(currentTile){
+  let tileAbove = currentTile - ROOM_COLS
+  return tileAbove;
+} 
+
+function findTileBelowCurrent(currentTile){
+  let tileBelow = currentTile + ROOM_COLS
+  return tileBelow;
+} 
+
 function warriorClass() {
   // variables to keep track of position
   this.x;
@@ -132,10 +144,12 @@ function warriorClass() {
       walkIntoTileType = roomGrid[walkIntoTileIndex];
     }
 	
-	
-    
     switch( walkIntoTileType ) {
       case TILE_GROUND:
+      case TILE_DOOR_YELLOW_FRONT_TOP_OPEN:
+      case TILE_DOOR_YELLOW_FRONT_BOTTOM_OPEN:
+      case TILE_PRISON_GATE_TOP_OPEN:
+      case TILE_PRISON_GATE_BOTTOM_OPEN:
         this.x = nextX;
         this.y = nextY;
         break;
@@ -143,15 +157,33 @@ function warriorClass() {
         this.reset();
         break;
       case TILE_DOOR:
-	  case TILE_DOOR_YELLOW_FRONT_BOTTOM:
-        console.log("Door");
-		if(this.keysHeld > 0) {
+	    case TILE_DOOR_YELLOW_FRONT_BOTTOM:
+        if(this.keysHeld > 0) {
           this.keysHeld--; // one less key
-          document.getElementById("debugText").innerHTML = "Keys: "+this.keysHeld;
-          roomGrid[walkIntoTileIndex] = TILE_GROUND; // remove door
-		  SetupPathfindingGridData(p1);
+          roomGrid[walkIntoTileIndex] = TILE_DOOR_YELLOW_FRONT_BOTTOM_OPEN; //change to bottom part of door open
+          let tileAbove = findTileAboveCurrent(walkIntoTileIndex);
+          roomGrid[tileAbove] = TILE_DOOR_YELLOW_FRONT_TOP_OPEN; // change to top part of door open
+          SetupPathfindingGridData(p1);
         }
         break;
+      case TILE_PRISON_GATE_BOTTOM:
+        if(this.keysHeld > 0) {
+          this.keysHeld--; // one less key
+          roomGrid[walkIntoTileIndex] = TILE_PRISON_GATE_BOTTOM_OPEN; //change to bottom part of door open
+          let tileAbove = findTileAboveCurrent(walkIntoTileIndex);
+          roomGrid[tileAbove] = TILE_PRISON_GATE_TOP_OPEN; // change to top part of door open
+          SetupPathfindingGridData(p1);
+        }
+        break;  
+      case TILE_PRISON_GATE_TOP:
+        if(this.keysHeld > 0) {
+          this.keysHeld--; // one less key
+          roomGrid[walkIntoTileIndex] = TILE_PRISON_GATE_TOP_OPEN; //change to top part of door open
+          let tileBelow = findTileBelowCurrent(walkIntoTileIndex);
+          roomGrid[tileBelow] = TILE_PRISON_GATE_BOTTOM_OPEN; // change to bottom part of door open
+          SetupPathfindingGridData(p1);
+        }
+        break; 
       case TILE_KEY:
         this.keysHeld++; // gain key
         document.getElementById("debugText").innerHTML = "Keys: "+this.keysHeld;

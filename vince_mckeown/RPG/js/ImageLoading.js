@@ -49,10 +49,16 @@ function loadImages() {
     {tileType:TILE_PRISON_WALL_3, theFile:"prisonWall_3.png"},
     {tileType:TILE_PRISON_WALL_4, theFile:"prisonWall_4.png"},
     {tileType:TILE_PRISON_WALL_5, theFile:"prisonWall_5.png"},
+    {tileType:TILE_PRISON_GATE_TOP, theFile:"prisonGate_Top.png"},
+    {tileType:TILE_PRISON_GATE_BOTTOM, theFile:"prisonGate_Botom.png"},
+    {tileType:TILE_PRISON_GATE_TOP_OPEN, theFile:"prisonGate_Top_Open.png"},
+    {tileType:TILE_PRISON_GATE_BOTTOM_OPEN, theFile:"prisonGate_Botom_Open.png"},
     {tileType:TILE_GOAL, theFile:"world_goal.png"},
     {tileType:TILE_KEY, theFile:"world_key.png"},
     {tileType:TILE_DOOR_YELLOW_FRONT_TOP, theFile:"yellowDoor_Front_Top.png"},	
     {tileType:TILE_DOOR_YELLOW_FRONT_BOTTOM, theFile:"yellowDoor_Front_Bottom.png"},
+    {tileType:TILE_DOOR_YELLOW_FRONT_TOP_OPEN, theFile:"yellowDoor_Front_Top_Open.png"},	
+    {tileType:TILE_DOOR_YELLOW_FRONT_BOTTOM_OPEN, theFile:"yellowDoor_Front_Bottom_Open.png"},
     {tileType:TILE_DOOR, theFile:"world_door.png"}
     ];
 
