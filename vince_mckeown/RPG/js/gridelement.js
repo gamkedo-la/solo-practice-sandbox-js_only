@@ -106,7 +106,11 @@ function GridElement() {
 		return SOURCE;
 	} else if (
 		updatedElementType == TILE_KEY ||
-		updatedElementType == TILE_GROUND
+    updatedElementType == TILE_DOOR_YELLOW_FRONT_TOP_OPEN ||
+    updatedElementType == TILE_DOOR_YELLOW_FRONT_BOTTOM_OPEN ||
+    updatedElementType == TILE_PRISON_GATE_TOP_OPEN ||
+    updatedElementType == TILE_PRISON_GATE_BOTTOM_OPEN ||
+		updatedElementType == TILE_GROUND 
 		){
 		return NOTHING;
 	} else {

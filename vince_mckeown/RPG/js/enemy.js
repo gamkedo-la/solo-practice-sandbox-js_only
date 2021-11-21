@@ -165,6 +165,10 @@ function enemyClass() {
 	
     switch( walkIntoTileType ) {
       case TILE_GROUND:
+	  case TILE_DOOR_YELLOW_FRONT_TOP_OPEN:
+	  case TILE_DOOR_YELLOW_FRONT_BOTTOM_OPEN:
+	  case TILE_PRISON_GATE_TOP_OPEN:
+	  case TILE_PRISON_GATE_BOTTOM_OPEN:
 	  case TILE_GOAL:
 	  case TILE_KEY:
         this.x = nextX;
