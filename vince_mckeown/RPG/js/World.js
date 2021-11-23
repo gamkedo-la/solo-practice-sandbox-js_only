@@ -108,6 +108,16 @@ function tileTypeHasTransparency(checkTileType) {
           checkTileType == TILE_DOOR);
 }
 
+function findTileAboveCurrent(currentTile) {
+  let tileAbove = currentTile - ROOM_COLS
+  return tileAbove;
+}
+
+function findTileBelowCurrent(currentTile) {
+  let tileBelow = currentTile + ROOM_COLS
+  return tileBelow;
+}
+
 function drawRoom() {
   var tileIndex = 0;
   var tileLeftEdgeX = 0;
