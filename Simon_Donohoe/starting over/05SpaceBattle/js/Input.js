@@ -7,12 +7,13 @@ const KEY_LETTER_W = 87;
 const KEY_LETTER_A = 65;
 const KEY_LETTER_S = 83;
 const KEY_LETTER_D = 68;
+const KEY_SPACEBAR = 32;
 
 function initInput() {
   document.addEventListener("keydown", keyPressed);
   document.addEventListener("keyup", keyReleased);
   
-  p1.setupControls(KEY_UP_ARROW,KEY_DOWN_ARROW,KEY_LEFT_ARROW,KEY_RIGHT_ARROW);
+  p1.setupControls(KEY_UP_ARROW,KEY_LEFT_ARROW,KEY_RIGHT_ARROW, KEY_SPACEBAR);
 }
 
 function setKeyHoldState(thisKey, thisShip, setTo) {
@@ -33,6 +34,9 @@ function setKeyHoldState(thisKey, thisShip, setTo) {
 function keyPressed(evt) {
   setKeyHoldState(evt.keyCode, p1, true);
   evt.preventDefault(); // without this, arrow keys scroll the browser!
+  if(evt.keyCode == p1.controlKeyForShotFire){
+    p1.cannonFire();
+  }
 }
 
 function keyReleased(evt) {

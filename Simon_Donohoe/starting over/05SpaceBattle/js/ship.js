@@ -10,13 +10,15 @@ function shipClass() {
   this.keyHeld_TurnRight = false;
 
   // key controls used for this  
-  this.setupControls = function(forwardKey,leftKey,rightKey) {
+  this.setupControls = function(forwardKey,leftKey,rightKey,shotKey) {
     this.controlKeyForGas = forwardKey;
     this.controlKeyForTurnLeft = leftKey;
     this.controlKeyForTurnRight = rightKey;
+    this.controlKeyForShotFire = shotKey;
   }
 
   this.init = function(whichGraphic) { 
+    this.myShot = new shotClass();
     this.myBitmap = whichGraphic;
     this.reset(); 
   }
@@ -27,6 +29,7 @@ function shipClass() {
     this.x = canvas.width/2; 
     this.y = canvas.height/2; 
     this.ang = -0.5 * Math.PI; 
+    this.myShot.reset();
   } // end of reset 
 
   this.handleScreenWrap = function() {
@@ -43,6 +46,10 @@ function shipClass() {
     }
   }
 
+  this.cannonFire = function() {
+    this.myShot.shootFrom(this);
+  }
+
   this.move = function() { 
     if(this.keyHeld_TurnLeft) {
       this.ang -= TURN_RATE*Math.PI; 
@@ -57,7 +64,6 @@ function shipClass() {
       this.driftY += Math.sin(this.ang) * THRUST_POWER;
     }
     
-    
     this.x += this.driftX;  
     this.y += this.driftY;  
 
@@ -65,9 +71,12 @@ function shipClass() {
 
     this.driftX *= SPACESPEED_DECAY_MULT; 
     this.driftY *= SPACESPEED_DECAY_MULT; 
+
+    this.myShot.move();
   }
   
   this.draw = function() { 
+    this.myShot.draw();
     drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.x, this.y, this.ang );
   }
 } // end of class 
