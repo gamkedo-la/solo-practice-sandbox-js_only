@@ -2,18 +2,19 @@ window.onload=function() {
   canvas = document.getElementById('gc');
   ctx = canvas.getContext('2d');
   document.addEventListener('keydown', keyPush);
-  setInterval(game, 1000/15);
+  setInterval(game, 1000/10);
 }
-px=py=10;
+px=py=9;
 gs=tc=20;
-ax=ay=15;
-xv=yv=0;
+appleX=appleY=15;
+pXspeed=1;
+pYspeed=0;
 trail=[];
 tail=5;
 
 function game() {
-  px+=xv;
-  py+=yv;
+  px+=pXspeed;
+  py+=pYspeed;
   if(px<0) {
     px=tc-1;
   }
@@ -39,29 +40,36 @@ function game() {
   while(trail.length>tail) {
     trail.shift();
   }
-  if(ax==px && ay==py) {
+
+  // snake reached apple
+  if(appleX==px && appleY==py) {
     tail++;
-    ax=Math.floor(Math.random()*tc)
-    ay=Math.floor(Math.random()*tc)
+    appleSpawn()
   }
 
   ctx.fillStyle='red';
-  ctx.fillRect(ax*gs, ay*gs, gs-2, gs-2);
+  ctx.fillRect(appleX*gs, appleY*gs, gs-1, gs-1);
 }
 
+function appleSpawn() {
+  appleX=Math.floor(Math.random()*tc)
+  appleY=Math.floor(Math.random()*tc)
+}
+
+// handle arrow keys
 function keyPush(evt) {
   switch(evt.keyCode) {
     case 37:
-      xv=-1; yv=0;
+      pXspeed=-1; pYspeed=0;
       break;
     case 38:
-      xv=0; yv=-1;
+      pXspeed=0; pYspeed=-1;
       break;
     case 39:
-      xv=1; yv=0;
+      pXspeed=1; pYspeed=0;
       break;
     case 40:
-      xv=0; yv=1;
+      pXspeed=0; pYspeed=1;
       break;
   }
 }
