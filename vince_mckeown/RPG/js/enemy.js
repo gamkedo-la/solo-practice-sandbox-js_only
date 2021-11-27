@@ -26,6 +26,12 @@ function enemyClass() {
   this.move_South = false;
   this.move_West = false;
 
+  //animation
+  this.sx = 0;
+  this.sy = 0;
+  this.swidth = 64;
+  this.sheight = 64
+
   this.init = function(whichGraphic,whichName) {
     this.myBitmap = whichGraphic;
     this.myName = whichName;
@@ -195,9 +201,18 @@ function enemyClass() {
         break;
     }
   }
+
+  this.animate = function(){
+	  this.swidth = this.swidth + this.swidth
+	  this.sx = this.swidth
+	  if(this.swidth > 300){
+		  this.swidth = 0;
+	  }
+  }
   
   this.draw = function() {
-    drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, 0.0 );
+//	this.animate();
+    canvasContext.drawImage(this.myBitmap,this.sx,this.sy, this.swidth, this.sheight, this.x, this.y, 50, 50);
   }
 
 } // end of class

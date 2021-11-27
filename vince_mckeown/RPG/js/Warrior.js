@@ -212,7 +212,7 @@ function warriorClass() {
     }
 
     this.draw = function() {
-      canvasContext.drawImage(this.myBitmap,this.sx,this.sy, this.swidth, this.sheight, this.x, this.y, 50, 50);
+      canvasContext.drawImage(this.myBitmap,this.sx,this.sy, this.swidth, this.sheight, this.x - 25, this.y -25, 50, 50);
     }
 
 } 

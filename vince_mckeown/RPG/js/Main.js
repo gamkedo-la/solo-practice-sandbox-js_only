@@ -27,7 +27,7 @@ function loadingDoneSoStartGame() {
 
     p1.init(playerPic, "Blue");
 	for(var i = 0; i < enemyList.length; i++){
-		enemyList[i].init(goblinPic, "red");
+		enemyList[i].init(ghostPic, "red");
 	}
     initInput();
 }

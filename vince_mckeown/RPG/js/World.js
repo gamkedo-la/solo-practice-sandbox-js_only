@@ -3,11 +3,11 @@ const ROOM_COLS = 32;
 const ROOM_ROWS = 24;
 
 var roomGrid =
-    [ 11, 1, 1, 1,35, 1,20,19,20, 1, 1, 1, 1, 1, 1, 1,16, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9,
-      11,21,21,21,34,21,23,22,23,21,21,21,21,21,21,21,15,21,21,21,21,21,21,21,21,21,21,21,21,21,21, 9,
-      11, 2, 4, 0,33, 0, 0, 0, 0, 0,30, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11,31,31,36,31, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,      
-      11,32,32,37,32, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+    [ 11, 1, 1, 1,35, 1,20,19,20,35, 1, 1, 1, 1, 1, 1,16, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 9,
+      11,21,21,21,34,21,23,22,23,34,21,21,21,21,21,21,15,21,21,21,21,21,21,21,21,21,21,21,21,21,21, 9,
+      11, 2, 4, 0,33, 0, 0, 0, 0,33,30, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11,31,31,36,31, 0, 0, 0, 4,31,31,36,31,31,31,31,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,      
+      11,32,32,37,32, 0, 0, 0, 0,32,32,37,32,32,32,32,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 1, 1, 1, 1, 1, 1,24, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11,21,21,21,21,21,21,25,21,21,21,21,21,21,21,21,21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
@@ -129,11 +129,14 @@ function drawRoom() {
     
     for(var eachCol=0; eachCol<ROOM_COLS; eachCol++) { // left to right in each row
 
-      var tileTypeHere = roomGrid[ tileIndex ]; // getting the tile code for this index
+      var tileTypeHere = roomGrid[tileIndex]; // getting the tile code for this index
+      let tile_sx = roomGrid[tileIndex].imgX;
+      let tile_sy = roomGrid[tileIndex].imgY;
       if( tileTypeHasTransparency(tileTypeHere) ) {
         canvasContext.drawImage(tilePics[TILE_GROUND], tileLeftEdgeX, tileTopEdgeY);
       }
       canvasContext.drawImage(tilePics[tileTypeHere], tileLeftEdgeX, tileTopEdgeY);
+      // // canvasContext.drawImage(tilePics[tileTypeHere],this.sx,this.sy, this.swidth, this.sheight, this.x, this.y, 50, 50);
       
       tileIndex++; // increment which index we're going to next check for in the room
       tileLeftEdgeX += TILE_W; // jump horizontal draw position to next tile over by tile width
