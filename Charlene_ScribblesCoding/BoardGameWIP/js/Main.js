@@ -6,10 +6,13 @@ var backgroundImg = new Image();
 backgroundImg.src = "assets/dummy_background.jpg";
 
 // assets
-var heartCard = new Image();
-heartCard.src = "assets/heart_card.png";
+var heart = new Image();
+heart.src = "assets/heart_card.png";
 
-var heartCardArray = [];
+var crown = new Image();
+crown.src = "assets/crown_card.png";
+
+var cardArray = [];
 var spawnCounter = 0;
 var isGameOver = false;
 var isGameStarted = false;
@@ -18,6 +21,7 @@ var numOfPlayers;
 var numOfTurns = 12;
 var turns = 0;
 var round = 1;
+var scorePoint;
 
 var playerScoreArray = [];
 var currentTurn = 0;
@@ -77,23 +81,35 @@ function set1Player() {
 }
 
 function spawnCard(e) {
+  var randomize = Math.floor(Math.random() * 11) + 1; // get a number between 1 - 10
+  var cardType;
   var pos = getMousePos(e);
   posX = pos.x;
   posY = pos.y;
 
+  if (randomize <= 5) {
+    scorePoint = 1
+    cardType = heart
+  } else {
+    scorePoint = 5
+    cardType = crown
+  }
+
   if (!isGameOver && isGameStarted) {
-    heartCardArray.push({x: posX, y: posY});
+    cardArray.push({ card: cardType, x: posX, y: posY });
     turns++;
     
     if (currentTurn !== numOfPlayers) {
-      playerScoreArray[currentTurn] += 1;
+      playerScoreArray[currentTurn] += scorePoint;
       currentTurn++;
     } else {
       currentTurn = 0;
-      playerScoreArray[currentTurn] += 1;
+      playerScoreArray[currentTurn] += scorePoint;
       currentTurn++;
     }
   }
+
+  document.getElementById("debug").innerHTML = "Player " + currentTurn + " scored " + scorePoint + " points!";
 }
 
 function getMousePos(evt) {
@@ -111,9 +127,14 @@ function getMousePos(evt) {
 }
 
 function gameOverScreen() {
+  var winningPoints = playerScoreArray.reduce(function(a, b) {
+    return Math.max(a, b);
+  }, 0);
+  
   canvasContext.font = '36px serif';
   canvasContext.fillText("Game over! " + numOfTurns + " heart cards on board!", 70, 90);
-  document.getElementById("debug").innerHTML = "Game Over";
+
+  document.getElementById("debug").innerHTML = "Game Over! Highest score: " + winningPoints + "!";
 }
 
 function drawEverything() {
@@ -121,8 +142,8 @@ function drawEverything() {
   colorRect(0, 0, canvas.width, canvas.height, 'black');
   drawPicture(backgroundImg, 0, 0, 800, 600);
 
-  for (let i = spawnCounter; i < heartCardArray.length; i++) {
-    drawPicture(heartCard, heartCardArray[i].x, heartCardArray[i].y, 100, 100);
+  for (let i = spawnCounter; i < cardArray.length; i++) {
+    drawPicture(cardArray[i].card, cardArray[i].x, cardArray[i].y, 100, 80);
   }
 
   // print all players score
