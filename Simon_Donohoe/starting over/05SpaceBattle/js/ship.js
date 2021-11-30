@@ -3,6 +3,8 @@ const SPACESPEED_DECAY_MULT = 0.99;
 const THRUST_POWER = 0.15;
 const TURN_RATE = 0.03;
 
+shipClass.prototype = new movingWrapPositionClass();
+
 function shipClass() {
   // keyboard hold state variables, to use keys more like buttons
   this.keyHeld_Gas = false;
@@ -23,32 +25,23 @@ function shipClass() {
     this.reset(); 
   }
   
-  this.reset = function() { 
-    this.driftX = this.driftY = 0.0;
-    // variables for player starting position 
+  this.superclassReset = this.reset;
+
+  this.reset = function() {
+    this.superclassReset();
     this.x = canvas.width/2; 
     this.y = canvas.height/2; 
     this.ang = -0.5 * Math.PI; 
     this.myShot.reset();
   } // end of reset 
 
-  this.handleScreenWrap = function() {
-    if(this.x < 0) {
-      this.x += canvas.width;
-    } else if(this.x >= canvas.width) {
-      this.x -= canvas.width;
-    }
-
-    if(this.y < 0) {
-      this.y += canvas.height;
-    } else if(this.y >= canvas.height) {
-      this.y -= canvas.height;
-    }
-  }
-
   this.cannonFire = function() {
-    this.myShot.shootFrom(this);
+    if(this.myShot.isShotReadyToFire()) {
+      this.myShot.shootFrom(this);
+    }
   }
+
+  this.superclassMove = this.move;
 
   this.move = function() { 
     if(this.keyHeld_TurnLeft) {
@@ -60,17 +53,14 @@ function shipClass() {
     }
     
     if(this.keyHeld_Gas) {
-      this.driftX += Math.cos(this.ang) * THRUST_POWER;
-      this.driftY += Math.sin(this.ang) * THRUST_POWER;
+      this.xv += Math.cos(this.ang) * THRUST_POWER;
+      this.yv += Math.sin(this.ang) * THRUST_POWER;
     }
-    
-    this.x += this.driftX;  
-    this.y += this.driftY;  
 
-    this.handleScreenWrap();
+    this.superclassMove();
 
-    this.driftX *= SPACESPEED_DECAY_MULT; 
-    this.driftY *= SPACESPEED_DECAY_MULT; 
+    this.xv *= SPACESPEED_DECAY_MULT; 
+    this.yv *= SPACESPEED_DECAY_MULT; 
 
     this.myShot.move();
   }
