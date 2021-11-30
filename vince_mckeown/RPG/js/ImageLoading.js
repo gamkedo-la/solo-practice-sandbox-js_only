@@ -17,9 +17,16 @@ function beginLoadingImage(imgVar, fileName) {
   imgVar.src="images/"+fileName;
 }
 
-function loadImageForTileCode(tileCode, fileName) {
-  tilePics[tileCode] = document.createElement("img");
-  beginLoadingImage(tilePics[tileCode],fileName);
+function loadImageForTileCode(tileData) {
+  let tileCode = tileData.tileType
+  let fileName = tileData.theFile
+  tilePics[tileCode] = {
+    img: null,
+    imgX: tileData.imgX,
+    imgY: tileData.imgY
+  }
+  tilePics[tileCode].img = document.createElement("img");
+  beginLoadingImage(tilePics[tileCode].img,fileName);
 }
 
 function loadImages() {
@@ -68,7 +75,7 @@ function loadImages() {
 
   for(var i=0;i<imageList.length;i++) {
     if(imageList[i].tileType != undefined) {
-      loadImageForTileCode(imageList[i].tileType, imageList[i].theFile);
+      loadImageForTileCode(imageList[i]);
     } else {
       beginLoadingImage(imageList[i].varName, imageList[i].theFile);
     } // end of else

@@ -130,13 +130,12 @@ function drawRoom() {
     for(var eachCol=0; eachCol<ROOM_COLS; eachCol++) { // left to right in each row
 
       var tileTypeHere = roomGrid[tileIndex]; // getting the tile code for this index
-      let tile_sx = roomGrid[tileIndex].imgX;
-      let tile_sy = roomGrid[tileIndex].imgY;
+      let tile_sx = tilePics[tileTypeHere].imgX
+      let tile_sy = tilePics[tileTypeHere].imgY;
       if( tileTypeHasTransparency(tileTypeHere) ) {
-        canvasContext.drawImage(tilePics[TILE_GROUND], tileLeftEdgeX, tileTopEdgeY);
+        canvasContext.drawImage(tilePics[TILE_GROUND].img, tileLeftEdgeX, tileTopEdgeY);
       }
-      canvasContext.drawImage(tilePics[tileTypeHere], tileLeftEdgeX, tileTopEdgeY);
-      // // canvasContext.drawImage(tilePics[tileTypeHere],this.sx,this.sy, this.swidth, this.sheight, this.x, this.y, 50, 50);
+      canvasContext.drawImage(tilePics[tileTypeHere].img,tile_sx,tile_sy, 50, 50, tileLeftEdgeX, tileTopEdgeY, 50, 50);
       
       tileIndex++; // increment which index we're going to next check for in the room
       tileLeftEdgeX += TILE_W; // jump horizontal draw position to next tile over by tile width
