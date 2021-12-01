@@ -41,6 +41,18 @@ function shipClass() {
     }
   }
 
+  this.checkMyShipAndShotCollisionAgainst = function(thisEnemy) {
+    if(thisEnemy.isOverlappingPoint(this.x, this.y)) { 
+      this.reset();
+      document.getElementById("debugText").innerHTML = "Player Crashed!";
+    }
+    if(this.myShot.hitTest(thisEnemy)) {
+      thisEnemy.reset();
+      this.myShot.reset();
+      document.getElementById("debugText").innerHTML = "Enemy Blasted!";
+    }
+  }
+
   this.superclassMove = this.move;
 
   this.move = function() { 

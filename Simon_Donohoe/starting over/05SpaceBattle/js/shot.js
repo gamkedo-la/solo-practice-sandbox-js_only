@@ -28,6 +28,13 @@ function shotClass() {
     this.shotLife = SHOT_LIFE;
   }
 
+  this.hitTest = function(thisEnemy) {
+    if(this.shotLife <= 0) {
+      return false;
+    }
+    return thisEnemy.isOverlappingPoint(this.x, this.y);
+  }
+
   this.superclassMove = this.move;
   this.move = function() { 
     if(this.shotLife > 0) {
