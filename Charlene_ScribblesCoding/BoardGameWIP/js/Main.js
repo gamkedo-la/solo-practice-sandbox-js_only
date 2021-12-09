@@ -3,12 +3,15 @@ var framesPerSecond = 30;
 
 // background image
 var backgroundImg = new Image();
-backgroundImg.src = "assets/dummy_background.jpg";
-
+backgroundImg.src = "assets/board.jpg";
+var playerBoardsOdd = new Image();
+playerBoardsOdd.src = "assets/board_box_1_3.png";
+var playerBoardsEven = new Image();
+playerBoardsEven.src = "assets/board_box_2_4.png";
+const PLAYER_BOARD_SIZE = 275;
 // assets
 var heart = new Image();
 heart.src = "assets/heart_card.png";
-
 var crown = new Image();
 crown.src = "assets/crown_card.png";
 
@@ -16,13 +19,13 @@ var cardArray = [];
 var spawnCounter = 0;
 var isGameOver = false;
 var isGameStarted = false;
-var players;
-var numOfPlayers;
 var numOfTurns = 12;
 var turns = 0;
 var round = 1;
 var scorePoint;
 
+var playersBoard = [];
+var numOfPlayers;
 var playerScoreArray = [];
 var currentTurn = 0;
 
@@ -96,16 +99,28 @@ function spawnCard(e) {
   }
 
   if (!isGameOver && isGameStarted) {
-    cardArray.push({ card: cardType, x: posX, y: posY });
-    turns++;
-    
-    if (currentTurn !== numOfPlayers) {
-      playerScoreArray[currentTurn] += scorePoint;
-      currentTurn++;
-    } else {
-      currentTurn = 0;
-      playerScoreArray[currentTurn] += scorePoint;
-      currentTurn++;
+    let lessThanPosX = (PLAYER_BOARD_SIZE * currentTurn) + playersBoard[currentTurn].x
+    let moreThanPosX = canvas.width - (PLAYER_BOARD_SIZE * (currentTurn + 1)) - playersBoard[currentTurn].x
+
+    let lessThanPosY = (PLAYER_BOARD_SIZE * currentTurn) + playersBoard[currentTurn].y;
+    let moreThanPosY = canvas.height - (PLAYER_BOARD_SIZE * (currentTurn + 1)) - 80
+
+    if (posX > lessThanPosX && posX < moreThanPosX && posY > lessThanPosY && posY < moreThanPosY) {
+      console.log("lessThanPosX = " + lessThanPosX)
+      console.log("moreThanPosX = " + moreThanPosX)
+      console.log("lessThanPosY = " + lessThanPosY)
+      console.log("moreThanPosY = " + moreThanPosY)
+      console.log("PosY is " + posY)
+
+      if (currentTurn < numOfPlayers) {
+        playerScoreArray[currentTurn] += scorePoint;
+      } else {
+        currentTurn = 0;
+        playerScoreArray[currentTurn] += scorePoint;
+      }
+  
+      cardArray.push({ card: cardType, x: posX, y: posY });
+      turns++;
     }
   }
 
@@ -118,8 +133,8 @@ function getMousePos(evt) {
   var scaleY = canvas.height / rect.height;
 
   // account for the margins, canvas position on page, scroll amount, etc
-  var mouseX = (evt.clientX - rect.left - 50) * scaleX;
-  var mouseY = (evt.clientY - rect.top - 50) * scaleY;
+  var mouseX = (evt.clientX - rect.left - 30) * scaleX;
+  var mouseY = (evt.clientY - rect.top - 20) * scaleY;
   return {
     x: mouseX,
     y: mouseY
@@ -132,7 +147,7 @@ function gameOverScreen() {
   }, 0);
   
   canvasContext.font = '36px serif';
-  canvasContext.fillText("Game over! " + numOfTurns + " heart cards on board!", 70, 90);
+  canvasContext.fillText("Game over! " + numOfTurns + " cards on board!", 100, 250);
 
   document.getElementById("debug").innerHTML = "Game Over! Highest score: " + winningPoints + "!";
 }
@@ -142,8 +157,29 @@ function drawEverything() {
   colorRect(0, 0, canvas.width, canvas.height, 'black');
   drawPicture(backgroundImg, 0, 0, 800, 600);
 
+  // <-- draw the player boards --> //
+  for (let i = 1; i <= numOfPlayers; i++) {
+    if (i == 1) {
+      // player 1
+      drawPicture(playerBoardsOdd, 10, 5, PLAYER_BOARD_SIZE, PLAYER_BOARD_SIZE)
+      playersBoard.push({ x: 10, y: 5 });
+    } else if (i == 2) {
+      // player 2
+      drawPicture(playerBoardsEven, 290, 5, PLAYER_BOARD_SIZE, PLAYER_BOARD_SIZE)
+      playersBoard.push({ x: 290, y: 5 });
+    } else if (i == 3) {
+      // player 3
+      drawPicture(playerBoardsEven, 10, 285, PLAYER_BOARD_SIZE, PLAYER_BOARD_SIZE)
+      playersBoard.push({ x: 10, y: 285 });
+    } else if (i == 4) {
+      // player 4
+      drawPicture(playerBoardsOdd, 290, 285, PLAYER_BOARD_SIZE, PLAYER_BOARD_SIZE)
+      playersBoard.push({ x: 290, y: 285 });
+    }
+  }
+
   for (let i = spawnCounter; i < cardArray.length; i++) {
-    drawPicture(cardArray[i].card, cardArray[i].x, cardArray[i].y, 100, 80);
+    drawPicture(cardArray[i].card, cardArray[i].x, cardArray[i].y, 60, 40);
   }
 
   // print all players score

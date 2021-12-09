@@ -1,0 +1,142 @@
+<html>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+var canvas;
+var canvasContext;
+var ballX = 50;
+var ballY = 50;// Starting position of the ball, will change (it's a variable)
+var ballSpeedX = 10;
+var ballSpeedY= 4;// Control speed of ball in the x and y coordinates
+
+var paddle1Y =250;
+var paddle2Y =250;
+var p1Score =0;
+var p2Score= 0;
+const WIN_SCORE = 3;
+
+const PADDLE_HEIGHT = 100; //convention for constant variable naming
+const PADDLE_THICKNESS = 10;
+
+function calculateMousePos(evt){// event that fires everytime the mouse moves, gives mouse coordinates
+	var rect = canvas.getBoundingClientRect();// get canvas of browser draw game within
+	var root = document.documentElement; // getting handle on the documnent (html)
+	var mouseX = evt.clientX- rect.left-root.scrollLeft;
+	var mouseY = evt.clientY - rect.top- root.scrollTop;// accounting for where on the page from the side or the top is this canvas element and how much scroll
+	return{
+			x:mouseX,
+			y:mouseY // technically only retrieving one value but in javacript called object literal
+	};
+}
+window.onload = function() {
+	canvas = document.getElementById('gameCanvas');
+	canvasContext = canvas.getContext('2d');
+
+	var framesPerSecond = 30;
+	setInterval(function() {
+			moveEverything();
+			drawEverything();	
+		}, 1000/framesPerSecond);
+
+	canvas.addEventListener ('mousemove',
+			function(evt){
+					var mousePos= calculateMousePos(evt);
+					paddle1Y = mousePos.y- (PADDLE_HEIGHT/2); // so that mouse moves with middle of paddle not top of paddle
+
+			});
+				// to get input and call a function, here it's called inline. Then paddle postion (y coordinate is updated with the help of call)
+
+}
+
+function ballReset(){
+	if(p1Score>=WIN_SCORE||p2Score>=WIN_SCORE){
+		p1Score=0;
+		p2Score=0;
+	}
+	ballX= canvas.width/2;
+	ballY= canvas.height/2;
+	ballSpeedX =-ballSpeedX;
+}
+
+function computerMovement(){ //controls movemenet of the AI paddle
+	var paddle2YCenter = paddle2Y + (PADDLE_HEIGHT/2); //if this line not there, will track from edge instead of center to rebound.
+	if (paddle2YCenter<ballY-35)//this for preventing sudden jerk reaction of the paddle when trying to track (the ballY-35){
+			paddle2Y+=6; //go up
+	else if (paddle2YCenter>ballY+35){
+		paddle2Y-=6;//go down
+	}
+
+}
+
+function moveEverything() {
+	computerMovement();
+
+	ballX = ballX + ballSpeedX;
+	ballY = ballY + ballSpeedY;//change y position by each frame by some amount
+	if(ballX < 0) {
+		if(ballY> paddle1Y && ballY < paddle1Y+PADDLE_HEIGHT){// getting the surface area of the paddle position
+			ballSpeedX =-ballSpeedX;
+			var deltaY=ballY-(paddle1Y-PADDLE_HEIGHT/2);//To get center of paddle and difference of distance of ball from the center of paddle
+			ballSpeedY=deltaY*0.35;//use above value to incentivise players to hit at the edge of paddle for greater speed and angle
+
+		}
+		else{
+			p2Score+=1;
+			ballReset();
+			
+		}
+	}
+	if(ballX > canvas.width) {
+		if(ballY> paddle2Y && ballY < paddle2Y+PADDLE_HEIGHT){// getting the surface area of the paddle position
+			ballSpeedX =-ballSpeedX;
+			var deltaY=ballY-(paddle2Y-PADDLE_HEIGHT/2);//To get center of paddle and difference of distance of ball from the center of paddle
+			ballSpeedY=deltaY*0.35;//use above value to incentivise players to hit at the edge of paddle for greater speed and angle
+		}
+		else{
+			p1Score+=1; //must be before ball reset
+			ballReset();
+			
+		}
+	}
+	if(ballY < 0) {
+		ballSpeedY = -ballSpeedY;
+	}
+	if(ballY > canvas.height) {
+		ballSpeedY = -ballSpeedY;//this and last to check if ball has reached top or bottom of screen so that we can bounce it
+	}
+	//Move and bounce the ball horizontally and vertically
+}
+
+function drawEverything() {
+	// next line blanks out the screen with black
+	colorRect(0,0,canvas.width,canvas.height,'black');
+
+	// this is left player paddle
+	colorRect(0,paddle1Y,PADDLE_THICKNESS,PADDLE_HEIGHT,'white');
+
+	// this is right AI paddle
+	colorRect(canvas.width-PADDLE_THICKNESS,paddle2Y,PADDLE_THICKNESS,PADDLE_HEIGHT,'white');
+	//x,y,thickness,height,colour
+
+	// next line draws the ball
+	colorCircle(ballX, ballY, 10, 'white');
+
+	canvasContext.fillText(p1Score, 100, 100);// text and x and y postion
+	canvasContext.fillText(p2Score, canvas.width-100, 100);// text and x and y postion
+}
+
+function colorCircle(centerX, centerY, radius, drawColor) {
+	canvasContext.fillStyle = drawColor;
+	canvasContext.beginPath(); // define shape to fill in
+	canvasContext.arc(centerX, centerY, radius, 0,Math.PI*2,true);// x and y, radius, angle and radians (pizaa),2PI is how many times radius fits the circumference., clockwise or counter clockwise 
+	canvasContext.fill(); // for begin path there is no rectfill in for circle
+}
+
+function colorRect(leftX,topY, width,height, drawColor) {
+	canvasContext.fillStyle = drawColor;
+	canvasContext.fillRect(leftX,topY, width,height);
+}
+
+</script>
+
+</html>
