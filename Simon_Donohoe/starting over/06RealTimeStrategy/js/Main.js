@@ -1,6 +1,8 @@
 let canvas, canvasContext; // save the canvas for dimensions, and its 2d context for drawing to it
 
-let testUnit = new unitClass();
+const PLAYER_START_UNITS = 55;
+
+let playerUnits = []; // declaring an array
 
 function calculateMousePos(evt) {
   let rect = canvas.getBoundingClientRect(), root = document.documentElement;
@@ -31,19 +33,30 @@ window.onload = function(){
 
   canvas.addEventListener('click', function(evt) {
     let mousePos = calculateMousePos(evt);
-    testUnit.gotoX = mousePos.x;
-    testUnit.gotoY = mousePos.y;
+    for(let i = 0; i < playerUnits.length; i++) {
+      let eachUnit = playerUnits[i];
+      eachUnit.gotoX = mousePos.x;
+      eachUnit.gotoY = mousePos.y;
+    }
   });
 
-  testUnit.reset();
+  for(let i = 0; i < PLAYER_START_UNITS; i++){
+    let spawnUnit = new unitClass();
+    spawnUnit.reset();
+    playerUnits.push(spawnUnit);
+  }
 }
 
 function moveEverything(){
-  testUnit.move();
+  for(let i = 0; i < playerUnits.length; i++){
+    playerUnits[i].move();
+  }
 }
 
 function drawEverything() { 
   colorRect(0,0,canvas.width,canvas.height,"#000000"); // clear the game view by filling it with black
 
-  testUnit.draw();
+  for(let i = 0; i < playerUnits.length; i++){
+    playerUnits[i].draw();
+  }
 }

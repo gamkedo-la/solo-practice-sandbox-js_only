@@ -19,17 +19,31 @@ function unitClass() {
   }
 
   this.move = function () {
-    if(this.x < this.gotoX) {
-      this.x += UNIT_PIXELS_MOVE_RATE;
-    }
-    if(this.x > this.gotoX) {
-      this.x -= UNIT_PIXELS_MOVE_RATE;
-    }
-    if(this.y < this.gotoY) {
-      this.y += UNIT_PIXELS_MOVE_RATE;
-    }
-    if(this.y > this.gotoY) {
-      this.y -= UNIT_PIXELS_MOVE_RATE;
+    // if(this.x < this.gotoX) {
+    //   this.x += UNIT_PIXELS_MOVE_RATE;
+    // }
+    // if(this.x > this.gotoX) {
+    //   this.x -= UNIT_PIXELS_MOVE_RATE;
+    // }
+    // if(this.y < this.gotoY) {
+    //   this.y += UNIT_PIXELS_MOVE_RATE;
+    // }
+    // if(this.y > this.gotoY) {
+    //   this.y -= UNIT_PIXELS_MOVE_RATE;
+    // }
+    let deltaX = this.gotoX - this.x;
+    let deltaY = this.gotoY - this.y;
+    let distToGo = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    // let moveAng = Math.atan2(deltaY, deltaX);
+    let moveX = UNIT_PIXELS_MOVE_RATE * deltaX / distToGo;
+    let moveY = UNIT_PIXELS_MOVE_RATE * deltaY / distToGo;
+
+    if(distToGo > UNIT_PIXELS_MOVE_RATE) {
+      this.x += moveX;
+      this.y += moveY;  
+    } else {
+      this.x = this.gotoX;
+      this.y = this.gotoY;
     }
   }
 } // end of class
