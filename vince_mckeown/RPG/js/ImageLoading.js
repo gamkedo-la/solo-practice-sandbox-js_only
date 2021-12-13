@@ -35,7 +35,7 @@ function loadImages() {
     {varName:playerPic, theFile:"warrior.png"},
   	{varName:goblinPic, theFile:"goblin.png"},
     {varName:ghostPic, theFile:"ghost.png"},
-
+    //ROW 1
     {tileType:TILE_GROUND, imgX: 0, imgY: 0, theFile:"world_ground.png"},
     {tileType:TILE_WALL_1, imgX: 0, imgY: 0, theFile:"dungeonWalls.png"},
     {tileType:TILE_WALL_2, imgX: 50, imgY: 0, theFile:"dungeonWalls.png"},
@@ -46,13 +46,18 @@ function loadImages() {
 	  {tileType:TILE_WALL_7, imgX: 300, imgY: 0, theFile:"dungeonWalls.png"},
     {tileType:TILE_WALL_8, imgX: 350, imgY: 0, theFile:"dungeonWalls.png"},
     {tileType:TILE_WALL_9, imgX: 400, imgY: 0, theFile:"dungeonWalls.png"},
-    {tileType:TILE_WALL_10, imgX: 450, imgY: 0, theFile:"dungeonWalls.png"},
+    {tileType:TILE_DUNGEON_STAIRS_TOP_1, imgX: 450, imgY: 0, theFile:"dungeonWalls.png"},
+    //ROW 2
     {tileType:TILE_WALL_11, imgX: 0, imgY: 50, theFile:"dungeonWalls.png"},
     {tileType:TILE_WALL_12, imgX: 50, imgY: 50, theFile:"dungeonWalls.png"},
     {tileType:TILE_WALL_13, imgX: 100, imgY: 50, theFile:"dungeonWalls.png"},
     {tileType:TILE_WALL_14, imgX: 150, imgY: 50, theFile:"dungeonWalls.png"},
     {tileType:TILE_WALL_15, imgX: 200, imgY: 50, theFile:"dungeonWalls.png"},
     {tileType:TILE_WALL_16, imgX: 250, imgY: 50, theFile:"dungeonWalls.png"},
+    {tileType:TILE_WALL_10, imgX: 350, imgY: 50, theFile:"dungeonWalls.png"},
+    {tileType:TILE_DUNGEON_STAIRS_MIDDLE_1, imgX: 450, imgY: 50, theFile:"dungeonWalls.png"},
+    //ROW 3
+    {tileType:TILE_DUNGEON_STAIRS_BOTTOM_1, imgX: 450, imgY: 100, theFile:"dungeonWalls.png"},
     {tileType:TILE_PRISON_WALL_1, imgX: 0, imgY: 0, theFile:"prisonWall_1.png"},
     {tileType:TILE_PRISON_WALL_2, imgX: 0, imgY: 0, theFile:"prisonWall_2.png"},
     {tileType:TILE_PRISON_WALL_3, imgX: 0, imgY: 0, theFile:"prisonWall_3.png"},

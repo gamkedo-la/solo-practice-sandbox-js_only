@@ -8,9 +8,9 @@ var roomGrid =
       11, 2, 4, 0,33, 0, 0, 0, 0,33,30, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11,31,31,36,31, 0, 0, 0, 4,31,31,36,31,31,31,31,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,      
       11,32,32,37,32, 0, 0, 0, 0,32,32,37,32,32,32,32,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11, 1, 1, 1, 1, 1, 1,24, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11,23,23,23,23,23,23,25,23,23,23,23,23,23,23,23,23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11,40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11,41, 1, 1, 1, 1, 1,24, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11,42,23,23,23,23,23,25,23,23,23,23,23,23,23,23,23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
@@ -30,6 +30,8 @@ var roomGrid =
 
 const TILE_W = 50;
 const TILE_H = 50;
+
+//RE-NUMBER PRIOR TO PITCH
 
 const TILE_GROUND = 0;
 const TILE_PLAYER = 2;
@@ -66,6 +68,10 @@ const TILE_PRISON_GATE_TOP = 36;
 const TILE_PRISON_GATE_BOTTOM = 37;
 const TILE_PRISON_GATE_TOP_OPEN = 38;
 const TILE_PRISON_GATE_BOTTOM_OPEN = 39;
+const TILE_DUNGEON_STAIRS_TOP_1 = 40;
+const TILE_DUNGEON_STAIRS_MIDDLE_1 = 41;
+const TILE_DUNGEON_STAIRS_BOTTOM_1 = 42;
+
 
 
 function roomTileToIndex(tileCol, tileRow) {
@@ -105,6 +111,7 @@ function tileTypeHasTransparency(checkTileType) {
           checkTileType == TILE_DOOR_YELLOW_FRONT_TOP ||
           checkTileType == TILE_DOOR_YELLOW_FRONT_BOTTOM_OPEN ||
           checkTileType == TILE_DOOR_YELLOW_FRONT_TOP_OPEN ||
+          checkTileType == TILE_DUNGEON_STAIRS_BOTTOM_1 ||
           checkTileType == TILE_DOOR);
 }
 
