@@ -12,7 +12,7 @@ function moveBall() {
   // ball starts near paddle ready to move toward bricks
   if(ballReady){
     ballX = paddleX + PADDLE_WIDTH/2 - 5;
-    ballY = PADDLE_Y - 15;
+    ballY = PADDLE_Y - 10 - BALL_RADIUS;
     // ballReady = false;
     return;
   }
@@ -30,7 +30,7 @@ function moveBall() {
   }
 
   if(ballSpeedY > 0.0) { // only bounce off paddle if the ball is moving downward
-      if(ballY >= PADDLE_Y && ballY <= PADDLE_Y + PADDLE_THICKNESS) { // vertically over paddle
+    if(ballY >= PADDLE_Y && ballY <= PADDLE_Y + PADDLE_THICKNESS) { // vertically over paddle
       if(ballX > paddleX && ballX < paddleX+PADDLE_WIDTH) { // horizontally too?
           ballSpeedY *= -1; // reverse ball's vertical direction
           
@@ -41,7 +41,7 @@ function moveBall() {
           var deltaX = ballX-(paddleX+PADDLE_WIDTH/2);
           ballSpeedX = deltaX * 0.15;
       }
-      }
+    }
   }
 
   if(ballY > canvas.height) { // if ball has moved beyond the bottom edge
@@ -56,8 +56,8 @@ function moveBall() {
 
   // breakAndBounceOffBrickAtPixelCoord(ballX, ballY);
 
-  ballX += ballSpeedX; // move the ball based on its current horizontal speed 
-  ballY += ballSpeedY; // same as above, but for vertical
+  ballX += ballSpeedX; // move ball horizontal speed 
+  ballY += ballSpeedY; // same for vertical
 }
 
 function resetBall() {
