@@ -1,6 +1,9 @@
 let canvas, canvasContext; // save the canvas for dimensions, and its 2d context for drawing to it
 
-const PLAYER_START_UNITS = 55;
+let lassoX1 = 0, lassoY1 = 0, lassoX2 = 0, lassoY2 = 0; // for lasso dragging selection
+let isMouseDragging = false;
+
+const PLAYER_START_UNITS = 10;
 
 let playerUnits = []; // declaring an array
 
@@ -29,16 +32,31 @@ window.onload = function(){
   canvas.addEventListener("mousemove", function(evt) {
     let mousePos = calculateMousePos(evt);
     document.getElementById("debugText").innerHTML = "("+mousePos.x+", "+mousePos.y+")";
-  });
-
-  canvas.addEventListener('click', function(evt) {
-    let mousePos = calculateMousePos(evt);
-    for(let i = 0; i < playerUnits.length; i++) {
-      let eachUnit = playerUnits[i];
-      eachUnit.gotoX = mousePos.x;
-      eachUnit.gotoY = mousePos.y;
+    if(isMouseDragging) {
+      lassoX2 = mousePos.x;
+      lassoY2 = mousePos.y;
     }
   });
+
+  canvas.addEventListener("mousedown", function(evt) {
+    let mousePos = calculateMousePos(evt);
+    lassoX1 = mousePos.x;
+    lassoY1 = mousePos.y;
+    lassoX2 = lassoX1;
+    lassoY2 = lassoY1;
+    isMouseDragging = true;
+  });
+
+  canvas.addEventListener("mouseup", function(evt) {
+    isMouseDragging = false;
+  });
+
+  // canvas.addEventListener('click', function(evt) {
+  //  let mousePos = calculateMousePos(evt);
+  //   for(let i = 0; i < playerUnits.length; i++) {
+  //     playerUnits[i].gotoNear(mousePos.x, mousePos.y);
+  //   }
+  // }); 
 
   for(let i = 0; i < PLAYER_START_UNITS; i++){
     let spawnUnit = new unitClass();
@@ -58,5 +76,9 @@ function drawEverything() {
 
   for(let i = 0; i < playerUnits.length; i++){
     playerUnits[i].draw();
+  }
+
+  if(isMouseDragging) {
+    coloredOutlineRectCornerToCorner(lassoX1, lassoY1, lassoX2, lassoY2, 'yellow');
   }
 }
