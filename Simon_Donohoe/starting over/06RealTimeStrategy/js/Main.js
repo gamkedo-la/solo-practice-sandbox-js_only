@@ -6,6 +6,8 @@ let isMouseDragging = false;
 const PLAYER_START_UNITS = 10;
 
 let playerUnits = []; // declaring an array
+let selectedUnits = []; 
+const MIN_DIST_TO_COUNT_DRAG = 10;
 
 function calculateMousePos(evt) {
   let rect = canvas.getBoundingClientRect(), root = document.documentElement;
@@ -15,6 +17,13 @@ function calculateMousePos(evt) {
   let mouseY = evt.clientY - rect.left - root.scrollTop;
   
   return {x:mouseX, y:mouseY};
+}
+
+function mouseMovedEnoughToTreatAsDrag() {
+  let deltaX = lassoX1 - lassoX2;
+  let deltaY = lassoY1 - lassoY2;
+  let dragDist = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+  return (dragDist > MIN_DIST_TO_COUNT_DRAG);
 }
 
 window.onload = function(){
@@ -31,7 +40,7 @@ window.onload = function(){
 
   canvas.addEventListener("mousemove", function(evt) {
     let mousePos = calculateMousePos(evt);
-    document.getElementById("debugText").innerHTML = "("+mousePos.x+", "+mousePos.y+")";
+    
     if(isMouseDragging) {
       lassoX2 = mousePos.x;
       lassoY2 = mousePos.y;
@@ -49,14 +58,24 @@ window.onload = function(){
 
   canvas.addEventListener("mouseup", function(evt) {
     isMouseDragging = false;
-  });
 
-  // canvas.addEventListener('click', function(evt) {
-  //  let mousePos = calculateMousePos(evt);
-  //   for(let i = 0; i < playerUnits.length; i++) {
-  //     playerUnits[i].gotoNear(mousePos.x, mousePos.y);
-  //   }
-  // }); 
+    if(mouseMovedEnoughToTreatAsDrag()) {
+      selectedUnits = []; // clear the selection array
+
+      for(let i = 0; i < playerUnits.length; i++) {
+        if(playerUnits[i].isInBox(lassoX1, lassoY1, lassoX2, lassoY2)) {
+          selectedUnits.push(playerUnits[i]);
+        }
+      }
+      document.getElementById("debugText").innerHTML = "Selected " + selectedUnits.length + " units";
+    } else { // mouse didn't move far, treat as click for move command
+      let mousePos = calculateMousePos(evt);
+      for(let i = 0; i < selectedUnits.length; i++) {
+        selectedUnits[i].gotoNear(mousePos.x, mousePos.y);
+      }
+      document.getElementById("debugText").innerHTML = "Moving to (" + mousePos.x + ", " + mousePos.y + ")";
+    }
+  });
 
   for(let i = 0; i < PLAYER_START_UNITS; i++){
     let spawnUnit = new unitClass();
@@ -72,10 +91,14 @@ function moveEverything(){
 }
 
 function drawEverything() { 
-  colorRect(0,0,canvas.width,canvas.height,"#000000"); // clear the game view by filling it with black
+  colorRect(0, 0, canvas.width, canvas.height, "#000000"); // clear the game view by filling it with black
 
   for(let i = 0; i < playerUnits.length; i++){
     playerUnits[i].draw();
+  }
+
+  for(let i = 0; i < selectedUnits.length; i++){
+    selectedUnits[i].drawSelectionBox();
   }
 
   if(isMouseDragging) {
