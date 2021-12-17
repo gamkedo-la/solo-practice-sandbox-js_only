@@ -33,12 +33,13 @@ function enemyClass() {
     //animation
     this.sx = 0;
     this.sy = 0;
-    this.swidth = 64;
-    this.sheight = 64
+    this.swidth = 50;
+    this.sheight = 50;
 
     this.init = function(whichGraphic, whichName) {
         this.myBitmap = whichGraphic;
         this.myName = whichName;
+        console.log(this.myBitmap)
         this.reset();
     }
 
@@ -225,8 +226,7 @@ function enemyClass() {
 
     this.draw = function() {
         //	this.animate();
-		this.
-        canvasContext.drawImage(this.myBitmap, this.sx, this.sy, this.swidth, this.sheight, this.x, this.y, 50, 50);
+        canvasContext.drawImage(this.myBitmap,this.sx,this.sy, this.swidth, this.sheight, this.x, this.y, 50, 50);
     }
 
 } // end of class

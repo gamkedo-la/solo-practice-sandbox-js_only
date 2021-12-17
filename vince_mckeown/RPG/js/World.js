@@ -10,8 +10,8 @@ var roomGrid =
       11,32,32,37,32, 0, 0, 0, 0,32,32,37,32,32,32,32,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11,40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11,41, 1, 1, 1, 1, 1,24, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11,42,23,23,23,23,23,25,23,23,23,23,23,23,23,23,23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11,42,43,44,23,23,23,25,23,23,23,23,23,23,23,23,23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11, 0,45,46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
@@ -71,8 +71,10 @@ const TILE_PRISON_GATE_BOTTOM_OPEN = 39;
 const TILE_DUNGEON_STAIRS_TOP_1 = 40;
 const TILE_DUNGEON_STAIRS_MIDDLE_1 = 41;
 const TILE_DUNGEON_STAIRS_BOTTOM_1 = 42;
-
-
+const TILE_CABINET_1_TL = 43;
+const TILE_CABINET_1_TR = 44;
+const TILE_CABINET_1_BL = 45;
+const TILE_CABINET_1_BR = 46;
 
 function roomTileToIndex(tileCol, tileRow) {
   return (tileCol + ROOM_COLS*tileRow);
@@ -115,6 +117,11 @@ function tileTypeHasTransparency(checkTileType) {
           checkTileType == TILE_DOOR);
 }
 
+function tileTypeHasDungeonWall(checkTileType){
+  return (checkTileType == TILE_CABINET_1_TL ||
+          checkTileType == TILE_CABINET_1_TR);
+}
+
 function findTileAboveCurrent(currentTile) {
   let tileAbove = currentTile - ROOM_COLS
   return tileAbove;
@@ -142,6 +149,10 @@ function drawRoom() {
       if( tileTypeHasTransparency(tileTypeHere) ) {
         canvasContext.drawImage(tilePics[TILE_GROUND].img, tileLeftEdgeX, tileTopEdgeY);
       }
+      if( tileTypeHasDungeonWall(tileTypeHere) ) {
+        canvasContext.drawImage(tilePics[TILE_WALL_16].img,250,50, 50, 50, tileLeftEdgeX, tileTopEdgeY, 50, 50);
+      }
+
       canvasContext.drawImage(tilePics[tileTypeHere].img,tile_sx,tile_sy, 50, 50, tileLeftEdgeX, tileTopEdgeY, 50, 50);
       
       tileIndex++; // increment which index we're going to next check for in the room
