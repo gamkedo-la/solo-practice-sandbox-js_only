@@ -9,6 +9,13 @@ playerBoardsOdd.src = "assets/board_box_1_3.png";
 var playerBoardsEven = new Image();
 playerBoardsEven.src = "assets/board_box_2_4.png";
 const PLAYER_BOARD_SIZE = 275;
+
+// player board position
+const PLAYER_1_BOARD = {x: 12, y: 7}
+const PLAYER_2_BOARD = {x: 299, y: 7}
+const PLAYER_3_BOARD = {x: 12, y: 289}
+const PLAYER_4_BOARD = {x: 299, y: 289}
+
 // assets
 var heart = new Image();
 heart.src = "assets/heart_card.png";
@@ -99,29 +106,40 @@ function spawnCard(e) {
   }
 
   if (!isGameOver && isGameStarted) {
-    let lessThanPosX = (PLAYER_BOARD_SIZE * currentTurn) + playersBoard[currentTurn].x
-    let moreThanPosX = canvas.width - (PLAYER_BOARD_SIZE * (currentTurn + 1)) - playersBoard[currentTurn].x
-
-    let lessThanPosY = (PLAYER_BOARD_SIZE * currentTurn) + playersBoard[currentTurn].y;
-    let moreThanPosY = canvas.height - (PLAYER_BOARD_SIZE * (currentTurn + 1)) - 80
-
-    if (posX > lessThanPosX && posX < moreThanPosX && posY > lessThanPosY && posY < moreThanPosY) {
-      console.log("lessThanPosX = " + lessThanPosX)
-      console.log("moreThanPosX = " + moreThanPosX)
-      console.log("lessThanPosY = " + lessThanPosY)
-      console.log("moreThanPosY = " + moreThanPosY)
-      console.log("PosY is " + posY)
-
-      if (currentTurn < numOfPlayers) {
-        playerScoreArray[currentTurn] += scorePoint;
-      } else {
-        currentTurn = 0;
-        playerScoreArray[currentTurn] += scorePoint;
+    console.log("posX: " + posX + ", posY: " + posY)
+    if (currentTurn < numOfPlayers) {
+      if (posX > 12 && posX < 240) { // posX is at left boards, either player 1 or 3
+        if (posY > 5 && posY < 250) { // posY is on top left board - player 1
+          playerScoreArray[0] += scorePoint;
+          cardArray.push({ card: cardType, x: posX, y: posY });
+          turns++;
+        } else if (posY > 285 && posY < 530) { // posY is on bottom left board - player 3
+          if (numOfPlayers >= 3) {
+            playerScoreArray[2] += scorePoint;
+            cardArray.push({ card: cardType, x: posX, y: posY });
+            turns++;
+          }
+        }
+      } else if (posX > 275 && posX < 530) { // posX is at right boards, either 2 or 4
+        if (posY > 7 && posY < 250) { // posY is on top right board - player 2
+          if (numOfPlayers >= 2) {
+            playerScoreArray[1] += scorePoint;
+            cardArray.push({ card: cardType, x: posX, y: posY });
+            turns++;
+          }
+        } else if (posY > 285 && posY < 530) { // posY is on bottom right board - player 4
+          if (numOfPlayers >= 4) {
+            playerScoreArray[3] += scorePoint;
+            cardArray.push({ card: cardType, x: posX, y: posY });
+            turns++;
+          }
+        }
       }
-  
-      cardArray.push({ card: cardType, x: posX, y: posY });
-      turns++;
-    }
+      // playerScoreArray[currentTurn] += scorePoint;
+    } else {
+      currentTurn = 0;
+      playerScoreArray[currentTurn] += scorePoint;
+    }  
   }
 
   document.getElementById("debug").innerHTML = "Player " + currentTurn + " scored " + scorePoint + " points!";
