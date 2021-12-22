@@ -3,7 +3,7 @@ let canvas, canvasContext; // save the canvas for dimensions, and its 2d context
 let lassoX1 = 0, lassoY1 = 0, lassoX2 = 0, lassoY2 = 0; // for lasso dragging selection
 let isMouseDragging = false;
 
-const PLAYER_START_UNITS = 10;
+const PLAYER_START_UNITS = 20;
 
 let playerUnits = []; // declaring an array
 let selectedUnits = []; 
@@ -70,8 +70,9 @@ window.onload = function(){
       document.getElementById("debugText").innerHTML = "Selected " + selectedUnits.length + " units";
     } else { // mouse didn't move far, treat as click for move command
       let mousePos = calculateMousePos(evt);
+      let unitsAlongSide = Math.floor(Math.sqrt(selectedUnits.length + 2));
       for(let i = 0; i < selectedUnits.length; i++) {
-        selectedUnits[i].gotoNear(mousePos.x, mousePos.y);
+        selectedUnits[i].gotoNear(mousePos.x, mousePos.y, i, unitsAlongSide);
       }
       document.getElementById("debugText").innerHTML = "Moving to (" + mousePos.x + ", " + mousePos.y + ")";
     }
