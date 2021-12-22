@@ -9,9 +9,9 @@ var roomGrid =
       11,31,31,36,31, 0, 0, 0, 4,31,31,36,31,31,31,31,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,      
       11,32,32,37,32, 0, 0, 0, 0,32,32,37,32,32,32,32,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11,40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11,41, 1, 1, 1, 1, 1,24, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11,42,43,44,23,23,23,25,23,43,44,23,23,23,23,23,23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11, 0,45,46, 0, 0, 0, 0, 0,46,46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11,41,43,44, 1, 1, 1,24, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11,42,49,50,47,23,23,25,23,43,44,23,23,23,23,23,23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11, 0,45,46,48, 0, 0, 0, 0,46,46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
@@ -75,6 +75,11 @@ const TILE_CABINET_1_TL = 43;
 const TILE_CABINET_1_TR = 44;
 const TILE_CABINET_1_BL = 45;
 const TILE_CABINET_1_BR = 46;
+const TILE_WHISKEY_BARREL_TOP = 47;
+TILE_WHISKEY_BARREL_BOTTOM = 48;
+const TILE_CABINET_1_ML = 49;
+const TILE_CABINET_1_MR = 50;
+
 
 function roomTileToIndex(tileCol, tileRow) {
   return (tileCol + ROOM_COLS*tileRow);
@@ -113,11 +118,19 @@ function tileTypeHasTransparency(checkTileType) {
           checkTileType == TILE_DOOR_YELLOW_FRONT_TOP ||
           checkTileType == TILE_DOOR_YELLOW_FRONT_BOTTOM_OPEN ||
           checkTileType == TILE_DOOR_YELLOW_FRONT_TOP_OPEN ||
-          checkTileType == TILE_DUNGEON_STAIRS_BOTTOM_1 ||
+          checkTileType == TILE_WHISKEY_BARREL_BOTTOM ||
+          checkTileType == TILE_CABINET_1_BL ||
+          checkTileType == TILE_CABINET_1_BR ||
           checkTileType == TILE_DOOR);
 }
 
-function tileTypeHasDungeonWall(checkTileType){
+function tileTypeHasDungeonWallBottom(checkTileType){
+  return (checkTileType == TILE_CABINET_1_TL ||
+          checkTileType == TILE_CABINET_1_TR ||
+          checkTileType == TILE_WHISKEY_BARREL_TOP);
+}
+
+function tileTypeHasDungeonWallTop(checkTileType){
   return (checkTileType == TILE_CABINET_1_TL ||
           checkTileType == TILE_CABINET_1_TR);
 }
@@ -149,8 +162,11 @@ function drawRoom() {
       if( tileTypeHasTransparency(tileTypeHere) ) {
         canvasContext.drawImage(tilePics[TILE_GROUND].img, tileLeftEdgeX, tileTopEdgeY);
       }
-      if( tileTypeHasDungeonWall(tileTypeHere) ) {
+      if( tileTypeHasDungeonWallBottom(tileTypeHere) ) {
         canvasContext.drawImage(tilePics[TILE_WALL_16].img,250,50, 50, 50, tileLeftEdgeX, tileTopEdgeY, 50, 50);
+      }
+      if( tileTypeHasDungeonWallTop(tileTypeHere) ) {
+        canvasContext.drawImage(tilePics[TILE_WALL_16].img,350,0, 50, 50, tileLeftEdgeX, tileTopEdgeY, 50, 50);
       }
 
       canvasContext.drawImage(tilePics[tileTypeHere].img,tile_sx,tile_sy, 50, 50, tileLeftEdgeX, tileTopEdgeY, 50, 50);
