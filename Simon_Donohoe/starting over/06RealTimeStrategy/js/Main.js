@@ -4,10 +4,12 @@ let lassoX1 = 0, lassoY1 = 0, lassoX2 = 0, lassoY2 = 0; // for lasso dragging se
 let isMouseDragging = false;
 
 const PLAYER_START_UNITS = 20;
-
 let playerUnits = []; // declaring an array
 let selectedUnits = []; 
 const MIN_DIST_TO_COUNT_DRAG = 10;
+
+const ENEMY_START_UNITS = 15;
+let enemyUnits = [];
 
 function calculateMousePos(evt) {
   let rect = canvas.getBoundingClientRect(), root = document.documentElement;
@@ -80,14 +82,22 @@ window.onload = function(){
 
   for(let i = 0; i < PLAYER_START_UNITS; i++){
     let spawnUnit = new unitClass();
-    spawnUnit.reset();
+    spawnUnit.resetAndSetPlayerTeam(true);
     playerUnits.push(spawnUnit);
+  }
+  for(let i = 0; i < ENEMY_START_UNITS; i++){
+    let spawnUnit = new unitClass();
+    spawnUnit.resetAndSetPlayerTeam(false);
+    enemyUnits.push(spawnUnit);
   }
 }
 
 function moveEverything(){
   for(let i = 0; i < playerUnits.length; i++){
     playerUnits[i].move();
+  }
+  for(let i = 0; i < enemyUnits.length; i++){
+    enemyUnits[i].move();
   }
 }
 
@@ -96,6 +106,10 @@ function drawEverything() {
 
   for(let i = 0; i < playerUnits.length; i++){
     playerUnits[i].draw();
+  }
+
+  for(let i = 0; i < enemyUnits.length; i++){
+    enemyUnits[i].draw();
   }
 
   for(let i = 0; i < selectedUnits.length; i++){
