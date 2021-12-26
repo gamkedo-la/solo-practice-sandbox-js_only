@@ -21,6 +21,8 @@ var heart = new Image();
 heart.src = "assets/heart_card.png";
 var crown = new Image();
 crown.src = "assets/crown_card.png";
+var rat = new Image();
+rat.src = "assets/rat_card.png";
 
 var cardArray = [];
 var spawnCounter = 0;
@@ -97,7 +99,10 @@ function spawnCard(e) {
   posX = pos.x;
   posY = pos.y;
 
-  if (randomize <= 5) {
+  if (randomize <= 2) {
+    scorePoint = -1
+    cardType = rat
+  } else if (randomize >= 3 && randomize <= 7) {
     scorePoint = 1
     cardType = heart
   } else {
@@ -197,7 +202,11 @@ function drawEverything() {
   }
 
   for (let i = spawnCounter; i < cardArray.length; i++) {
-    drawPicture(cardArray[i].card, cardArray[i].x, cardArray[i].y, 60, 40);
+    if (cardArray[i].card === rat) {
+      drawPicture(cardArray[i].card, cardArray[i].x, cardArray[i].y, 50, 50);
+    } else {
+      drawPicture(cardArray[i].card, cardArray[i].x, cardArray[i].y, 60, 40);
+    }
   }
 
   // print all players score
