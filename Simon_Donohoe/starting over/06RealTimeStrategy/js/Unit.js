@@ -23,6 +23,12 @@ function unitClass() {
     this.isDead = false;
   }
   
+  this.distFrom = function(otherX, otherY) {
+    let deltaX = otherX - this.x;
+    let deltaY = otherY - this.y;
+    return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+  }
+
   this.gotoNear = function (aroundX, aroundY, formationPos, formationDim) {
     let colNum = formationPos % formationDim;
     let rowNum = Math.floor(formationPos / formationDim);
