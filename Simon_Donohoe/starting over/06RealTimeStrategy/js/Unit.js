@@ -2,8 +2,10 @@ const UNIT_PLACEHOLDER_RADIUS = 5;
 const UNIT_SELECT_DIM_HALF = UNIT_PLACEHOLDER_RADIUS + 3;
 const UNIT_PIXELS_MOVE_RATE = 2;
 const UNIT_RANKS_SPACING = UNIT_PLACEHOLDER_RADIUS * 3;
+const UNIT_ATTACK_RANGE = 55;
+const UNIT_AI_ATTACK_INITIATE = UNIT_ATTACK_RANGE + 10;
+const UNIT_PLAYABLE_AREA_MARGIN = 20;
 
-const UNIT_AI_ATTACK_INITIATE = UNIT_ATTACK_RANGE * 10;
 
 function unitClass() {
   this.resetAndSetPlayerTeam = function (playerTeam) {
@@ -32,15 +34,15 @@ function unitClass() {
     return Math.sqrt(deltaX * deltaX + deltaY * deltaY);
   }
 
+  this.setTarget = function (newTarget) {
+    this.myTarget = newTarget;
+  }
+
   this.gotoNear = function (aroundX, aroundY, formationPos, formationDim) {
     let colNum = formationPos % formationDim;
     let rowNum = Math.floor(formationPos / formationDim);
     this.gotoX = aroundX + colNum * UNIT_RANKS_SPACING;
     this.gotoY = aroundY + rowNum * UNIT_RANKS_SPACING;
-  }
-
-  this.setTarget = function (newTarget) {
-    this.myTarget = newTarget;
   }
 
   this.isInBox = function (x1, y1, x2, y2) {
@@ -79,17 +81,32 @@ function unitClass() {
     return true;
   }
   
+  this.keepInPlayableArea = function() {
+    if(this.gotoX < UNIT_PLAYABLE_AREA_MARGIN) {
+      this.gotoX = UNIT_PLAYABLE_AREA_MARGIN;
+    } else if(this.gotoX > canvas.width - UNIT_PLAYABLE_AREA_MARGIN) {
+      this.gotoX = canvas.width - UNIT_PLAYABLE_AREA_MARGIN;
+    }
+
+    if(this.gotoY < UNIT_PLAYABLE_AREA_MARGIN) {
+      this.gotoY = UNIT_PLAYABLE_AREA_MARGIN;
+    } else if(this.gotoY > canvas.height - UNIT_PLAYABLE_AREA_MARGIN) {
+      this.gotoY = canvas.height - UNIT_PLAYABLE_AREA_MARGIN;
+    }
+  }
+
   this.move = function () {
     if(this.myTarget != null) {
       if(this.myTarget.isDead) {
         this.myTarget = null;
         this.gotoX = this.x;
         this.gotoY = this.y;
-      } else if (this.distFrom(this.myTarget.x, this.myTarget.y) > UNIT_ATTACK_RANGE) {
+      } else if(this.distFrom(this.myTarget.x, this.myTarget.y) > UNIT_ATTACK_RANGE) {
         this.gotoX = this.myTarget.x;
         this.gotoY = this.myTarget.y;
       } else {
         this.myTarget.isDead = true;
+        soonCheckUnitsToClear();
         this.gotoX = this.x;
         this.gotoY = this.y;
       } 
@@ -105,6 +122,8 @@ function unitClass() {
         }
       }
     }
+    
+    this.keepInPlayableArea();
     
     let deltaX = this.gotoX - this.x;
     let deltaY = this.gotoY - this.y;
@@ -122,13 +141,12 @@ function unitClass() {
     }
   }
 
+
   this.drawSelectionBox = function () {
     coloredOutlineRectCornerToCorner(this.x - UNIT_SELECT_DIM_HALF, this.y - UNIT_SELECT_DIM_HALF, this.x + UNIT_SELECT_DIM_HALF, this.y + UNIT_SELECT_DIM_HALF, 'green');
   }
 
   this.draw = function () {
-    if(this.isDead == false) {
-      colorCircle(this.x, this.y, UNIT_PLACEHOLDER_RADIUS, this.unitColor);
-    }
+    colorCircle(this.x, this.y, UNIT_PLACEHOLDER_RADIUS, this.unitColor);
   }
 } // end of class

@@ -4,7 +4,6 @@ let isMouseDragging = false;
 let selectedUnits = []; 
 const MIN_DIST_TO_COUNT_DRAG = 10;
 const MIN_DIST_FOR_MOUSE_CLICK_SELECTABLE = 12;
-const UNIT_ATTACK_RANGE = 55;
 
 function calculateMousePos(evt) {
   let rect = canvas.getBoundingClientRect(), root = document.documentElement;

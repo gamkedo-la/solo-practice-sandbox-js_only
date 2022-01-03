@@ -26,6 +26,9 @@ function moveEverything(){
   for(let i = 0; i < allUnits.length; i++){
     allUnits[i].move();
   }
+  removeDeadUnits();
+  
+  checkAndHandleVictory();
 }
 
 function drawEverything() { 
