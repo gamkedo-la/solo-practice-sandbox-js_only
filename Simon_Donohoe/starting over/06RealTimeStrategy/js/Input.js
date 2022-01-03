@@ -4,6 +4,7 @@ let isMouseDragging = false;
 let selectedUnits = []; 
 const MIN_DIST_TO_COUNT_DRAG = 10;
 const MIN_DIST_FOR_MOUSE_CLICK_SELECTABLE = 12;
+const UNIT_ATTACK_RANGE = 55;
 
 function calculateMousePos(evt) {
   let rect = canvas.getBoundingClientRect(), root = document.documentElement;
@@ -81,6 +82,9 @@ function mouseupHandler(evt) {
     let clickedUnit = getUnitUnderMouse(mousePos);
 
     if(clickedUnit != null && clickedUnit.playerControlled == false) { // enemy? then command units to attack it
+      for(let i = 0; i < selectedUnits.length; i++){
+        selectedUnits[i].setTarget(clickedUnit);
+      }
       document.getElementById("debugText").innerHTML = "Player commands " + selectedUnits.length + " units to attack!";
     } else { // didn't click enemy unit, direct any currently selected units to move
       let unitsAlongSide = Math.floor(Math.sqrt(selectedUnits.length + 2));
