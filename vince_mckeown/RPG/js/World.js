@@ -11,7 +11,7 @@ var roomGrid =
       11,40, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11,41,43,44, 1, 1, 1,24, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11,42,49,50,47,23,23,25,23,43,44,23,23,23,23,23,23, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
-      11, 0,45,46,48, 0, 0, 0, 0,46,46, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
+      11, 0,45,46,48, 0, 0, 0, 0,46,46, 0,51, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
       11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 9,
@@ -79,6 +79,7 @@ const TILE_WHISKEY_BARREL_TOP = 47;
 TILE_WHISKEY_BARREL_BOTTOM = 48;
 const TILE_CABINET_1_ML = 49;
 const TILE_CABINET_1_MR = 50;
+const TILE_TREASURE_CHEST = 51;
 
 
 function roomTileToIndex(tileCol, tileRow) {
@@ -121,6 +122,7 @@ function tileTypeHasTransparency(checkTileType) {
           checkTileType == TILE_WHISKEY_BARREL_BOTTOM ||
           checkTileType == TILE_CABINET_1_BL ||
           checkTileType == TILE_CABINET_1_BR ||
+          checkTileType == TILE_TREASURE_CHEST ||
           checkTileType == TILE_DOOR);
 }
 

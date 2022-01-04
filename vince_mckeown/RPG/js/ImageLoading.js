@@ -67,6 +67,7 @@ function loadImages() {
     {tileType:TILE_CABINET_1_ML, imgX: 0, imgY: 150, theFile:"dungeonWalls.png"},
     {tileType:TILE_CABINET_1_MR, imgX: 50, imgY: 150, theFile:"dungeonWalls.png"},
     {tileType:TILE_WHISKEY_BARREL_BOTTOM, imgX: 250, imgY: 150, theFile:"dungeonWalls.png"},
+    {tileType:TILE_TREASURE_CHEST, imgX: 100, imgY: 150, theFile:"dungeonWalls.png"},
     
     //END SPRITE SHEET
     
