@@ -103,16 +103,16 @@ function drawAll() {
 
 function drawMenu() {
     if(!gameRunning) {
-        drawText('Energy Flask', MENU_X, MENU_Y, HEADING_SIZE, 'white');
+        drawText('Bricks and Balls', MENU_X, MENU_Y, HEADING_SIZE, 'white');
         drawText('Start', MENU_X, MENU_Y+80, MENU_SIZE, 'white');
     } else {
-        drawText('Energy Flask - paused', MENU_X, MENU_Y, HEADING_SIZE, 'white');
+        drawText('Bricks and Balls', MENU_X, MENU_Y, HEADING_SIZE, 'orange');
         drawText('Resume', MENU_X, MENU_Y+80, MENU_SIZE, 'white');
     }   
     drawText('Level select', MENU_X, MENU_Y+140, MENU_SIZE, 'white');
     drawText('Options', MENU_X, MENU_Y+200, MENU_SIZE, 'white');
     drawText('Credits', MENU_X, MENU_Y+260, MENU_SIZE, 'white');
-    drawText('Path', MENU_X, MENU_Y+320, MENU_SIZE, 'white');
+    // drawText('Path', MENU_X, MENU_Y+320, MENU_SIZE, 'white');
 }
 
 function drawLevelSelector() {
