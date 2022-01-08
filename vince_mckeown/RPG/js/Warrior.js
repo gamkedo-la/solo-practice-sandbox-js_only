@@ -13,11 +13,11 @@ function warriorClass() {
     // Sprite variables
     this.sx = 0; //sprite xCoord to start clipping
     this.sy = 0; //sprite yCoord to start clipping
-    this.swidth = 50; //sprite width of image to be drawn
-    this.sheight = 50; //sprite height to be drawn
+    this.swidth = 51; //sprite width of image to be drawn
+    this.sheight = 51; //sprite height to be drawn
     this.sframes = 0; //frames total per animation
     this.width = 50; //width of image
-    this.height = 50; //height of image
+    this.height = 51; //height of image
     this.frameCount = 0; //counting the Game FPS for this character
     this.advanceFrameAmount = 5; //advance frame (this example: 12 times a second)
     this.spriteNumberOfFrames = 5; // this represents 4 frames of walking
