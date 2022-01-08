@@ -18,6 +18,10 @@ function warriorClass() {
     this.sframes = 0; //frames total per animation
     this.width = 50; //width of image
     this.height = 50; //height of image
+    this.frameCount = 0; //counting the Game FPS for this character
+    this.advanceFrameAmount = 5; //advance frame (this example: 12 times a second)
+    this.spriteNumberOfFrames = 5; // this represents 4 frames of walking
+    this.frameIndex = 0; //Animation frame for this character
 
     // keyboard hold state variables, to use keys more like buttons
     this.keyHeld_North = false;
@@ -125,18 +129,21 @@ function warriorClass() {
         if (this.keyHeld_North) {
             nextY -= PLAYER_MOVE_SPEED;
             this.sy = this.sheight;
-        }
-        if (this.keyHeld_East) {
+            this.moving = true;
+        } else if (this.keyHeld_East) {
             nextX += PLAYER_MOVE_SPEED; 
             this.sy = this.sheight*2;
-        }
-        if (this.keyHeld_South) {
+            this.moving = true;
+        } else if (this.keyHeld_South) {
             nextY += PLAYER_MOVE_SPEED;
             this.sy = 0;
-        }
-        if (this.keyHeld_West) {
+            this.moving = true;
+        } else if (this.keyHeld_West) {
             nextX -= PLAYER_MOVE_SPEED;
             this.sy = this.sheight*3;
+            this.moving = true;
+        } else {
+         //   this.moving = false;
         }
 
         var walkIntoTileIndex = getTileIndexAtPixelCoord(nextX, nextY);
@@ -186,6 +193,11 @@ function warriorClass() {
                     SetupPathfindingGridData(p1);
                 }
                 break;
+            case TILE_TREASURE_CHEST:
+                this.keysHeld--; // one less key
+                roomGrid[walkIntoTileIndex] = TILE_TREASURE_CHEST_OPEN; 
+                SetupPathfindingGridData(p1);
+                break;
             case TILE_KEY:
                 this.keysHeld++; // gain key
                 document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
@@ -212,6 +224,22 @@ function warriorClass() {
     }
 
     this.draw = function() {
+      if(this.moving){
+		this.frameCount++;
+		if (this.frameCount > this.advanceFrameAmount) {
+			this.frameCount = 0;
+			if(this.spriteIndex < this.spriteNumberOfFrames-1) {
+				this.spriteIndex += 1;
+			} else {
+				this.spriteIndex = 1;
+			}
+        }
+      } else {
+        this.spriteIndex = 0;
+      }
+
+      this.sx = this.spriteIndex * this.width; //this advances the frame for animation
+
       canvasContext.drawImage(this.myBitmap,this.sx,this.sy, this.swidth, this.sheight, this.x - 25, this.y -25, 50, 50);
     }
 
