@@ -23,7 +23,7 @@ window.onload = function() {
 };
 
 function createEveryBall() {
-  for( var i=0;i<BALL_COUNT;i++) {
+  for( var i=0; i<BALL_COUNT; i++) {
     ballList.push(new ballClass());
   }
 }
@@ -43,7 +43,8 @@ function drawAll() {
     // blank right bar
     // drawFillRect(GAME_WIDTH,0,UI_WIDTH,GAME_HEIGHT,'black');
     document.querySelector('#state').innerText = 'State = ' + gameState;
-    
+    drawFillRect(0,0,1200,GAME_HEIGHT,'white');
+
     switch (gameState) {
         case STATE_LAUNCH:
                 // blank main area
