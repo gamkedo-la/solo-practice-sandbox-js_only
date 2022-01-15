@@ -32,14 +32,9 @@ var ballLife = 0;
 var ballList = [];
 
 let WORLD_COLS, WORLD_ROWS;
-let worldShape = 'rectangle'; //'15square';
-if(worldShape=='15square'){
-    WORLD_COLS = 15;
-    WORLD_ROWS = 15;
-} else {
-    WORLD_COLS = 15;
-    WORLD_ROWS = 10;
-}
+let worldShape = 'rectangle'; 
+WORLD_COLS = 15;
+WORLD_ROWS = 10;
 
 const TILES = WORLD_COLS * WORLD_ROWS;
 
@@ -59,16 +54,12 @@ const CENTRE_ROW = 1 + WORLD_ROWS / 2;
 
 // flask width and height equal
 FLASK_SIZE = 3;
-// flask is at centre of lab
-// const FLASK_LEFT = BALL_OFFSET + (GAME_WIDTH / 2) - (FLASK_SIZE / 2) * TILE_W;
-// const FLASK_TOP = BALL_OFFSET + (GAME_HEIGHT / 2) - (FLASK_SIZE / 2) * TILE_H;
-// flask location defined by worldGrid[]
-FLASK_LEFT = 0; //BALL_OFFSET + 7.5*TILE_W - (FLASK_SIZE / 2) * TILE_W;
-FLASK_TOP = 100; //BALL_OFFSET + 7.5*TILE_H - (FLASK_SIZE / 2) * TILE_H;
+FLASK_LEFT = 0; 
+FLASK_TOP = 100; 
 } else {
     FLASK_SIZE = 2;
- FLASK_LEFT = 0; //BALL_OFFSET + 0*TILE_W - (FLASK_SIZE / 2) * TILE_W;;
- FLASK_TOP = 100; //BALL_OFFSET + 3*TILE_H - (FLASK_SIZE / 2) * TILE_H;
+ FLASK_LEFT = 0; 
+ FLASK_TOP = 100; 
 }
 
 var machineList = [];
