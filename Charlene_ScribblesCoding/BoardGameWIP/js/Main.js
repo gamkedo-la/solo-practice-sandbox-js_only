@@ -23,6 +23,8 @@ var crown = new Image();
 crown.src = "assets/crown_card.png";
 var rat = new Image();
 rat.src = "assets/rat_card.png";
+var snake = new Image();
+snake.src = "assets/snake_card.png";
 
 var cardArray = [];
 var spawnCounter = 0;
@@ -99,13 +101,17 @@ function spawnCard(e) {
   posX = pos.x;
   posY = pos.y;
 
-  if (randomize <= 2) {
+  // set the game points
+  if (randomize <= 2) { // 1 - 2
+    scorePoint = -2
+    cardType = snake
+  } else if (randomize >= 3 && randomize <= 6) { // 3 - 6
     scorePoint = -1
     cardType = rat
-  } else if (randomize >= 3 && randomize <= 7) {
+  } else if (randomize >= 7 && randomize <= 9) { // 7 - 9
     scorePoint = 1
     cardType = heart
-  } else {
+  } else { // 10 - jackpot score!
     scorePoint = 5
     cardType = crown
   }
@@ -204,6 +210,8 @@ function drawEverything() {
   for (let i = spawnCounter; i < cardArray.length; i++) {
     if (cardArray[i].card === rat) {
       drawPicture(cardArray[i].card, cardArray[i].x, cardArray[i].y, 50, 50);
+    } else if (cardArray[i].card === snake) {
+      drawPicture(cardArray[i].card, cardArray[i].x, cardArray[i].y, 60, 60);
     } else {
       drawPicture(cardArray[i].card, cardArray[i].x, cardArray[i].y, 60, 40);
     }
