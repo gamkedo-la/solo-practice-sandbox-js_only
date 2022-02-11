@@ -6,7 +6,7 @@ const PLAYER_HEIGHT = 24;
 const PLAYER_WIDTH = 8;
 const PLAYER_SPEED = 120;
 const RETICLE_SPEED = 270;
-const TIME_BETWEEN_SHOTS = 1/4;
+const TIME_BETWEEN_SHOTS = 1/5;
 
 class Game {
   constructor() {
@@ -59,11 +59,6 @@ class Game {
   }
   
   update(dt) {
-	this.shots.forEach(shot => {
-	  shot.position.x += Math.round(shot.velocity.x*dt);
-	  shot.position.y += Math.round(shot.velocity.y*dt);
-	  shot.live = !(shot.position.x - shot.target.x < 8 && shot.position.y - shot.target.y < 8);
-	});
 	this.shots = this.shots.filter(shot => shot.live);
 	if (this.keys.shoot && this.shotDelay <= 0) {
 	  const initialPos = {
@@ -74,13 +69,12 @@ class Game {
 	  this.shots.push({
 		position: initialPos,
 		velocity: {
-		  x: 8*(targetPos.x - initialPos.x),
-		  y: 8*(targetPos.y - initialPos.y)
+		  x: 9*(targetPos.x - initialPos.x),
+		  y: 9*(targetPos.y - initialPos.y)
 		},
 		target: targetPos,
 		live: true
 	  });
-	  console.log("Spawned shot", this.shots);
 	  this.shotDelay = TIME_BETWEEN_SHOTS;
 	} else {
 		if (this.keys.left) {
@@ -90,6 +84,12 @@ class Game {
 			this.playerPos.x += Math.round(PLAYER_SPEED*dt);
 		}
 	}
+	this.shots.forEach(shot => {
+	  shot.position.x += Math.round(shot.velocity.x*dt);
+	  shot.position.y += Math.round(shot.velocity.y*dt);
+	  // TODO: replace this with raycasting hit detection
+	  shot.live = !(shot.position.x - shot.target.x < 10 && shot.position.y - shot.target.y < 10);
+	});
 	this.shotDelay -= dt;
 	if (this.keys.left) {
 		this.reticlePos.x -= Math.round(RETICLE_SPEED*dt);
