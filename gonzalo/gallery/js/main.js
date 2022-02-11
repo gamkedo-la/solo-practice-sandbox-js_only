@@ -1,3 +1,5 @@
+import {Input} from "./input.js";
+
 let dt = 0;
 let last = window.performance && window.performance.now ? window.performance.now() : new Date().getTime();
 const UPDATE_STEP = 1/60;
@@ -13,54 +15,16 @@ class Game {
 	this.canvas = document.getElementById("gameCanvas");
 	this.ctx = this.canvas.getContext("2d");
 
-	this.keys = {up: false, down: false, left: false, right: false, shoot: false};
+	this.input = new Input();
 	this.playerPos = {x: 100, y: this.canvas.height - PLAYER_HEIGHT};
 	this.reticlePos = {x: 104, y: this.canvas.height/2};
 	this.shots = [];
 	this.shotDelay = 0;
-	document.addEventListener("keydown", this.keyPress);
-	document.addEventListener("keyup", this.keyRelease);
-  }
-
-  flipInputState(key, value) {
-	switch (key) {
-	case " ":
-	  this.keys.shoot = value;
-	  break;
-	case "ArrowLeft":
-	  this.keys.left = value;
-	  break;
-	case "ArrowRight":
-	  this.keys.right = value;
-	  break;
-	case "ArrowUp":
-	  this.keys.up = value;
-	  break;
-	case "ArrowDown":
-	  this.keys.down = value;
-	  break;
-	}
-  }
-
-  keyPress(event) {
-	if (event.key == "F12") {
-	  return;
-	}
-	event.preventDefault();
-	game.flipInputState(event.key, true);
-  }
-
-  keyRelease(event) {
-	if (event.key == "F12") {
-	  return;
-	}
-	event.preventDefault();
-	game.flipInputState(event.key, false);
   }
   
   update(dt) {
 	this.shots = this.shots.filter(shot => shot.live);
-	if (this.keys.shoot && this.shotDelay <= 0) {
+	if (this.input.shoot && this.shotDelay <= 0) {
 	  const initialPos = {
 		x: this.playerPos.x + PLAYER_WIDTH/2,
 		y: this.playerPos.y
@@ -77,10 +41,10 @@ class Game {
 	  });
 	  this.shotDelay = TIME_BETWEEN_SHOTS;
 	} else {
-		if (this.keys.left) {
+		if (this.input.left) {
 			this.playerPos.x -= Math.round(PLAYER_SPEED*dt);
 		}
-		if (this.keys.right) {
+		if (this.input.right) {
 			this.playerPos.x += Math.round(PLAYER_SPEED*dt);
 		}
 	}
@@ -91,16 +55,16 @@ class Game {
 	  shot.live = !(shot.position.x - shot.target.x < 10 && shot.position.y - shot.target.y < 10);
 	});
 	this.shotDelay -= dt;
-	if (this.keys.left) {
+	if (this.input.left) {
 		this.reticlePos.x -= Math.round(RETICLE_SPEED*dt);
 	  }
-	  if (this.keys.right) {
+	  if (this.input.right) {
 		this.reticlePos.x += Math.round(RETICLE_SPEED*dt);
 	  }
-	if (this.keys.up) {
+	if (this.input.up) {
 	  this.reticlePos.y -= Math.round(RETICLE_SPEED*dt);
 	}
-	if (this.keys.down) {
+	if (this.input.down) {
 	  this.reticlePos.y += Math.round(RETICLE_SPEED*dt);
 	}
 	if (this.playerPos.x < 0) {
@@ -126,8 +90,8 @@ class Game {
   draw() {
 	this.ctx.fillStyle = "gray";
 	this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-	this.ctx.strokeStyle = this.keys.shoot ? "lime" : "red";
-	if (this.keys.shoot) {
+	this.ctx.strokeStyle = this.input.shoot ? "lime" : "red";
+	if (this.input.shoot) {
 	  this.ctx.setLineDash([2, 4]);
 	  this.ctx.beginPath();
 	  this.ctx.moveTo(this.playerPos.x + PLAYER_WIDTH/2, this.playerPos.y);
