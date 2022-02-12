@@ -14,15 +14,18 @@ const Net = function(cvs = canvas, ctx = canvasContext) {
         col.forEach(c => {
             if (c) {      
                 if (c.name == "stroke tool") {
-
+                    
                 }
                 
                 if (c.name == "rock") {
+                    // console.log(this.x, this.y, this.x + this.w, this.y + this.h)
+                    // console.log(c.x1, c.y1, c.x2, c.y2)
+
                     if (this.colCheck.isColliding(
-                        this.x, this.y, this.w, this.h,
+                        this.x, this.y, this.x + this.w, this.y + this.h,
                         c.x1, c.y1, c.x2, c.y2)) {
-                            
-                        }
+                        console.log("Net detects collision!");
+                    }
                 }
             }
         });
