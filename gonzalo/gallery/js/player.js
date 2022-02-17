@@ -17,7 +17,14 @@ export class Player {
 
   update(dt) {
 	this.shots = this.shots.filter(shot => shot.live);
-	if (this.input.shoot && this.shotDelay <= 0) {
+	if (!this.input.shoot) {
+	  if (this.input.left) {
+		this.avatarPos.x -= Math.round(Player.avatarSpeed*dt);
+	  }
+	  if (this.input.right) {
+		this.avatarPos.x += Math.round(Player.avatarSpeed*dt);
+	  }
+	} else if (this.shotDelay <= 0) {
 	  const initialPos = {
 		x: this.avatarPos.x + Player.avatarWidth/2,
 		y: this.avatarPos.y
@@ -33,13 +40,6 @@ export class Player {
 		live: true
 	  });
 	  this.shotDelay = Player.timeBetweenShots;
-	} else {
-	  if (this.input.left) {
-		this.avatarPos.x -= Math.round(Player.avatarSpeed*dt);
-	  }
-	  if (this.input.right) {
-		this.avatarPos.x += Math.round(Player.avatarSpeed*dt);
-	  }
 	}
 	this.shots.forEach(shot => {
 	  shot.position.x += Math.round(shot.velocity.x*dt);
