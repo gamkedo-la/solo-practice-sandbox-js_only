@@ -3,7 +3,7 @@ export class Player {
   static avatarWidth = 8;
   static reticleSpeed = 270;
   static avatarSpeed = 120;
-  static timeBetweenShots = 1/5;
+  static timeBetweenShots = 1/9;
 
   constructor (canvasContext, input) {
 	this.ctx = canvasContext;
@@ -12,6 +12,7 @@ export class Player {
 	this.reticlePos = {x: 104, y: this.ctx.canvas.height/2};
 	this.shots = [];
 	this.shotDelay = 0;
+	this.hitTargetHooks = [];
   }
 
   update(dt) {
@@ -40,11 +41,16 @@ export class Player {
 		this.avatarPos.x += Math.round(Player.avatarSpeed*dt);
 	  }
 	}
-		this.shots.forEach(shot => {
+	this.shots.forEach(shot => {
 	  shot.position.x += Math.round(shot.velocity.x*dt);
 	  shot.position.y += Math.round(shot.velocity.y*dt);
-	  // TODO: replace this with raycasting hit detection (maybe)
-	  shot.live = !(shot.position.x - shot.target.x < 10 && shot.position.y - shot.target.y < 10);
+	  if (shot.position.y - 4 < shot.target.y) {
+		this.callHitTargetHooks(dt, shot);
+		shot.live = false;
+	  } else if (shot.position.y < 0 || shot.position.x < 0 || shot.position.x > this.ctx.width) {
+		shot.live = false;
+		console.log("ESCAPED SHOT", shot);
+	  }
 	});
 	this.shotDelay -= dt;
 	if (this.input.left) {
@@ -100,5 +106,13 @@ export class Player {
 	  this.ctx.arc(shot.position.x, shot.position.y, Math.round(Player.avatarWidth/2), 0, 2*Math.PI);
 	  this.ctx.stroke();
 	});
+  }
+
+  addHitTargetHook(hook) {
+	this.hitTargetHooks.push(hook);
+  }
+
+  callHitTargetHooks(dt, shot) {
+	this.hitTargetHooks.forEach(listener => listener(dt, shot));
   }
 }

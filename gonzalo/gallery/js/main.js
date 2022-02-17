@@ -1,5 +1,6 @@
 import {Input} from "./input.js";
 import {Player} from "./player.js";
+import {Level} from "./level.js";
 
 class Game {
   static dt = 0;
@@ -12,6 +13,8 @@ class Game {
 
 	this.input = new Input();
 	this.player = new Player(this.ctx, this.input);
+	this.currentLevel = new Level(this.ctx);
+	this.player.addHitTargetHook(this.currentLevel.getHitTargetHook());
   }
 
   start() {
@@ -19,12 +22,15 @@ class Game {
   }
 
   update(dt) {
+	this.currentLevel.update(dt);
 	this.player.update(dt);
   }
 
   draw() {
 	this.ctx.fillStyle = "gray";
 	this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+	this.currentLevel.draw();
 	this.player.draw();
   }
 
@@ -44,9 +50,7 @@ class Game {
   }
 }
 
-
 window.onload = function() {
   const game = new Game();
   game.start();
 };
-
