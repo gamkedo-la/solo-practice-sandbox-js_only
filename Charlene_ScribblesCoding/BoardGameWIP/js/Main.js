@@ -102,13 +102,13 @@ function spawnCard(e) {
   posY = pos.y;
 
   // set the game points
-  if (randomize <= 2) { // 1 - 2
+  if (randomize <= 3) { // 1 - 3
     scorePoint = -2
     cardType = snake
-  } else if (randomize >= 3 && randomize <= 6) { // 3 - 6
+  } else if (randomize >= 4 && randomize <= 7) { // 4 - 7
     scorePoint = -1
     cardType = rat
-  } else if (randomize >= 7 && randomize <= 9) { // 7 - 9
+  } else if (randomize >= 8 && randomize <= 9) { // 8 - 9
     scorePoint = 1
     cardType = heart
   } else { // 10 - jackpot score!
