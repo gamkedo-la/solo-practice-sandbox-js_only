@@ -5,6 +5,24 @@ export class Player {
   static avatarSpeed = 120;
   static timeBetweenShots = 1/9;
 
+  static getAxis = function(up, down, left, right) {
+	let axis = { x: 0, y: 0 };
+
+	if (up) axis.y += -1;
+	else if (down) axis.y += 1;
+
+	if (left) axis.x += -1;
+	else if (right) axis.x += 1;
+
+	return axis;
+  }
+
+  static clampNorm = function(vel, max) {
+	const n = Math.sqrt(Math.pow(vel.x, 2) + Math.pow(vel.y, 2));
+	const f = Math.min(n, max) / n;
+	return {x: f*vel.x, y: f*vel.y};
+  }
+
   constructor (canvasContext, input) {
 	this.ctx = canvasContext;
 	this.input = input;
@@ -53,17 +71,14 @@ export class Player {
 	  }
 	});
 	this.shotDelay -= dt;
-	if (this.input.left) {
-		this.reticlePos.x -= Math.round(Player.reticleSpeed*dt);
-	  }
-	  if (this.input.right) {
-		this.reticlePos.x += Math.round(Player.reticleSpeed*dt);
-	  }
-	if (this.input.up) {
-	  this.reticlePos.y -= Math.round(Player.reticleSpeed*dt);
-	}
-	if (this.input.down) {
-	  this.reticlePos.y += Math.round(Player.reticleSpeed*dt);
+	const cv = Player.getAxis(this.input.up, this.input.down, this.input.left, this.input.right);
+	if (!(cv.x === 0 && cv.y === 0)) {
+	  const vel = Player.clampNorm({
+		x: cv.x*Player.reticleSpeed,
+		y: cv.y*Player.reticleSpeed,
+	  }, Player.reticleSpeed);
+	  this.reticlePos.x += Math.round(vel.x*dt);
+	  this.reticlePos.y += Math.round(vel.y*dt);
 	}
 	if (this.avatarPos.x < 0) {
 	  this.avatarPos.x = 0;
