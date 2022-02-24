@@ -37,10 +37,10 @@ export class Player {
 	this.shots = this.shots.filter(shot => shot.live);
 	if (!this.input.shoot) {
 	  if (this.input.left) {
-		this.avatarPos.x -= Math.round(Player.avatarSpeed*dt);
+		this.avatarPos.x -= Player.avatarSpeed*dt;
 	  }
 	  if (this.input.right) {
-		this.avatarPos.x += Math.round(Player.avatarSpeed*dt);
+		this.avatarPos.x += Player.avatarSpeed*dt;
 	  }
 	} else if (this.shotDelay <= 0) {
 	  const initialPos = {
@@ -60,9 +60,9 @@ export class Player {
 	  this.shotDelay = Player.timeBetweenShots;
 	}
 	this.shots.forEach(shot => {
-	  shot.position.x += Math.round(shot.velocity.x*dt);
-	  shot.position.y += Math.round(shot.velocity.y*dt);
-	  if (shot.position.y - 4 < shot.target.y) {
+	  shot.position.x += shot.velocity.x*dt;
+	  shot.position.y += shot.velocity.y*dt;
+	  if (shot.position.y - 3 < shot.target.y) {
 		this.callHitTargetHooks(dt, shot);
 		shot.live = false;
 	  } else if (shot.position.y < 0 || shot.position.x < 0 || shot.position.x > this.ctx.width) {
@@ -77,8 +77,8 @@ export class Player {
 		x: cv.x*Player.reticleSpeed,
 		y: cv.y*Player.reticleSpeed,
 	  }, Player.reticleSpeed);
-	  this.reticlePos.x += Math.round(vel.x*dt);
-	  this.reticlePos.y += Math.round(vel.y*dt);
+	  this.reticlePos.x += vel.x*dt;
+	  this.reticlePos.y += vel.y*dt;
 	}
 	if (this.avatarPos.x < 0) {
 	  this.avatarPos.x = 0;
@@ -105,8 +105,8 @@ export class Player {
 	if (this.input.shoot) {
 	  this.ctx.setLineDash([2, 4]);
 	  this.ctx.beginPath();
-	  this.ctx.moveTo(this.avatarPos.x + Player.avatarWidth/2, this.avatarPos.y);
-	  this.ctx.lineTo(this.reticlePos.x, this.reticlePos.y);
+	  this.ctx.moveTo(Math.round(this.avatarPos.x + Player.avatarWidth/2), Math.round(this.avatarPos.y));
+	  this.ctx.lineTo(Math.round(this.reticlePos.x), Math.round(this.reticlePos.y));
 	  // this.ctx.stroke();
 	  this.ctx.setLineDash([]);
 	}
@@ -114,11 +114,15 @@ export class Player {
 	this.ctx.arc(this.reticlePos.x, this.reticlePos.y, Math.round(Player.avatarWidth), 0, 2*Math.PI);
 	this.ctx.stroke();
 	this.ctx.fillStyle = "lime";
-	this.ctx.fillRect(this.avatarPos.x, this.avatarPos.y, Player.avatarWidth, Player.avatarHeight);
+	this.ctx.fillRect(Math.round(this.avatarPos.x), Math.round(this.avatarPos.y), Player.avatarWidth, Player.avatarHeight);
 	this.shots.forEach(shot => {
 	  this.ctx.strokeStyle = "yellow";
 	  this.ctx.beginPath();
-	  this.ctx.arc(shot.position.x, shot.position.y, Math.round(Player.avatarWidth/2), 0, 2*Math.PI);
+	  const shotDrawPos = {
+		x: shot.position.y - 4 < shot.target.y ? shot.target.x : shot.position.x,
+		y: shot.position.y - 4 < shot.target.y ? shot.target.y : shot.position.y,
+	  };
+	  this.ctx.arc(Math.round(shotDrawPos.x), Math.round(shotDrawPos.y), Math.round(Player.avatarWidth/2), 0, 2*Math.PI);
 	  this.ctx.stroke();
 	});
   }
