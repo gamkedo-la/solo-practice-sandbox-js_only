@@ -1,3 +1,5 @@
+import {Projectile} from "./projectile.js";
+
 export class Player {
   static avatarHeight = 24;
   static avatarWidth = 8;
@@ -43,33 +45,18 @@ export class Player {
 		this.avatarPos.x += Player.avatarSpeed*dt;
 	  }
 	} else if (this.shotDelay <= 0) {
-	  const initialPos = {
-		x: this.avatarPos.x + Player.avatarWidth/2,
-		y: this.avatarPos.y
-	  };
-	  const targetPos = {x: this.reticlePos.x, y: this.reticlePos.y};
-	  this.shots.push({
-		position: initialPos,
-		velocity: {
-		  x: 9*(targetPos.x - initialPos.x),
-		  y: 9*(targetPos.y - initialPos.y)
-		},
-		target: targetPos,
-		live: true
-	  });
+	  this.shots.push(Projectile.get(
+		this.ctx,
+		8,
+		Player.avatarWidth/2,
+		{x: this.avatarPos.x + Player.avatarWidth/2, y: this.avatarPos.y},
+		{x: this.reticlePos.x, y: this.reticlePos.y, height: 3},
+		10,
+		this.hitTargetHooks,
+	  ));
 	  this.shotDelay = Player.timeBetweenShots;
 	}
-	this.shots.forEach(shot => {
-	  shot.position.x += shot.velocity.x*dt;
-	  shot.position.y += shot.velocity.y*dt;
-	  if (shot.position.y - 3 < shot.target.y) {
-		this.callHitTargetHooks(dt, shot);
-		shot.live = false;
-	  } else if (shot.position.y < 0 || shot.position.x < 0 || shot.position.x > this.ctx.width) {
-		shot.live = false;
-		console.log("ESCAPED SHOT", shot);
-	  }
-	});
+	this.shots.forEach(shot => shot.update(dt));
 	this.shotDelay -= dt;
 	const cv = Player.getAxis(this.input.up, this.input.down, this.input.left, this.input.right);
 	if (!(cv.x === 0 && cv.y === 0)) {
@@ -115,23 +102,10 @@ export class Player {
 	this.ctx.stroke();
 	this.ctx.fillStyle = "lime";
 	this.ctx.fillRect(Math.round(this.avatarPos.x), Math.round(this.avatarPos.y), Player.avatarWidth, Player.avatarHeight);
-	this.shots.forEach(shot => {
-	  this.ctx.strokeStyle = "yellow";
-	  this.ctx.beginPath();
-	  const shotDrawPos = {
-		x: shot.position.y - 4 < shot.target.y ? shot.target.x : shot.position.x,
-		y: shot.position.y - 4 < shot.target.y ? shot.target.y : shot.position.y,
-	  };
-	  this.ctx.arc(Math.round(shotDrawPos.x), Math.round(shotDrawPos.y), Math.round(Player.avatarWidth/2), 0, 2*Math.PI);
-	  this.ctx.stroke();
-	});
+	this.shots.forEach(shot => shot.draw());
   }
 
   addHitTargetHook(hook) {
 	this.hitTargetHooks.push(hook);
-  }
-
-  callHitTargetHooks(dt, shot) {
-	this.hitTargetHooks.forEach(listener => listener(dt, shot));
   }
 }
