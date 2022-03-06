@@ -86,14 +86,6 @@ function set2Players() {
   playerScoreArray = [0, 0]
 }
 
-function set1Player() {
-  numOfPlayers = 1;
-  document.getElementById("debug").innerHTML = numOfPlayers + " player";
-  document.getElementById("player_controller").style.display = "none";
-  isGameStarted = true;
-  playerScoreArray = [0]
-}
-
 function spawnCard(e) {
   var randomize = Math.floor(Math.random() * 11) + 1; // get a number between 1 - 10
   var cardType;
