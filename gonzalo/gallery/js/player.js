@@ -1,3 +1,4 @@
+import {Enemy} from "./enemy.js";
 import {Projectile} from "./projectile.js";
 
 export class Player {
@@ -25,6 +26,15 @@ export class Player {
 	return {x: f*vel.x, y: f*vel.y};
   }
 
+  static onHitTarget = function(dt, shot) {
+	for (const enemy of Enemy.alive()) {
+	  const dist = Math.sqrt(Math.pow(enemy.x - shot.target.x, 2) + Math.pow(enemy.y - shot.target.y, 2));
+		if (dist <= 16) {
+		  enemy.live = false;
+		}
+	}
+  }
+  
   constructor (canvasContext, input) {
 	this.ctx = canvasContext;
 	this.input = input;
@@ -32,7 +42,7 @@ export class Player {
 	this.reticlePos = {x: 104, y: this.ctx.canvas.height/2};
 	this.shots = [];
 	this.shotDelay = 0;
-	this.hitTargetHooks = [];
+	this.hitTargetHooks = [Player.onHitTarget];
   }
 
   update(dt) {
@@ -103,9 +113,5 @@ export class Player {
 	this.ctx.fillStyle = "lime";
 	this.ctx.fillRect(Math.round(this.avatarPos.x), Math.round(this.avatarPos.y), Player.avatarWidth, Player.avatarHeight);
 	this.shots.forEach(shot => shot.draw());
-  }
-
-  addHitTargetHook(hook) {
-	this.hitTargetHooks.push(hook);
   }
 }

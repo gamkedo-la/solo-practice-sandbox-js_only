@@ -1,6 +1,7 @@
 import {Input} from "./input.js";
 import {Player} from "./player.js";
 import {Level} from "./level.js";
+import {Enemy} from "./enemy.js";
 
 class Game {
   static dt = 0;
@@ -14,7 +15,6 @@ class Game {
 	this.input = new Input();
 	this.player = new Player(this.ctx, this.input);
 	this.currentLevel = new Level(this.ctx);
-	this.player.addHitTargetHook(this.currentLevel.getHitTargetHook());
   }
 
   start() {
@@ -24,6 +24,9 @@ class Game {
   update(dt) {
 	this.currentLevel.update(dt);
 	this.player.update(dt);
+	for (const enemy of Enemy.alive()) {
+	  enemy.update(dt);
+	}
   }
 
   draw() {
@@ -31,6 +34,9 @@ class Game {
 	this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
 	this.currentLevel.draw();
+	for (const enemy of Enemy.alive()) {
+	  enemy.draw();
+	}
 	this.player.draw();
   }
 
