@@ -40,6 +40,8 @@ var numOfPlayers;
 var playerScoreArray = [];
 var currentTurn = 0;
 
+var winner;
+
 window.onload = function () {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
@@ -65,25 +67,51 @@ function moveEverything() {
 function set4Players() {
   numOfPlayers = 4;
   document.getElementById("debug").innerHTML = numOfPlayers + " players";
-  document.getElementById("player_controller").style.display = "none";
-  isGameStarted = true;
+  appearCardQuestion();
   playerScoreArray = [0, 0, 0, 0]
 }
 
 function set3Players() {
   numOfPlayers = 3;
   document.getElementById("debug").innerHTML = numOfPlayers + " players";
-  document.getElementById("player_controller").style.display = "none";
-  isGameStarted = true;
+  appearCardQuestion();
   playerScoreArray = [0, 0, 0]
 }
 
 function set2Players() {
   numOfPlayers = 2;
   document.getElementById("debug").innerHTML = numOfPlayers + " players";
+  appearCardQuestion();
+  playerScoreArray = [0, 0]
+}
+
+function set4Cards() {
+  numOfTurns = 4;
   document.getElementById("player_controller").style.display = "none";
   isGameStarted = true;
-  playerScoreArray = [0, 0]
+}
+
+function set8Cards() {
+  numOfTurns = 8;
+  document.getElementById("player_controller").style.display = "none";
+  isGameStarted = true;
+}
+
+function set12Cards() {
+  numOfTurns = 12;
+  document.getElementById("player_controller").style.display = "none";
+  isGameStarted = true;
+}
+
+function set24Cards() {
+  numOfTurns = 24;
+  document.getElementById("player_controller").style.display = "none";
+  isGameStarted = true;
+}
+
+function appearCardQuestion() {
+  let div = document.getElementById("player_controller")
+  div.innerHTML=`<p>How many cards do you want to play?</p> <button class=\"btn\" onclick=\"set4Cards()\">4</button> <button class=\"btn\" onclick=\"set8Cards()\">8</button> <button class=\"btn\" onclick=\"set12Cards()\">12</button> <button class=\"btn\" onclick=\"set24Cards()\">24</button>`
 }
 
 function spawnCard(e) {
@@ -170,7 +198,16 @@ function gameOverScreen() {
   canvasContext.font = '36px serif';
   canvasContext.fillText("Game over! " + numOfTurns + " cards on board!", 100, 250);
 
-  document.getElementById("debug").innerHTML = "Game Over! Highest score: " + winningPoints + "!";
+  for (let i = 0; i <= playerScoreArray.length; i++) {
+    if (winningPoints == playerScoreArray[i]) {
+      winner = i + 1;
+    }
+  }
+
+  canvasContext.font = '36px serif';
+  canvasContext.fillText("Winner: Player " + winner + "!", 200, 290);
+
+  document.getElementById("debug").innerHTML = "Game Over! Winner: Player " + winner + "!";
 }
 
 function drawEverything() {
@@ -179,7 +216,7 @@ function drawEverything() {
   drawPicture(backgroundImg, 0, 0, 800, 600);
 
   // <-- draw the player boards --> //
-  for (let i = 1; i <= numOfPlayers; i++) {
+  for (let i = 1; i <= numOfPlayers; i++) {    
     if (i == 1) {
       // player 1
       drawPicture(playerBoardsOdd, 10, 5, PLAYER_BOARD_SIZE, PLAYER_BOARD_SIZE)
