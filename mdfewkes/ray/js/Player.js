@@ -11,6 +11,8 @@ function PlayerClass() {
 
 	this.update = function(){
 		this.ang += mouseMovementX * deltaTime * lookSpeed;
+		if (this.ang > 2*pi) this.ang -= 2*pi;
+		if (this.ang < 0) this.ang += 2*pi;
 
 		this.forward.x = Math.cos(this.ang);
 		this.forward.y = Math.sin(this.ang);
