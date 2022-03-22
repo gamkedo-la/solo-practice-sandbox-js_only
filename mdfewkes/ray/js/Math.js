@@ -1,4 +1,10 @@
 const pi = Math.PI;
+const d0 = 0;
+const d90 = pi/2;
+const d180 = pi;
+const d270 = 3*pi/2;
+const d360 = 2*pi;
+
 
 function degToRad(degrees){
 	return degrees * (pi/180);

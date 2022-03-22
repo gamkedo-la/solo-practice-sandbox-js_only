@@ -3,6 +3,7 @@ let canvas;
 
 var gameObjects = [];
 var world = [];
+var distanceBuffer = [];
 
 var player = new PlayerClass();
 
@@ -79,11 +80,11 @@ function gameloop(time) {
 
 
 	for (var i = 0; i < world.length; i++) {
-		world[i].draw();
+		world[i].draw2D();
 	}
 
 	for (var i = 0; i < gameObjects.length; i++) {
-		gameObjects[i].draw();
+		gameObjects[i].draw2D();
 	}
 
 
