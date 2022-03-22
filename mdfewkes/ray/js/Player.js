@@ -1,6 +1,5 @@
 function PlayerClass() {
-	this.x = 0;
-	this.y = 0;
+	this.pos =  {x:0, y:0};
 	this.ang = 0;
 	this.forward = {x:0, y:0};
 
@@ -18,28 +17,68 @@ function PlayerClass() {
 		this.forward.y = Math.sin(this.ang);
 
 		if (Key.isDown(Key.W)) {
-			this.x += this.forward.x * deltaTime * moveSpeed;
-			this.y += this.forward.y * deltaTime * moveSpeed;
+			var newX = this.pos.x + this.forward.x * deltaTime * moveSpeed;
+			var newY = this.pos.y + this.forward.y * deltaTime * moveSpeed;
+
+			for (var i in world) {
+				if (isLineOnLine(this.pos, {x:newX, y:newY}, world[i].p1, world[i].p2)) {
+					newX = this.pos.x;
+					newY = this.pos.y;
+					break;
+				}
+			}
+			this.pos.x = newX;
+			this.pos.y = newY;
 		}
 		if (Key.isDown(Key.S)) {
-			this.x -= this.forward.x * deltaTime * moveSpeed;
-			this.y -= this.forward.y * deltaTime * moveSpeed;
+			var newX = this.pos.x - this.forward.x * deltaTime * moveSpeed;
+			var newY = this.pos.y - this.forward.y * deltaTime * moveSpeed;
+
+			for (var i in world) {
+				if (isLineOnLine(this.pos, {x:newX, y:newY}, world[i].p1, world[i].p2)) {
+					newX = this.pos.x;
+					newY = this.pos.y;
+					break;
+				}
+			}
+			this.pos.x = newX;
+			this.pos.y = newY;
 		}
 		if (Key.isDown(Key.A)) {
-			this.x += this.forward.y * deltaTime * moveSpeed;
-			this.y -= this.forward.x * deltaTime * moveSpeed;
+			var newX = this.pos.x + this.forward.y * deltaTime * moveSpeed;
+			var newY = this.pos.y - this.forward.x * deltaTime * moveSpeed;
+
+			for (var i in world) {
+				if (isLineOnLine(this.pos, {x:newX, y:newY}, world[i].p1, world[i].p2)) {
+					newX = this.pos.x;
+					newY = this.pos.y;
+					break;
+				}
+			}
+			this.pos.x = newX;
+			this.pos.y = newY;
 		}
 		if (Key.isDown(Key.D)) {
-			this.x -= this.forward.y * deltaTime * moveSpeed;
-			this.y += this.forward.x * deltaTime * moveSpeed;
+			var newX = this.pos.x - this.forward.y * deltaTime * moveSpeed;
+			var newY = this.pos.y + this.forward.x * deltaTime * moveSpeed;
+
+			for (var i in world) {
+				if (isLineOnLine(this.pos, {x:newX, y:newY}, world[i].p1, world[i].p2)) {
+					newX = this.pos.x;
+					newY = this.pos.y;
+					break;
+				}
+			}
+			this.pos.x = newX;
+			this.pos.y = newY;
 		}
 
 
 	};
 
 	this.draw = function(){
-		colorLine(this.x, this.y, this.x + this.forward.x * 10, this.y +this.forward.y * 10, 2, "darkgrey");
-		colorEmptyCircle(this.x, this.y, 5, "darkgrey");
+		colorLine(this.pos.x, this.pos.y, this.pos.x + this.forward.x * 10, this.pos.y +this.forward.y * 10, 2, "darkgrey");
+		colorEmptyCircle(this.pos.x, this.pos.y, 5, "darkgrey");
 	};
 
 	this.destroy = function(){

@@ -50,9 +50,8 @@ window.onload = function() {
 	world[world.length-1].p2 = world[0].p1;
 
 	//Set player start position
-	player.x = canvas.width/2;
-	player.y = canvas.height/2;
-	//player.ang = 3*pi/2;
+	player.pos.x = canvas.width/2;
+	player.pos.y = canvas.height/2;
 }
 
 
@@ -74,7 +73,7 @@ function gameloop(time) {
 	colorRect(0,0,800,600, "black");
 	canvasContext.translate(canvas.width/2, canvas.height/2);
 	canvasContext.rotate(-player.ang + 3*pi/2);
-	canvasContext.translate(-player.x, -player.y);
+	canvasContext.translate(-player.pos.x, -player.pos.y);
 
 	//console.log(player.ang);
 
