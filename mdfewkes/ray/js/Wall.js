@@ -5,7 +5,7 @@ function WallClass() {
 	world.push(this);
 
 	this.draw = function(){
-		colorLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y, 1, "darkgrey")
+		colorLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y, 2, "darkgrey")
 	};
 
 	this.destroy = function(){
