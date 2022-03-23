@@ -44,8 +44,8 @@ function PlayerClass() {
 
 		}
 		if (moving) {
-			for (var i in world) {
-				if (isLineOnLine(this.pos, {x:newX, y:newY}, world[i].p1, world[i].p2)) {
+			for (var i in walls) {
+				if (isLineOnLine(this.pos, {x:newX, y:newY}, walls[i].p1, walls[i].p2)) {
 					newX = this.pos.x;
 					newY = this.pos.y;
 					break;

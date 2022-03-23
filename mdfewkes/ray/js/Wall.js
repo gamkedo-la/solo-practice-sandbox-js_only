@@ -2,15 +2,41 @@ function WallClass() {
 	this.p1 = {x:0, y:0};
 	this.p2 = {x:0, y:0};
 
-	world.push(this);
+	walls.push(this);
 
 	this.draw2D = function(){
 		colorLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y, 2, "darkgrey")
 	};
 
 	this.draw3D = function(){};
+}
 
-	this.destroy = function(){
-		world.splice(world.indexoOf(this), 1);
-	};
+//Checks if there are no walls in between two points
+function lineOfSight(v1, v2) {
+	for (var i in walls) {
+		if (isLineOnLine(v1, v2, walls[i].p1, walls[i].p2)) {
+			return false;
+		}
+	}
+	return true;
+}
+
+function isLineOnLine(p1, p2, p3, p4) {
+	var denominator = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x));
+
+	if(denominator != 0.0) {
+		var t = (((p1.x - p3.x) * (p3.y - p4.y)) - ((p1.y - p3.y) * (p3.x - p4.x))) / denominator;
+		if(t >= 0.0 && t <= 1.0) {
+			var u = (((p1.x - p2.x) * (p1.y - p3.y)) - ((p1.y - p2.y) * (p1.x - p3.x))) / denominator;
+			if(-u >= 0.0 && -u <= 1.0) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return false;
+		}
+	}
+
+	return false;
 }

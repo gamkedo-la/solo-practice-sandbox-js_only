@@ -18,6 +18,12 @@ function lerp(v0, v1, t) {
 	return v0*(1-t)+v1*t
 }
 
+function lerpC(val1, val2, amount) {
+	amount = amount < 0 ? 0 : amount;
+	amount = amount > 1 ? 1 : amount;
+	return (1 - amount) * val1 + amount * val2;
+}
+
 function remap(in_min, in_max, out_min, out_max, num) {
 	return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
@@ -62,24 +68,4 @@ function angleBetweenTwoPoints(a, b) {
 
 function clamp(x, min, max) {
 	return Math.max(min, Math.min(x, max));
-}
-
-function isLineOnLine(p1, p2, p3, p4) {
-	var denominator = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x));
-
-	if(denominator != 0.0) {
-		var t = (((p1.x - p3.x) * (p3.y - p4.y)) - ((p1.y - p3.y) * (p3.x - p4.x))) / denominator;
-		if(t >= 0.0 && t <= 1.0) {
-			var u = (((p1.x - p2.x) * (p1.y - p3.y)) - ((p1.y - p2.y) * (p1.x - p3.x))) / denominator;
-			if(-u >= 0.0 && -u <= 1.0) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	return false;
 }

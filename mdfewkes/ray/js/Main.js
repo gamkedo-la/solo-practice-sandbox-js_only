@@ -2,7 +2,7 @@ let canvasContext;
 let canvas;
 
 var gameObjects = [];
-var world = [];
+var walls = [];
 var distanceBuffer = [];
 
 var player = new PlayerClass();
@@ -17,9 +17,10 @@ window.onload = function() {
 	AudioMan.init();
 	window.requestAnimationFrame(gameloop);
 
-	//generate a random room
-	var x = 100;
-	var y = 50;
+	/*//generate a random room
+	var x = -250;
+	var y = -250;
+	console.log("x:" + x + "," + "y:" + y);
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
 		newWall.p1 = {x:x, y:y};
@@ -27,6 +28,7 @@ window.onload = function() {
 		y += rndFloat(-50, 50);
 		newWall.p2 = {x:x, y:y};
 	}
+	console.log("x:" + x + "," + "y:" + y);
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
 		newWall.p1 = {x:x, y:y};
@@ -41,6 +43,7 @@ window.onload = function() {
 		y += rndFloat(-50, 50);
 		newWall.p2 = {x:x, y:y};
 	}
+	console.log("x:" + x + "," + "y:" + y);
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
 		newWall.p1 = {x:x, y:y};
@@ -48,11 +51,28 @@ window.onload = function() {
 		y += rndFloat(0, -100);
 		newWall.p2 = {x:x, y:y};
 	}
-	world[world.length-1].p2 = world[0].p1;
+	console.log("x:" + x + "," + "y:" + y);
+	world[world.length-1].p2 = world[0].p1;*/
 
-	//Set player start position
-	player.pos.x = canvas.width/2;
-	player.pos.y = canvas.height/2;
+
+	var newWall = new WallClass();
+	newWall.p1 = {x:-100, y:-100};
+	newWall.p2 = {x:300, y:-100};
+	newWall = new WallClass();
+	newWall.p1 = {x:300, y:-100};
+	newWall.p2 = {x:300, y:300};
+	newWall = new WallClass();
+	newWall.p1 = {x:300, y:300};
+	newWall.p2 = {x:100, y:300};
+	newWall = new WallClass();
+	newWall.p1 = {x:100, y:300};
+	newWall.p2 = {x:100, y:100};
+	newWall = new WallClass();
+	newWall.p1 = {x:100, y:100};
+	newWall.p2 = {x:-100, y:100};
+	newWall = new WallClass();
+	newWall.p1 = {x:-100, y:100};
+	newWall.p2 = {x:-100, y:-100};
 }
 
 
@@ -76,11 +96,8 @@ function gameloop(time) {
 	canvasContext.rotate(-player.ang + 3*pi/2);
 	canvasContext.translate(-player.pos.x, -player.pos.y);
 
-	//console.log(player.ang);
-
-
-	for (var i = 0; i < world.length; i++) {
-		world[i].draw2D();
+	for (var i = 0; i < walls.length; i++) {
+		walls[i].draw2D();
 	}
 
 	for (var i = 0; i < gameObjects.length; i++) {

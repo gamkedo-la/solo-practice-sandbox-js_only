@@ -258,7 +258,7 @@ function AudioManager() {
 
 //--//Sound spatialization functions--------------------------------------------
 	function calcuatePan(location) {
-		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player, location));
+		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player.pos, location));
 		while (direction >= 360) {
 			direction -= 360;
 		}
@@ -269,17 +269,17 @@ function AudioManager() {
 		//Calculate pan
 		var pan = 0;
 		if (direction <= 90) {
-			pan = lerp(0, 1, direction/90);
+			pan = lerpC(0, 1, direction/90);
 		} else if (direction <= 180) {
-			pan = lerp(1, 0, (direction-90)/90);
+			pan = lerpC(1, 0, (direction-90)/90);
 		} else if (direction <= 270) {
-			pan = lerp(0, -1, (direction-180)/90);
+			pan = lerpC(0, -1, (direction-180)/90);
 		} else if (direction <= 360) {
-			pan = lerp(-1, 0, (direction-270)/90);
+			pan = lerpC(-1, 0, (direction-270)/90);
 		}
 
 		//Proximity
-		var distance = distanceBetweenTwoPoints(player, location);
+		var distance = distanceBetweenTwoPoints(player.pos, location);
 		if (distance <= DROPOFF_MIN) {
 			var panReduction = distance/DROPOFF_MIN;
 			pan *= panReduction;
@@ -289,7 +289,7 @@ function AudioManager() {
 	};
 
 	function calcuateVolumeDropoff(location) {
-		var distance = distanceBetweenTwoPoints(player, location);
+		var distance = distanceBetweenTwoPoints(player.pos, location);
 
 		//Distance attenuation
 		var newVolume = 1;
@@ -301,7 +301,7 @@ function AudioManager() {
 
 
 		//Back of head attenuation
-		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player, location));
+		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player.pos, location));
 		while (direction <= 0) {
 			direction += 360;
 		}
@@ -310,16 +310,16 @@ function AudioManager() {
 		}
 
 		if (direction > 90 && direction <= 180) {
-			newVolume *= lerp(1, HEADSHADOW_REDUCTION, (direction-90)/90);
+			newVolume *= lerpC(1, HEADSHADOW_REDUCTION, (direction-90)/90);
 		} else if (direction > 180 && direction <= 270) {
-			newVolume *= lerp(HEADSHADOW_REDUCTION, 1, (direction-180)/90);
+			newVolume *= lerpC(HEADSHADOW_REDUCTION, 1, (direction-180)/90);
 		}
 
 		return Math.pow(newVolume, 2);
 	};
 
 	function calcuateReverbPresence(location) {
-		var distance = distanceBetweenTwoPoints(player, location);
+		var distance = distanceBetweenTwoPoints(player.pos, location);
 
 		var verbVolume = 0;
 		verbVolume = Math.pow(distance/DROPOFF_MAX * REVERB_MAX, 1.5);
@@ -327,9 +327,108 @@ function AudioManager() {
 		return verbVolume;
 	};
 
+	function calculatePropogationPosition(location) {
+		//Return if in line of sight
+		if (lineOfSight(location, player.pos)) return location;
+
+		//Calculate distance and select AudGeo location
+		//Start with max distance and location, then update with new distance and location everytime a shorter distance is calculated
+		var distance = DROPOFF_MAX;
+		var pos = location;
+		for (var i in currentAudGeo) {
+			//If AudGeo has lineOfSight to the player, use checkAudGeo() to find the distance through the network back to the sound location
+			if (lineOfSight(player.pos, currentAudGeo[i].point)) { //LineOfSight to player
+				var newDistance = checkAudGeo(i, location, []); //Recursive function to find shortest distance through node netowrk
+				if (newDistance < distance) { //If a shorter distance than curent holding, replace with this distance and AudGeo
+					distance = newDistance;
+					pos = currentAudGeo[i].point;
+				}
+			}
+		}
+		distance += distanceBetweenTwoPoints(player.pos, location); //Add the players distance to the AudGeo's network distance
+
+		//Calculate new location from angle and distance
+		var direction = player.ang + angleBetweenTwoPoints(player.pos, pos);
+		var newX = -Math.cos(direction) * distance + player.pos.x;
+		var newY = -Math.sin(direction) * distance + player.pos.y;
+
+		var newLocation = {x:newX, y:newY};
+		return newLocation;
+	}
+
+	function checkAudGeo(pointToCheck, location, pointsChecked) {
+		var newPointsChecked = pointsChecked;
+		newPointsChecked.push(pointToCheck); //Add curent point to checked list
+
+		var distance = DROPOFF_MAX;
+		var pos = location;
+
+		//In line of sight to source, no more work for this branch
+		if (lineOfSight(currentAudGeo[pointToCheck].point, location)) {
+			return distanceBetweenTwoPoints(currentAudGeo[pointToCheck].point, location);
+		}
+
+		//Checks each connection recursively for the shortest distance to lineOfSight of the source
+		for (var i in currentAudGeo[pointToCheck].connections) {
+			//Skips over nodes we've already visited
+			var oldPoint = false;
+			for (var j in pointsChecked) {
+				if (i == pointsChecked[j]) {
+					oldPoint = true;
+				}
+			}
+			if (oldPoint) continue;
+
+			//Recursive check, and applies the results if a shorter distance is returned
+			var newDistance = checkAudGeo(currentAudGeo[pointToCheck].connections[i], location, newPointsChecked);
+			if (newDistance < distance) {
+				distance = newDistance;
+				pos = currentAudGeo[currentAudGeo[pointToCheck].connections[i]].point;
+			}
+		}
+
+		return distance + distanceBetweenTwoPoints(currentAudGeo[pointToCheck].point, pos);
+	}
+
 //--//Utility-------------------------------------------------------------------
 	this.getList = function() {
 		return currentSoundSources;
 	}
 
+}
+
+var fauxAudGeo = [
+	{x:101, y:101}
+	];
+
+var currentAudGeo = []; //{point: vec2, connections: [indexs]}
+function generateAudGeo() {
+	currentAudGeo = new Array();
+
+	for (var i = 0; i < fauxAudGeo.length; i++) {
+		//console.log("Checking point " + i);
+		var connect = [];
+
+		for (var j = 0; j < fauxAudGeo.length; j++) {
+			if (i == j) continue;
+			//console.log("--Against point " + j);
+			var clear = true;
+
+			for (var k = 0; k < walls.length; k++) {
+				if (isLineOnLine(fauxAudGeo[i].x, fauxAudGeo[i].y, 
+						fauxAudGeo[j].x, fauxAudGeo[j].y, 
+						walls[k].p1.x, walls[k].p1.y, 
+						walls[k].p2.x, walls[k].p2.y)
+						&& walls[k].type != 0) {
+					//console.log(walls[k]);
+					clear = false;
+					}
+				}
+			if (clear) {
+				connect.push(j);
+			}
+		}
+
+		currentAudGeo.push({point: fauxAudGeo[i], connections: connect});
+	}
 }
