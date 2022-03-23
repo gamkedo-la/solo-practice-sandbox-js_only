@@ -73,11 +73,17 @@ window.onload = function() {
 	newWall = new WallClass();
 	newWall.p1 = {x:-100, y:100};
 	newWall.p2 = {x:-100, y:-100};
+
+	testsound = AudioMan.createSound3D("./audio/reverb1.wav", {pos:{x:200, y:200}}, true, 0.95);
+	generateAudGeo()
 }
 
 
 
 function gameloop(time) {
+	//if(testsound.getAudioFile().paused) testsound.play();
+
+
 	deltaTime = time - lastTime;
 	lastTime = time;
 	//console.log(deltaTime);

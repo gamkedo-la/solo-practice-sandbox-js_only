@@ -4,11 +4,11 @@ var AudioMan = new AudioManager();
 function AudioManager() {
 //--//Constants-----------------------------------------------------------------
 	const VOLUME_INCREMENT = 0.05;
-	const DROPOFF_MIN = 20;
+	const DROPOFF_MIN = 30;
 	const DROPOFF_MAX = 400;
 	const HEADSHADOW_REDUCTION = 0.5;
 	const REVERB_MAX = 5;
-	//const DOPLER_SCALE = 8;
+	const DOPLER_SCALE = 8;
 
 //--//Properties----------------------------------------------------------------
 	var initialized = false;
@@ -71,7 +71,19 @@ function AudioManager() {
 
 		for (var i = currentSoundSources.length-1; i >= 0; i--) {
 			currentSoundSources[i].update();
+			if (!currentSoundSources[i].getAudioFile().paused) {
+				colorEmptyCircle(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 1, "blue");
+				colorEmptyCircle(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, 3, "green");
+				colorLine(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, player.pos.x, player.pos.y, 1, "green");
+			}
 			if (currentSoundSources[i].isEnded()) currentSoundSources.splice(i, 1);
+		}
+
+		for (var i in currentAudGeo) {
+			colorEmptyCircle(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 3, "blue");
+			if (lineOfSight(currentAudGeo[i].point, player.pos)) {
+				colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, player.pos.x, player.pos.y, 1, "blue");
+			}
 		}
 	};
 
@@ -176,7 +188,10 @@ function AudioManager() {
 		this.mixVolume = mixVolume;
 		this.rate = rate;
 		this.parent = parent;
-		var lastDistance = distanceBetweenTwoPoints(player, parent);;
+		this.pos = calculatePropogationPosition(this.parent.pos);
+		var looping = looping;
+		var lastDistance = distanceBetweenTwoPoints(player.pos, this.pos);
+
 
 		//Setup HTMLElement
 		var audioFile = new Audio(fileNameWithPath);
@@ -211,34 +226,45 @@ function AudioManager() {
 
 
 			//Calculate volume panning and reverb
-			gainNode.gain.value = calcuateVolumeDropoff(this.parent);
-			//verbMixNode.gain.value = calcuateReverbPresence(this.parent);
+			gainNode.gain.value = calcuateVolumeDropoff(pthis.os);
+			//verbMixNode.gain.value = calcuateReverbPresence(this.pos);
 			//if (reverbBuffer != null) verbNode.buffer = reverbBuffer;
-			panNode.pan.value = calcuatePan(this.parent);
+			panNode.pan.value = calcuatePan(this.pos);
 		} else {
-			audioFile.volume *= calcuateVolumeDropoff(this.parent);
+			audioFile.volume *= calcuateVolumeDropoff(this.pos);
 		}
 
 
 		this.update = function() {
+			if (audioFile.paused) return;
+
+			//Recalculate position
+			this.pos = calculatePropogationPosition(this.parent.pos);
+
+			//Calculate volume panning and reverb
 			audioFile.volume = Math.pow(this.mixVolume, 2);
 			if (isServer) {
-				gainNode.gain.value = calcuateVolumeDropoff(this.parent);
-				//verbMixNode.gain.value = calcuateReverbPresence(this.parent);
-				panNode.pan.value = calcuatePan(this.parent);
+				gainNode.gain.value = calcuateVolumeDropoff(this.pos);
+				//verbMixNode.gain.value = calcuateReverbPresence(this.pos);
+				panNode.pan.value = calcuatePan(this.pos);
 			} else {
-				audioFile.volume *= calcuateVolumeDropoff(this.parent);
+				audioFile.volume *= calcuateVolumeDropoff(this.pos);
 			}
 
-			// Dopler
-			//audioFile.playbackRate = this.rate;
-			//var newDistance = distanceBetweenTwoPoints(player, this.parent);
-			//var dopler = (lastDistance - newDistance) / DOPLER_SCALE;
-			//audioFile.playbackRate *= clipBetween(Math.pow(2, (dopler/12)), 0.8, 1.2);
-			//lastDistance = newDistance;
+			//Dopler
+			audioFile.playbackRate = this.rate;
+			var newDistance = distanceBetweenTwoPoints(player.pos, this.pos);
+			var dopler = (lastDistance - newDistance) / DOPLER_SCALE;
+			audioFile.playbackRate *= clamp(Math.pow(2, (dopler/12)), 0.8, 1.2);
+			lastDistance = newDistance;
 		}
 
 		this.play = function() {
+			//Dont play if out of range
+			if (distanceBetweenTwoPoints(player.pos, this.pos) > DROPOFF_MAX && !looping) {
+				return false;
+			}
+
 			audioFile.currentTime = 0;
 			return audioFile.play();
 		}
@@ -258,24 +284,21 @@ function AudioManager() {
 
 //--//Sound spatialization functions--------------------------------------------
 	function calcuatePan(location) {
-		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player.pos, location));
-		while (direction >= 360) {
+		var direction = radToDeg(-player.ang + angleBetweenTwoPoints(player.pos, location));
+		if (direction >= 360) {
 			direction -= 360;
 		}
-		while (direction < 0) {
+		if (direction < 0) {
 			direction += 360;
 		}
 
 		//Calculate pan
 		var pan = 0;
-		if (direction <= 90) {
-			pan = lerpC(0, 1, direction/90);
-		} else if (direction <= 180) {
-			pan = lerpC(1, 0, (direction-90)/90);
-		} else if (direction <= 270) {
-			pan = lerpC(0, -1, (direction-180)/90);
-		} else if (direction <= 360) {
-			pan = lerpC(-1, 0, (direction-270)/90);
+		if (direction + 90 <= 180) {
+			pan = lerpC(-1, 1, (direction+90)/180);
+		}
+		if (direction + 90 > 180) {
+			pan = lerpC(1, -1, (direction-90)/180);
 		}
 
 		//Proximity
@@ -301,15 +324,15 @@ function AudioManager() {
 
 
 		//Back of head attenuation
-		var direction = radToDeg(player.ang + angleBetweenTwoPoints(player.pos, location));
-		while (direction <= 0) {
+		var direction = radToDeg(-player.ang + angleBetweenTwoPoints(player.pos, location));
+		if (direction <= 0) {
 			direction += 360;
 		}
-		while (direction >= 360) {
+		if (direction >= 360) {
 			direction -= 360;
 		}
 
-		if (direction > 90 && direction <= 180) {
+		if (direction >= 90 && direction <= 180) {
 			newVolume *= lerpC(1, HEADSHADOW_REDUCTION, (direction-90)/90);
 		} else if (direction > 180 && direction <= 270) {
 			newVolume *= lerpC(HEADSHADOW_REDUCTION, 1, (direction-180)/90);
@@ -345,12 +368,12 @@ function AudioManager() {
 				}
 			}
 		}
-		distance += distanceBetweenTwoPoints(player.pos, location); //Add the players distance to the AudGeo's network distance
+		distance += distanceBetweenTwoPoints(player.pos, pos); //Add the players distance to the AudGeo's network distance
 
 		//Calculate new location from angle and distance
-		var direction = player.ang + angleBetweenTwoPoints(player.pos, pos);
-		var newX = -Math.cos(direction) * distance + player.pos.x;
-		var newY = -Math.sin(direction) * distance + player.pos.y;
+		var direction = angleBetweenTwoPoints(player.pos, pos);
+		var newX = Math.cos(direction) * distance + player.pos.x;
+		var newY = Math.sin(direction) * distance + player.pos.y;
 
 		var newLocation = {x:newX, y:newY};
 		return newLocation;
@@ -398,10 +421,10 @@ function AudioManager() {
 }
 
 var fauxAudGeo = [
-	{x:101, y:101}
+	{x:101, y:99}
 	];
 
-var currentAudGeo = []; //{point: vec2, connections: [indexs]}
+var currentAudGeo = []; //{point:{x,y}, connections:[indexs]}
 function generateAudGeo() {
 	currentAudGeo = new Array();
 

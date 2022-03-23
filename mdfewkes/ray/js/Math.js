@@ -7,11 +7,11 @@ const d360 = 2*pi;
 
 
 function degToRad(degrees){
-	return degrees * (pi/180);
+	return degrees * pi/180;
 }
 
 function radToDeg(radians){
-	return radians * (180/pi);
+	return radians * 180/pi;
 }
 
 function lerp(v0, v1, t) {
@@ -21,7 +21,7 @@ function lerp(v0, v1, t) {
 function lerpC(val1, val2, amount) {
 	amount = amount < 0 ? 0 : amount;
 	amount = amount > 1 ? 1 : amount;
-	return (1 - amount) * val1 + amount * val2;
+	return val1 * (1 - amount) + val2 * amount;
 }
 
 function remap(in_min, in_max, out_min, out_max, num) {
@@ -59,10 +59,8 @@ function distanceBetweenTwoPoints(a,b) {
 }
 
 function angleBetweenTwoPoints(a, b) {
-	var angle = Math.atan2(b.y - a.y, b.x - a.x) * 180 / pi;
-	angle *= -1;
-	//if (angle >= 360) {angle -= 360;}
-	//if (angle < 0) {angle += 360;}
+	var angle = Math.atan2(b.y - a.y, b.x - a.x);
+	//angle *= -1;
 	return angle;
 }
 
