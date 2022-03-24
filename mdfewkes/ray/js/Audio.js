@@ -39,7 +39,7 @@ function AudioManager() {
 
 			//Load reverb
 			var request = new XMLHttpRequest();
-			request.open('GET', "audio/reverb3.wav", true);
+			request.open('GET', "audio/reverb2.wav", true);
 			request.responseType = 'arraybuffer';
 			request.onload = function() {
 				audioCtx.decodeAudioData(request.response, function(buffer) {
@@ -82,6 +82,10 @@ function AudioManager() {
 			colorEmptyCircle(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 3, "blue");
 			if (lineOfSight(currentAudGeo[i].point, player.pos)) {
 				colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, player.pos.x, player.pos.y, 1, "blue");
+				for (var j in currentAudGeo[i].connections) {
+					colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 
+						currentAudGeo[currentAudGeo[i].connections[j]].point.x, currentAudGeo[currentAudGeo[i].connections[j]].point.y, 0.5, "darkblue");
+				}
 			}
 		}
 	};
@@ -205,29 +209,29 @@ function AudioManager() {
 		var source = null;
 		var gainNode = null;
 		var panNode = null;
-		//var verbMixNode = null;
-		//var verbNode = null;
+		var verbMixNode = null;
+		var verbNode = null;
 
 		if (isServer) {
 			//Setup nodes
 			source = audioCtx.createMediaElementSource(audioFile);
 			gainNode = audioCtx.createGain();
 			panNode = audioCtx.createStereoPanner();
-			//verbMixNode = audioCtx.createGain();
-			//verbNode = audioCtx.createConvolver();
+			verbMixNode = audioCtx.createGain();
+			verbNode = audioCtx.createConvolver();
 
 			source.connect(gainNode);
-			//source.connect(verbMixNode);
-			//verbMixNode.connect(verbNode);
-			//verbNode.connect(gainNode);
+			source.connect(verbMixNode);
+			verbMixNode.connect(verbNode);
+			verbNode.connect(gainNode);
 			gainNode.connect(panNode);
 			panNode.connect(sfxBus);
 
 
 			//Calculate volume panning and reverb
 			gainNode.gain.value = calcuateVolumeDropoff(this.pos);
-			//verbMixNode.gain.value = calcuateReverbPresence(this.pos);
-			//if (reverbBuffer != null) verbNode.buffer = reverbBuffer;
+			verbMixNode.gain.value = calcuateReverbPresence(this.pos);
+			if (reverbBuffer != null) verbNode.buffer = reverbBuffer;
 			panNode.pan.value = calcuatePan(this.pos);
 		} else {
 			audioFile.volume *= calcuateVolumeDropoff(this.pos);
@@ -244,7 +248,7 @@ function AudioManager() {
 			audioFile.volume = Math.pow(this.mixVolume, 2);
 			if (isServer) {
 				gainNode.gain.value = calcuateVolumeDropoff(this.pos);
-				//verbMixNode.gain.value = calcuateReverbPresence(this.pos);
+				verbMixNode.gain.value = calcuateReverbPresence(this.pos);
 				panNode.pan.value = calcuatePan(this.pos);
 			} else {
 				audioFile.volume *= calcuateVolumeDropoff(this.pos);
@@ -323,7 +327,6 @@ function AudioManager() {
 		} else if (distance > DROPOFF_MAX) {
 			newVolume = 0;
 		}
-		newVolume = 1;
 
 
 		//Back of head attenuation
@@ -340,7 +343,6 @@ function AudioManager() {
 		} else if (direction > 180 && direction <= 270) {
 			newVolume *= lerpC(HEADSHADOW_REDUCTION, 1, (direction-180)/90);
 		}
-		console.log(newVolume);
 
 		return Math.pow(newVolume, 2);
 	};
@@ -349,8 +351,9 @@ function AudioManager() {
 		var distance = distanceBetweenTwoPoints(player.pos, location);
 
 		var verbVolume = 0;
-		verbVolume = Math.pow(distance/DROPOFF_MAX * REVERB_MAX, 1.5);
+		verbVolume = Math.pow(distance/DROPOFF_MAX * REVERB_MAX, 1);
 
+		console.log(verbVolume);
 		return verbVolume;
 	};
 
@@ -425,31 +428,27 @@ function AudioManager() {
 }
 
 var fauxAudGeo = [
-	//{x:100.01, y:99.99},
+	{x:100.01, y:99.99},
 	{x:100.01, y:200.01},
 	{x:-0.01, y:200.01},
-	//{x:-0.01, y:149.99},
+	{x:-0.01, y:149.99},
 	];
 
 var currentAudGeo = []; //{point:{x,y}, connections:[indexs]}
 function generateAudGeo() {
 	currentAudGeo = new Array();
 
-	for (var i = 0; i < fauxAudGeo.length; i++) {
+	for (var i in fauxAudGeo) {
 		//console.log("Checking point " + i);
 		var connect = [];
 
-		for (var j = 0; j < fauxAudGeo.length; j++) {
+		for (var j in fauxAudGeo) {
 			if (i == j) continue;
 			//console.log("--Against point " + j);
 			var clear = true;
 
-			for (var k = 0; k < walls.length; k++) {
-				if (isLineOnLine(fauxAudGeo[i].x, fauxAudGeo[i].y, 
-						fauxAudGeo[j].x, fauxAudGeo[j].y, 
-						walls[k].p1.x, walls[k].p1.y, 
-						walls[k].p2.x, walls[k].p2.y)
-						&& walls[k].type != 0) {
+			for (var k in walls) {
+				if (isLineOnLine(fauxAudGeo[i], fauxAudGeo[j], walls[k].p1, walls[k].p2)) {
 					//console.log(walls[k]);
 					clear = false;
 					}
