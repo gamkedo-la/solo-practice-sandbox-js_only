@@ -58,38 +58,48 @@ window.onload = function() {
 	var newWall = new WallClass();
 	newWall.p1 = {x:-100, y:-100};
 	newWall.p2 = {x:300, y:-100};
+	newWall.color = "red";
 	newWall = new WallClass();
 	newWall.p1 = {x:300, y:-100};
 	newWall.p2 = {x:300, y:300};
+	newWall.color = "orange";
 	newWall = new WallClass();
 	newWall.p1 = {x:300, y:300};
 	newWall.p2 = {x:-100, y:300};
+	newWall.color = "yellow";
 	newWall = new WallClass();
 	newWall.p1 = {x:-100, y:300};
-	newWall.p2 = {x:-100, y:100};
-	newWall = new WallClass();
-	newWall.p1 = {x:100, y:150};
-	newWall.p2 = {x:0, y:150};
-	newWall = new WallClass();
-	newWall.p1 = {x:0, y:150};
-	newWall.p2 = {x:0, y:200};
-	newWall = new WallClass();
-	newWall.p1 = {x:0, y:200};
-	newWall.p2 = {x:100, y:200};
-	newWall = new WallClass();
-	newWall.p1 = {x:100, y:200};
-	newWall.p2 = {x:100, y:100};
+	newWall.p2 = {x:-100, y:-100};
+	newWall.color = "green";
 	newWall = new WallClass();
 	newWall.p1 = {x:100, y:100};
 	newWall.p2 = {x:-100, y:100};
+	newWall.color = "blue";
 	newWall = new WallClass();
-	newWall.p1 = {x:-100, y:100};
-	newWall.p2 = {x:-100, y:-100};
+	newWall.p1 = {x:100, y:200};
+	newWall.p2 = {x:100, y:100};
+	newWall.color = "purple";
+	newWall = new WallClass();
+	newWall.p1 = {x:0, y:200};
+	newWall.p2 = {x:100, y:200};
+	newWall.color = "red";
+	newWall = new WallClass();
+	newWall.p1 = {x:0, y:150};
+	newWall.p2 = {x:0, y:200};
+	newWall.color = "orange";
+	newWall = new WallClass();
+	newWall.p1 = {x:0, y:150};
+	newWall.p2 = {x:50, y:150};
+	newWall.color = "yellow";
+	newWall = new WallClass();
+	newWall.p1 = {x:50, y:150};
+	newWall.p2 = {x:50, y:200};
+	newWall.color = "green";
 
-	testsound1 = AudioMan.createSound3D("./audio/reverb1.wav", {pos:{x:200, y:150}}, true, 1);
-	testsound2 = AudioMan.createSound3D("./audio/reverb2.wav", {pos:{x:50, y:250}}, true, 1);
-	testsound3 = AudioMan.createSound3D("./audio/reverb3.wav", {pos:{x:-50, y:150}}, true, 1);
-	generateAudGeo()
+	//testsound1 = AudioMan.createSound3D("./audio/reverb1.wav", {pos:{x:200, y:150}}, true, 1);
+	//testsound2 = AudioMan.createSound3D("./audio/reverb2.wav", {pos:{x:50, y:250}}, true, 1);
+	//testsound3 = AudioMan.createSound3D("./audio/reverb3.wav", {pos:{x:-50, y:175}}, true, 1);
+	generateAudGeo();
 }
 
 
@@ -101,13 +111,12 @@ function gameloop(time) {
 	lastTime = time;
 	//console.log(deltaTime);
 
+	//Update loop
 	for (var i = 0; i < gameObjects.length; i++) {
 		gameObjects[i].update();
 	}
 
-	colorRect(0,0,800,600, "black");
-
-	//Camera logic
+	//2D Camera logic
 	canvasContext.resetTransform();//reset the transform matrix as it is cumulative
 	canvasContext.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
 	colorRect(0,0,800,600, "black");
@@ -115,6 +124,7 @@ function gameloop(time) {
 	canvasContext.rotate(-player.ang + 3*pi/2);
 	canvasContext.translate(-player.pos.x, -player.pos.y);
 
+	//2D draw loops
 	for (var i = 0; i < walls.length; i++) {
 		walls[i].draw2D();
 	}
@@ -122,7 +132,6 @@ function gameloop(time) {
 	for (var i = 0; i < gameObjects.length; i++) {
 		gameObjects[i].draw2D();
 	}
-
 
 	if (Key.isJustPressed(Key.MINUS)){
 		AudioMan.turnVolumeDown();

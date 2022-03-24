@@ -1,5 +1,7 @@
 function PlayerClass() {
 	this.pos =  {x:0, y:0};
+	this.x = 0;
+	this.y = 0;
 	this.ang = 3*pi/2;
 	this.forward = {x:0, y:0};
 
@@ -10,7 +12,7 @@ function PlayerClass() {
 
 	this.update = function(){
 		//player look
-		//this.ang += mouseMovementX * deltaTime * lookSpeed;
+		this.ang += mouseMovementX * deltaTime * lookSpeed;
 		if (this.ang > 2*pi) this.ang -= 2*pi;
 		if (this.ang < 0) this.ang += 2*pi;
 
@@ -54,8 +56,8 @@ function PlayerClass() {
 		}
 		this.pos.x = newX;
 		this.pos.y = newY;
-
-
+		this.x = this.pos.x;
+		this.y = this.pos.y;
 	};
 
 	this.draw2D = function(){

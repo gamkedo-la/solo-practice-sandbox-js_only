@@ -5,7 +5,7 @@ function AudioManager() {
 //--//Constants-----------------------------------------------------------------
 	const VOLUME_INCREMENT = 0.05;
 	const DROPOFF_MIN = 30;
-	const DROPOFF_MAX = 800;
+	const DROPOFF_MAX = 400;
 	const HEADSHADOW_REDUCTION = 0.7;
 	const REVERB_MAX = 5;
 	const DOPLER_SCALE = 8;
@@ -70,10 +70,16 @@ function AudioManager() {
 
 		for (var i = currentSoundSources.length-1; i >= 0; i--) {
 			currentSoundSources[i].update();
-			if (!currentSoundSources[i].getAudioFile().paused) {
+			if (!currentSoundSources[i].getAudioFile().paused || true) {
 				colorEmptyCircle(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 1, "blue");
 				colorEmptyCircle(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, 3, "green");
 				colorLine(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, player.pos.x, player.pos.y, 1, "green");
+				for (var j in currentAudGeo) {
+					if (lineOfSight(currentAudGeo[j].point, currentSoundSources[i].parent.pos)) {
+						colorLine(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 
+							currentAudGeo[j].point.x, currentAudGeo[j].point.y, 0.5, "darkgreen");
+					}
+				}
 			}
 			if (currentSoundSources[i].isEnded()) currentSoundSources.splice(i, 1);
 		}
@@ -84,7 +90,7 @@ function AudioManager() {
 				colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, player.pos.x, player.pos.y, 1, "blue");
 				for (var j in currentAudGeo[i].connections) {
 					colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 
-						currentAudGeo[currentAudGeo[i].connections[j]].point.x, currentAudGeo[currentAudGeo[i].connections[j]].point.y, 0.5, "darkblue");
+						currentAudGeo[currentAudGeo[i].connections[j]].point.x, currentAudGeo[currentAudGeo[i].connections[j]].point.y, 1, "darkblue");
 				}
 			}
 		}
@@ -239,10 +245,12 @@ function AudioManager() {
 
 
 		this.update = function() {
-			if (audioFile.paused) return;
+			//if (audioFile.paused) return;
 
 			//Recalculate position
+			//var thisTime = window.performance.now();
 			this.pos = calculatePropogationPosition(this.parent.pos);
+			//console.log(window.performance.now() - thisTime);
 
 			//Calculate volume panning and reverb
 			audioFile.volume = Math.pow(this.mixVolume, 2);
@@ -353,7 +361,7 @@ function AudioManager() {
 		var verbVolume = 0;
 		verbVolume = Math.pow(distance/DROPOFF_MAX * REVERB_MAX, 1);
 
-		console.log(verbVolume);
+		//console.log(verbVolume);
 		return verbVolume;
 	};
 
@@ -402,9 +410,10 @@ function AudioManager() {
 		for (var i in currentAudGeo[pointToCheck].connections) {
 			//Skips over nodes we've already visited
 			var oldPoint = false;
-			for (var j in pointsChecked) {
+			for (var j in pointsChecked) { //Error: timeout, but only sometimes
 				if (i == pointsChecked[j]) {
 					oldPoint = true;
+					break;
 				}
 			}
 			if (oldPoint) continue;
@@ -428,10 +437,11 @@ function AudioManager() {
 }
 
 var fauxAudGeo = [
-	{x:100.01, y:99.99},
-	{x:100.01, y:200.01},
-	{x:-0.01, y:200.01},
-	{x:-0.01, y:149.99},
+	//{x:100.01, y:99.99},
+	//{x:100.01, y:200.01},
+	//{x:-0.01, y:200.01},
+	//{x:-0.01, y:149.99},
+	//{x:50.01, y:149.99},
 	];
 
 var currentAudGeo = []; //{point:{x,y}, connections:[indexs]}
