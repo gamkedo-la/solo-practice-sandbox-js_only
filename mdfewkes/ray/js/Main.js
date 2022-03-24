@@ -7,7 +7,7 @@ var distanceBuffer = [];
 
 var player = new PlayerClass();
 
-var deltaTime = 0;
+var deltaTime = window.performance.now();
 var lastTime = 0;
 
 window.onload = function() {
@@ -63,9 +63,21 @@ window.onload = function() {
 	newWall.p2 = {x:300, y:300};
 	newWall = new WallClass();
 	newWall.p1 = {x:300, y:300};
-	newWall.p2 = {x:100, y:300};
+	newWall.p2 = {x:-100, y:300};
 	newWall = new WallClass();
-	newWall.p1 = {x:100, y:300};
+	newWall.p1 = {x:-100, y:300};
+	newWall.p2 = {x:-100, y:100};
+	newWall = new WallClass();
+	newWall.p1 = {x:100, y:150};
+	newWall.p2 = {x:0, y:150};
+	newWall = new WallClass();
+	newWall.p1 = {x:0, y:150};
+	newWall.p2 = {x:0, y:200};
+	newWall = new WallClass();
+	newWall.p1 = {x:0, y:200};
+	newWall.p2 = {x:100, y:200};
+	newWall = new WallClass();
+	newWall.p1 = {x:100, y:200};
 	newWall.p2 = {x:100, y:100};
 	newWall = new WallClass();
 	newWall.p1 = {x:100, y:100};
@@ -74,16 +86,17 @@ window.onload = function() {
 	newWall.p1 = {x:-100, y:100};
 	newWall.p2 = {x:-100, y:-100};
 
-	testsound = AudioMan.createSound3D("./audio/reverb1.wav", {pos:{x:200, y:200}}, true, 0.95);
+	testsound1 = AudioMan.createSound3D("./audio/reverb1.wav", {pos:{x:200, y:150}}, true, 1);
+	testsound2 = AudioMan.createSound3D("./audio/reverb2.wav", {pos:{x:50, y:250}}, true, 1);
+	testsound3 = AudioMan.createSound3D("./audio/reverb3.wav", {pos:{x:-50, y:150}}, true, 1);
 	generateAudGeo()
 }
 
 
 
 function gameloop(time) {
-	//if(testsound.getAudioFile().paused) testsound.play();
 
-
+	time /= 1000;
 	deltaTime = time - lastTime;
 	lastTime = time;
 	//console.log(deltaTime);

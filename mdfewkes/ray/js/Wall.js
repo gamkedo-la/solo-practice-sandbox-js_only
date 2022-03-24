@@ -1,11 +1,14 @@
 function WallClass() {
 	this.p1 = {x:0, y:0};
 	this.p2 = {x:0, y:0};
+	this.color = "darkgrey"
 
 	walls.push(this);
 
 	this.draw2D = function(){
-		colorLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y, 2, "darkgrey")
+		colorLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y, 2, this.color);
+		colorText(this.p1.x + ":" + this.p1.y, this.p1.x, this.p1.y, this.color, font = "15px Arial");
+		colorText(this.p2.x + ":" + this.p2.y, this.p2.x, this.p2.y, this.color, font = "15px Arial");
 	};
 
 	this.draw3D = function(){};
@@ -19,7 +22,7 @@ function lineOfSight(v1, v2) {
 		}
 	}
 	return true;
-}
+};
 
 function isLineOnLine(p1, p2, p3, p4) {
 	var denominator = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x));
@@ -39,4 +42,4 @@ function isLineOnLine(p1, p2, p3, p4) {
 	}
 
 	return false;
-}
+};

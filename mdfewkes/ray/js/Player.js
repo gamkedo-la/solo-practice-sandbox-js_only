@@ -1,10 +1,10 @@
 function PlayerClass() {
 	this.pos =  {x:0, y:0};
-	this.ang = 0;
+	this.ang = 3*pi/2;
 	this.forward = {x:0, y:0};
 
-	var lookSpeed = 0.0005;
-	var moveSpeed = 0.1;
+	var lookSpeed = 0.75;
+	var moveSpeed = 100;
 
 	gameObjects.push(this);
 

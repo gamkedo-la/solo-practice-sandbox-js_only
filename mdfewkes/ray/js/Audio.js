@@ -5,8 +5,8 @@ function AudioManager() {
 //--//Constants-----------------------------------------------------------------
 	const VOLUME_INCREMENT = 0.05;
 	const DROPOFF_MIN = 30;
-	const DROPOFF_MAX = 400;
-	const HEADSHADOW_REDUCTION = 0.5;
+	const DROPOFF_MAX = 800;
+	const HEADSHADOW_REDUCTION = 0.7;
 	const REVERB_MAX = 5;
 	const DOPLER_SCALE = 8;
 
@@ -24,7 +24,6 @@ function AudioManager() {
 
 		if (isServer) {
 			audioCtx = new window.AudioContext();
-			this.context = audioCtx;
 			sfxBus = audioCtx.createGain();
 			musicBus = audioCtx.createGain();
 			masterBus = audioCtx.createGain();
@@ -43,7 +42,7 @@ function AudioManager() {
 			request.open('GET', "audio/reverb3.wav", true);
 			request.responseType = 'arraybuffer';
 			request.onload = function() {
-				audio.context.decodeAudioData(request.response, function(buffer) {
+				audioCtx.decodeAudioData(request.response, function(buffer) {
 					reverbBuffer = buffer;
 				});
 			};
@@ -58,7 +57,7 @@ function AudioManager() {
 	};
 
 	this.reset = function() {
-		if (!initialized) return;
+		if (!initialized) this.init();
 
 		for (var i = currentSoundSources.length-1; i >= 0; i--) {
 		 	currentSoundSources[i].stop();
@@ -67,7 +66,7 @@ function AudioManager() {
 	};
 
 	this.update = function() {
-		if (!initialized) return;
+		if (!initialized) this.init();
 
 		for (var i = currentSoundSources.length-1; i >= 0; i--) {
 			currentSoundSources[i].update();
@@ -89,7 +88,7 @@ function AudioManager() {
 
 //--//volume handling functions-------------------------------------------------
 	this.toggleMute = function() {
-		if (!initialized) return;
+		if (!initialized) this.init();
 
 		var newVolume = (masterBus.gain.value === 0 ? 1 : 0);
 		masterBus.gain.setTargetAtTime(newVolume, audioCtx.currentTime, 0.03);
@@ -98,7 +97,7 @@ function AudioManager() {
 	};
 
 	this.setMute = function(tOrF) {
-		if (!initialized) return;
+		if (!initialized) this.init();
 
 		var newVolume = (tOrF === false ? 1 : 0);
 		masterBus.gain.setTargetAtTime(newVolume, audioCtx.currentTime, 0.03);
@@ -107,7 +106,7 @@ function AudioManager() {
 	};
 
 	this.setMusicVolume = function(amount) {
-		if (!initialized) return;
+		if (!initialized) this.init();
 
 		musicVolume = clamp(amount, 0, 1);
 		musicBus.gain.setTargetAtTime(Math.pow(musicVolume, 2), audioCtx.currentTime, 0.03);
@@ -116,7 +115,7 @@ function AudioManager() {
 	};
 
 	this.setsfxVolume = function(amount) {
-		if (!initialized) return;
+		if (!initialized) this.init();
 
 		sfxVolume = clamp(amount, 0, 1);
 		sfxBus.gain.setTargetAtTime(Math.pow(sfxVolume, 2), audioCtx.currentTime, 0.03);
@@ -125,14 +124,14 @@ function AudioManager() {
 	};
 
 	this.turnVolumeUp = function() {
-		if (!initialized) return;
+		if (!initialized) this.init();
 
 		this.setMusicVolume(musicVolume + VOLUME_INCREMENT);
 		this.setsfxVolume(sfxVolume + VOLUME_INCREMENT);
 	};
 
 	this.turnVolumeDown = function() {
-		if (!initialized) return;
+		if (!initialized) this.init();
 
 		this.setMusicVolume(musicVolume - VOLUME_INCREMENT);
 		this.setsfxVolume(sfxVolume - VOLUME_INCREMENT);
@@ -176,7 +175,7 @@ function AudioManager() {
 
 //--//sound objects-------------------------------------------------------------
 	this.createSound3D = function(fileNameWithPath, parent, looping = false, mixVolume = 1, rate = 1, preservesPitch = false) {
-		if (!initialized) return;
+		if (!initialized) this.init();
 
 		var newSound = new Sound3D(fileNameWithPath, parent, looping, mixVolume, rate, preservesPitch);
 		currentSoundSources.push(newSound);
@@ -226,7 +225,7 @@ function AudioManager() {
 
 
 			//Calculate volume panning and reverb
-			gainNode.gain.value = calcuateVolumeDropoff(pthis.os);
+			gainNode.gain.value = calcuateVolumeDropoff(this.pos);
 			//verbMixNode.gain.value = calcuateReverbPresence(this.pos);
 			//if (reverbBuffer != null) verbNode.buffer = reverbBuffer;
 			panNode.pan.value = calcuatePan(this.pos);
@@ -294,11 +293,14 @@ function AudioManager() {
 
 		//Calculate pan
 		var pan = 0;
-		if (direction + 90 <= 180) {
-			pan = lerpC(-1, 1, (direction+90)/180);
-		}
-		if (direction + 90 > 180) {
-			pan = lerpC(1, -1, (direction-90)/180);
+		if (direction <= 90) {
+			pan = lerp(0, 1, direction/90);
+		} else if (direction <= 180) {
+			pan = lerp(1, 0, (direction-90)/90);
+		} else if (direction <= 270) {
+			pan = lerp(0, -1, (direction-180)/90);
+		} else if (direction <= 360) {
+			pan = lerp(-1, 0, (direction-270)/90);
 		}
 
 		//Proximity
@@ -321,6 +323,7 @@ function AudioManager() {
 		} else if (distance > DROPOFF_MAX) {
 			newVolume = 0;
 		}
+		newVolume = 1;
 
 
 		//Back of head attenuation
@@ -337,6 +340,7 @@ function AudioManager() {
 		} else if (direction > 180 && direction <= 270) {
 			newVolume *= lerpC(HEADSHADOW_REDUCTION, 1, (direction-180)/90);
 		}
+		console.log(newVolume);
 
 		return Math.pow(newVolume, 2);
 	};
@@ -421,7 +425,10 @@ function AudioManager() {
 }
 
 var fauxAudGeo = [
-	{x:101, y:99}
+	//{x:100.01, y:99.99},
+	{x:100.01, y:200.01},
+	{x:-0.01, y:200.01},
+	//{x:-0.01, y:149.99},
 	];
 
 var currentAudGeo = []; //{point:{x,y}, connections:[indexs]}
