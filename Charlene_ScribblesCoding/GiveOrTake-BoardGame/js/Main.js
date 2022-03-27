@@ -9,6 +9,8 @@ playerBoardsOdd.src = "assets/board_box_1_3.png";
 var playerBoardsEven = new Image();
 playerBoardsEven.src = "assets/board_box_2_4.png";
 const PLAYER_BOARD_SIZE = 275;
+var menu = new Image();
+menu.src = "assets/tutorial.png";
 
 // player board position
 const PLAYER_1_BOARD = {x: 12, y: 7}
@@ -30,6 +32,7 @@ var cardArray = [];
 var spawnCounter = 0;
 var isGameOver = false;
 var isGameStarted = false;
+var isMenu = false;
 var numOfTurns = 12;
 var turns = 0;
 var round = 1;
@@ -46,7 +49,7 @@ window.onload = function () {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
 
-  canvas.addEventListener('click', spawnCard);
+  canvas.addEventListener('click', handleClick);
 
   setInterval(function () {
     if (!isGameOver && isGameStarted) {
@@ -62,6 +65,12 @@ function moveEverything() {
   if (turns == numOfTurns) {
     isGameOver = true;
   }
+}
+
+function menuScreen() {
+  isMenu = false;
+  isGameStarted = true;
+  console.log("isMenu: " + isMenu + ", isGameStarted: " + isGameStarted)
 }
 
 function set4Players() {
@@ -88,24 +97,28 @@ function set2Players() {
 function set4Cards() {
   numOfTurns = 4;
   document.getElementById("player_controller").style.display = "none";
+  isMenu = true;
   isGameStarted = true;
 }
 
 function set8Cards() {
   numOfTurns = 8;
   document.getElementById("player_controller").style.display = "none";
+  isMenu = true;
   isGameStarted = true;
 }
 
 function set12Cards() {
   numOfTurns = 12;
   document.getElementById("player_controller").style.display = "none";
+  isMenu = true;
   isGameStarted = true;
 }
 
 function set24Cards() {
   numOfTurns = 24;
   document.getElementById("player_controller").style.display = "none";
+  isMenu = true;
   isGameStarted = true;
 }
 
@@ -114,66 +127,70 @@ function appearCardQuestion() {
   div.innerHTML=`<p>How many cards do you want to play?</p> <button class=\"btn\" onclick=\"set4Cards()\">4</button> <button class=\"btn\" onclick=\"set8Cards()\">8</button> <button class=\"btn\" onclick=\"set12Cards()\">12</button> <button class=\"btn\" onclick=\"set24Cards()\">24</button>`
 }
 
-function spawnCard(e) {
+function handleClick(e) {
   var randomize = Math.floor(Math.random() * 11) + 1; // get a number between 1 - 10
   var cardType;
   var pos = getMousePos(e);
   posX = pos.x;
   posY = pos.y;
 
-  // set the game points
-  if (randomize <= 3) { // 1 - 3
-    scorePoint = -2
-    cardType = snake
-  } else if (randomize >= 4 && randomize <= 7) { // 4 - 7
-    scorePoint = -1
-    cardType = rat
-  } else if (randomize >= 8 && randomize <= 9) { // 8 - 9
-    scorePoint = 1
-    cardType = heart
-  } else { // 10 - jackpot score!
-    scorePoint = 5
-    cardType = crown
-  }
-
-  if (!isGameOver && isGameStarted) {
-    console.log("posX: " + posX + ", posY: " + posY)
-    if (currentTurn < numOfPlayers) {
-      if (posX > 12 && posX < 240) { // posX is at left boards, either player 1 or 3
-        if (posY > 5 && posY < 250) { // posY is on top left board - player 1
-          playerScoreArray[0] += scorePoint;
-          cardArray.push({ card: cardType, x: posX, y: posY });
-          turns++;
-        } else if (posY > 285 && posY < 530) { // posY is on bottom left board - player 3
-          if (numOfPlayers >= 3) {
-            playerScoreArray[2] += scorePoint;
+  if (!isMenu) {
+    // set the game points
+    if (randomize <= 3) { // 1 - 3
+      scorePoint = -2
+      cardType = snake
+    } else if (randomize >= 4 && randomize <= 7) { // 4 - 7
+      scorePoint = -1
+      cardType = rat
+    } else if (randomize >= 8 && randomize <= 9) { // 8 - 9
+      scorePoint = 1
+      cardType = heart
+    } else { // 10 - jackpot score!
+      scorePoint = 5
+      cardType = crown
+    }
+  
+    if (!isGameOver && isGameStarted) {
+      console.log("posX: " + posX + ", posY: " + posY)
+      if (currentTurn < numOfPlayers) {
+        if (posX > 12 && posX < 240) { // posX is at left boards, either player 1 or 3
+          if (posY > 5 && posY < 250) { // posY is on top left board - player 1
+            playerScoreArray[0] += scorePoint;
             cardArray.push({ card: cardType, x: posX, y: posY });
             turns++;
+          } else if (posY > 285 && posY < 530) { // posY is on bottom left board - player 3
+            if (numOfPlayers >= 3) {
+              playerScoreArray[2] += scorePoint;
+              cardArray.push({ card: cardType, x: posX, y: posY });
+              turns++;
+            }
+          }
+        } else if (posX > 275 && posX < 530) { // posX is at right boards, either 2 or 4
+          if (posY > 7 && posY < 250) { // posY is on top right board - player 2
+            if (numOfPlayers >= 2) {
+              playerScoreArray[1] += scorePoint;
+              cardArray.push({ card: cardType, x: posX, y: posY });
+              turns++;
+            }
+          } else if (posY > 285 && posY < 530) { // posY is on bottom right board - player 4
+            if (numOfPlayers >= 4) {
+              playerScoreArray[3] += scorePoint;
+              cardArray.push({ card: cardType, x: posX, y: posY });
+              turns++;
+            }
           }
         }
-      } else if (posX > 275 && posX < 530) { // posX is at right boards, either 2 or 4
-        if (posY > 7 && posY < 250) { // posY is on top right board - player 2
-          if (numOfPlayers >= 2) {
-            playerScoreArray[1] += scorePoint;
-            cardArray.push({ card: cardType, x: posX, y: posY });
-            turns++;
-          }
-        } else if (posY > 285 && posY < 530) { // posY is on bottom right board - player 4
-          if (numOfPlayers >= 4) {
-            playerScoreArray[3] += scorePoint;
-            cardArray.push({ card: cardType, x: posX, y: posY });
-            turns++;
-          }
-        }
-      }
-      // playerScoreArray[currentTurn] += scorePoint;
-    } else {
-      currentTurn = 0;
-      playerScoreArray[currentTurn] += scorePoint;
-    }  
+        // playerScoreArray[currentTurn] += scorePoint;
+      } else {
+        currentTurn = 0;
+        playerScoreArray[currentTurn] += scorePoint;
+      }  
+    }
+  
+    document.getElementById("debug").innerHTML = "Player " + currentTurn + " scored " + scorePoint + " points!";
+  } else {
+    isMenu = false;
   }
-
-  document.getElementById("debug").innerHTML = "Player " + currentTurn + " scored " + scorePoint + " points!";
 }
 
 function getMousePos(evt) {
@@ -252,5 +269,9 @@ function drawEverything() {
 
     canvasContext.font = '18px serif';
     canvasContext.fillText(msg, 590, 500 + (i * 20));
+  }
+
+  if (isMenu) {
+    drawPicture(menu, 75, 75, 650, 450);
   }
 }
