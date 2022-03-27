@@ -12,7 +12,7 @@ function PlayerClass() {
 
 	this.update = function(){
 		//player look
-		this.ang += mouseMovementX * deltaTime * lookSpeed;
+		//this.ang += mouseMovementX * deltaTime * lookSpeed;
 		if (this.ang > 2*pi) this.ang -= 2*pi;
 		if (this.ang < 0) this.ang += 2*pi;
 

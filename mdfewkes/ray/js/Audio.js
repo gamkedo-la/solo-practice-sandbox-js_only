@@ -1,4 +1,6 @@
 var isServer = window.location.protocol == 'file:' ? false : true;
+var printcycle = false;
+var printlist = [];
 
 var AudioMan = new AudioManager();
 function AudioManager() {
@@ -367,7 +369,10 @@ function AudioManager() {
 
 	function calculatePropogationPosition(location) {
 		//Return if in line of sight
-		if (lineOfSight(location, player.pos)) return location;
+		if (lineOfSight(location, player.pos)) {
+			//printlist.push("lineOfSight");
+			return location;
+		}
 
 		//Calculate distance and select AudGeo location
 		//Start with max distance and location, then update with new distance and location everytime a shorter distance is calculated
@@ -376,6 +381,8 @@ function AudioManager() {
 		for (var i in currentAudGeo) {
 			//If AudGeo has lineOfSight to the player, use checkAudGeo() to find the distance through the network back to the sound location
 			if (lineOfSight(player.pos, currentAudGeo[i].point)) { //LineOfSight to player
+				crashlimit = 0;
+				//printlist.push("* checking from " + i);
 				var newDistance = checkAudGeo(i, location, []); //Recursive function to find shortest distance through node netowrk
 				if (newDistance < distance) { //If a shorter distance than curent holding, replace with this distance and AudGeo
 					distance = newDistance;
@@ -395,6 +402,14 @@ function AudioManager() {
 	}
 
 	function checkAudGeo(pointToCheck, location, pointsChecked) {
+		//printlist.push("in " + pointToCheck);
+
+		crashlimit++;
+		if (crashlimit > 10) {
+			//printlist.push("crash");
+			return DROPOFF_MAX;
+		}
+
 		var newPointsChecked = pointsChecked;
 		newPointsChecked.push(pointToCheck); //Add curent point to checked list
 
@@ -403,15 +418,18 @@ function AudioManager() {
 
 		//In line of sight to source, no more work for this branch
 		if (lineOfSight(currentAudGeo[pointToCheck].point, location)) {
+			//printlist.push(pointToCheck + " lineOfSight");
 			return distanceBetweenTwoPoints(currentAudGeo[pointToCheck].point, location);
 		}
 
 		//Checks each connection recursively for the shortest distance to lineOfSight of the source
 		for (var i in currentAudGeo[pointToCheck].connections) {
+
+			//printlist.push("looking up " + pointToCheck + " to " + currentAudGeo[pointToCheck].connections[i]);
 			//Skips over nodes we've already visited
 			var oldPoint = false;
-			for (var j in pointsChecked) { //Error: timeout, but only sometimes
-				if (i == pointsChecked[j]) {
+			for (var j in newPointsChecked) { //Error: timeout, but only sometimes
+				if (currentAudGeo[pointToCheck].connections[i] == newPointsChecked[j]) {
 					oldPoint = true;
 					break;
 				}
@@ -426,6 +444,8 @@ function AudioManager() {
 			}
 		}
 
+		//printlist.push(pointToCheck + " passing back");
+
 		return distance + distanceBetweenTwoPoints(currentAudGeo[pointToCheck].point, pos);
 	}
 
@@ -437,11 +457,11 @@ function AudioManager() {
 }
 
 var fauxAudGeo = [
-	//{x:100.01, y:99.99},
-	//{x:100.01, y:200.01},
-	//{x:-0.01, y:200.01},
-	//{x:-0.01, y:149.99},
-	//{x:50.01, y:149.99},
+	{x:100.01, y:99.99},
+	{x:100.01, y:200.01},
+	{x:-0.01, y:200.01},
+	{x:-0.01, y:149.99},
+	{x:50.01, y:149.99},
 	];
 
 var currentAudGeo = []; //{point:{x,y}, connections:[indexs]}

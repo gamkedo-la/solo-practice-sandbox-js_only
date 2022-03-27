@@ -58,47 +58,47 @@ window.onload = function() {
 	var newWall = new WallClass();
 	newWall.p1 = {x:-100, y:-100};
 	newWall.p2 = {x:300, y:-100};
-	newWall.color = "red";
+	//newWall.color = "red";
 	newWall = new WallClass();
 	newWall.p1 = {x:300, y:-100};
 	newWall.p2 = {x:300, y:300};
-	newWall.color = "orange";
+	//newWall.color = "orange";
 	newWall = new WallClass();
 	newWall.p1 = {x:300, y:300};
 	newWall.p2 = {x:-100, y:300};
-	newWall.color = "yellow";
+	//newWall.color = "yellow";
 	newWall = new WallClass();
 	newWall.p1 = {x:-100, y:300};
 	newWall.p2 = {x:-100, y:-100};
-	newWall.color = "green";
+	//newWall.color = "green";
 	newWall = new WallClass();
 	newWall.p1 = {x:100, y:100};
 	newWall.p2 = {x:-100, y:100};
-	newWall.color = "blue";
+	//newWall.color = "darkblue";
 	newWall = new WallClass();
 	newWall.p1 = {x:100, y:200};
 	newWall.p2 = {x:100, y:100};
-	newWall.color = "purple";
+	//newWall.color = "purple";
 	newWall = new WallClass();
 	newWall.p1 = {x:0, y:200};
 	newWall.p2 = {x:100, y:200};
-	newWall.color = "red";
+	//newWall.color = "red";
 	newWall = new WallClass();
 	newWall.p1 = {x:0, y:150};
 	newWall.p2 = {x:0, y:200};
-	newWall.color = "orange";
+	//newWall.color = "orange";
 	newWall = new WallClass();
 	newWall.p1 = {x:0, y:150};
 	newWall.p2 = {x:50, y:150};
-	newWall.color = "yellow";
+	//newWall.color = "yellow";
 	newWall = new WallClass();
 	newWall.p1 = {x:50, y:150};
 	newWall.p2 = {x:50, y:200};
-	newWall.color = "green";
+	//newWall.color = "green";
 
-	//testsound1 = AudioMan.createSound3D("./audio/reverb1.wav", {pos:{x:200, y:150}}, true, 1);
-	//testsound2 = AudioMan.createSound3D("./audio/reverb2.wav", {pos:{x:50, y:250}}, true, 1);
-	//testsound3 = AudioMan.createSound3D("./audio/reverb3.wav", {pos:{x:-50, y:175}}, true, 1);
+	testsound1 = AudioMan.createSound3D("./audio/reverb1.wav", {pos:{x:200, y:150}}, true, 1);
+	testsound2 = AudioMan.createSound3D("./audio/reverb2.wav", {pos:{x:50, y:250}}, true, 1);
+	testsound3 = AudioMan.createSound3D("./audio/reverb3.wav", {pos:{x:-50, y:175}}, true, 1);
 	generateAudGeo();
 }
 
@@ -132,6 +132,11 @@ function gameloop(time) {
 	for (var i = 0; i < gameObjects.length; i++) {
 		gameObjects[i].draw2D();
 	}
+
+	for (var i in printlist) {
+		colorText(i + ": " +printlist[i], player.pos.x - 350, player.pos.y - 250 + i * 10, "white")
+	}
+	printlist.length = 0;
 
 	if (Key.isJustPressed(Key.MINUS)){
 		AudioMan.turnVolumeDown();
