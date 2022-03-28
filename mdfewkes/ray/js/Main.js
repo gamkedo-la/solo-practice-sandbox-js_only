@@ -96,9 +96,9 @@ window.onload = function() {
 	newWall.p2 = {x:50, y:200};
 	//newWall.color = "green";
 
-	testsound1 = AudioMan.createSound3D("./audio/reverb1.wav", {pos:{x:200, y:150}}, true, 1);
-	testsound2 = AudioMan.createSound3D("./audio/reverb2.wav", {pos:{x:50, y:250}}, true, 1);
-	testsound3 = AudioMan.createSound3D("./audio/reverb3.wav", {pos:{x:-50, y:175}}, true, 1);
+	testsound1 = AudioMan.createSound3D("./audio/temp_engine1.ogg", {pos:{x:200, y:150}}, true, 1);
+	testsound2 = AudioMan.createSound3D("./audio/UI_Typewriter_temp01.wav", {pos:{x:50, y:250}}, true, 1);
+	testsound3 = AudioMan.createSound3D("./audio/TT rough vox only.mp3", {pos:{x:-50, y:175}}, true, 1);
 	generateAudGeo();
 }
 

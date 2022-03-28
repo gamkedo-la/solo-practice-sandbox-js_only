@@ -9,7 +9,7 @@ function AudioManager() {
 	const DROPOFF_MIN = 30;
 	const DROPOFF_MAX = 400;
 	const HEADSHADOW_REDUCTION = 0.7;
-	const REVERB_MAX = 5;
+	const REVERB_MAX = 10;
 	const DOPLER_SCALE = 8;
 
 //--//Properties----------------------------------------------------------------
