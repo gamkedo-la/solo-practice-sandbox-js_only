@@ -122,9 +122,16 @@ function set24Cards() {
   isGameStarted = true;
 }
 
+function set48Cards() {
+  numOfTurns = 48;
+  document.getElementById("player_controller").style.display = "none";
+  isMenu = true;
+  isGameStarted = true;
+}
+
 function appearCardQuestion() {
   let div = document.getElementById("player_controller")
-  div.innerHTML=`<p>How many cards do you want to play?</p> <button class=\"btn\" onclick=\"set4Cards()\">4</button> <button class=\"btn\" onclick=\"set8Cards()\">8</button> <button class=\"btn\" onclick=\"set12Cards()\">12</button> <button class=\"btn\" onclick=\"set24Cards()\">24</button>`
+  div.innerHTML=`<p>How many cards do you want to play?</p> <button class=\"btn\" onclick=\"set4Cards()\">4</button> <button class=\"btn\" onclick=\"set8Cards()\">8</button> <button class=\"btn\" onclick=\"set12Cards()\">12</button> <button class=\"btn\" onclick=\"set24Cards()\">24</button> <button class=\"btn\" onclick=\"set48Cards()\">48</button>`
 }
 
 function handleClick(e) {
