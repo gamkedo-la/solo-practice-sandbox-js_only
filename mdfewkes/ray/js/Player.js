@@ -12,7 +12,7 @@ function PlayerClass() {
 
 	this.update = function(){
 		//player look
-		//this.ang += mouseMovementX * deltaTime * lookSpeed;
+		this.ang += mouseMovementX * deltaTime * lookSpeed;
 		if (this.ang > 2*pi) this.ang -= 2*pi;
 		if (this.ang < 0) this.ang += 2*pi;
 
@@ -47,7 +47,7 @@ function PlayerClass() {
 		}
 		if (moving) {
 			for (var i in walls) {
-				if (isLineOnLine(this.pos, {x:newX, y:newY}, walls[i].p1, walls[i].p2)) {
+				if (isLineIntersecting(this.pos, {x:newX, y:newY}, walls[i].p1, walls[i].p2)) {
 					newX = this.pos.x;
 					newY = this.pos.y;
 					break;

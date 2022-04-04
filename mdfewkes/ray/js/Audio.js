@@ -70,32 +70,32 @@ function AudioManager() {
 	this.update = function() {
 		if (!initialized) this.init();
 
-		for (var i = currentSoundSources.length-1; i >= 0; i--) {
-			currentSoundSources[i].update();
-			if (!currentSoundSources[i].getAudioFile().paused || true) {
-				colorEmptyCircle(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 1, "blue");
-				colorEmptyCircle(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, 3, "green");
-				colorLine(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, player.pos.x, player.pos.y, 1, "green");
-				for (var j in currentAudGeo) {
-					if (lineOfSight(currentAudGeo[j].point, currentSoundSources[i].parent.pos)) {
-						colorLine(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 
-							currentAudGeo[j].point.x, currentAudGeo[j].point.y, 0.5, "darkgreen");
-					}
-				}
-			}
-			if (currentSoundSources[i].isEnded()) currentSoundSources.splice(i, 1);
-		}
+		// for (var i = currentSoundSources.length-1; i >= 0; i--) {
+		// 	currentSoundSources[i].update();
+		// 	if (!currentSoundSources[i].getAudioFile().paused) {
+		// 		colorEmptyCircle(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 1, "blue");
+		// 		colorEmptyCircle(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, 3, "green");
+		// 		colorLine(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, player.pos.x, player.pos.y, 1, "green");
+		// 		for (var j in currentAudGeo) {
+		// 			if (lineOfSight(currentAudGeo[j].point, currentSoundSources[i].parent.pos)) {
+		// 				colorLine(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 
+		// 					currentAudGeo[j].point.x, currentAudGeo[j].point.y, 0.5, "darkgreen");
+		// 			}
+		// 		}
+		// 	}
+		// 	if (currentSoundSources[i].isEnded()) currentSoundSources.splice(i, 1);
+		// }
 
-		for (var i in currentAudGeo) {
-			colorEmptyCircle(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 3, "blue");
-			if (lineOfSight(currentAudGeo[i].point, player.pos)) {
-				colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, player.pos.x, player.pos.y, 1, "blue");
-				for (var j in currentAudGeo[i].connections) {
-					colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 
-						currentAudGeo[currentAudGeo[i].connections[j]].point.x, currentAudGeo[currentAudGeo[i].connections[j]].point.y, 1, "darkblue");
-				}
-			}
-		}
+		// for (var i in currentAudGeo) {
+		// 	colorEmptyCircle(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 3, "blue");
+		// 	if (lineOfSight(currentAudGeo[i].point, player.pos)) {
+		// 		colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, player.pos.x, player.pos.y, 1, "blue");
+		// 		for (var j in currentAudGeo[i].connections) {
+		// 			colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 
+		// 				currentAudGeo[currentAudGeo[i].connections[j]].point.x, currentAudGeo[currentAudGeo[i].connections[j]].point.y, 1, "darkblue");
+		// 		}
+		// 	}
+		// }
 	};
 
 //--//volume handling functions-------------------------------------------------
@@ -381,7 +381,6 @@ function AudioManager() {
 		for (var i in currentAudGeo) {
 			//If AudGeo has lineOfSight to the player, use checkAudGeo() to find the distance through the network back to the sound location
 			if (lineOfSight(player.pos, currentAudGeo[i].point)) { //LineOfSight to player
-				crashlimit = 0;
 				//printlist.push("* checking from " + i);
 				var newDistance = checkAudGeo(i, location, []); //Recursive function to find shortest distance through node netowrk
 				if (newDistance < distance) { //If a shorter distance than curent holding, replace with this distance and AudGeo
@@ -402,13 +401,6 @@ function AudioManager() {
 	}
 
 	function checkAudGeo(pointToCheck, location, pointsChecked) {
-		//printlist.push("in " + pointToCheck);
-
-		crashlimit++;
-		if (crashlimit > 10) {
-			//printlist.push("crash");
-			return DROPOFF_MAX;
-		}
 
 		var newPointsChecked = pointsChecked;
 		newPointsChecked.push(pointToCheck); //Add curent point to checked list
@@ -478,7 +470,7 @@ function generateAudGeo() {
 			var clear = true;
 
 			for (var k in walls) {
-				if (isLineOnLine(fauxAudGeo[i], fauxAudGeo[j], walls[k].p1, walls[k].p2)) {
+				if (isLineIntersecting(fauxAudGeo[i], fauxAudGeo[j], walls[k].p1, walls[k].p2)) {
 					//console.log(walls[k]);
 					clear = false;
 					}

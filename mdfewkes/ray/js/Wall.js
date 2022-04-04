@@ -15,29 +15,59 @@ function WallClass(x1 = 0, y1 = 0, x2 = 0, y2 = 0, color = "darkgrey") {
 //Checks if there are no walls in between two points
 function lineOfSight(v1, v2) {
 	for (var i in walls) {
-		if (isLineOnLine(v1, v2, walls[i].p1, walls[i].p2)) {
+		if (isLineIntersecting(v1, v2, walls[i].p1, walls[i].p2)) {
 			return false;
 		}
 	}
 	return true;
 };
 
-function isLineOnLine(p1, p2, p3, p4) {
+function isLineIntersecting(p1, p2, p3, p4) {
 	var denominator = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x));
 
-	if(denominator != 0.0) {
-		var t = (((p1.x - p3.x) * (p3.y - p4.y)) - ((p1.y - p3.y) * (p3.x - p4.x))) / denominator;
-		if(t >= 0.0 && t <= 1.0) {
-			var u = (((p1.x - p2.x) * (p1.y - p3.y)) - ((p1.y - p2.y) * (p1.x - p3.x))) / denominator;
-			if(-u >= 0.0 && -u <= 1.0) {
-				return true;
-			} else {
-				return false;
+	if(denominator == 0.0) return false;
+
+	var t = (((p1.x - p3.x) * (p3.y - p4.y)) - ((p1.y - p3.y) * (p3.x - p4.x))) / denominator;
+	var u = -(((p1.x - p2.x) * (p1.y - p3.y)) - ((p1.y - p2.y) * (p1.x - p3.x))) / denominator;
+
+	if (t >= 0.0 && t <= 1.0 && u >= 0.0 && u <= 1.0) return true;
+	
+	return false;
+};
+
+function getPointAtLineIntersection(p1, p2, p3, p4) {
+	var denominator = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x));
+
+	if(denominator == 0.0) return null;
+
+	var t = (((p1.x - p3.x) * (p3.y - p4.y)) - ((p1.y - p3.y) * (p3.x - p4.x))) / denominator;
+	var u = -(((p1.x - p2.x) * (p1.y - p3.y)) - ((p1.y - p2.y) * (p1.x - p3.x))) / denominator;
+
+	if (t >= 0.0 && t <= 1.0 && u >= 0.0 && u <= 1.0) {
+		return {x: p1.x + t * (p2.x - p1.x),
+				y: p1.y + t * (p2.y - p1.y)};
+	}
+
+	return null;
+};
+
+function getClosestIntersection(p1, p2) {
+	var closestPoint = null;
+	var distance = 1000;
+
+	for (var i in walls) {
+		var point = getPointAtLineIntersection(p1, p2, walls[i].p1, walls[i].p2);
+		if (point != null) {
+			var newDistance = distanceBetweenTwoPoints(p1, point);
+
+			if (newDistance < distance) {
+				closestPoint = point;
+				closestPoint.wall = walls[i];
+				closestPoint.distance = newDistance;
+				distance = newDistance;
 			}
-		} else {
-			return false;
 		}
 	}
 
-	return false;
-};
+	return closestPoint;
+}
