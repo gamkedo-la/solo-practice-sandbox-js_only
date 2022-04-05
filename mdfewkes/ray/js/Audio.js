@@ -9,8 +9,8 @@ function AudioManager() {
 	const DROPOFF_MIN = 30;
 	const DROPOFF_MAX = 400;
 	const HEADSHADOW_REDUCTION = 0.7;
-	const REVERB_MAX = 10;
-	const DOPLER_SCALE = 8;
+	const REVERB_MAX = 5;
+	const DOPLER_SCALE = 16;
 
 //--//Properties----------------------------------------------------------------
 	var initialized = false;
@@ -70,21 +70,21 @@ function AudioManager() {
 	this.update = function() {
 		if (!initialized) this.init();
 
-		// for (var i = currentSoundSources.length-1; i >= 0; i--) {
-		// 	currentSoundSources[i].update();
-		// 	if (!currentSoundSources[i].getAudioFile().paused) {
-		// 		colorEmptyCircle(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 1, "blue");
-		// 		colorEmptyCircle(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, 3, "green");
-		// 		colorLine(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, player.pos.x, player.pos.y, 1, "green");
-		// 		for (var j in currentAudGeo) {
-		// 			if (lineOfSight(currentAudGeo[j].point, currentSoundSources[i].parent.pos)) {
-		// 				colorLine(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 
-		// 					currentAudGeo[j].point.x, currentAudGeo[j].point.y, 0.5, "darkgreen");
-		// 			}
-		// 		}
-		// 	}
-		// 	if (currentSoundSources[i].isEnded()) currentSoundSources.splice(i, 1);
-		// }
+		for (var i = currentSoundSources.length-1; i >= 0; i--) {
+			currentSoundSources[i].update();
+			// if (!currentSoundSources[i].getAudioFile().paused) {
+			// 	colorEmptyCircle(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 1, "blue");
+			// 	colorEmptyCircle(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, 3, "green");
+			// 	colorLine(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, player.pos.x, player.pos.y, 1, "green");
+			// 	for (var j in currentAudGeo) {
+			// 		if (lineOfSight(currentAudGeo[j].point, currentSoundSources[i].parent.pos)) {
+			// 			colorLine(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 
+			// 				currentAudGeo[j].point.x, currentAudGeo[j].point.y, 0.5, "darkgreen");
+			// 		}
+			// 	}
+			// }
+			if (currentSoundSources[i].isEnded()) currentSoundSources.splice(i, 1);
+		}
 
 		// for (var i in currentAudGeo) {
 		// 	colorEmptyCircle(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 3, "blue");
@@ -257,6 +257,8 @@ function AudioManager() {
 			//Calculate volume panning and reverb
 			audioFile.volume = Math.pow(this.mixVolume, 2);
 			if (isServer) {
+				if (verbNode.buffer == null && reverbBuffer != null) verbNode.buffer = reverbBuffer;
+
 				gainNode.gain.value = calcuateVolumeDropoff(this.pos);
 				verbMixNode.gain.value = calcuateReverbPresence(this.pos);
 				panNode.pan.value = calcuatePan(this.pos);

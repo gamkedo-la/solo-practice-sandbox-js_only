@@ -6,7 +6,7 @@ function PlayerClass() {
 	this.forward = {x:0, y:0};
 
 	var lookSpeed = 0.75;
-	var moveSpeed = 100;
+	var moveSpeed = 50;
 
 	gameObjects.push(this);
 

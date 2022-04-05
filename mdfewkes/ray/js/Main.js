@@ -14,11 +14,29 @@ window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
 
+	waitingforgesture();
+}
+
+function waitingforgesture() {
+
+	colorRect(0,0,800,600, "black");
+	colorText("Press Space to Play", canvas.width/2 - 120, canvas.height/2, "white", "30px Arial");
+
+	if (Key.isDown(Key.SPACE)) {
+		window.requestAnimationFrame(gamestart);
+	} else {
+		window.requestAnimationFrame(waitingforgesture);
+	}
+
+	Key.update();
+}
+
+function gamestart() {
 	AudioMan.init();
 	window.requestAnimationFrame(gameloop);
 
-	/*//generate a random room
-	var x = -250;
+	//generate a random room
+	/*var x = -250;
 	var y = -250;
 	console.log("x:" + x + "," + "y:" + y);
 	for (var i = 0; i < 10; i++) {
@@ -96,13 +114,11 @@ window.onload = function() {
 	newWall.p2 = {x:50, y:200};
 	newWall.color = "green";
 
-	testsound1 = AudioMan.createSound3D("./audio/temp_engine1.ogg", {pos:{x:200, y:150}}, true, 1);
-	testsound2 = AudioMan.createSound3D("./audio/UI_Typewriter_temp01.wav", {pos:{x:50, y:250}}, true, 1);
-	testsound3 = AudioMan.createSound3D("./audio/TT rough vox only.mp3", {pos:{x:-50, y:175}}, true, 1);
+	testsound1 = AudioMan.createSound3D("./audio/temp_engine1.ogg", {pos:{x:200, y:150}}, true, 1).play();
+	testsound2 = AudioMan.createSound3D("./audio/UI_Typewriter_temp01.wav", {pos:{x:50, y:250}}, true, 1).play();
+	testsound3 = AudioMan.createSound3D("./audio/TT rough vox only.mp3", {pos:{x:-50, y:175}}, true, 1).play();
 	generateAudGeo();
 }
-
-
 
 function gameloop(time) {
 
@@ -120,6 +136,10 @@ function gameloop(time) {
 	canvasContext.resetTransform();//reset the transform matrix as it is cumulative
 	canvasContext.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
 	colorRect(0,0,800,600, "black");
+
+	colorRect(0,0,800,300, "darkgrey");
+	colorRect(0,300,800,300, "lightgrey");
+
 	// canvasContext.translate(canvas.width/2, canvas.height/2);
 	// canvasContext.rotate(-player.ang + 3*pi/2);
 	// canvasContext.translate(-player.pos.x, -player.pos.y);
@@ -134,7 +154,7 @@ function gameloop(time) {
 	// }
 
 	//3D
-	var FOV = 90;
+	var FOV = 60;
 	var numRays = 800;
 	var drawDistance = 600;
 	for (i = 0; i < numRays; i ++) {
@@ -143,8 +163,16 @@ function gameloop(time) {
 		var hit = getClosestIntersection(player.pos, rayEnd);
 
 		if (hit != null) {
-			//colorLine(player.x, player.y, hit.x, hit.y, 1, hit.wall.color);
-			colorLine(i, canvas.height/2 - drawDistance/hit.distance * 2, i, canvas.height/2 + drawDistance/hit.distance * 2, 1, hit.wall.color);
+			//colorLine(player.x, player.y, hit.x, hit.y, 1, hit.wall.color); //2d
+
+			// Correct for fisheye
+			var cameraAng = player.ang - angle;
+			if (cameraAng > 2*pi) cameraAng -= 2*pi;
+			if (cameraAng < 0) cameraAng += 2*pi;
+			var distance = hit.distance * Math.cos(cameraAng);
+
+			//height = wallheight * canvas height / distance
+			colorLine(i, canvas.height/2 - (5*canvas.width/2)/distance, i, canvas.height/2 + (5*canvas.width/2)/distance, 2, hit.wall.color);
 		} else {
 			//colorLine(player.x, player.y, rayEnd.x, rayEnd.y, 1, "darkred");
 		}
