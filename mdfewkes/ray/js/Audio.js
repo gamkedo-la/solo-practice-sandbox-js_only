@@ -72,30 +72,34 @@ function AudioManager() {
 
 		for (var i = currentSoundSources.length-1; i >= 0; i--) {
 			currentSoundSources[i].update();
-			// if (!currentSoundSources[i].getAudioFile().paused) {
-			// 	colorEmptyCircle(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 1, "blue");
-			// 	colorEmptyCircle(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, 3, "green");
-			// 	colorLine(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, player.pos.x, player.pos.y, 1, "green");
-			// 	for (var j in currentAudGeo) {
-			// 		if (lineOfSight(currentAudGeo[j].point, currentSoundSources[i].parent.pos)) {
-			// 			colorLine(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 
-			// 				currentAudGeo[j].point.x, currentAudGeo[j].point.y, 0.5, "darkgreen");
-			// 		}
-			// 	}
-			// }
 			if (currentSoundSources[i].isEnded()) currentSoundSources.splice(i, 1);
 		}
 
-		// for (var i in currentAudGeo) {
-		// 	colorEmptyCircle(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 3, "blue");
-		// 	if (lineOfSight(currentAudGeo[i].point, player.pos)) {
-		// 		colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, player.pos.x, player.pos.y, 1, "blue");
-		// 		for (var j in currentAudGeo[i].connections) {
-		// 			colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 
-		// 				currentAudGeo[currentAudGeo[i].connections[j]].point.x, currentAudGeo[currentAudGeo[i].connections[j]].point.y, 1, "darkblue");
-		// 		}
-		// 	}
-		// }
+		if (debug) {
+			for (var i in currentSoundSources) {
+				colorEmptyCircle(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 1, "blue");
+				colorEmptyCircle(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, 3, "green");
+				colorLine(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, player.pos.x, player.pos.y, 1, "green");
+				for (var j in currentAudGeo) {
+					if (lineOfSight(currentAudGeo[j].point, currentSoundSources[i].parent.pos)) {
+						colorLine(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 
+							currentAudGeo[j].point.x, currentAudGeo[j].point.y, 0.5, "darkgreen");
+					}
+				}
+			}
+
+			for (var i in currentAudGeo) {
+				colorEmptyCircle(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 3, "blue");
+				if (lineOfSight(currentAudGeo[i].point, player.pos)) {
+					colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, player.pos.x, player.pos.y, 1, "blue");
+					for (var j in currentAudGeo[i].connections) {
+						colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 
+							currentAudGeo[currentAudGeo[i].connections[j]].point.x, currentAudGeo[currentAudGeo[i].connections[j]].point.y, 1, "darkblue");
+					}
+				}
+			}
+
+		}
 	};
 
 //--//volume handling functions-------------------------------------------------

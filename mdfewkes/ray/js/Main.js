@@ -1,6 +1,8 @@
 let canvasContext;
 let canvas;
 
+var debug = true;
+
 var gameObjects = [];
 var walls = [];
 var distanceBuffer = [];
@@ -132,56 +134,65 @@ function gameloop(time) {
 		gameObjects[i].update();
 	}
 
-	//2D Camera logic
-	canvasContext.resetTransform();//reset the transform matrix as it is cumulative
-	canvasContext.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
-	colorRect(0,0,800,600, "black");
+	if (debug) {
 
-	colorRect(0,0,800,300, "darkgrey");
-	colorRect(0,300,800,300, "lightgrey");
+		//2D Camera logic
+		canvasContext.resetTransform();//reset the transform matrix as it is cumulative
+		canvasContext.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
+		colorRect(0,0,800,600, "black");
+		canvasContext.translate(canvas.width/2, canvas.height/2);
+		canvasContext.rotate(-player.ang + 3*pi/2);
+		canvasContext.translate(-player.pos.x, -player.pos.y);
 
-	// canvasContext.translate(canvas.width/2, canvas.height/2);
-	// canvasContext.rotate(-player.ang + 3*pi/2);
-	// canvasContext.translate(-player.pos.x, -player.pos.y);
-
-	//2D draw loops
-	// for (var i = 0; i < walls.length; i++) {
-	// 	walls[i].draw2D();
-	// }
-
-	// for (var i = 0; i < gameObjects.length; i++) {
-	// 	gameObjects[i].draw2D();
-	// }
-
-	//3D
-	var FOV = 60;
-	var numRays = 800;
-	var drawDistance = 600;
-	for (i = 0; i < numRays; i ++) {
-		var angle = degToRad(-(FOV/2) + ((FOV / numRays) * i)) + player.ang;
-		var rayEnd = {x:Math.cos(angle) * drawDistance + player.x, y:Math.sin(angle) * drawDistance + player.y};
-		var hit = getClosestIntersection(player.pos, rayEnd);
-
-		if (hit != null) {
-			//colorLine(player.x, player.y, hit.x, hit.y, 1, hit.wall.color); //2d
-
-			// Correct for fisheye
-			var cameraAng = player.ang - angle;
-			if (cameraAng > 2*pi) cameraAng -= 2*pi;
-			if (cameraAng < 0) cameraAng += 2*pi;
-			var distance = hit.distance * Math.cos(cameraAng);
-
-			//height = wallheight * canvas height / distance
-			colorLine(i, canvas.height/2 - (5*canvas.width/2)/distance, i, canvas.height/2 + (5*canvas.width/2)/distance, 2, hit.wall.color);
-		} else {
-			//colorLine(player.x, player.y, rayEnd.x, rayEnd.y, 1, "darkred");
+		//2D draw loops
+		for (var i = 0; i < walls.length; i++) {
+			walls[i].draw2D();
 		}
-	}
 
-	for (var i in printlist) {
-		colorText(i + ": " +printlist[i], player.pos.x - 350, player.pos.y - 250 + i * 10, "white")
+		for (var i = 0; i < gameObjects.length; i++) {
+			gameObjects[i].draw2D();
+		}
+
+		for (var i in printlist) {
+			colorText(i + ": " +printlist[i], player.pos.x - 350, player.pos.y - 250 + i * 10, "white")
+		}
+		printlist.length = 0;
+
+	} else {
+
+		canvasContext.resetTransform();//reset the transform matrix as it is cumulative
+		canvasContext.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
+		colorRect(0,0,800,300, "darkgrey");
+		colorRect(0,300,800,300, "lightgrey");
+
+		//3D
+		var FOV = 60;
+		var numRays = 800;
+		var drawDistance = 600;
+		var wallHeight = 5;
+		for (i = 0; i < numRays; i ++) {
+			var angle = degToRad(-(FOV/2) + ((FOV / numRays) * i)) + player.ang;
+			var rayEnd = {x:Math.cos(angle) * drawDistance + player.x, y:Math.sin(angle) * drawDistance + player.y};
+			var hit = getClosestIntersection(player.pos, rayEnd);
+
+			if (hit != null) {
+				//colorLine(player.x, player.y, hit.x, hit.y, 1, hit.wall.color); //2d
+
+				// Correct for fisheye
+				var cameraAng = player.ang - angle;
+				if (cameraAng > 2*pi) cameraAng -= 2*pi;
+				if (cameraAng < 0) cameraAng += 2*pi;
+				var distance = hit.distance * Math.cos(cameraAng);
+
+				//height = wallheight * canvas height / distance
+				//colorLine(i, canvas.height/2 - (wallHeight*canvas.width/2)/distance, i, canvas.height/2 + (wallHeight*canvas.width/2)/distance, 2, hit.wall.color);
+				colorRect(i, canvas.height/2 - wallHeight*canvas.width*0.5/distance, 1, wallHeight * canvas.height / distance, hit.wall.color);
+			} else {
+				//colorLine(player.x, player.y, rayEnd.x, rayEnd.y, 1, "darkred");
+			}
+		}
+
 	}
-	printlist.length = 0;
 
 	if (Key.isJustPressed(Key.MINUS)){
 		AudioMan.turnVolumeDown();
