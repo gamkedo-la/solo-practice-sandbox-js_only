@@ -26,8 +26,11 @@ export class Level {
 		showTimeOffset: 0,
 		hideDelay: 1,
 		hideTimeOffset: 1,
-		positions: [
-		  {x: 100, y: 100}, {x: 120, y: 100}, {x: 140, y: 100}, {x: 160, y: 100}
+		enemySpecs: [
+		  {x: 100, y: 100, role: "static"},
+		  {x: 120, y: 100, role: "static"},
+		  {x: 140, y: 100, role: "static"},
+		  {x: 160, y: 100, role: "static"} 
 		],
 	  },
 	  {
@@ -35,10 +38,23 @@ export class Level {
 		showTimeOffset: 1,
 		hideDelay: 4,
 		hideTimeOffset: 0,
-		positions: [
-		  {x: 100, y: 50}, {x: 120, y: 50}, {x: 140, y: 50}, {x: 160, y: 50}
+		enemySpecs: [
+		  {x: 100, y: 50, role: "static"},
+		  {x: 120, y: 50, role: "static"},
+		  {x: 140, y: 50, role: "static"},
+		  {x: 160, y: 50, role: "static"}
 		],
 	  },
+	  {
+		showDelay: 5,
+		showTimeOffset: 2,
+		hideDelay: Infinity,
+		hideTimeOffset: 0,
+		enemySpecs: [
+		  {x: 0, y: 128, role: "stageRight"},
+		  {x: ctx.canvas.width + 10, y: 112, role: "stageLeft"}
+		],
+	  }
 	];
 	this.liveWaves = [];
   }
@@ -49,7 +65,7 @@ export class Level {
 	  Level.#WAVE_TIMER = 0;
 	  this.waveIndex = (this.waveIndex + 1) % this.waveData.length;
 	  const data = this.waveData[this.waveIndex];
-	  const wave = new Wave(this.ctx, data.showDelay, data.showTimeOffset, data.hideDelay, data.hideTimeOffset, data.positions);
+	  const wave = new Wave(this.ctx, data.showDelay, data.showTimeOffset, data.hideDelay, data.hideTimeOffset, data.enemySpecs);
 	  this.liveWaves.push(wave);
 	  console.log("Time for a new wave!", wave);
 	}
