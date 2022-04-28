@@ -1,0 +1,69 @@
+<!-- https://modernweb.com/creating-particles-html5-canvas/ -->
+<canvas id="example" width="600" height="400">
+</canvas>
+<script>
+var canvas = document.getElementById("example");
+var context = canvas.getContext("2d");
+context.fillRect(0, 0, canvas.width, canvas.height);
+context.fillStyle = "white";
+// context.fillRect(300, 200, 10, 10);
+
+var posX = 20,
+    posY = 100;
+// Initial velocities
+var vx = 10,
+    vy = -10,
+    gravity = 1;
+
+var particles = {},
+particleIndex = 0,
+settings = {
+  density: 20,
+  particleSize: 10,
+  startingX: canvas.width / 2,
+  startingY: canvas.height / 4,
+  gravity: 0.5,
+  maxLife: 100
+};
+
+function Particle() {
+  // Establish starting positions and velocities
+  this.x = settings.startingX;
+  this.y = settings.startingY;
+
+  // Random X and Y velocities
+  this.vx = Math.random() * 20 - 10;
+  this.vy = Math.random() * 20 - 5;
+
+  // Add new particle to the index
+  particleIndex ++;
+  particles[particleIndex] = this;
+  this.id = particleIndex;
+  this.life = 0;
+}
+
+setInterval(function() {
+    // Erase canvas
+    context.fillStyle = "black";
+      context.fillRect(0,0,canvas.width, canvas.height);
+
+  posX += vx;
+  posY += vy;
+  vy += gravity;
+
+  if (posY > canvas.height * 0.75) {
+  vy *= -0.6;
+  vx *= 0.75;
+  posY = canvas.height * 0.75;
+}
+
+  // Draw a circle particle on the canvas
+  context.beginPath();
+  context.fillStyle = "white";
+  // After setting the fill style, draw an arc on the canvas
+  context.arc(posX, posY, 10, 0, Math.PI*2, true); 
+  context.closePath();
+  context.fill();
+}, 30);
+
+</script>

@@ -10,21 +10,21 @@ var num_particles = 1000;
 var Particle = function () {
   this.x = canvas.width * Math.random();
   this.y = canvas.height * Math.random();
-  this.vx = 4 * Math.random() - 2;
-  this.vy = 4 * Math.random() - 2;
+  this.vx = 2 * Math.random() - 1;
+  this.vy = 2 * Math.random() - 1;
   this.Color = GetRandomColor();
 }
 
 Particle.prototype.Draw = function (ctx) {
   ctx.fillStyle = this.Color;
-  ctx.fillRect(this.x, this.y, 2, 2);
+  ctx.fillRect(this.x, this.y, 3, 3);
 }
 
 Particle.prototype.Update = function () {
   this.x += this.vx;
   this.y += this.vy;
 
-  if (this.x<0 || this.x > canvas.width)
+  if (this.x < 0 || this.x > canvas.width)
       this.vx = -this.vx;
 
   if (this.y < 0 || this.y > canvas.height)
@@ -48,7 +48,7 @@ loop();
 
 function GetRandomColor() {
   var r = 0, g = 0, b = 0;
-  while (r < 100 && g < 100 && b < 100)
+  while (r < 150 && g < 150 && b < 150)
   {
       r = Math.floor(Math.random() * 256);
       g = Math.floor(Math.random() * 256);
