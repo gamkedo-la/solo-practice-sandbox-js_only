@@ -2,9 +2,12 @@ var ballSize = 20;
 const hatHeight = 40;
 const ballStartY = ballSize + hatHeight + 10;
 const TILE_WIDTH = 40;
+const ARRIVAL_SPEED = 10;
 var targetX = 400; // canvas/2
 var ballX, ballY;
 var ballTeam = "silver";
+var xStep, yStep, journey;
+journey = false;
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -16,7 +19,7 @@ window.onload = function() {
   ctx.strokeRect(1,1, canvas.width-1,canvas.height-1);
 
   ballX = canvas.width/2;
-  ballY = canvas.height/2;
+  ballY = canvas.height * 1/3;
 
   var framesPerSecond = 30;
 	setInterval(updateAll, 1000/framesPerSecond);
@@ -40,10 +43,20 @@ function updateAll() {
 
 function moveAll() {
   if(keyHeld_TurnLeft) {
-    targetX -= TILE_WIDTH;
+    // targetX -= TILE_WIDTH;
+    targetX = canvas.width * 1/6;
+    journey_blue();
   }
   if(keyHeld_TurnRight) {
     targetX += TILE_WIDTH;
+    targetX = canvas.width * 5/6;
+    journey_red();
+  }
+  if (journey) {
+    if (ballY < canvas.height - ballSize - yStep - 2) {
+      ballX += xStep;
+      ballY += yStep;
+    }
   }
 }
 
@@ -64,9 +77,11 @@ function drawAll() {
       break;
 
     case STATE_PLAY:
-      drawPerson(canvas.width/2, ballStartY, ballTeam);
+      drawPerson(ballX, ballY, ballTeam);
       drawHat(canvas.width/2, 10);
-      drawTarget(targetX, canvas.height-TILE_WIDTH/2);
+      drawTarget(targetX, canvas.height-3-TILE_WIDTH/2);
+      drawReception(0, 4, 'blue');
+      drawReception(6, 10, 'red');
       break;
   } 
 }
@@ -116,6 +131,14 @@ function drawHat(x,y) {
   ctx.restore();
 }
 
+// reception zones
+function drawReception(left, right, color) {
+  var leftX = canvas.width * left / 10; 
+  var rightX = canvas.width * right / 10;
+  var topY = canvas.height - 10;
+  colorRect(leftX, topY, rightX, canvas.height, color);
+}
+
 // aiming target
 function drawTarget(x,y) {
   ctx.save();
@@ -153,10 +176,27 @@ function colorText(showWords, textX,textY, fontSize, fillColor) {
 }
 
 function personArrives() {
-    ballY -= 5;
+    ballY -= ARRIVAL_SPEED;
     if(ballY < ballStartY) {
       ballY = ballStartY;
       ballTeam = Math.random() < 0.5 ? "blue" : "red"; 
       gameState = STATE_PLAY;
+      var guide = document.getElementById('guide');
+      guide.innerHTML = 'Send ball to red or blue zone; choose with left or right arrow key';
     }
+}
+
+function journey_blue() {
+  var destX = canvas.width * 1/5;
+  var destY = canvas.height - 20 - ballSize/2;
+  xStep = (destX - ballX) / 100;
+  yStep = (destY - ballY) / 100;
+  journey = true;
+}
+function journey_red() {
+  var destX = canvas.width * 4/5;
+  var destY = canvas.height - 20 - ballSize/2;
+  xStep = (destX - ballX) / 100;
+  yStep = (destY - ballY) / 100;
+  journey = true;
 }
