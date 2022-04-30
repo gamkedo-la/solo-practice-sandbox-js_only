@@ -27,12 +27,6 @@ export const CHARACTERS = {
 
 export class Enemy {
   static #INSTANCES = [];
-  static #ROLES = {
-	default: stand,
-	static: stand,
-	stageLeft: stageLeft,
-	stageRight: stageRight,
-  }
   static alive = function* () {
 	for (const enemy of this.#INSTANCES) {
 	  if (enemy.live) {
@@ -41,33 +35,30 @@ export class Enemy {
 	}
   }
 
-  static spawn(ctx, x, y, showDelay, hideDelay, role) {
+  static spawn(ctx, x, y, color, updater) {
 	let enemy = this.#INSTANCES.filter(e => !e.live).pop();
 	if (typeof enemy == "undefined") {
-	  enemy = new Enemy(ctx, x, y, showDelay, hideDelay, role);
+	  enemy = new Enemy(ctx, x, y, color, updater);
 	  this.#INSTANCES.push(enemy);
 	  console.log("Created new enemy", enemy);
 	} else {
-	  enemy.init(x, y, showDelay, hideDelay, role);
+	  enemy.init(x, y, color, updater);
 	  console.log("Recycled enemy", enemy);
 	}
 	return enemy;
   }
 
-  constructor(ctx, x, y, showDelay, hideDelay, role) {
+  constructor(ctx, x, y, color, updater) {
 	this.ctx = ctx;
-	this.init(x, y, showDelay, hideDelay, role);
+	this.init(x, y, color, updater);
   }
 
-  init(x, y, showDelay, hideDelay, role) {
-	this.timer = 0;
-	this.showDelay = showDelay;
-	this.hideDelay = hideDelay;
-	this.visible = false;
+  init(x, y, color, updater) {
+	this.color = color;
 	this.live = true;
 	this.x = x;
 	this.y = y;
-	this.role = Enemy.#ROLES[role];
+	this.updater = updater;
   }
 
   update(dt) {
@@ -75,22 +66,15 @@ export class Enemy {
 	  return;
 	}
 	this.timer += dt;
-	if (!this.visible && this.timer >= this.showDelay) {
-	  this.visible = true;
-	  this.timer = 0;
-	}
-	if (this.visible && this.timer >= this.hideDelay) {
-	  this.visible = false;
-	  this.live = false;
-	}
-	this.role(this, dt);
+	// FIXME: we shouldn't need to copy from "updated"
+	const updated = this.updater(this, dt);
+	this.x = updated.x;
+	this.y = updated.y;
+	this.live = updated.live;
   }
 
   draw() {
-	if (!this.visible) {
-	  return;
-	}
-	this.ctx.fillStyle = "pink";
+	this.ctx.fillStyle = this.color;
 	this.ctx.beginPath();
 	this.ctx.arc(Math.round(this.x), Math.round(this.y), 10, 0, 2*Math.PI);
 	this.ctx.closePath();

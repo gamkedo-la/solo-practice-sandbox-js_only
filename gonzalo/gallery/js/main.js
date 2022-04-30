@@ -16,7 +16,7 @@ class Game {
 	this.input = new Input(this.canvas);
 	this.editor = new Editor(this.ctx, this.input);
 	this.player = new Player(this.ctx, this.input);
-	this.currentLevel = new Level(this.ctx);
+	this.currentLevel = new Level(this.ctx, this.editor.data);
   }
 
   start() {

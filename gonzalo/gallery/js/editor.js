@@ -1,14 +1,6 @@
 import {Input} from "./input.js";
 
 export class Editor {
-  static enemyTypes = [
-	{},
-	{},
-	{},
-	{},
-	{},
-  ];
-
   constructor(ctx, input) {
 	this.ctx = ctx;
 	this.input = input;
@@ -17,10 +9,10 @@ export class Editor {
 	this.components = {
 	  timeSlider: new TimeSlider(this),
 	  enemyPalette: new EnemyPalette(this, ctx.canvas.width - 32),
-	  stage: new Stage(ctx.canvas.width - 28, ctx.canvas.height - 24),
 	};
 	this.dragObj = {};
 	this.isDragging = false;
+	this.data = Array(Math.ceil(TimeSlider.MAX_TIME/TimeSlider.TIME_SLOT));
   }
 
   update(dt) {
@@ -28,12 +20,36 @@ export class Editor {
 	  if (this.input.mouseButtonHeld && this.input.mousePos.y < this.components.timeSlider.containerY) {
 		const mouseX = this.input.mousePos.x;
 		const mouseY = this.input.mousePos.y;
-		const boxes = mouseX >= this.components.enemyPalette.containerX ? this.components.enemyPalette.enemyBoxes : this.components.stage.enemies;
-		for (const box of boxes) {
-		  if (mouseX > box.x && mouseX < box.x + box.width && mouseY > box.y && mouseY < box.y + box.height) {
-			this.isDragging = true;
-			Object.assign(this.dragObj, box);
-			break;
+		const dragFromPalette = mouseX >= this.components.enemyPalette.containerX;
+		if (dragFromPalette) {
+		  for (const box of this.components.enemyPalette.enemyBoxes) {
+			if (mouseX > box.x && mouseX < box.x + box.width && mouseY > box.y && mouseY < box.y + box.height) {
+			  this.isDragging = true;
+			  this.dragObj = {
+				x: box.x,
+				y: box.y,
+				width: box.width,
+				height: box.height,
+				enemy: Object.assign({}, box.enemy),
+			  };
+			  break;
+			}
+		  }
+		} else {
+		  const enemies = this.getEnemiesForTime();
+		  for (const [i, enemy] of enemies.entries()) {
+			if (mouseX > enemy.x && mouseX < enemy.x + enemy.width && mouseY > enemy.y && mouseY < enemy.y + enemy.height) {
+			  this.isDragging = true;
+			  Object.assign(this.dragObj, {
+				x: enemy.x,
+				y: enemy.y,
+				width: enemy.width,
+				height: enemy.height,
+				enemy: enemy,
+			  });
+			  enemies.splice(i, 1);
+			  break;
+			}
 		  }
 		}
 	  } else {
@@ -54,19 +70,63 @@ export class Editor {
 		  this.dragObj.enemy.y = this.dragObj.y;
 		  this.dragObj.enemy.width = this.dragObj.width;
 		  this.dragObj.enemy.height = this.dragObj.height;
-		  this.components.stage.enemies.push(this.dragObj.enemy);
+		  this.dragObj.enemy.alive = true;
+		  this.dropEnemy();
 		}
 	  }
 	}
+  }
+
+  getTimeIndex() {
+	return this.components.timeSlider.selectedTime/TimeSlider.TIME_SLOT;
+  }
+
+  dropEnemy() {
+	const index = this.getTimeIndex();
+	if (typeof this.data[index] === "undefined") {
+	  this.data[index] = [];
+	}
+	this.data[index].push(this.dragObj.enemy);
+	console.log("DATA UPDATED", this.data);
+  }
+
+  getEnemiesForTime() {
+	return this.data[this.getTimeIndex()] || [];
   }
 
   draw() {
 	for (const component of Object.values(this.components)) {
 	  component.draw(this.ctx);
 	}
+	for (const enemy of this.getEnemiesForTime()) {
+	  this.ctx.fillStyle = enemy.color;
+	  this.ctx.fillRect(Math.round(enemy.x), Math.round(enemy.y), enemy.width, enemy.height);
+	}
+	const timeIndex = this.getTimeIndex();
+	const oldAlpha = this.ctx.globalAlpha;
+	this.ctx.globalAlpha = 0.3;
+
+	for (let i=0; i<this.data.length; i++) {
+	  const enemies = this.data[i];
+	  if (i >= timeIndex || typeof enemies === "undefined") {
+		continue;
+	  }
+	  const time = (timeIndex - i)*TimeSlider.TIME_SLOT;
+	  for (const enemy of enemies) {
+		this.ctx.fillStyle = enemy.color;
+		const updated = enemy.updater(enemy, time/1000);
+		if (updated.alive) {
+		  this.ctx.fillRect(Math.round(updated.x), Math.round(updated.y), enemy.width, enemy.height);
+		}
+	  }
+	}
+	this.ctx.globalAlpha = oldAlpha;
 	if (this.isDragging) {
-	  this.ctx.strokeStyle = "lime";
-	  this.ctx.strokeRect(Math.round(this.dragObj.x), Math.round(this.dragObj.y), this.dragObj.width, this.dragObj.height);
+	  this.ctx.fillStyle = this.dragObj.enemy.color;
+	  const oldAlpha = this.ctx.globalAlpha;
+	  this.ctx.globalAlpha = 0.5;
+	  this.ctx.fillRect(Math.round(this.dragObj.x), Math.round(this.dragObj.y), this.dragObj.width, this.dragObj.height);
+	  this.ctx.globalAlpha = oldAlpha;
 	}
   }
 
@@ -75,55 +135,97 @@ export class Editor {
   }
 }
 
-class Stage {
-  constructor(width, height) {
-	this.enemies = [];
-	this.isDragging = false;
-	this.dragObj = null;
-	this.width = width;
-	this.height = height;
-  }
-
-  update(input, dt) {
-  }
-
-  draw(ctx) {
-	for (const enemy of this.enemies) {
-	  ctx.fillStyle = "pink";
-	  ctx.fillRect(Math.round(enemy.x), Math.round(enemy.y), enemy.width, enemy.height);
-	}
-  }
-}
-
 class TimeSlider {
   static SPEED = 2;
+  static MAX_TIME = 20000; // ms
+  static TIME_SLOT = 250; // ms
+  static HEIGHT = 24;
   
   constructor(editor) {
 	this.editor = editor;
 	this.sliderPos = 0;
-	this.containerY = this.editor.ctx.canvas.height - 24;
+	this.containerY = this.editor.ctx.canvas.height - TimeSlider.HEIGHT;
+	this.isDragging = false;
+	this.selectedTime = 0; // in ms
+	this.sliderWidth = Math.floor(this.timeToPos(TimeSlider.TIME_SLOT)) - 2;
   }
 
+  pos2Time(pos) {
+	const time = Math.round((TimeSlider.MAX_TIME / (this.editor.ctx.canvas.width)) * pos);
+	return time - (time % TimeSlider.TIME_SLOT);
+  }
 
+  timeToPos(time) {
+	return ((this.editor.ctx.canvas.width) / TimeSlider.MAX_TIME) * time;
+  }
+  
   update(input, dt) {
+	// TODO: implement discrete steps
 	if (input.left) {
-	  this.sliderPos -= TimeSlider.SPEED;
+	  this.selectedTime = Math.max(0, this.selectedTime - TimeSlider.TIME_SLOT);
+	  this.sliderPos = this.timeToPos(this.selectedTime);
+	  console.log("Changed time slider position", this.sliderPos, "TIME:", this.selectedTime);
 	}
 	if (input.right) {
-	  this.sliderPos += TimeSlider.SPEED;
+	  this.selectedTime = Math.max(TimeSlider.MAX_TIME, this.selectedTime + TimeSlider.TIME_SLOT);
+	  this.sliderPos = this.timeToPos(this.selectedTime);
+	  console.log("Changed time slider position", this.sliderPos, "TIME:", this.selectedTime);
 	}
 	if (input.mouseButtonHeld && input.mousePos.y >= this.containerY) {
-	  this.sliderPos = input.mousePos.x;
+	  this.sliderPos = Math.min(Math.max(input.mousePos.x, 0), this.editor.ctx.canvas.width - 10);
+	  this.isDragging = true;
+	} else if (!input.mouseButtonHeld && this.isDragging) {
+	  this.isDragging = false;
+	  this.selectedTime = this.pos2Time(this.sliderPos);
+	  this.sliderPos = this.timeToPos(this.selectedTime) + 1;
+	  console.log("Changed time slider position", this.sliderPos, "TIME:", this.selectedTime);
 	}
-	this.sliderPos = Math.min(Math.max(this.sliderPos, 0), this.editor.ctx.canvas.width - 10);
   }
 
   draw(ctx) {
 	ctx.fillStyle = "pink";
 	ctx.fillRect(0, this.containerY, ctx.canvas.width, ctx.canvas.height);
+	ctx.strokeStyle = "#000";
+	for (let t=0; t<=TimeSlider.MAX_TIME; t+=TimeSlider.TIME_SLOT) {
+	  const pos = Math.floor(this.timeToPos(t));
+	  ctx.beginPath();
+	  ctx.moveTo(pos, this.containerY);
+	  ctx.lineTo(pos, ctx.canvas.height);
+	  ctx.lineWidth = 1;
+	  ctx.stroke();
+	  ctx.closePath();
+	}
 	ctx.fillStyle = "brown";
-	ctx.fillRect(Math.round(this.sliderPos), this.containerY, 10, ctx.canvas.height);
+	ctx.fillRect(Math.round(this.sliderPos), this.containerY, this.sliderWidth, ctx.canvas.height);
   }
+}
+
+function updateGhost(ghost, dt) {
+  const speed = 20;
+  const updated = Object.create(ghost);
+  updated.x += speed*dt;
+  return updated;
+}
+
+function updateGoblin(goblin, dt) {
+  const speed = 32;
+  const updated = Object.create(goblin);
+  updated.x += speed*dt;
+  return updated;
+}
+
+function updateZombie(zombie, dt) {
+  const speed = 10;
+  const updated = Object.create(zombie);
+  updated.x += speed*dt;
+  return updated;
+}
+
+function updateSkeleton(skeleton, dt) {
+  const speed = 24;
+  const updated = Object.create(skeleton);
+  updated.y += speed*dt;
+  return updated;
 }
 
 class EnemyPalette {
@@ -134,7 +236,13 @@ class EnemyPalette {
 	this.editor = editor;
 	this.containerX = containerX;
 	this.height = editor.ctx.canvas.height - 24;
-	this.enemies = [{}, {}, {}];
+	this.enemies = [
+	  {name: "GHOST", color: "pink", updater: updateGhost},
+	  {name: "GOBLIN", color: "red", updater: updateGoblin},
+	  {name: "ZOMBIE", color: "orange", updater: updateZombie},
+	  {name: "SKELETON", color: "magenta", updater: updateSkeleton},
+	  {name: "EVILEYE", color: "yellow", updater: updateGhost},
+	];
 	const enemyBoxX = this.containerX + EnemyPalette.margin;
 	this.enemyBoxes = this.enemies.map((enemy, i) => ({
 	  x: enemyBoxX,
@@ -153,9 +261,8 @@ class EnemyPalette {
   draw(ctx) {
 	ctx.fillStyle = "salmon";
 	ctx.fillRect(this.containerX, 0, ctx.canvas.width, this.height);
-	ctx.fillStyle = "dimgray";
 	this.enemyBoxes.forEach(box => {
-	  // console.log("Drawing enemy", box, "at Y", box.y);
+	  ctx.fillStyle = box.enemy.color;
 	  ctx.fillRect(box.x, box.y, EnemyPalette.boxSize, EnemyPalette.boxSize);
 	});
 	if (this.isDragging) {
