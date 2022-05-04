@@ -1,4 +1,6 @@
+import {constants} from "./constants.js";
 import {Input} from "./input.js";
+
 
 export class Editor {
   constructor(ctx, input) {
@@ -12,7 +14,7 @@ export class Editor {
 	};
 	this.dragObj = {};
 	this.isDragging = false;
-	this.data = Array(Math.ceil(TimeSlider.MAX_TIME/TimeSlider.TIME_SLOT));
+	this.data = Array(Math.ceil(TimeSlider.MAX_TIME/constants.TIME_SLOT));
   }
 
   update(dt) {
@@ -78,7 +80,7 @@ export class Editor {
   }
 
   getTimeIndex() {
-	return this.components.timeSlider.selectedTime/TimeSlider.TIME_SLOT;
+	return this.components.timeSlider.selectedTime/constants.TIME_SLOT;
   }
 
   dropEnemy() {
@@ -111,7 +113,7 @@ export class Editor {
 	  if (i >= timeIndex || typeof enemies === "undefined") {
 		continue;
 	  }
-	  const time = (timeIndex - i)*TimeSlider.TIME_SLOT;
+	  const time = (timeIndex - i)*constants.TIME_SLOT;
 	  for (const enemy of enemies) {
 		this.ctx.fillStyle = enemy.color;
 		const updated = enemy.updater(enemy, time/1000);
@@ -138,7 +140,6 @@ export class Editor {
 class TimeSlider {
   static SPEED = 2;
   static MAX_TIME = 20000; // ms
-  static TIME_SLOT = 250; // ms
   static HEIGHT = 24;
   
   constructor(editor) {
@@ -147,12 +148,12 @@ class TimeSlider {
 	this.containerY = this.editor.ctx.canvas.height - TimeSlider.HEIGHT;
 	this.isDragging = false;
 	this.selectedTime = 0; // in ms
-	this.sliderWidth = Math.floor(this.timeToPos(TimeSlider.TIME_SLOT)) - 2;
+	this.sliderWidth = Math.floor(this.timeToPos(constants.TIME_SLOT)) - 2;
   }
 
   pos2Time(pos) {
 	const time = Math.round((TimeSlider.MAX_TIME / (this.editor.ctx.canvas.width)) * pos);
-	return time - (time % TimeSlider.TIME_SLOT);
+	return time - (time % constants.TIME_SLOT);
   }
 
   timeToPos(time) {
@@ -186,8 +187,8 @@ class TimeSlider {
 	ctx.fillStyle = "pink";
 	ctx.fillRect(0, this.containerY, ctx.canvas.width, ctx.canvas.height);
 	ctx.strokeStyle = "#000";
-	for (let t=0; t<=TimeSlider.MAX_TIME; t+=TimeSlider.TIME_SLOT) {
-	  const pos = Math.floor(this.timeToPos(t));
+	for (let t=0; t<=TimeSlider.MAX_TIME; t+=constants.TIME_SLOT) {
+	  const pos = Math.round(this.timeToPos(t));
 	  ctx.beginPath();
 	  ctx.moveTo(pos, this.containerY);
 	  ctx.lineTo(pos, ctx.canvas.height);
