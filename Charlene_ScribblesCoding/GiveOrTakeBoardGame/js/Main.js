@@ -19,6 +19,8 @@ const PLAYER_3_BOARD = {x: 12, y: 289}
 const PLAYER_4_BOARD = {x: 299, y: 289}
 
 // assets
+var sun = new Image();
+sun.src = "assets/sun_card.png";
 var heart = new Image();
 heart.src = "assets/heart_card.png";
 var crown = new Image();
@@ -135,7 +137,7 @@ function appearCardQuestion() {
 }
 
 function handleClick(e) {
-  var randomize = Math.floor(Math.random() * 11) + 1; // get a number between 1 - 10
+  var randomize = Math.floor(Math.random() * 20) + 1; // get a number between 1 - 20
   var cardType;
   var pos = getMousePos(e);
   posX = pos.x;
@@ -143,18 +145,21 @@ function handleClick(e) {
 
   if (!isMenu) {
     // set the game points
-    if (randomize <= 3) { // 1 - 3
+    if (randomize <= 4) { // 1 - 4
       scorePoint = -2
       cardType = snake
-    } else if (randomize >= 4 && randomize <= 7) { // 4 - 7
+    } else if (randomize >= 5 && randomize <= 11) { // 5 - 11
       scorePoint = -1
       cardType = rat
-    } else if (randomize >= 8 && randomize <= 9) { // 8 - 9
+    } else if (randomize >= 12 && randomize <= 15) { // 12 - 15
       scorePoint = 1
       cardType = heart
-    } else { // 10 - jackpot score!
+    } else if (randomize >= 16 && randomize <= 19) { // 16 - 19
       scorePoint = 5
       cardType = crown
+    } else { // 20 - jackpot score!
+      scorePoint = 10
+      cardType = sun
     }
   
     if (!isGameOver && isGameStarted) {
@@ -263,7 +268,7 @@ function drawEverything() {
   for (let i = spawnCounter; i < cardArray.length; i++) {
     if (cardArray[i].card === rat) {
       drawPicture(cardArray[i].card, cardArray[i].x, cardArray[i].y, 50, 50);
-    } else if (cardArray[i].card === snake) {
+    } else if (cardArray[i].card === snake || cardArray[i].card === sun) {
       drawPicture(cardArray[i].card, cardArray[i].x, cardArray[i].y, 60, 60);
     } else {
       drawPicture(cardArray[i].card, cardArray[i].x, cardArray[i].y, 60, 40);
