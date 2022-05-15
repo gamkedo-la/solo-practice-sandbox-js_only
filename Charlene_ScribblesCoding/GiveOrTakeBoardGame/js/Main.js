@@ -39,6 +39,7 @@ var numOfTurns = 12;
 var turns = 0;
 var round = 1;
 var scorePoint;
+var versusAI = false;
 
 var playersBoard = [];
 var numOfPlayers;
@@ -73,6 +74,10 @@ function menuScreen() {
   isMenu = false;
   isGameStarted = true;
   console.log("isMenu: " + isMenu + ", isGameStarted: " + isGameStarted)
+}
+
+function setAI() {
+  set2Players();
 }
 
 function set4Players() {
