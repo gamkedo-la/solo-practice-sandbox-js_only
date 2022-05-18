@@ -14,6 +14,7 @@ window.onload = function() {
     }, 1000/framesPerSecond);
     
   jumperReset();
+  loadImages();
 }
 
 function moveEverything() {
