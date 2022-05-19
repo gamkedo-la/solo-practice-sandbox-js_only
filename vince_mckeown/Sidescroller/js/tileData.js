@@ -1,6 +1,6 @@
 TILES = {
-    TILE_EMPTY:  0,
-    TILE_GRASS_1:  1
+    TILE_EMPTY:  1,
+    TILE_GRASS_1:  2
 }
 
 for(const [key, value] of Object.entries(TILES)) {
