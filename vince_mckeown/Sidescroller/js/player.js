@@ -29,24 +29,25 @@ function jumperMove() {
      if(holdRight) {
        jumperSpeedX = RUN_SPEED;
      }
- 
-     if(jumperSpeedY < 0 && isBrickAtPixelCoord(jumperX,jumperY-JUMPER_RADIUS) == 1) {
+
+     if(jumperSpeedY < 0 && isBrickAtPixelCoord(jumperX,jumperY-JUMPER_RADIUS)) {
        jumperY = (Math.floor( jumperY / TILE_H )) * TILE_H + JUMPER_RADIUS;
        jumperSpeedY = 0.0;
      }
      
-     if(jumperSpeedY > 0 && isBrickAtPixelCoord(jumperX,jumperY+JUMPER_RADIUS) == 1) {
+     if(jumperSpeedY > 0 && isBrickAtPixelCoord(jumperX,jumperY+JUMPER_RADIUS)) {
        jumperY = (1+Math.floor( jumperY / TILE_H )) * TILE_H - JUMPER_RADIUS;
        jumperOnGround = true;
        jumperSpeedY = 0;
-     } else if(isBrickAtPixelCoord(jumperX,jumperY+JUMPER_RADIUS+2) == 0) {
+     } else if(isBrickAtPixelCoord(jumperX,jumperY+JUMPER_RADIUS + 2)) {
        jumperOnGround = false;
      }
-     
-     if(jumperSpeedX < 0 && isBrickAtPixelCoord(jumperX-JUMPER_RADIUS,jumperY) == 1) {
+    
+     if(jumperSpeedX < 0 && isBrickAtPixelCoord(jumperX-JUMPER_RADIUS,jumperY)) {
        jumperX = (Math.floor( jumperX / TILE_W )) * TILE_W + JUMPER_RADIUS;
      }
-     if(jumperSpeedX > 0 && isBrickAtPixelCoord(jumperX+JUMPER_RADIUS,jumperY) == 1) {
+
+     if(jumperSpeedX > 0 && isBrickAtPixelCoord(jumperX+JUMPER_RADIUS,jumperY)) {
        jumperX = (1+Math.floor( jumperX / TILE_W )) * TILE_W - JUMPER_RADIUS;
      }
      

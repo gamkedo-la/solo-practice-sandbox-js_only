@@ -5,35 +5,87 @@ const TILE_ROWS = 19;
 const GROUND_FRICTION = 0.8;
 const AIR_RESISTANCE = 0.95;
 const GRAVITY = 0.6;
-  
+
+var backGroundGrid = 
+  [ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+    10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,];
+
+
 var worldGrid =
-      [ 1, 1, 1, 1, 1, 2, 1, 1, 1, 2, 1, 1, 1, 1, 2, 1, 2, 1, 1, 2, 2, 1, 1, 1, 1, 
-        2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+      [ 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10,  1,  2,  2,  3, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,  1,  2,  2,  2,  2,  3, 10, 10, 10, 10, 10, 
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+        10, 10, 10, 10, 10, 10, 10,  1,  2,  2,  2,  3, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,  1,  2,  2,  3, 10, 10, 10, 10, 10, 10, 10, 10, 
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10,
+        10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 
+         2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2, 
+        11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11];
     
+
+function drawBackGround() {
+    var tileTypeHere = 0;
+    var tileIndex = 0;
+    var tileLeftEdgeX = 0;
+    var tileTopEdgeY = 0;
+
+    for(var eachRow=0; eachRow<TILE_ROWS; eachRow++){
+        tileLeftEdgeX = 0;
+
+        for(var eachCol=0; eachCol<TILE_COLS; eachCol++){ 
+            tileTypeHere = backGroundGrid[tileIndex];
+
+            let tile_sx = tilePics[tileTypeHere].imgX
+            let tile_sy = tilePics[tileTypeHere].imgY;
+                
+            let brickLeftEdgeX = eachCol * TILE_W;
+            let brickTopEdgeY = eachRow * TILE_H;
+            canvasContext.drawImage(tilePics[tileTypeHere].img,tile_sx,tile_sy, TILE_W, TILE_H, tileLeftEdgeX, tileTopEdgeY, TILE_W, TILE_H);
+            // colorText(tileIndex, tileLeftEdgeX, tileTopEdgeY + 30, "white")
+
+            tileLeftEdgeX += TILE_W; // jump horizontal draw position to next tile over by tile width
+            tileIndex++;
+        } // end of for eachRow
+        tileTopEdgeY += TILE_H;
+    } // end of for eachCol
+} // end of drawBricks()
+        
+
+
 function drawBricks() {
     var tileTypeHere = 0;
     var tileIndex = 0;
     var tileLeftEdgeX = 0;
     var tileTopEdgeY = 0;
 
-   for(var eachRow=0; eachRow<TILE_ROWS; eachRow++){
+    for(var eachRow=0; eachRow<TILE_ROWS; eachRow++){
         tileLeftEdgeX = 0;
 
         for(var eachCol=0; eachCol<TILE_COLS; eachCol++){ 
@@ -41,13 +93,11 @@ function drawBricks() {
 
             let tile_sx = tilePics[tileTypeHere].imgX
             let tile_sy = tilePics[tileTypeHere].imgY;
-           
-           // console.log("TI: " + tileIndex + " Type: " + tileTypeHere + " t SX: " + tile_sx) 
-            
+             
             let brickLeftEdgeX = eachCol * TILE_W;
             let brickTopEdgeY = eachRow * TILE_H;
-            canvasContext.drawImage(tilePics[tileTypeHere].img,tile_sx,tile_sy, 32, 32, tileLeftEdgeX, tileTopEdgeY, 32, 32);
-            colorText(tileIndex, tileLeftEdgeX, tileTopEdgeY, "white")
+            canvasContext.drawImage(tilePics[tileTypeHere].img,tile_sx,tile_sy, TILE_W, TILE_H, tileLeftEdgeX, tileTopEdgeY, TILE_W, TILE_H);
+           // colorText(tileIndex, tileLeftEdgeX, tileTopEdgeY + 30, "white")
 
             tileLeftEdgeX += TILE_W; // jump horizontal draw position to next tile over by tile width
             tileIndex++;
@@ -58,12 +108,12 @@ function drawBricks() {
           
 
 function tileToIndex(tileCol, tileRow) {
-    return (tileCol * tileRow + tileRow);
+    return (tileRow * TILE_COLS + tileCol);
 }
 
 function isBrickAtTileCoord(brickTileCol, brickTileRow) {
     var tileIndex = tileToIndex(brickTileCol, brickTileRow);
-    return (worldGrid[tileIndex] == 1);
+    return (worldGrid[tileIndex] == TILE_GRASS_1);
 }
 
 function isBrickAtPixelCoord(hitPixelX, hitPixelY) {
@@ -79,8 +129,11 @@ function isBrickAtPixelCoord(hitPixelX, hitPixelY) {
         tileRow < 0 || tileRow >= TILE_ROWS) {
         return false;
     }
-
+    
     var tileIndex = tileToIndex(tileCol, tileRow);
-    return (worldGrid[tileIndex] == 1);
+    return (worldGrid[tileIndex] == TILE_GRASS_1_LE ||
+            worldGrid[tileIndex] == TILE_GRASS_1 ||
+            worldGrid[tileIndex] == TILE_GRASS_1_RE ||
+            worldGrid[tileIndex] == TILE_SOLID);
 }
         
