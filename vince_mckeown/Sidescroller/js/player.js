@@ -54,3 +54,7 @@ function jumperMove() {
      jumperX += jumperSpeedX; // move the jumper based on its current horizontal speed 
      jumperY += jumperSpeedY; // same as above, but for vertical
    }
+
+function drawPlayer(){
+  canvasContext.drawImage(playerPic,0,0, 32, 32, jumperX, jumperY-16, 32, 32);
+}

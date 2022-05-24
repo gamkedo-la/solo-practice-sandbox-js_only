@@ -30,5 +30,5 @@ function drawEverything() {
   canvasContext.fillStyle = 'white';
   canvasContext.fillText("Arrow keys to run, spacebar to jump",8,14);
 
-  colorCircle(jumperX, jumperY, JUMPER_RADIUS, 'white');
+  drawPlayer();
 }
