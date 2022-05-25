@@ -25,6 +25,7 @@ function drawEverything() {
   colorRect(0, 0, canvas.width, canvas.height, 'black');
 
   drawBackGround();
+  drawMiddleGround();
   drawBricks();
   
   canvasContext.fillStyle = 'white';
