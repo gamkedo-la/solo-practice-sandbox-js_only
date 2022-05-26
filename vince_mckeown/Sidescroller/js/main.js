@@ -1,4 +1,5 @@
 var canvas, canvasContext;
+var player = new playerClass();
   
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
@@ -13,12 +14,12 @@ window.onload = function() {
       drawEverything();
     }, 1000/framesPerSecond);
     
-  jumperReset();
+  player.reset();
   loadImages();
 }
 
 function moveEverything() {
-  jumperMove();
+  player.move();
 }
 
 function drawEverything() {
@@ -28,8 +29,5 @@ function drawEverything() {
   drawMiddleGround();
   drawBricks();
   
-  canvasContext.fillStyle = 'white';
-  canvasContext.fillText("Arrow keys to run, spacebar to jump",8,14);
-
-  drawPlayer();
+  player.draw();
 }

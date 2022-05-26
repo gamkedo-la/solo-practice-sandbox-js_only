@@ -51,9 +51,9 @@ function loadImages() {
     {tileType:TILE_EMPTY, imgX: 64, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
     //{tileType:TILE_GRASS_4, imgX: 96, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
     //{tileType:TILE_GRASS_5, imgX: 128, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
-    //{tileType:TILE_GRASS_6, imgX: 160, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
-  	//{tileType:TILE_GRASS_7, imgX: 192, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
-    //{tileType:TILE_GRASS_8, imgX: 224, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
+    {tileType:TILE_BACKGROUND_CLIFF_LE, imgX: 160, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
+  	{tileType:TILE_BACKGROUND_CLIFF, imgX: 192, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
+    {tileType:TILE_BACKGROUND_CLIFF_RE, imgX: 224, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
     //{tileType:TILE_GRASS_9, imgX: 256, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
 
     //Row 3
@@ -69,14 +69,14 @@ function loadImages() {
 
     //Row 4
     {tileType:TILE_TREE_1_BOTTOM, imgX: 0, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
-    //{tileType:TILE_SOLID, imgX: 32, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
-    //{tileType:TILE_EMPTY, imgX: 64, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
-    //{tileType:TILE_GRASS_4, imgX: 96, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
-    //{tileType:TILE_GRASS_5, imgX: 128, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
-    //{tileType:TILE_GRASS_6, imgX: 160, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
-  	//{tileType:TILE_GRASS_7, imgX: 192, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
-    //{tileType:TILE_GRASS_8, imgX: 224, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
-    //{tileType:TILE_GRASS_9, imgX: 256, imgY: 32, theFile:"platformsGrass.png", isFloor: true},
+    //{tileType:TILE_SOLID, imgX: 32, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
+    //{tileType:TILE_EMPTY, imgX: 64, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
+    {tileType:TILE_ROCK_1, imgX: 96, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
+    {tileType:TILE_ROCK_2, imgX: 128, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
+    {tileType:TILE_ROCK_3, imgX: 160, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
+  	//{tileType:TILE_GRASS_7, imgX: 192, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
+    //{tileType:TILE_GRASS_8, imgX: 224, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
+    //{tileType:TILE_GRASS_9, imgX: 256, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
 
       //Row 5
     //  {tileType:TILE_TREE_1_BOTTOM, imgX: 0, imgY: 128, theFile:"platformsGrass.png", isFloor: true},

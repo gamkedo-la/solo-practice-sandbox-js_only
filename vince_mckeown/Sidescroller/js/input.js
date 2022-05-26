@@ -18,8 +18,8 @@ function setKeyHoldState(thisKey, setTo) {
     holdRight = setTo;
   }
   if(thisKey == KEY_UP_ARROW || thisKey == KEY_SPACE) {
-    if(jumperOnGround) {
-      jumperSpeedY = -JUMP_POWER;
+    if(player.onGround) {
+      player.speedY = -JUMP_POWER;
     }
   }
 }
