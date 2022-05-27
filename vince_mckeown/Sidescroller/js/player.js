@@ -28,7 +28,6 @@ function playerClass(){
   }
     
   this.move = function(){
-    console.log(this.x,this.y)
       if(this.onGround) {
         this.speedX *= GROUND_FRICTION;
       } else {
@@ -54,7 +53,7 @@ function playerClass(){
       if(this.speedY > 0 && isBrickAtPixelCoord(this.x,this.y+this.radius)) {
         this.y = (1+Math.floor( this.y / TILE_H )) * TILE_H - this.radius;
         this.onGround = true;
-        this.y = 0;
+        this.speedY = 0;
       } else if(isBrickAtPixelCoord(this.x,this.y+this.radius + 2)) {
         this.onGround = false;
       }
