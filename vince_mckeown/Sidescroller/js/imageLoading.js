@@ -79,7 +79,7 @@ function loadImages() {
     {tileType:TILE_ROCK_2, imgX: 128, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
     {tileType:TILE_ROCK_3, imgX: 160, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
   	{tileType:TILE_ROCK_4, imgX: 192, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
-    //{tileType:TILE_GRASS_8, imgX: 224, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
+    {tileType:TILE_ROCK_5, imgX: 224, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
     //{tileType:TILE_GRASS_9, imgX: 256, imgY: 96, theFile:"platformsGrass.png", isFloor: true},
 
       //Row 5

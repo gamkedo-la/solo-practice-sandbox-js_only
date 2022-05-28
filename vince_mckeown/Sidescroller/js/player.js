@@ -7,6 +7,8 @@ function playerClass(){
   this.speedX = 0;
   this.speedY = 0;
   this.radius = 10;
+  this.sx = 0;
+  this.sy = 0;
   
   this.onGround = false;
 
@@ -40,9 +42,11 @@ function playerClass(){
     
       if(holdLeft) {
         this.speedX = -RUN_SPEED;
+        this.sy = 32;
       }
       if(holdRight) {
         this.speedX = RUN_SPEED;
+        this.sy = 0;
       }
 
       if(this.speedY < 0 && isBrickAtPixelCoord(this.x,this.y-this.radius)) {
@@ -71,6 +75,6 @@ function playerClass(){
     }
 
   this.draw = function(){
-    canvasContext.drawImage(playerPic,0,0, 32, 32, this.x, this.y-16, 32, 32);
+    canvasContext.drawImage(playerPic,this.sx,this.sy, 32, 32, this.x, this.y-16, 32, 32);
   }
 }
