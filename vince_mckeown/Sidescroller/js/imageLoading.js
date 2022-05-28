@@ -1,5 +1,6 @@
 var tilePics = [];
 var playerPic = document.createElement('img');
+var slimePic = document.createElement('img');
 
 var picsToLoad = 0;
 
@@ -33,6 +34,7 @@ function loadImages() {
   
   var imageList = [
     {varName:playerPic, theFile:"player.png"},
+    {varName:slimePic, theFile:"slime.png"},
 	
     //Row 1
     {tileType:TILE_GRASS_1_LE, imgX: 0, imgY: 0, theFile:"platformsGrass.png", isFloor: true},

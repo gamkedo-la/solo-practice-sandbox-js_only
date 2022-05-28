@@ -34,7 +34,8 @@ TILES = {
     TILE_MIDDLEGROUND_HILL_6: 83,
     TILE_MIDDLEGROUND_HILL_7: 84,
     TILE_MIDDLEGROUND_HILL_8: 85,
-    TILE_PLAYER: 101
+    TILE_PLAYER: 101,
+    TILE_SLIME: 102
 }
 
 for(const [key, value] of Object.entries(TILES)) {

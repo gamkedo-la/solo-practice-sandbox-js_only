@@ -1,5 +1,6 @@
 var canvas, canvasContext;
 var player = new playerClass();
+var slime = new slimeClass();
   
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
@@ -13,12 +14,14 @@ window.onload = function() {
       moveEverything();
       drawEverything();
     }, 1000/framesPerSecond);
-    
+  
+  slime.reset();
   player.reset();
   loadImages();
 }
 
 function moveEverything() {
+  slime.move();
   player.move();
 }
 
@@ -29,5 +32,6 @@ function drawEverything() {
   drawMiddleGround();
   drawBricks();
   
+  slime.draw();
   player.draw();
 }
