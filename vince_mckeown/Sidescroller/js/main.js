@@ -23,15 +23,16 @@ window.onload = function() {
 function moveEverything() {
   slime.move();
   player.move();
+  updatedCameraPosition();
 }
 
 function drawEverything() {
   colorRect(0, 0, canvas.width, canvas.height, 'black');
-
   drawBackGround();
-  drawMiddleGround();
-  drawBricks();
-  
-  slime.draw();
-  player.draw();
+  shiftForCameraPan();
+    drawMiddleGround();
+    drawBricks();
+    slime.draw();
+    player.draw();
+  finishedCameraPan();
 }
