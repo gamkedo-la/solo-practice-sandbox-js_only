@@ -1,3 +1,11 @@
+var slimeList = [];
+var slimesKilled = 0;
+
+function addSlime() {
+    var tempEnemy = new slimeClass();
+    slimeList.push(tempEnemy);
+}
+
 function slimeClass(){
   this.x = 0;
   this.y = 0;
@@ -46,8 +54,6 @@ function slimeClass(){
           this.moveRight = true;
           this.moveLeft = false;
       } 
-     
-
     
       if(this.moveLeft) {
         this.speedX = -RUN_SPEED;

@@ -1,6 +1,5 @@
 var canvas, canvasContext;
 var player = new playerClass();
-var slime = new slimeClass();
   
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
@@ -15,13 +14,24 @@ window.onload = function() {
       drawEverything();
     }, 1000/framesPerSecond);
   
-  slime.reset();
+  for(var i = 0; i < worldGrid.length; i++){
+    if(worldGrid[i] == TILE_SLIME){
+        addSlime();
+      } 
+    }
+
+  for(var i = 0; i < slimeList.length; i++) {
+    slimeList[i].reset();
+  }
+  
   player.reset();
   loadImages();
 }
 
 function moveEverything() {
-  slime.move();
+  for(var i = 0; i < slimeList.length; i++) {
+    slimeList[i].move();
+  }
   player.move();
   updatedCameraPosition();
 }
@@ -32,7 +42,9 @@ function drawEverything() {
   shiftForCameraPan();
     drawMiddleGround();
     drawBricks();
-    slime.draw();
+    for(var i = 0; i < slimeList.length; i++) {
+      slimeList[i].draw();
+    }
     player.draw();
   finishedCameraPan();
 }
