@@ -18,6 +18,7 @@ function slimeClass(){
   this.moveRight = false;
   
   this.onGround = false;
+  this.collision = false;
 
   this.reset = function() {
 		for(var i=0; i<worldGrid.length; i++){
@@ -91,5 +92,8 @@ function slimeClass(){
 
   this.draw = function(){
     canvasContext.drawImage(slimePic,this.sx,this.sy, 32, 32, this.x, this.y-16, 32, 32);
+    if(this.collision){
+      colorText("COLLISION", this.x, this.y, 'white');
+    }
   }
 }

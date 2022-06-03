@@ -47,4 +47,5 @@ function drawEverything() {
     }
     player.draw();
   finishedCameraPan();
+  colorText("Health: " + player.health, 20, 20, 'white');
 }

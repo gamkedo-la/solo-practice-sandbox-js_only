@@ -9,6 +9,9 @@ function playerClass(){
   this.radius = 10;
   this.sx = 0;
   this.sy = 0;
+  this.height = 32;
+  this.width = 100;
+  this.health = 10;
   
   this.onGround = false;
 
@@ -69,10 +72,35 @@ function playerClass(){
       if(this.speedX > 0 && isBrickAtPixelCoord(this.x+this.radius,this.y)) {
         this.x = (1+Math.floor( this.x / TILE_W )) * TILE_W - this.radius;
       }
+
+      //refactor - check for collisions
+      //slimes
+      for(var i = 0; i < slimeList.length; i++){
+        let enemyX = slimeList[i].x;
+        let enemyY = slimeList[i].y;
+        
+        let playerWidth = this.x + 32;
+        let playerHeight = this.y + 32;
+
+        //console.log(this.y <= enemyY)// && playerHeight > enemyY)
+      
+        if(this.x < enemyX && playerWidth > enemyX &&
+           this.y <= enemyY && playerHeight > enemyY){
+             slimeList[i].collision = true;
+             this.hit(1)
+        } else {
+          slimeList[i].collision = false;
+        }
+      }
       
       this.x += this.speedX; // move the jumper based on its current horizontal speed 
       this.y += this.speedY; // same as above, but for vertical
     }
+
+  this.hit = function(amount){
+    let damage = amount;
+    this.health = this.health - damage;
+  }
 
   this.draw = function(){
     canvasContext.drawImage(playerPic,this.sx,this.sy, 32, 32, this.x, this.y-16, 32, 32);
