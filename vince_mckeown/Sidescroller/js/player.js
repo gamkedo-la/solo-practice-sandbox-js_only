@@ -12,6 +12,9 @@ function playerClass(){
   this.height = 32;
   this.width = 100;
   this.health = 10;
+  this.timer = 0;
+  this.tookHit = false;
+  this.vulnerable = true;
   
   this.onGround = false;
 
@@ -27,6 +30,7 @@ function playerClass(){
 				this.y = tileRow * TILE_H + 0.5 * TILE_H; 
 
 				worldGrid[i] = TILE_EMPTY;
+        this.health = 1;
 				break;
 			}
 		}
@@ -97,9 +101,28 @@ function playerClass(){
       this.y += this.speedY; // same as above, but for vertical
     }
 
+  this.invulnerableTiming = function(){
+    if(this.tookHit){
+      this.vulnerable = false;
+      this.timer++;
+    }
+    if(this.timer > 50){
+      this.vulnerable = true;
+      this.timer = 0;
+      this.tookHit = false;
+    }
+  }
+
   this.hit = function(amount){
-    let damage = amount;
-    this.health = this.health - damage;
+    if(this.vulnerable){
+      this.tookHit = true;
+      let damage = amount;
+      this.health = this.health - damage;
+      if(this.health <= 0){
+        console.log("Died");
+        gameReset();
+      }    
+    }
   }
 
   this.draw = function(){

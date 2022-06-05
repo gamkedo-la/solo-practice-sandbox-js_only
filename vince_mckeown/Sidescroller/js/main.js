@@ -12,6 +12,7 @@ window.onload = function() {
   setInterval(function() {
       moveEverything();
       drawEverything();
+      timeingRequirements();
     }, 1000/framesPerSecond);
   
   for(var i = 0; i < worldGrid.length; i++){
@@ -48,4 +49,12 @@ function drawEverything() {
     player.draw();
   finishedCameraPan();
   colorText("Health: " + player.health, 20, 20, 'white');
+}
+
+function timeingRequirements(){
+  player.invulnerableTiming();
+} 
+
+function gameReset(){
+  console.log("Need a reset function")
 }
