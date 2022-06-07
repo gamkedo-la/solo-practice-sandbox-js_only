@@ -19,8 +19,8 @@ function playerClass(){
   this.onGround = false;
 
   this.reset = function() {
-		for(var i=0; i<worldGrid.length; i++){
-			if( worldGrid[i] == TILE_PLAYER) {
+		for(var i=0; i<worldGrid_1.length; i++){
+			if( worldGrid_1[i] == TILE_PLAYER) {
 				var tileRow = Math.floor(i/TILE_COLS);
 				var tileCol	= i%TILE_COLS;
 				var tileLeftEdgeX = 0;
@@ -29,8 +29,8 @@ function playerClass(){
 				this.x = tileCol * TILE_W + 0.5 * TILE_W; 
 				this.y = tileRow * TILE_H + 0.5 * TILE_H; 
 
-				worldGrid[i] = TILE_EMPTY;
-        this.health = 1;
+				worldGrid_1[i] = TILE_EMPTY;
+        this.health = 2;
 				break;
 			}
 		}
@@ -120,7 +120,7 @@ function playerClass(){
       this.health = this.health - damage;
       if(this.health <= 0){
         console.log("Died");
-        gameReset();
+        nextLevel();
       }    
     }
   }

@@ -52,7 +52,7 @@ var backGroundGrid =
     82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82, 82];
 
 
-var worldGrid =
+var worldGrid_1 =
   [ 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 
     12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
     12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
@@ -72,7 +72,9 @@ var worldGrid =
    101, 31, 32, 12, 31, 35,102, 31, 16, 32, 17, 17, 18, 36, 16, 32, 31, 29, 18, 31, 34, 12, 36, 31, 12, 12, 31, 32, 12, 31, 35, 12, 31, 16, 32, 17, 17, 18, 36, 16, 32, 31, 29, 18, 31, 34, 12, 36, 31, 12,  
      2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,  2,
     11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11,  11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11];
-    
+
+var levelList = [ worldGrid_1, middleGroundGrid ]; 
+      
 
 function drawBackGround() {
     var tileTypeHere = 0;
@@ -138,7 +140,8 @@ function drawBricks() {
         tileLeftEdgeX = 0;
 
         for(var eachCol=0; eachCol<TILE_COLS; eachCol++){ 
-			tileTypeHere = worldGrid[tileIndex];
+
+            tileTypeHere = levelList[levelNow][tileIndex];
 
             let tile_sx = tilePics[tileTypeHere].imgX
             let tile_sy = tilePics[tileTypeHere].imgY;
@@ -180,9 +183,35 @@ function isBrickAtPixelCoord(hitPixelX, hitPixelY) {
     }
     
     var tileIndex = tileToIndex(tileCol, tileRow);
-    return (worldGrid[tileIndex] == TILE_GRASS_1_LE ||
-            worldGrid[tileIndex] == TILE_GRASS_1 ||
-            worldGrid[tileIndex] == TILE_GRASS_1_RE ||
-            worldGrid[tileIndex] == TILE_SOLID);
+    return (worldGrid_1[tileIndex] == TILE_GRASS_1_LE ||
+            worldGrid_1[tileIndex] == TILE_GRASS_1 ||
+            worldGrid_1[tileIndex] == TILE_GRASS_1_RE ||
+            worldGrid_1[tileIndex] == TILE_SOLID);
+}
+
+function gameReset(){
+    console.log("Need a reset function")
+  }
+  
+function resetLevel() {
+console.log("LL:"  + levelList[0] + " LN: " + levelNow)
+    loadLevel(levelList[levelNow])
+}
+
+function nextLevel() {
+    //levelNow++;
+    //if(levelNow > levelList.length) {
+    //    levelNow = 0;
+    //}
+    //loadLevel(levelList[levelNow]);
+    loadLevel(levelList[1])
+}
+
+function loadLevel(whichLevel) {	
+    roomGrid = whichLevel.slice();
+    player.reset();
+    for(var i = 0; i < slimeList.length; i++) {
+        slimeList[i].reset();
+    }
 }
         

@@ -21,8 +21,8 @@ function slimeClass(){
   this.collision = false;
 
   this.reset = function() {
-		for(var i=0; i<worldGrid.length; i++){
-			if( worldGrid[i] == TILE_SLIME) {
+		for(var i=0; i<worldGrid_1.length; i++){
+			if( worldGrid_1[i] == TILE_SLIME) {
 				var tileRow = Math.floor(i/TILE_COLS);
 				var tileCol	= i%TILE_COLS;
 				var tileLeftEdgeX = 0;
@@ -31,7 +31,7 @@ function slimeClass(){
 				this.x = tileCol * TILE_W + 0.5 * TILE_W; 
 				this.y = tileRow * TILE_H + 0.5 * TILE_H; 
 
-				worldGrid[i] = TILE_EMPTY;
+				worldGrid_1[i] = TILE_EMPTY;
 				break;
 			}
 		}

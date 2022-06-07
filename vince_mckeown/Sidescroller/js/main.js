@@ -1,5 +1,6 @@
 var canvas, canvasContext;
 var player = new playerClass();
+var levelNow = 0;
   
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
@@ -15,8 +16,8 @@ window.onload = function() {
       timeingRequirements();
     }, 1000/framesPerSecond);
   
-  for(var i = 0; i < worldGrid.length; i++){
-    if(worldGrid[i] == TILE_SLIME){
+  for(var i = 0; i < worldGrid_1.length; i++){
+    if(worldGrid_1[i] == TILE_SLIME){
         addSlime();
       } 
     }
@@ -55,6 +56,3 @@ function timeingRequirements(){
   player.invulnerableTiming();
 } 
 
-function gameReset(){
-  console.log("Need a reset function")
-}
