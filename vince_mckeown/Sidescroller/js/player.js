@@ -96,6 +96,23 @@ function playerClass(){
           slimeList[i].collision = false;
         }
       }
+
+      //Tile Collisions
+      let walkIntoTileIndex = getTileTypeAtPixelCoord(this.x, this.y);
+      let walkIntoTileType = levelList[levelNow][walkIntoTileIndex];
+
+      switch(walkIntoTileType) {
+        case TILE_HEALTH_POTION_SMALL:
+          this.health++;  
+          levelList[levelNow][walkIntoTileIndex] = TILE_EMPTY;
+        break;
+        case TILE_HEALTH_POTION_MEDIUM:
+          this.health = this.health + 2;  
+          levelList[levelNow][walkIntoTileIndex] = TILE_EMPTY;
+        break;
+        default:
+				break
+      }
       
       this.x += this.speedX; // move the jumper based on its current horizontal speed 
       this.y += this.speedY; // same as above, but for vertical

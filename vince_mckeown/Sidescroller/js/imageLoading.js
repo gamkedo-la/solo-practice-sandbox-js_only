@@ -139,6 +139,9 @@ function loadImages() {
     //{tileType:TILE_GRASS_8, imgX: 224, imgY: 160, theFile:"platformsGrass.png", isFloor: true},
     //{tileType:TILE_GRASS_9, imgX: 256, imgY: 160, theFile:"platformsGrass.png", isFloor: true},
 
+    //Row 21
+    {tileType:TILE_HEALTH_POTION_SMALL, imgX: 0, imgY: 640, theFile:"platformsGrass.png", isFloor: false},
+    {tileType:TILE_HEALTH_POTION_MEDIUM, imgX: 32, imgY: 640, theFile:"platformsGrass.png", isFloor: false}
     ];
 
   picsToLoad = imageList.length;
