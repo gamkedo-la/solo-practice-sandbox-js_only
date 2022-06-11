@@ -87,7 +87,8 @@ function tileToIndex(tileCol, tileRow) {
 
 function isBrickAtTileCoord(brickTileCol, brickTileRow) {
     var tileIndex = tileToIndex(brickTileCol, brickTileRow);
-    return (worldGrid[tileIndex] == TILE_GRASS_1);
+    console.log(levelList[levelNow][tileIndex])
+    return (levelList[levelNow][tileIndex] == TILE_GRASS_1);
 }
 
 function getTileTypeAtPixelCoord(atX, atY) {
@@ -112,16 +113,18 @@ function isBrickAtPixelCoord(hitPixelX, hitPixelY) {
     tileRow = Math.floor( tileRow );
 
     // first check whether the jumper is within any part of the brick wall
-    if(tileCol < 0 || tileCol >= TILE_COLS ||
+    if( tileCol < 0 || tileCol >= TILE_COLS ||
         tileRow < 0 || tileRow >= TILE_ROWS) {
         return false;
     }
     
     var tileIndex = tileToIndex(tileCol, tileRow);
-    return (worldGrid_1[tileIndex] == TILE_GRASS_1_LE ||
-            worldGrid_1[tileIndex] == TILE_GRASS_1 ||
-            worldGrid_1[tileIndex] == TILE_GRASS_1_RE ||
-            worldGrid_1[tileIndex] == TILE_SOLID);
+    return levelList[levelNow][tileIndex] == TILE_GRASS_1_LE ||
+           levelList[levelNow][tileIndex] == TILE_GRASS_1 ||
+           levelList[levelNow][tileIndex] == TILE_GRASS_1_RE ||
+           levelList[levelNow][tileIndex] == TILE_GRASS_1_L_SIDE ||
+           levelList[levelNow][tileIndex] == TILE_GRASS_1_R_SIDE ||
+           levelList[levelNow][tileIndex] == TILE_SOLID;
 }
 
 function gameReset(){
@@ -139,7 +142,6 @@ function nextLevel() {
         levelNow = 0;
     }
     loadLevel(levelList[levelNow]);
-    //loadLevel(levelList[1])
 }
 
 function loadLevel(whichLevel) {	

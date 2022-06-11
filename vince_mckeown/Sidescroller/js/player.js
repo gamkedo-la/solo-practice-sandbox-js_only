@@ -19,8 +19,8 @@ function playerClass(){
   this.onGround = false;
 
   this.reset = function() {
-		for(var i=0; i<worldGrid_1.length; i++){
-			if( worldGrid_1[i] == TILE_PLAYER) {
+		for(var i=0; i<levelList[levelNow].length; i++){
+			if( levelList[levelNow][i] == TILE_PLAYER) {
 				var tileRow = Math.floor(i/TILE_COLS);
 				var tileCol	= i%TILE_COLS;
 				var tileLeftEdgeX = 0;
@@ -29,7 +29,7 @@ function playerClass(){
 				this.x = tileCol * TILE_W + 0.5 * TILE_W; 
 				this.y = tileRow * TILE_H + 0.5 * TILE_H; 
 
-				worldGrid_1[i] = TILE_EMPTY;
+				levelList[levelNow][i] = TILE_EMPTY;
         this.health = 2;
 				break;
 			}
@@ -56,25 +56,31 @@ function playerClass(){
         this.sy = 0;
       }
 
-      if(this.speedY < 0 && isBrickAtPixelCoord(this.x,this.y-this.radius)) {
+     // console.log("SpeedY: " + this.speedY)
+      if(this.speedY <= 0.6 && isBrickAtPixelCoord(this.x,this.y-this.radius)) {
+        ///console.log("Hit Ground")
         this.y = (Math.floor( this.y / TILE_H )) * TILE_H + this.radius;
         this.speedY = 0.0;
       }
       
-      if(this.speedY > 0 && isBrickAtPixelCoord(this.x,this.y+this.radius)) {
+      if(this.speedY > 0.6 && isBrickAtPixelCoord(this.x,this.y+this.radius)) {
         this.y = (1+Math.floor( this.y / TILE_H )) * TILE_H - this.radius;
         this.onGround = true;
         this.speedY = 0;
-      } else if(isBrickAtPixelCoord(this.x,this.y+this.radius + 2)) {
+        //console.log("On Ground")
+      } else if(!isBrickAtPixelCoord(this.x,this.y+this.radius)) {
         this.onGround = false;
+        //console.log("Not on ground")
       }
       
       if(this.speedX < 0 && isBrickAtPixelCoord(this.x-this.radius,this.y)) {
         this.x = (Math.floor( this.x / TILE_W )) * TILE_W + this.radius;
+        //console.log("side collision")
       }
 
       if(this.speedX > 0 && isBrickAtPixelCoord(this.x+this.radius,this.y)) {
         this.x = (1+Math.floor( this.x / TILE_W )) * TILE_W - this.radius;
+        //console.log("side collision")
       }
 
       //refactor - check for collisions
