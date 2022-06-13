@@ -16,20 +16,26 @@ window.onload = function() {
       timeingRequirements();
     }, 1000/framesPerSecond);
   
+  // Add the enemy here
   for(var i = 0; i < worldGrid_1.length; i++){
     if(worldGrid_1[i] == TILE_SLIME){
-        addSlime();
-      } 
-    }
-
-  for(var i = 0; i < worldGrid_1.length; i++){
+      addSlime();
+    } 
     if(worldGrid_1[i] == TILE_GOBLIN){
-        addGoblin();
-      } 
-    }
+      addGoblin();
+    } 
+    if(worldGrid_1[i] == TILE_KOBALD){
+      addKobald();
+    } 
+  }
 
+  // Initiate the enemy here
   for(var i = 0; i < slimeList.length; i++) {
     slimeList[i].reset();
+  }
+
+  for(var i = 0; i < kobaldList.length; i++) {
+    kobaldList[i].reset();
   }
 
   for(var i = 0; i < goblinList.length; i++) {
@@ -47,6 +53,9 @@ function moveEverything() {
   for(var i = 0; i < goblinList.length; i++) {
     goblinList[i].move();
   }
+  for(var i = 0; i < kobaldList.length; i++) {
+    kobaldList[i].move();
+  }
   player.move();
   updatedCameraPosition();
 }
@@ -57,12 +66,18 @@ function drawEverything() {
   shiftForCameraPan();
     drawMiddleGround();
     drawBricks();
-    for(var i = 0; i < slimeList.length; i++) {
-      slimeList[i].draw();
-    }
+
     for(var i = 0; i < goblinList.length; i++) {
       goblinList[i].draw();
     }
+    
+    for(var i = 0; i < kobaldList.length; i++) {
+      kobaldList[i].draw();
+    }
+    for(var i = 0; i < slimeList.length; i++) {
+      slimeList[i].draw();
+    }
+
     player.draw();
   finishedCameraPan();
   colorText("Health: " + player.health, 20, 20, 'white');

@@ -2,6 +2,7 @@ var tilePics = [];
 var playerPic = document.createElement('img');
 var slimePic = document.createElement('img');
 var goblinPic = document.createElement('img');
+var kobaldPic = document.createElement('img');
 
 var picsToLoad = 0;
 
@@ -37,7 +38,7 @@ function loadImages() {
     {varName:playerPic, theFile:"player.png"},
     {varName:slimePic, theFile:"slime.png"},
     {varName:goblinPic, theFile:"goblin.png"},
-
+    {varName:kobaldPic, theFile:"kobald.png"},
 	
     //Row 1
     {tileType:TILE_GRASS_1_LE, imgX: 0, imgY: 0, theFile:"platformsGrass.png", isFloor: true},
