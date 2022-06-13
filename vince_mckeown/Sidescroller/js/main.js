@@ -22,8 +22,18 @@ window.onload = function() {
       } 
     }
 
+  for(var i = 0; i < worldGrid_1.length; i++){
+    if(worldGrid_1[i] == TILE_GOBLIN){
+        addGoblin();
+      } 
+    }
+
   for(var i = 0; i < slimeList.length; i++) {
     slimeList[i].reset();
+  }
+
+  for(var i = 0; i < goblinList.length; i++) {
+    goblinList[i].reset();
   }
   
   player.reset();
@@ -33,6 +43,9 @@ window.onload = function() {
 function moveEverything() {
   for(var i = 0; i < slimeList.length; i++) {
     slimeList[i].move();
+  }
+  for(var i = 0; i < goblinList.length; i++) {
+    goblinList[i].move();
   }
   player.move();
   updatedCameraPosition();
@@ -46,6 +59,9 @@ function drawEverything() {
     drawBricks();
     for(var i = 0; i < slimeList.length; i++) {
       slimeList[i].draw();
+    }
+    for(var i = 0; i < goblinList.length; i++) {
+      goblinList[i].draw();
     }
     player.draw();
   finishedCameraPan();
