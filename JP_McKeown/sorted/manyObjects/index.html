@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+</head>
+
+<body>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+const KEY_LETTER_W = 87;
+const KEY_LETTER_S = 83;
+const BALL_RADIUS = 5;
+
+var delX = 300; //0;//
+var delY = 100; //0;//
+var delW = 390; //800;//
+var delH = 230; //600;//
+
+const INITIAL_NUM_BALLS = 20;
+
+function ballClass() {
+  this.x = 0;
+  this.y = 0;
+  this.velocityX = 0;
+  this.velocityY = 0;
+
+  this.move = function() {
+    this.x += this.velocityX;
+    this.y += this.velocityY;
+
+    if(this.x < (0 + BALL_RADIUS)) {
+      if(this.velocityX < 0) {
+        this.velocityX *= -1;
+      }
+    }
+    if(this.x > (canvas.width - BALL_RADIUS)) {
+      if(this.velocityX > 0) {
+        this.velocityX *= -1;
+      }
+    }
+    if(this.y < (0 + BALL_RADIUS)) {
+      if(this.velocityY < 0) {
+        this.velocityY *= -1;
+      }
+    }
+    if(this.y > (canvas.height - BALL_RADIUS)) {
+      if(this.velocityY > 0) {
+        this.velocityY *= -1;
+      }
+    }
+  }
+
+  this.draw = function() {
+    colorCircle(this.x,this.y, BALL_RADIUS, 'white');
+  }
+} // end of ballClass defn
+
+var ballList = [];
+
+var canvas, canvasContext;
+
+function addBall() {
+  var tempBall;
+  tempBall = new ballClass();
+  tempBall.x = Math.random() * canvas.width;
+  tempBall.y = Math.random() * canvas.height;
+  tempBall.velocityX = 4 - Math.random() * 8;
+  tempBall.velocityY = 4 - Math.random() * 8;
+  ballList.push(tempBall);
+}
+// (var i=0; i<ballList.length; i++)
+// reverse process list because deletion i=1 adjacent to i=0 missed
+function deleteBall() {
+  for(var i=ballList.length-1; i>=0; i--) {
+    if(ballList[i].x >= delX &&
+    ballList[i].x <= delX + delW &&
+    ballList[i].y >= delY &&
+    ballList[i].y <= delY + delH ) {
+      ballList.splice(i,1);
+    }
+  }
+  console.log(ballList);
+}
+
+function keyPressed(evt) {
+  console.log(evt.keyCode);
+  if(evt.keyCode == KEY_LETTER_W) {
+    addBall();
+  } else if(evt.keyCode == KEY_LETTER_S && ballList.length > 0) {
+    deleteBall();
+  }
+}
+
+window.onload = function() {
+	canvas = document.getElementById('gameCanvas');
+	canvasContext = canvas.getContext('2d');
+
+  for(var i=0; i < INITIAL_NUM_BALLS; i++) {
+    addBall();
+  }
+  document.addEventListener("keydown", keyPressed);
+
+	var framesPerSecond = 30;
+	setInterval(updateAll, 1000/framesPerSecond);
+}
+
+function updateAll() {
+	moveAll();
+	drawAll();
+}
+
+function moveAll() {
+  for(var i=0; i < ballList.length; i++) {
+    ballList[i].move();
+  }
+}
+
+function drawAll() {
+	colorRect(0,0, canvas.width,canvas.height, 'black'); // clear screen
+  colorRect(delX,delY, delW,delH, 'red');
+  for(var i=0; i < ballList.length; i++) {
+    ballList[i].draw();
+
+    canvasContext.fillStyle = "yellow";
+    canvasContext.fillText(i, ballList[i].x+ BALL_RADIUS+1, ballList[i].y+BALL_RADIUS);
+  }
+}
+
+function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
+	canvasContext.fillStyle = fillColor;
+	canvasContext.fillRect(topLeftX,topLeftY, boxWidth,boxHeight);
+}
+
+function colorCircle(centerX,centerY, radius, fillColor) {
+	canvasContext.fillStyle = fillColor;
+	canvasContext.beginPath();
+	canvasContext.arc(centerX,centerY, radius, 0,Math.PI*2, true);
+	canvasContext.fill();
+}
+
+</script>
+
+</body>
+</html>

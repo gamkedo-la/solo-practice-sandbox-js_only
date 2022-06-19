@@ -17,3 +17,7 @@ function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY,withAngle) {
   canvasContext.drawImage(graphic,-graphic.width/2,-graphic.height/2); // center, draw
   canvasContext.restore(); // undo the translation movement and rotation since save()
 }
+
+function coloredOutlineRectCornerToCorner(lassoX1,lassoY1,lassoX2, lassoY2, lineColor) {
+
+}
