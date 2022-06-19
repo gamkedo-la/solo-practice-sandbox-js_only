@@ -28,15 +28,18 @@ window.onload = function() {
     
   canvas.addEventListener('mousemove', function(evt) {
         var mousePos = calculateMousePos(evt);
-        document.getElementById("debugText").innerHTML = "("+mousePos.x+","+mousePos.y+")";
+        document.getElementById("debugText").innerHTML = "Cursor: " + mousePos.x + "," + mousePos.y;
       } );
 
   canvas.addEventListener('click', function(evt) {
     var mousePos = calculateMousePos(evt);
     testUnit.gotoX = mousePos.x;
     testUnit.gotoY = mousePos.y;
+    document.getElementById("debugText").innerHTML = "Target: " + mousePos.x + "," + mousePos.y;
   });
+
   testUnit.reset();
+  console.log("testUnit: " + testUnit.x + ' ' + testUnit.y + ' ' + testUnit.isDead);
 }
 
 function moveEverything() {
@@ -48,4 +51,5 @@ function drawEverything() {
   colorRect(0, 0, canvas.width, canvas.height, 'black');
 
   testUnit.draw();
+
 }
