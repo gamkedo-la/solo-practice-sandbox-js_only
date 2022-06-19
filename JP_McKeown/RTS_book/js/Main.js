@@ -1,7 +1,8 @@
 // save the canvas for dimensions, and its 2d context for drawing to it
 var canvas, canvasContext;
 
-var testUnit = new unitClass();
+const PLAYER_START_UNITS = 8;
+var playerUnits = [];
 
 function calculateMousePos(evt) {
   var rect = canvas.getBoundingClientRect(), root = document.documentElement;
@@ -33,23 +34,42 @@ window.onload = function() {
 
   canvas.addEventListener('click', function(evt) {
     var mousePos = calculateMousePos(evt);
-    testUnit.gotoX = mousePos.x;
-    testUnit.gotoY = mousePos.y;
+    for(var i=0; i < PLAYER_START_UNITS; i++) {
+      var eachUnit = playerUnits[i];
+      eachUnit.gotoX = mousePos.x;
+      eachUnit.gotoY = mousePos.y;
+
+    }
     document.getElementById("debugText").innerHTML = "Target: " + mousePos.x + "," + mousePos.y;
   });
 
-  testUnit.reset();
-  console.log("testUnit: " + testUnit.x + ' ' + testUnit.y + ' ' + testUnit.isDead);
+  for(var i=0; i < PLAYER_START_UNITS; i++) {
+    var spawnUnit = new unitClass();
+    spawnUnit.reset();
+    playerUnits.push(spawnUnit);
+  }
+  spawnReport();
+}
+
+function spawnReport() {
+  console.log("Unit x y dead")
+  for(var i=0; i < PLAYER_START_UNITS; i++) {
+    console.log(playerUnits[i].x + ' ' + playerUnits[i].y + ' ' + playerUnits[i].isDead);
+  }
 }
 
 function moveEverything() {
-  testUnit.move();
+  for(var i=0; i < playerUnits.length; i++) {
+    playerUnits[i].move();
+  }
 }
 
 function drawEverything() {
   // clear the game view by filling it with black
   colorRect(0, 0, canvas.width, canvas.height, 'black');
 
-  testUnit.draw();
+  for(var i=0; i < playerUnits.length; i++) {
+    playerUnits[i].draw();
+  }
 
 }
