@@ -1,14 +1,20 @@
 const UNIT_PLACEHOLDER_RADIUS = 5;
 const UNIT_PIXELS_MOVE_RATE = 2;
+const UNIT_MAX_RAND_DISTANCE_FROM_WALK_TARGET = 50;
 
 function unitClass() {
 
   this.reset = function() {
     this.x = Math.random() * canvas.width/4;
     this.y = Math.random() * canvas.height/4;
-    this.gotoX = canvas.width/2;
-    this.gotoY = canvas.height/2;
+    this.gotoX = this.x;
+    this.gotoY = this.y;
     this.isDead = false;
+  }
+
+  this.gotoNear = function(aroundX, aroundY) {
+    this.gotoX = aroundX + Math.random() * UNIT_MAX_RAND_DISTANCE_FROM_WALK_TARGET; 
+    this.gotoY = aroundY + Math.random() * UNIT_MAX_RAND_DISTANCE_FROM_WALK_TARGET; 
   }
 
   this.move = function() {
@@ -29,7 +35,7 @@ function unitClass() {
 
   this.draw = function() {
     if(this.isDead == false) {
-      colorCircle(this.x, this.y, UNIT_PLACEHOLDER_RADIUS, 'white');
+      colorCircle(this.x, this.y, UNIT_PLACEHOLDER_RADIUS, 'black');
     }
   }
 

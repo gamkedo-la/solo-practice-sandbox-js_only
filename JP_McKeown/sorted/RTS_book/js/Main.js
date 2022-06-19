@@ -35,9 +35,7 @@ window.onload = function() {
   canvas.addEventListener('click', function(evt) {
     var mousePos = calculateMousePos(evt);
     for(var i=0; i < PLAYER_START_UNITS; i++) {
-      var eachUnit = playerUnits[i];
-      eachUnit.gotoX = mousePos.x;
-      eachUnit.gotoY = mousePos.y;
+      playerUnits[i].gotoNear(mousePos.x, mousePos.y);
 
     }
     document.getElementById("debugText").innerHTML = "Target: " + mousePos.x + "," + mousePos.y;
@@ -66,7 +64,7 @@ function moveEverything() {
 
 function drawEverything() {
   // clear the game view by filling it with black
-  colorRect(0, 0, canvas.width, canvas.height, 'black');
+  colorRect(0, 0, canvas.width, canvas.height, 'white');
 
   for(var i=0; i < playerUnits.length; i++) {
     playerUnits[i].draw();
