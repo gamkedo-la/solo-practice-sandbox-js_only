@@ -31,11 +31,16 @@ window.onload = function() {
         document.getElementById("debugText").innerHTML = "("+mousePos.x+","+mousePos.y+")";
       } );
 
+  canvas.addEventListener('click', function(evt) {
+    var mousePos = calculateMousePos(evt);
+    testUnit.gotoX = mousePos.x;
+    testUnit.gotoY = mousePos.y;
+  });
   testUnit.reset();
 }
 
 function moveEverything() {
-  
+  testUnit.move();
 }
 
 function drawEverything() {
