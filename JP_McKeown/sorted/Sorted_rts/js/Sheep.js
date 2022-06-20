@@ -9,6 +9,7 @@ function unitClass() {
     this.y = Math.random() * canvas.height/4;
     this.gotoX = this.x;
     this.gotoY = this.y;
+    this.inPen = false;
     this.isDead = false;
 
     // test with initial colours

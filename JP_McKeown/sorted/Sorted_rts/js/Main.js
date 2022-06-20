@@ -62,12 +62,29 @@ function spawnReport() {
 function moveEverything() {
   for(var i=0; i < playerUnits.length; i++) {
     playerUnits[i].move();
+
+    // test if in sheepfold
+    if(playerUnits[i].y > canvas.height - PEN_HEIGHT) {
+      if(playerUnits[i].inPen == false) {
+        console.log("Sheep id " + i + " is in the pen.")
+        playerUnits[i].inPen = true;
+      }
+
+    }
   }
 }
 
+const PEN_HEIGHT = 400; //50;
+const PEN_SIDE_GAP = 2;
+const PEN_BASE_GAP = 2;
+const PEN_INNER_GAP = 1; //100;
 function drawEverything() {
-  // clear the game view by filling it with black
+  // clear the game view by filling with background color
   colorRect(0, 0, canvas.width, canvas.height, 'white');
+  outlineRect(0, 0, canvas.width, canvas.height, 'black');
+
+  outlineRect(PEN_SIDE_GAP, canvas.height-PEN_HEIGHT, canvas.width/2 - PEN_SIDE_GAP - PEN_INNER_GAP, PEN_HEIGHT-PEN_BASE_GAP, 'blue');
+  outlineRect(canvas.width/2 + PEN_INNER_GAP, canvas.height-PEN_HEIGHT, canvas.width/2 - PEN_SIDE_GAP - PEN_INNER_GAP, PEN_HEIGHT-PEN_BASE_GAP, 'red');
 
   for(var i=0; i < playerUnits.length; i++) {
     playerUnits[i].draw();
