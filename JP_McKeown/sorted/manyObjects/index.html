@@ -13,20 +13,56 @@ const KEY_LETTER_W = 87;
 const KEY_LETTER_S = 83;
 const BALL_RADIUS = 5;
 
-var delX = 300; //0;//
-var delY = 100; //0;//
-var delW = 390; //800;//
-var delH = 230; //600;//
+const fieldColor = 'black';
+var ballColor = '#0000FF';
+const labelColor = 'white';
 
-const INITIAL_NUM_BALLS = 20;
+var delX = 100 //300; //0;//
+var delY = 500 //100; //0;//
+var delW = 600 //390; //800;//
+var delH = 100 //ss230; //600;//
+
+var startX = 400 //canvas.width/2;
+var startY = 150 //canvas.height/4;
+const INITIAL_NUM_BALLS = 100;
+const GRAVITY_PER_STEP = 0.1;
+const BOUNCE_ELASTICITY = 0.4;
+
+function getRandomRGB() {
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += getRandom0F(1);
+  }
+  return color;
+}
+function getRandom0F(n) {
+  var letters = '0123456789ABCDEF';
+  var color = '';
+  for (var i = 0; i < n; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
 
 function ballClass() {
   this.x = 0;
   this.y = 0;
   this.velocityX = 0;
   this.velocityY = 0;
+  // this.color = "#0000" + getRandom0F(2);
+  this.color = 
+  getRandomRGB();
+  this.readyToDelete = false;
+  this.lifeSteps = getRandomInt(100,200);
 
   this.move = function() {
+    this.lifeSteps--;
+    if(this.lifeSteps < 1) {
+      this.readyToDelete = true;
+    }
+
+    this.velocityY += GRAVITY_PER_STEP;
+
     this.x += this.velocityX;
     this.y += this.velocityY;
 
@@ -47,13 +83,13 @@ function ballClass() {
     }
     if(this.y > (canvas.height - BALL_RADIUS)) {
       if(this.velocityY > 0) {
-        this.velocityY *= -1;
+        this.velocityY *= -1 * BOUNCE_ELASTICITY;
       }
     }
   }
 
   this.draw = function() {
-    colorCircle(this.x,this.y, BALL_RADIUS, 'white');
+    colorCircle(this.x,this.y, BALL_RADIUS * this.lifeSteps/30, this.color);
   }
 } // end of ballClass defn
 
@@ -61,24 +97,25 @@ var ballList = [];
 
 var canvas, canvasContext;
 
-function addBall() {
+function addBall(startX, startY) {
   var tempBall;
   tempBall = new ballClass();
-  tempBall.x = Math.random() * canvas.width;
-  tempBall.y = Math.random() * canvas.height;
+  tempBall.x = startX; Math.random() * canvas.width;
+  tempBall.y = startY; Math.random() * canvas.height;
   tempBall.velocityX = 4 - Math.random() * 8;
   tempBall.velocityY = 4 - Math.random() * 8;
   ballList.push(tempBall);
 }
-// (var i=0; i<ballList.length; i++)
-// reverse process list because deletion i=1 adjacent to i=0 missed
+
+// (var i=ballList.length-1; i>=0; i--)
+// if deleting immediately must process list in reverse because when both i=1 and i=0 candidates former will escape due to index moving
 function deleteBall() {
-  for(var i=ballList.length-1; i>=0; i--) {
+  for(var i=0; i<ballList.length; i++) {
     if(ballList[i].x >= delX &&
     ballList[i].x <= delX + delW &&
     ballList[i].y >= delY &&
     ballList[i].y <= delY + delH ) {
-      ballList.splice(i,1);
+      ballList[i].readyToDelete = true;
     }
   }
   console.log(ballList);
@@ -87,7 +124,9 @@ function deleteBall() {
 function keyPressed(evt) {
   console.log(evt.keyCode);
   if(evt.keyCode == KEY_LETTER_W) {
-    addBall();
+    for(var i=0; i < INITIAL_NUM_BALLS; i++) {
+      addBall(startX, startY);
+    }    
   } else if(evt.keyCode == KEY_LETTER_S && ballList.length > 0) {
     deleteBall();
   }
@@ -98,7 +137,7 @@ window.onload = function() {
 	canvasContext = canvas.getContext('2d');
 
   for(var i=0; i < INITIAL_NUM_BALLS; i++) {
-    addBall();
+    addBall(startX, startY);
   }
   document.addEventListener("keydown", keyPressed);
 
@@ -115,16 +154,24 @@ function moveAll() {
   for(var i=0; i < ballList.length; i++) {
     ballList[i].move();
   }
+  for(var i=ballList.length-1; i>=0; i--) {
+    if(ballList[i].readyToDelete) {
+      ballList.splice(i,1);
+    }
+  }
 }
 
 function drawAll() {
-	colorRect(0,0, canvas.width,canvas.height, 'black'); // clear screen
+	colorRect(0,0, canvas.width,canvas.height, fieldColor); // clear screen
   colorRect(delX,delY, delW,delH, 'red');
+
   for(var i=0; i < ballList.length; i++) {
     ballList[i].draw();
 
-    canvasContext.fillStyle = "yellow";
-    canvasContext.fillText(i, ballList[i].x+ BALL_RADIUS+1, ballList[i].y+BALL_RADIUS);
+    canvasContext.fillStyle = labelColor;
+    canvasContext.fillText(i, ballList[i].x+ BALL_RADIUS, ballList[i].y - BALL_RADIUS);
+
+    canvasContext.fillText(ballList[i].lifeSteps, ballList[i].x - BALL_RADIUS -5, ballList[i].y + BALL_RADIUS + 9);
   }
 }
 
@@ -140,6 +187,11 @@ function colorCircle(centerX,centerY, radius, fillColor) {
 	canvasContext.fill();
 }
 
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 </script>
 
 </body>
