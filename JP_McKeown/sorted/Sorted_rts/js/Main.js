@@ -64,12 +64,12 @@ function moveEverything() {
     playerUnits[i].move();
 
     // test if in sheepfold
+    // simpler than isInBox() because pen is lowest part of screen and not yet distinguishing between blue, red, and middle.
     if(playerUnits[i].y > canvas.height - PEN_HEIGHT) {
       if(playerUnits[i].inPen == false) {
         console.log("Sheep id " + i + " is in the pen.")
         playerUnits[i].inPen = true;
       }
-
     }
   }
 }
