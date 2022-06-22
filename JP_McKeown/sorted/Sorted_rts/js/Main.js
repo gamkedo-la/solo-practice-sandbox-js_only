@@ -1,21 +1,11 @@
+// Sorted version evolved from CdL RTS
+
 // save the canvas for dimensions, and its 2d context for drawing to it
 var canvas, canvasContext;
 
 const PLAYER_START_UNITS = 8;
 var playerUnits = [];
-var shepherd = new leaderClass();
-
-function calculateMousePos(evt) {
-  var rect = canvas.getBoundingClientRect(), root = document.documentElement;
-
-  // account for the margins, canvas position on page, scroll amount, etc.
-  var mouseX = evt.clientX - rect.left - root.scrollLeft;
-  var mouseY = evt.clientY - rect.top - root.scrollTop;
-  return {
-    x: mouseX,
-    y: mouseY
-  };
-}
+var p1 = new leaderClass();
 
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
@@ -49,7 +39,9 @@ window.onload = function() {
   }
   spawnReport();
 
-  shepherd.reset();
+  p1.reset();
+
+  inputInit();
 }
 
 function spawnReport() {
@@ -90,7 +82,7 @@ function drawEverything() {
     playerUnits[i].draw();
   }
 
-  shepherd.draw();
+  p1.draw();
 }
 
 function getRandomInt(min, max) {
