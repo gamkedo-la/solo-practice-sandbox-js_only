@@ -1,3 +1,5 @@
+// make sheep not appear on edge of screen
+
 const UNIT_PLACEHOLDER_RADIUS = 5;
 const UNIT_PIXELS_MOVE_RATE = 2;
 const UNIT_MAX_RAND_DISTANCE_FROM_WALK_TARGET = 50;
@@ -5,8 +7,8 @@ const UNIT_MAX_RAND_DISTANCE_FROM_WALK_TARGET = 50;
 function unitClass() {
 
   this.reset = function() {
-    this.x = Math.random() * canvas.width/4;
-    this.y = Math.random() * canvas.height/4;
+    this.x = 10 + Math.random() * (canvas.width - 10);
+    this.y = 10 + Math.random() * canvas.height/4;
     this.gotoX = this.x;
     this.gotoY = this.y;
     this.inPen = false;
@@ -20,7 +22,6 @@ function unitClass() {
     } else if (colorChoice == 2) {
       this.color = 'blue';
     }
-
   }
 
   this.gotoNear = function(aroundX, aroundY) {

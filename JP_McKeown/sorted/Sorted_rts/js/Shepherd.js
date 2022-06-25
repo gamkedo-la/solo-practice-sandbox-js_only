@@ -5,8 +5,8 @@ const LEADER_MAX_RAND_DISTANCE_FROM_WALK_TARGET = 50;
 function leaderClass() {
 
   this.reset = function() {
-    this.x = Math.random() * canvas.width/4;
-    this.y = Math.random() * canvas.height/4;
+    this.x = 10;
+    this.y = 10;
     this.gotoX = this.x;
     this.gotoY = this.y;
     this.isDead = false;

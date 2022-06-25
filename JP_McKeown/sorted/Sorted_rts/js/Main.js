@@ -1,9 +1,10 @@
-// Sorted version evolved from CdL RTS
+// Sorted (sheep herding) version evolved from CdL's book RTS
+// target pens/sheepfolds will be at bottom of screen, temporarily bigger so can test by reaching them quicker.
 
 // save the canvas for dimensions, and its 2d context for drawing to it
 var canvas, canvasContext;
 
-const PLAYER_START_UNITS = 8;
+const PLAYER_START_UNITS = 20;
 var playerUnits = [];
 var p1 = new leaderClass();
 
