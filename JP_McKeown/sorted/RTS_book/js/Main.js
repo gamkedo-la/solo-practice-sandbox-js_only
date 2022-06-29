@@ -7,6 +7,19 @@ var enemyUnits = [];
 const PLAYER_START_UNITS = 20;
 var playerUnits = [];
 
+function findClosestUnitInRange(fromX, fromY, maxRange, inUnitList) {
+  var nearestUnitDist = maxRange;
+  var nearestUnitFound = null;
+  for(var i=0; i<inUnitList.length; i++) {
+    var distTo = inUnitList[i].distFrom(fromX, fromY);
+    if(distTo < nearestUnitDist) {
+      nearestUnitDist = distTo;
+      nearestUnitFound = inUnitList[i];
+    }
+  }
+  return nearestUnitFound;
+}
+
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');

@@ -3,6 +3,7 @@ const UNIT_SELECT_DIM_HALF = UNIT_PLACEHOLDER_RADIUS+3;
 const UNIT_PIXELS_MOVE_RATE = 2;
 const UNIT_RANKS_SPACING = UNIT_PLACEHOLDER_RADIUS*3;
 const UNIT_ATTACK_RANGE = 55;
+const UNIT_AI_ATTACK_INITIATE = UNIT_ATTACK_RANGE +10;
 
 const playerColor = "blue";
 const enemyColor = "red";
@@ -94,7 +95,20 @@ function unitClass() {
         this.gotoX = this.x;
         this.gotoY = this.y;
       }
-    }
+    } else if (this.playerControlled == false) {
+      if(Math.random() < 0.02) {
+        var nearestOpponentFound = findClosestUnitInRange(this.x, this.y,
+          UNIT_AI_ATTACK_INITIATE, playerUnits);
+        if(nearestOpponentFound != null) {
+          this.myTarget = nearestOpponentFound;
+        } else {
+          // move toward player corner
+          this.gotoX = this.x - Math.random()*50;
+          this.gotoY = this.y - Math.random()*50;
+        } // no target found
+      } // AI response random lag
+    } // enemy units
+
     var deltaX = this.gotoX-this.x;
     var deltaY = this.gotoY-this.y;
     var distToGo = Math.sqrt(deltaX*deltaX + deltaY*deltaY);
