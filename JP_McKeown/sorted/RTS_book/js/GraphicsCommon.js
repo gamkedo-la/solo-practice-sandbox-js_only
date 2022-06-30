@@ -16,6 +16,14 @@ function colorCircle(centerX, centerY, radius, fillColor) {
   canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
   canvasContext.fill();
 }
+
+function colorLine(startX, startY, endX, endY, lineColor) {
+  canvasContext.strokeStyle = lineColor;
+  canvasContext.beginPath();
+  canvasContext.moveTo(startX, startY);
+  canvasContext.lineTo(endX, endY);
+  canvasContext.stroke();
+}
   
 function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY,withAngle) {
   canvasContext.save(); // allows us to undo translate movement and rotate spin

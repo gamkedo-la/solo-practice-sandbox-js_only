@@ -1,24 +1,8 @@
 // save the canvas for dimensions, and its 2d context for drawing to it
 var canvas, canvasContext;
+var rightClicked = false;
 const FIELD_COLOR = "white";
-
-const ENEMY_START_UNITS = 15;
-var enemyUnits = [];
-const PLAYER_START_UNITS = 20;
-var playerUnits = [];
-
-function findClosestUnitInRange(fromX, fromY, maxRange, inUnitList) {
-  var nearestUnitDist = maxRange;
-  var nearestUnitFound = null;
-  for(var i=0; i<inUnitList.length; i++) {
-    var distTo = inUnitList[i].distFrom(fromX, fromY);
-    if(distTo < nearestUnitDist) {
-      nearestUnitDist = distTo;
-      nearestUnitFound = inUnitList[i];
-    }
-  }
-  return nearestUnitFound;
-}
+const DRAG_COLOR = "gray";
 
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
@@ -31,52 +15,42 @@ window.onload = function() {
       drawEverything();
     }, 1000/framesPerSecond);
     
-  canvas.addEventListener('mousemove', mousemoveHandler); ////
-  
-  canvas.addEventListener('mousedown', mousedownHandler); ////
-  
-  canvas.addEventListener('mouseup', mouseupHandler); ////
+  canvas.addEventListener('mousemove', mousemoveHandler);
+  canvas.addEventListener('mousedown', mousedownHandler);
+  canvas.addEventListener('mouseup', mouseupHandler);
 
-  for(var i=0;i<PLAYER_START_UNITS;i++) {
-    var spawnUnit = new unitClass();
-    spawnUnit.resetAndSetPlayerTeam(true);
-    playerUnits.push(spawnUnit);
-  }
+  canvas.addEventListener('contextmenu', rightclickHandler);
 
-  for(var i=0;i<ENEMY_START_UNITS;i++) {
-    var spawnUnit = new unitClass();
-    spawnUnit.resetAndSetPlayerTeam(false);
-    enemyUnits.push(spawnUnit);
-  }
+  populateTeam(playerUnits,PLAYER_START_UNITS,true);
+  populateTeam(enemyUnits,ENEMY_START_UNITS,false);
 }
 
 function moveEverything() {
-  for(var i=0;i<playerUnits.length;i++) {
-    playerUnits[i].move();
+  for(var i=0;i<allUnits.length;i++) {
+    allUnits[i].move();
   }
-  for(var i=0;i<enemyUnits.length;i++) {
-    enemyUnits[i].move();
-  }
+  
+  removeDeadUnits(); ////
+  checkVictory();  
 }
 
 function drawEverything() {
-  // clear the game view by filling it with black
+  // clear the game view by filling with colour
   colorRect(0, 0, canvas.width, canvas.height, FIELD_COLOR);
-  coloredOutlineRectCornerToCorner(0, 0, canvas.width, canvas.height, 'black')
+  coloredOutlineRectCornerToCorner(0, 0, canvas.width, canvas.height, "black");
   
-  for(var i=0;i<playerUnits.length;i++) {
-    playerUnits[i].draw();
+  for(var i=0;i<allUnits.length;i++) {
+    allUnits[i].draw();
+    if(allUnits[i].myTarget != null) {
+      allUnits[i].drawLineToTarget();
+    }
   }
 
-  for(var i=0;i<enemyUnits.length;i++) {
-    enemyUnits[i].draw();
-  }
-  
   for(var i=0;i<selectedUnits.length;i++) {
     selectedUnits[i].drawSelectionBox();
   }
   
   if(isMouseDragging) {
-    coloredOutlineRectCornerToCorner(lassoX1,lassoY1, lassoX2,lassoY2, 'green');
+    coloredOutlineRectCornerToCorner(lassoX1,lassoY1, lassoX2,lassoY2, DRAG_COLOR);
   }
 }

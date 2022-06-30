@@ -3,30 +3,32 @@ const UNIT_SELECT_DIM_HALF = UNIT_PLACEHOLDER_RADIUS+3;
 const UNIT_PIXELS_MOVE_RATE = 2;
 const UNIT_RANKS_SPACING = UNIT_PLACEHOLDER_RADIUS*3;
 const UNIT_ATTACK_RANGE = 55;
-const UNIT_AI_ATTACK_INITIATE = UNIT_ATTACK_RANGE +10;
-
-const playerColor = "blue";
-const enemyColor = "red";
+const UNIT_AI_ATTACK_INITIATE = UNIT_ATTACK_RANGE + 10;
+const UNIT_PLAYABLE_AREA_MARGIN = 20;
+const PLAYER_COLOR = "blue";
+const ENEMY_COLOR = "red";
+const DEAD_COLOR = "gray";
+const ENEMY_MOVE_PIXELS_RATE = 5;
 
 function unitClass() {
 
   this.resetAndSetPlayerTeam = function(playerTeam) {
     this.playerControlled = playerTeam;
-    this.x = Math.random()*canvas.width/4;
-    this.y = Math.random()*canvas.height/4;
+    this.x = UNIT_PLAYABLE_AREA_MARGIN + Math.random()*canvas.width/4;
+    this.y = UNIT_PLAYABLE_AREA_MARGIN + Math.random()*canvas.height/4;
+    this.myTarget = null;
     
     // flip all non-player units to opposite corner
     if(this.playerControlled == false) {
       this.x = canvas.width - this.x;
       this.y = canvas.height - this.y;
-      this.unitColor = enemyColor;
+      this.unitColor = ENEMY_COLOR;
     } else {
-      this.unitColor = playerColor;
+      this.unitColor = PLAYER_COLOR;
     }
     
     this.gotoX = this.x;
     this.gotoY = this.y;
-    this.myTarget = null;
     this.isDead = false;
   }
   
@@ -36,6 +38,10 @@ function unitClass() {
     return Math.sqrt(deltaX*deltaX + deltaY*deltaY);
   }
   
+  this.setTarget = function(newTarget) {
+    this.myTarget = newTarget;
+  }
+
   this.gotoNear = function(aroundX, aroundY, formationPos, formationDim) {
     var colNum = formationPos % formationDim;
     var rowNum = Math.floor(formationPos / formationDim);
@@ -43,10 +49,6 @@ function unitClass() {
     this.gotoY = aroundY + rowNum*UNIT_RANKS_SPACING;
   }
   
-  this.setTarget = function(newTarget) {
-    this.myTarget = newTarget;
-  }
-
   this.isInBox = function(x1,y1,x2,y2) {
     var leftX, rightX;
     if(x1 < x2) {
@@ -92,22 +94,26 @@ function unitClass() {
         this.gotoY = this.myTarget.y;
       } else {
         this.myTarget.isDead = true;
+        soonCheckUnitsToClear();
         this.gotoX = this.x;
         this.gotoY = this.y;
       }
-    } else if (this.playerControlled == false) {
+    } else if(this.playerControlled == false) {
       if(Math.random() < 0.02) {
-        var nearestOpponentFound = findClosestUnitInRange(this.x, this.y,
-          UNIT_AI_ATTACK_INITIATE, playerUnits);
+        var nearestOpponentFound =
+            findClosestUnitInRange(this.x,this.y,UNIT_AI_ATTACK_INITIATE,playerUnits);
+
         if(nearestOpponentFound != null) {
           this.myTarget = nearestOpponentFound;
         } else {
-          // move toward player corner
-          this.gotoX = this.x - Math.random()*50;
-          this.gotoY = this.y - Math.random()*50;
-        } // no target found
-      } // AI response random lag
-    } // enemy units
+          this.gotoX = this.x - Math.random() * ENEMY_MOVE_PIXELS_RATE;
+          this.gotoY = this.y - Math.random() * ENEMY_MOVE_PIXELS_RATE;
+
+        } // end of else, no target found in attack radius
+      } // end of randomized ai response lag check
+    } // end of playerControlled == false (i.e. code block for computer control)
+  
+    this.keepInPlayableArea();
 
     var deltaX = this.gotoX-this.x;
     var deltaY = this.gotoY-this.y;
@@ -133,9 +139,25 @@ function unitClass() {
   }
   
   this.draw = function() {
-    if(this.isDead == false) {
-      colorCircle( this.x, this.y, UNIT_PLACEHOLDER_RADIUS, this.unitColor );
-    }
+    colorCircle( this.x, this.y, UNIT_PLACEHOLDER_RADIUS, this.unitColor );
+    //// removed the if-conditional check that only drew unit if it was alive
   }
 
+  this.drawLineToTarget = function() {
+    console.log("draw line");
+    colorLine(this.x, this.y, this.myTarget.x, this.myTarget.y, this.unitColor);
+  }
+
+  this.keepInPlayableArea = function() {
+    if(this.gotoX < UNIT_PLAYABLE_AREA_MARGIN) {
+      this.gotX = UNIT_PLAYABLE_AREA_MARGIN;
+    } else if(this.gotoX > canvas.width - UNIT_PLAYABLE_AREA_MARGIN) {
+      this.gotX = canvas.width - UNIT_PLAYABLE_AREA_MARGIN;
+    }
+    if(this.gotoY < UNIT_PLAYABLE_AREA_MARGIN) {
+      this.gotY = UNIT_PLAYABLE_AREA_MARGIN;
+    } else if(this.gotoY > canvas.height - UNIT_PLAYABLE_AREA_MARGIN) {
+      this.gotX = canvas.height - UNIT_PLAYABLE_AREA_MARGIN;
+    }
+  }
 } // end of class

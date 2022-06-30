@@ -1,5 +1,3 @@
-//// new file, so nearly everything in here has been moved/changed from Main.js
-
 var lassoX1 = 0;
 var lassoY1 = 0;
 var lassoX2 = 0;
@@ -30,25 +28,14 @@ function mouseMovedEnoughToTreatAsDrag() {
 }
 
 function getUnitUnderMouse(currentMousePos) {
-  var closestDistanceFoundToMouse = MIN_DIST_FOR_MOUSE_CLICK_SELECTABLE;
-  var closestUnit = null; // using null instead of leaving undefined, to mean 'none found'
-  
-  for(var i=0;i<playerUnits.length;i++) {
-    var pDist = playerUnits[i].distFrom(currentMousePos.x, currentMousePos.y);
-    if(pDist < closestDistanceFoundToMouse) {
-      closestUnit = playerUnits[i];
-      closestDistanceFoundToMouse = pDist;
-    }
-  }
-  
-  for(var i=0;i<enemyUnits.length;i++) {
-    var eDist = enemyUnits[i].distFrom(currentMousePos.x, currentMousePos.y);
-    if(eDist < closestDistanceFoundToMouse) {
-      closestUnit = enemyUnits[i];
-      closestDistanceFoundToMouse = eDist;
-    }
-  }  
-  return closestUnit;
+  return findClosestUnitInRange(currentMousePos.x, currentMousePos.y,
+                            MIN_DIST_FOR_MOUSE_CLICK_SELECTABLE,allUnits);
+}
+
+function rightclickHandler(evt) {
+  selectedUnits = [];
+  rightClicked = true;
+  evt.preventDefault();
 }
 
 function mousemoveHandler(evt) {
@@ -70,7 +57,12 @@ function mousedownHandler(evt) {
 
 function mouseupHandler(evt) {
   isMouseDragging = false;
-  
+
+  if(evt.button == 2) { // right-click
+    console.log(evt.button);
+    return;
+  }
+
   if(mouseMovedEnoughToTreatAsDrag()) {
     selectedUnits = []; // clear the selection array
 
@@ -89,7 +81,7 @@ function mouseupHandler(evt) {
 
     if(clickedUnit != null && clickedUnit.playerControlled == false) { // clicked enemy?
       // then command units to attack it!
-      for(var i=0; i<selectedUnits.length; i++) {
+      for(var i=0;i<selectedUnits.length;i++) {
         selectedUnits[i].setTarget(clickedUnit);
       }
       document.getElementById("debugText").innerHTML =
@@ -97,11 +89,11 @@ function mouseupHandler(evt) {
     } else {
       // didn't click an enemy unit, so direct any currently selected units to this location
       var unitsAlongSide = Math.floor(Math.sqrt(selectedUnits.length+2));
-      for(var i=0; i<selectedUnits.length; i++) {
+      for(var i=0;i<selectedUnits.length;i++) {
         selectedUnits[i].gotoNear(mousePos.x, mousePos.y, i, unitsAlongSide);
       }
       document.getElementById("debugText").innerHTML =
                 "Moving to ("+mousePos.x+","+mousePos.y+")";
     }
-  }
+  } // END test mouseMovedEnoughToTreatAsDrag()
 }
