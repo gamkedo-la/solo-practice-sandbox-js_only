@@ -51,7 +51,7 @@ function removeDeadUnits() { ////
 function populateTeam(whichTeam,howMany,isPlayerControlled) {
   for(var i=0;i<howMany;i++) {
     var spawnUnit = new unitClass();
-    spawnUnit.resetAndSetPlayerTeam(isPlayerControlled);
+    spawnUnit.resetAndSetPlayerTeam(isPlayerControlled, plainSheepPic);
     addNewUnitToTeam(spawnUnit, whichTeam);
   }
 }

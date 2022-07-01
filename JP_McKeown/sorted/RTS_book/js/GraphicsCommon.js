@@ -3,7 +3,7 @@ function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
   canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
 }
 
-function coloredOutlineRectCornerToCorner(corner1X, corner1Y, corner2X, corner2Y, lineColor) {
+function colorOutlineRectCornerToCorner(corner1X, corner1Y, corner2X, corner2Y, lineColor) {
   canvasContext.strokeStyle = lineColor;
   canvasContext.beginPath();
   canvasContext.rect(corner1X, corner1Y, corner2X-corner1X, corner2Y-corner1Y);
@@ -31,4 +31,10 @@ function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY,withAngle) {
   canvasContext.rotate(withAngle); // sets the rotation
   canvasContext.drawImage(graphic,-graphic.width/2,-graphic.height/2); // center, draw
   canvasContext.restore(); // undo the translation movement and rotation since save()
+}
+
+function colorText(str, atX, atY, color) {
+  canvasContext.fillStyle = color;
+  canvasContext.font = "16px serif";
+  canvasContext.fillText(str, atX, atY);
 }

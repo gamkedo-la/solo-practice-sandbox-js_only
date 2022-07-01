@@ -1,7 +1,7 @@
 // save the canvas for dimensions, and its 2d context for drawing to it
 var canvas, canvasContext;
 var rightClicked = false;
-const FIELD_COLOR = "white";
+const FIELD_COLOR = "#CCFF99";
 const DRAG_COLOR = "gray";
 
 window.onload = function() {
@@ -37,10 +37,11 @@ function moveEverything() {
 function drawEverything() {
   // clear the game view by filling with colour
   colorRect(0, 0, canvas.width, canvas.height, FIELD_COLOR);
-  coloredOutlineRectCornerToCorner(0, 0, canvas.width, canvas.height, "black");
-  
+  colorOutlineRectCornerToCorner(0, 0, canvas.width, canvas.height, "black");
+
   for(var i=0;i<allUnits.length;i++) {
     allUnits[i].draw();
+    allUnits[i].drawID(i);
     if(allUnits[i].myTarget != null) {
       allUnits[i].drawLineToTarget();
     }
@@ -48,9 +49,10 @@ function drawEverything() {
 
   for(var i=0;i<selectedUnits.length;i++) {
     selectedUnits[i].drawSelectionBox();
+    selectedUnits[i].drawHealthBar();
   }
   
   if(isMouseDragging) {
-    coloredOutlineRectCornerToCorner(lassoX1,lassoY1, lassoX2,lassoY2, DRAG_COLOR);
+    colorOutlineRectCornerToCorner(lassoX1,lassoY1, lassoX2,lassoY2, DRAG_COLOR);
   }
 }
