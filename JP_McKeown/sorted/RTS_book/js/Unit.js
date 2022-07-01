@@ -169,16 +169,17 @@ function unitClass() {
   }
 
   this.keepInPlayableArea = function() {
-    if(this.gotoX < UNIT_PLAYABLE_AREA_MARGIN) {
-      this.gotX = UNIT_PLAYABLE_AREA_MARGIN;
-    } else if(this.gotoX > canvas.width - UNIT_PLAYABLE_AREA_MARGIN) {
-      this.gotX = canvas.width - UNIT_PLAYABLE_AREA_MARGIN;
+    if(this.gotoX < PLAY_AREA_MARGIN) {
+      this.gotoX = PLAY_AREA_MARGIN;
+    } else if(this.gotoX > canvas.width - PLAY_AREA_MARGIN) {
+      this.gotoX = canvas.width - PLAY_AREA_MARGIN;
     }
-    if(this.gotoY < UNIT_PLAYABLE_AREA_MARGIN) {
-      this.gotY = UNIT_PLAYABLE_AREA_MARGIN;
-    } else if(this.gotoY > canvas.height - UNIT_PLAYABLE_AREA_MARGIN) {
-      this.gotX = canvas.height - UNIT_PLAYABLE_AREA_MARGIN;
+    if(this.gotoY < PLAY_AREA_MARGIN) {
+      this.gotoY = PLAY_AREA_MARGIN;
+    } else if(this.gotoY > canvas.height - PLAY_AREA_MARGIN) {
+      this.gotoX = canvas.height - PLAY_AREA_MARGIN;
     }
+  }
   }
 
   this.isInBox = function(x1,y1,x2,y2) {

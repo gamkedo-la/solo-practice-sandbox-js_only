@@ -1,21 +1,21 @@
 // make sheep not appear on edge of screen
 
 const UNIT_PLACEHOLDER_RADIUS = 5;
-const UNIT_PIXELS_MOVE_RATE = 2;
-const UNIT_MAX_RAND_DISTANCE_FROM_WALK_TARGET = 50;
+const MOVE_RATE_PIXELS = 2;
+const MAX_DIST_FROM_WALK_TARGET = 100;
 
 function unitClass() {
 
   this.reset = function() {
-    this.x = 10 + Math.random() * (canvas.width - 10);
-    this.y = 10 + Math.random() * canvas.height/4;
+    this.x = randomRangeInt(PLAY_AREA_MARGIN, canvas.width - PLAY_AREA_MARGIN);
+    this.y = randomRangeInt(PLAY_AREA_MARGIN +40, canvas.height / 4);
     this.gotoX = this.x;
     this.gotoY = this.y;
     this.inPen = false;
     this.isDead = false;
 
     // test with initial colours
-    var colorChoice = getRandomInt(0, 2);
+    var colorChoice = randomRangeInt(0, 2);
     this.color = 'gray';
     if (colorChoice == 1) {
       this.color = 'red';
@@ -24,19 +24,23 @@ function unitClass() {
     }
   }
 
+  // click is centre of random targets
   this.gotoNear = function(aroundX, aroundY) {
-    this.gotoX = aroundX + Math.random() * UNIT_MAX_RAND_DISTANCE_FROM_WALK_TARGET; 
-    this.gotoY = aroundY + Math.random() * UNIT_MAX_RAND_DISTANCE_FROM_WALK_TARGET; 
+    this.gotoX = aroundX - MAX_DIST_FROM_WALK_TARGET/2 + Math.random() * MAX_DIST_FROM_WALK_TARGET; 
+    this.gotoY = aroundY - MAX_DIST_FROM_WALK_TARGET/2 + Math.random() * MAX_DIST_FROM_WALK_TARGET; 
   }
 
   this.move = function() {
+
+    this.keepInPlayableArea(); // adjusts goto x,y numbers
+
     var deltaX = this.gotoX - this.x; 
     var deltaY = this.gotoY - this.y;
     var distToGo = Math.sqrt(deltaX*deltaX + deltaY*deltaY);
-    var moveX = UNIT_PIXELS_MOVE_RATE * deltaX/distToGo;
-    var moveY = UNIT_PIXELS_MOVE_RATE * deltaY/distToGo;
+    var moveX = MOVE_RATE_PIXELS * deltaX/distToGo;
+    var moveY = MOVE_RATE_PIXELS * deltaY/distToGo;
 
-    if(distToGo > UNIT_PIXELS_MOVE_RATE) {
+    if(distToGo > MOVE_RATE_PIXELS) {
       this.x += moveX;
       this.y += moveY;
     } else {
@@ -51,4 +55,16 @@ function unitClass() {
     }
   }
 
+  this.keepInPlayableArea = function() {
+    if(this.gotoX < PLAY_AREA_MARGIN) {
+      this.gotoX = PLAY_AREA_MARGIN;
+    } else if(this.gotoX > canvas.width - PLAY_AREA_MARGIN) {
+      this.gotoX = canvas.width - PLAY_AREA_MARGIN;
+    }
+    if(this.gotoY < PLAY_AREA_MARGIN) {
+      this.gotoY = PLAY_AREA_MARGIN;
+    } else if(this.gotoY > canvas.height - PLAY_AREA_MARGIN) {
+      this.gotoX = canvas.height - PLAY_AREA_MARGIN;
+    }
+  }
 }

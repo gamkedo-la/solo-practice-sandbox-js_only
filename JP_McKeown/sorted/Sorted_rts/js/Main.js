@@ -53,24 +53,15 @@ function spawnReport() {
 }
 
 function moveEverything() {
+  // all sheep move
   for(var i=0; i < playerUnits.length; i++) {
     playerUnits[i].move();
-
-    // test if in sheepfold
-    // simpler than isInBox() because pen is lowest part of screen and not yet distinguishing between blue, red, and middle.
-    if(playerUnits[i].y > canvas.height - PEN_HEIGHT) {
-      if(playerUnits[i].inPen == false) {
-        console.log("Sheep id " + i + " is in the pen.")
-        playerUnits[i].inPen = true;
-      }
-    }
+    reportIfReachFold(i);
   }
+  // shepherds move
+  p1.move();
 }
 
-const PEN_HEIGHT = 400; //50;
-const PEN_SIDE_GAP = 2;
-const PEN_BASE_GAP = 2;
-const PEN_INNER_GAP = 1; //100;
 function drawEverything() {
   // clear the game view by filling with background color
   colorRect(0, 0, canvas.width, canvas.height, 'white');
@@ -82,10 +73,8 @@ function drawEverything() {
   for(var i=0; i < playerUnits.length; i++) {
     playerUnits[i].draw();
   }
-
-  p1.draw();
-}
-
-function getRandomInt(min, max) {
-  return Math.floor(Math.random() * (max - min + 1) + min);
+  // shepherd with Hat power
+  // p1.draw();
+  drawHat(12, 3, "red");
+  drawHat(canvas.width-15, 3, "blue");
 }

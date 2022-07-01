@@ -43,6 +43,8 @@ function mousemoveHandler(evt) {
   if(isMouseDragging) {
     lassoX2 = mousePos.x;
     lassoY2 = mousePos.y;
+  } else {
+    showHealth(mousePos.x, mousePos.y);
   }
 }
 
