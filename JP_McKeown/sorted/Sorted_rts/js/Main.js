@@ -68,6 +68,7 @@ function drawEverything() {
   outlineRect(0, 0, canvas.width, canvas.height, 'black');
 
   outlineRect(PEN_SIDE_GAP, canvas.height-PEN_HEIGHT, canvas.width/2 - PEN_SIDE_GAP - PEN_INNER_GAP, PEN_HEIGHT-PEN_BASE_GAP, 'blue');
+  
   outlineRect(canvas.width/2 + PEN_INNER_GAP, canvas.height-PEN_HEIGHT, canvas.width/2 - PEN_SIDE_GAP - PEN_INNER_GAP, PEN_HEIGHT-PEN_BASE_GAP, 'red');
 
   for(var i=0; i < playerUnits.length; i++) {
