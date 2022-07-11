@@ -1,9 +1,5 @@
 // make sheep not appear on edge of screen
 
-const UNIT_PLACEHOLDER_RADIUS = 5;
-const MOVE_RATE_PIXELS = 2;
-const MAX_DIST_FROM_WALK_TARGET = 100;
-
 function unitClass() {
 
   this.reset = function() {
@@ -12,6 +8,7 @@ function unitClass() {
     this.goal = false;
     this.gotoX = this.x;
     this.gotoY = this.y;
+    this.enteredPen = false;
     this.inPen = false;
     this.isDead = false;
 
@@ -35,9 +32,9 @@ function unitClass() {
 
     // if no goal, random walk
     if(this.goal == false) {
-      if(Math.random() < 0.05) {
-        this.gotoX += randomRangeInt(-1, 1) * 10;
-        this.gotoY += randomRangeInt(-1, 1) * 10;
+      if(Math.random() < 0.03) {
+        this.gotoX += randomRangeInt(-1, 1) * 20;
+        this.gotoY += randomRangeInt(-1, 1) * 20;
       }
 
     }
@@ -53,8 +50,10 @@ function unitClass() {
       this.x += moveX;
       this.y += moveY;
     } else {
+      // sheep is arriving at location goal
       this.x = this.gotoX;
       this.y = this.gotoY;
+      this.goal = false;
     }
 
   }
@@ -62,6 +61,7 @@ function unitClass() {
   this.draw = function() {
     if(this.isDead == false) {
       colorCircle(this.x, this.y, UNIT_PLACEHOLDER_RADIUS, this.color);
+
     }
   }
 
@@ -73,8 +73,15 @@ function unitClass() {
     }
     if(this.gotoY < TOP_MARGIN) {
       this.gotoY = TOP_MARGIN;
-    } else if(this.gotoY > canvas.height - PEN_HEIGHT) {
-      this.gotoY = canvas.height - PEN_HEIGHT;
+    } 
+    if(this.goal == false && this.enteredPen == false) {
+      if(this.gotoY > canvas.height - PEN_HEIGHT) {
+        this.gotoY = canvas.height - PEN_HEIGHT - PLAY_AREA_MARGIN;
+      }
+    } else {
+      if(this.gotoY > canvas.height - PLAY_AREA_MARGIN) {
+        this.gotoY = canvas.height - PLAY_AREA_MARGIN;
+      }
     }
   }
 }

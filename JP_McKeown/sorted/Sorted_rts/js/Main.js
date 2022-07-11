@@ -28,7 +28,7 @@ window.onload = function() {
     var mousePos = calculateMousePos(evt);
     for(var i=0; i < PLAYER_START_UNITS; i++) {
       playerUnits[i].gotoNear(mousePos.x, mousePos.y);
-
+      playerUnits[i].goal = true;
     }
     document.getElementById("debugText").innerHTML = "Target: " + mousePos.x + "," + mousePos.y;
   });
@@ -68,7 +68,7 @@ function drawEverything() {
   outlineRect(0, 0, canvas.width, canvas.height, 'black');
 
   outlineRect(PEN_SIDE_GAP, canvas.height-PEN_HEIGHT, canvas.width/2 - PEN_SIDE_GAP - PEN_INNER_GAP, PEN_HEIGHT-PEN_BASE_GAP, 'blue');
-  
+
   outlineRect(canvas.width/2 + PEN_INNER_GAP, canvas.height-PEN_HEIGHT, canvas.width/2 - PEN_SIDE_GAP - PEN_INNER_GAP, PEN_HEIGHT-PEN_BASE_GAP, 'red');
 
   for(var i=0; i < playerUnits.length; i++) {
