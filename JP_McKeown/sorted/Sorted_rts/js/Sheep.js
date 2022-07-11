@@ -9,6 +9,7 @@ function unitClass() {
   this.reset = function() {
     this.x = randomRangeInt(PLAY_AREA_MARGIN, canvas.width - PLAY_AREA_MARGIN);
     this.y = randomRangeInt(PLAY_AREA_MARGIN +40, canvas.height / 4);
+    this.goal = false;
     this.gotoX = this.x;
     this.gotoY = this.y;
     this.inPen = false;
@@ -32,6 +33,14 @@ function unitClass() {
 
   this.move = function() {
 
+    // if no goal, random walk
+    if(this.goal == false) {
+      if(Math.random() < 0.05) {
+        this.gotoX += randomRangeInt(-1, 1) * 10;
+        this.gotoY += randomRangeInt(-1, 1) * 10;
+      }
+
+    }
     this.keepInPlayableArea(); // adjusts goto x,y numbers
 
     var deltaX = this.gotoX - this.x; 
@@ -47,6 +56,7 @@ function unitClass() {
       this.x = this.gotoX;
       this.y = this.gotoY;
     }
+
   }
 
   this.draw = function() {
@@ -61,10 +71,10 @@ function unitClass() {
     } else if(this.gotoX > canvas.width - PLAY_AREA_MARGIN) {
       this.gotoX = canvas.width - PLAY_AREA_MARGIN;
     }
-    if(this.gotoY < PLAY_AREA_MARGIN) {
-      this.gotoY = PLAY_AREA_MARGIN;
-    } else if(this.gotoY > canvas.height - PLAY_AREA_MARGIN) {
-      this.gotoX = canvas.height - PLAY_AREA_MARGIN;
+    if(this.gotoY < TOP_MARGIN) {
+      this.gotoY = TOP_MARGIN;
+    } else if(this.gotoY > canvas.height - PEN_HEIGHT) {
+      this.gotoY = canvas.height - PEN_HEIGHT;
     }
   }
 }

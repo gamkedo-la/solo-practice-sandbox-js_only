@@ -1,4 +1,5 @@
 const PLAY_AREA_MARGIN = 10;
+const TOP_MARGIN = 40;
 
 const PEN_HEIGHT = 400; //50;
 const PEN_SIDE_GAP = 2;
