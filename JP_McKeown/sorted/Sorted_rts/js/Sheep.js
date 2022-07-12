@@ -7,6 +7,8 @@ function unitClass() {
     this.x = randomRangeInt(PLAY_AREA_MARGIN, canvas.width - PLAY_AREA_MARGIN);
     this.y = randomRangeInt(TOP_MARGIN, canvas.height / 4);
     this.mobility = 0.01;
+    this.speed = 10;
+    this.angle = 0;
     this.goal = false;
     this.gotoX = this.x;
     this.gotoY = this.y;
@@ -35,10 +37,13 @@ function unitClass() {
     // if no goal, random walk
     if(this.goal == false) {
       if(Math.random() < this.mobility) {
-        this.gotoX += randomRangeInt(-1, 1) * 20;
-        this.gotoY += randomRangeInt(-1, 1) * 20;
+        // this.gotoX += randomRangeInt(-1, 1) * 20;
+        // this.gotoY += randomRangeInt(-1, 1) * 20;
+        // better if choose angle then use sin & cos
+        this.angle = randomRangeInt(0, 359);
+        this.gotoX = this.x + Math.cos(this.angle) * this.speed;
+        this.gotoY = this.y + Math.sin(this.angle) * this.speed;
       }
-
     }
     this.keepInPlayableArea(); // adjusts goto x,y numbers
 
@@ -56,9 +61,7 @@ function unitClass() {
       this.x = this.gotoX;
       this.y = this.gotoY;
       this.goal = false;
-      this.enteredPen = true; // should never return to false
     }
-
   }
 
   this.draw = function() {

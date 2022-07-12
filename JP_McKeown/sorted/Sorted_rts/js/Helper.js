@@ -15,7 +15,7 @@ function reportIfReachFold(i) {
       console.log("Sheep id " + i + " is in the pen.");
       pennedSheep++;
       document.getElementById("report").innerHTML = pennedSheep + " sheep are in one or other fold/pen."; 
-      playerUnits[i].inPen = true;
+      this.enteredPen = true; // should never return to false
     }
   }
 }
