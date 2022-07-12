@@ -2,9 +2,11 @@
 
 function unitClass() {
 
-  this.reset = function() {
+  this.reset = function(i) {
+    this.id = i;
     this.x = randomRangeInt(PLAY_AREA_MARGIN, canvas.width - PLAY_AREA_MARGIN);
-    this.y = randomRangeInt(PLAY_AREA_MARGIN +40, canvas.height / 4);
+    this.y = randomRangeInt(TOP_MARGIN, canvas.height / 4);
+    this.mobility = 0.01;
     this.goal = false;
     this.gotoX = this.x;
     this.gotoY = this.y;
@@ -32,7 +34,7 @@ function unitClass() {
 
     // if no goal, random walk
     if(this.goal == false) {
-      if(Math.random() < 0.03) {
+      if(Math.random() < this.mobility) {
         this.gotoX += randomRangeInt(-1, 1) * 20;
         this.gotoY += randomRangeInt(-1, 1) * 20;
       }
@@ -54,6 +56,7 @@ function unitClass() {
       this.x = this.gotoX;
       this.y = this.gotoY;
       this.goal = false;
+      this.enteredPen = true; // should never return to false
     }
 
   }
@@ -61,7 +64,11 @@ function unitClass() {
   this.draw = function() {
     if(this.isDead == false) {
       colorCircle(this.x, this.y, UNIT_PLACEHOLDER_RADIUS, this.color);
-
+    }
+  }
+  this.label = function() {
+    if(this.isDead == false) {
+      drawText(this.id, this.x + UNIT_PLACEHOLDER_RADIUS +1, this.y +5, "black");
     }
   }
 

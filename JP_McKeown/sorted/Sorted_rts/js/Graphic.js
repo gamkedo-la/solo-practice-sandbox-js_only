@@ -19,20 +19,24 @@ function colorTriangle(x, y, fillColor) {
   canvasContext.fillStyle = fillColor;
   canvasContext.beginPath();
   canvasContext.moveTo(x, y);
-  canvasContext.lineTo(x-10, y+24);
-  canvasContext.lineTo(x+10, y+24);
+  canvasContext.lineTo(x - HAT_WIDTH/2, y + HAT_HEIGHT);
+  canvasContext.lineTo(x + HAT_WIDTH/2, y + HAT_HEIGHT);
   canvasContext.closePath();
   canvasContext.fill();
 }
 function drawHat(x, y, fillColor) {
   canvasContext.save();
-  //canvasContext.fillStyle = fillColor;
-  canvasContext.shadowColor="rgba(100,0,100,0.5)";
-  canvasContext.shadowOffsetX = 4;
-  canvasContext.shadowOffsetY = 4;
-  canvasContext.shadowBlur= 5;
+  setShadow(4, 4, 5);
   colorTriangle(x, y, fillColor);
   canvasContext.restore();
+}
+
+
+function setShadow(x, y, blur) {
+  canvasContext.shadowColor="rgba(100,0,100,0.5)";
+  canvasContext.shadowOffsetX = x;
+  canvasContext.shadowOffsetY = y;
+  canvasContext.shadowBlur= blur;
 }
 
 function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY,withAngle) {
@@ -43,3 +47,7 @@ function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY,withAngle) {
   canvasContext.restore(); // undo the translation movement and rotation since save()
 }
 
+function drawText(txt, x, y, color) {
+  canvasContext.fillStyle = color;
+  canvasContext.fillText(txt, x, y);
+}

@@ -35,7 +35,7 @@ window.onload = function() {
 
   for(var i=0; i < PLAYER_START_UNITS; i++) {
     var spawnUnit = new unitClass();
-    spawnUnit.reset();
+    spawnUnit.reset(i);
     playerUnits.push(spawnUnit);
   }
   spawnReport();
@@ -67,12 +67,15 @@ function drawEverything() {
   colorRect(0, 0, canvas.width, canvas.height, 'white');
   outlineRect(0, 0, canvas.width, canvas.height, 'black');
 
-  outlineRect(PEN_SIDE_GAP, canvas.height-PEN_HEIGHT, canvas.width/2 - PEN_SIDE_GAP - PEN_INNER_GAP, PEN_HEIGHT-PEN_BASE_GAP, 'blue');
+  // left-hand Pen
+  outlineRect(PEN_SIDE_GAP, canvas.height-PEN_HEIGHT, canvas.width/2 - PEN_SIDE_GAP - PEN_INNER_GAP, PEN_HEIGHT - PEN_BASE_GAP, 'blue');
 
+  // right-hand Pen
   outlineRect(canvas.width/2 + PEN_INNER_GAP, canvas.height-PEN_HEIGHT, canvas.width/2 - PEN_SIDE_GAP - PEN_INNER_GAP, PEN_HEIGHT-PEN_BASE_GAP, 'red');
 
   for(var i=0; i < playerUnits.length; i++) {
     playerUnits[i].draw();
+    playerUnits[i].label();
   }
   // shepherd with Hat power
   // p1.draw();
