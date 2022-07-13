@@ -46,18 +46,34 @@ window.onload = function() {
 }
 
 function spawnReport() {
-  console.log("Unit x y dead")
+  console.log("Unit id x,y dead")
   for(var i=0; i < PLAYER_START_UNITS; i++) {
-    console.log(playerUnits[i].x + ' ' + playerUnits[i].y + ' ' + playerUnits[i].isDead);
+    console.log(i, playerUnits[i].x + ',' + playerUnits[i].y, playerUnits[i].isDead);
   }
 }
 
 function moveEverything() {
   // all sheep move
   for(var i=0; i < playerUnits.length; i++) {
+
+    var inPenPrev = playerUnits[i].ifInPen();
     playerUnits[i].move();
-    reportIfReachFold(i);
+
+    var inPen = playerUnits[i].ifInPen();
+    // var enteredPen = playerUnits[i].enteredPen;
+
+    if(inPen && inPenPrev == false) {
+      playerUnits[i].enteredPen = true;
+      pennedSheep++;
+      console.log("Sheep id " + i + " is in pen.");
+    }
+    else if(inPenPrev && inPen == false) {
+      pennedSheep--;
+    }
+    // was bug with enteredPen if goes in and out
   }
+  reportFold(i);
+
   // shepherds move
   p1.move();
 }

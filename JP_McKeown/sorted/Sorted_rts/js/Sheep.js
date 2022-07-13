@@ -7,7 +7,7 @@ function unitClass() {
     this.x = randomRangeInt(PLAY_AREA_MARGIN, canvas.width - PLAY_AREA_MARGIN);
     this.y = randomRangeInt(TOP_MARGIN, canvas.height / 4);
     this.mobility = 0.01;
-    this.speed = 10;
+    this.speed = 12;
     this.angle = 0;
     this.goal = false;
     this.gotoX = this.x;
@@ -32,14 +32,32 @@ function unitClass() {
     this.gotoY = aroundY - MAX_DIST_FROM_WALK_TARGET/2 + Math.random() * MAX_DIST_FROM_WALK_TARGET; 
   }
 
-  this.move = function() {
+  this.ifInPen = function() {
+    // test if in sheepfold, return 0 if not, 1 blue, 2 red
+    if(this.y > canvas.height - PEN_HEIGHT) {
+      // now check blue, red, or middle using x
+      if(this.x < PEN_WIDTH_LEFT) {
+        // console.log("Sheep id " + this.id + " is in right pen.");
+        return 1;
+      } else if(this.x > canvas.width - PEN_WIDTH_RIGHT) {
+        // console.log("Sheep id " + this.id + " is in right pen.");
+        return 2;
+      } else {
+        // console.log("Sheep id " + this.id + " is between pens.");
+        return 0;
+      }
+    } else {
+      return 0;
+    }
+  }
 
+  this.move = function() {
     // if no goal, random walk
     if(this.goal == false) {
       if(Math.random() < this.mobility) {
         // this.gotoX += randomRangeInt(-1, 1) * 20;
         // this.gotoY += randomRangeInt(-1, 1) * 20;
-        // better if choose angle then use sin & cos
+        // better if choose angle then use sine & cosine
         this.angle = randomRangeInt(0, 359);
         this.gotoX = this.x + Math.cos(this.angle) * this.speed;
         this.gotoY = this.y + Math.sin(this.angle) * this.speed;
@@ -76,22 +94,26 @@ function unitClass() {
   }
 
   this.keepInPlayableArea = function() {
-    if(this.gotoX < PLAY_AREA_MARGIN) {
+    // don't go beyond right or left edges of canvas
+    if(this.gotoX > canvas.width - PLAY_AREA_MARGIN) {
       this.gotoX = PLAY_AREA_MARGIN;
-    } else if(this.gotoX > canvas.width - PLAY_AREA_MARGIN) {
+    } 
+    else if(this.gotoX < PLAY_AREA_MARGIN) {
       this.gotoX = canvas.width - PLAY_AREA_MARGIN;
     }
-    if(this.gotoY < TOP_MARGIN) {
+    // don't go beyond bottom or top edges of canvas
+    if(this.gotoY > canvas.height - PLAY_AREA_MARGIN) {
       this.gotoY = TOP_MARGIN;
-    } 
-    if(this.goal == false && this.enteredPen == false) {
-      if(this.gotoY > canvas.height - PEN_HEIGHT) {
-        this.gotoY = canvas.height - PEN_HEIGHT - PLAY_AREA_MARGIN;
-      }
-    } else {
-      if(this.gotoY > canvas.height - PLAY_AREA_MARGIN) {
-        this.gotoY = canvas.height - PLAY_AREA_MARGIN;
-      }
     }
-  }
+    else if(this.gotoY < TOP_MARGIN) { 
+      this.gotoY = canvas.height - PLAY_AREA_MARGIN;
+    }
+
+    // stop random walk entering pens
+    // if(this.goal == false && this.enteredPen == false) {
+    //   if(this.gotoY > canvas.height - PEN_HEIGHT) {
+    //     this.gotoY = canvas.height - PEN_HEIGHT - PLAY_AREA_MARGIN;
+    //   }
+    // } 
+  } // END keepInPlayableArea
 }
