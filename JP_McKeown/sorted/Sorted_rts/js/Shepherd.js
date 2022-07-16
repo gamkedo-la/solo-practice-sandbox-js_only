@@ -36,7 +36,7 @@ function leaderClass() {
   this.draw = function() {
     if(this.isDead == false) {
       // colorRect(this.x, this.y, LEADER_PLACEHOLDER_RADIUS, LEADER_PLACEHOLDER_RADIUS, 'red');
-      drawHat(12, 3, "blue");
+      drawHat(12, 3, "purple");
       
     }
   }

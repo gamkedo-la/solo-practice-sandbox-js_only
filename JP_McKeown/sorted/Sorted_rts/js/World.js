@@ -4,10 +4,9 @@ const TILE_GAP = 2;
 const TILE_COLS = 15;
 const TILE_ROWS = 15;
 
-const TILE_TREE = 0;
-const TILE_GOAL = 1;
-const TILE_ROAD = 2;
-const TILE_FLAG = 3;
+const TILE_FIELD = 0;
+const TILE_PEN = 1;
+const TILE_TREE = 2;
 
 var tileGrid = [
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 

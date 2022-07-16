@@ -29,8 +29,8 @@ function loadImages() {
 		{varName: greySheepPic, theFile: "sheep-normal.png"},
 		{varName: blueSheepPic, theFile: "sheep-blue.png"},
     {varName: redSheepPic, theFile: "sheep-red.png"},
-    {tileType: TILE_ROAD, theFile: "tile_road.png"},
-    {tileType: TILE_GOAL, theFile: "tile_goal.png"},
+    {tileType: TILE_FIELD, theFile: "tile_field.png"},
+    {tileType: TILE_PEN, theFile: "tile_mud.png"},
     {tileType: TILE_TREE, theFile: "tile_tree.png"}
 	];
 	picsToLoad = imageList.length;
