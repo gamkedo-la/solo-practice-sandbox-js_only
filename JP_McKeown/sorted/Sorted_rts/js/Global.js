@@ -15,3 +15,19 @@ const PEN_INNER_GAP = 160;
 
 const HAT_WIDTH = 16;
 const HAT_HEIGHT = 20;
+
+const KEY_LEFT_ARROW = 37;
+const KEY_UP_ARROW = 38;
+const KEY_RIGHT_ARROW = 39;
+const KEY_DOWN_ARROW = 40;
+
+const KEY_LETTER_W = 87;
+const KEY_LETTER_A = 65;
+const KEY_LETTER_S = 83;
+const KEY_LETTER_D = 68;
+
+var keyHeld_up = false;
+var keyHeld_left = false;
+var keyHeld_down = false;
+var keyHeld_right = false;
+

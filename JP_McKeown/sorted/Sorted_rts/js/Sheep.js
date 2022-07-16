@@ -18,11 +18,15 @@ function unitClass() {
 
     // test with initial colours
     var colorChoice = randomRangeInt(0, 2);
-    this.color = 'gray';
-    if (colorChoice == 1) {
-      this.color = 'red';
+    if (colorChoice == 0) {
+      this.color = 'grey';
+      this.img = greySheepPic;
     } else if (colorChoice == 2) {
       this.color = 'blue';
+      this.img = blueSheepPic;
+    } else if (colorChoice == 1) {
+      this.color = 'red';
+      this.img = redSheepPic;
     }
   }
 
@@ -84,9 +88,11 @@ function unitClass() {
 
   this.draw = function() {
     if(this.isDead == false) {
-      colorCircle(this.x, this.y, UNIT_PLACEHOLDER_RADIUS, this.color);
+      // colorCircle(this.x, this.y, UNIT_PLACEHOLDER_RADIUS, this.color);
+      drawBitmapCenteredAtLocationWithRotation(this.img, this.x, this.y, Math.PI);
     }
   }
+
   this.label = function() {
     if(this.isDead == false) {
       drawText(this.id, this.x + UNIT_PLACEHOLDER_RADIUS +1, this.y +5, "black");

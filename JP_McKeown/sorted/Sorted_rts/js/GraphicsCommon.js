@@ -31,7 +31,6 @@ function drawHat(x, y, fillColor) {
   canvasContext.restore();
 }
 
-
 function setShadow(x, y, blur) {
   canvasContext.shadowColor="rgba(100,0,100,0.5)";
   canvasContext.shadowOffsetX = x;
@@ -39,7 +38,7 @@ function setShadow(x, y, blur) {
   canvasContext.shadowBlur= blur;
 }
 
-function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY,withAngle) {
+function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY, withAngle) {
   canvasContext.save(); // allows us to undo translate movement and rotate spin
   canvasContext.translate(atX,atY); // sets the point where our graphic will go
   canvasContext.rotate(withAngle); // sets the rotation

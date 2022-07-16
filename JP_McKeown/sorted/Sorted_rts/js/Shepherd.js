@@ -35,40 +35,30 @@ function leaderClass() {
 
   this.draw = function() {
     if(this.isDead == false) {
-      colorRect(this.x, this.y, LEADER_PLACEHOLDER_RADIUS, LEADER_PLACEHOLDER_RADIUS, 'red');
+      // colorRect(this.x, this.y, LEADER_PLACEHOLDER_RADIUS, LEADER_PLACEHOLDER_RADIUS, 'red');
+      drawHat(12, 3, "blue");
+      
     }
   }
+// drawHat(canvas.width-15, 3, "blue");
 
-  // keyboard state variables, use keys like buttons
-  this.keyHeld_North = false;
-  this.keyHeld_East = false; 
-  this.keyHeld_South = false;
-  this.keyHeld_West = false;
-
-  this.setupControls = function(northKey, eastKey, southKey, westKey) {
-    this.controlKeyNorth = northKey;
-    this.controlKeyEast = eastKey;
-    this.controlKeySouth = southKey;
-    this.controlKeyWest = westKey;
-  }
-
-  
   this.move = function() {
     var nextX = this.x;
     var nextY = this.y;
 
-    if(this.keyHeld_North) {
+    if(this.keyHeld_up) {
       nextY -= LEADER_PIXELS_MOVE_RATE;
     }
-    if(this.keyHeld_East) {
+    if(this.keyHeld_right) {
       nextX += LEADER_PIXELS_MOVE_RATE;
     }
-    if(this.keyHeld_South) {
+    if(this.keyHeld_down) {
       nextY += LEADER_PIXELS_MOVE_RATE;
     }
-    if(this.keyHeld_West) {
+    if(this.keyHeld_left) {
       nextX -= LEADER_PIXELS_MOVE_RATE;
     }
-   
+    this.x = nextX
+    this.y = nextY
   }
 }

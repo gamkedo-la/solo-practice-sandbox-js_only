@@ -7,11 +7,15 @@ var canvas, canvasContext;
 const PLAYER_START_UNITS = 20;
 var playerUnits = [];
 var p1 = new leaderClass();
+var p2 = new leaderClass();
 
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
-  
+  loadImages();
+}
+
+function imageLoadingDoneSoStartGame() {
   // these next few lines set up our game logic and render to happen 30 times per second
   var framesPerSecond = 30;
   setInterval(function() {
@@ -38,7 +42,7 @@ window.onload = function() {
     spawnUnit.reset(i);
     playerUnits.push(spawnUnit);
   }
-  spawnReport();
+  // spawnReport();
 
   p1.reset();
 
@@ -80,7 +84,7 @@ function moveEverything() {
 
 function drawEverything() {
   // clear the game view by filling with background color
-  colorRect(0, 0, canvas.width, canvas.height, 'white');
+  colorRect(0, 0, canvas.width, canvas.height, '#A2E4B8');
   outlineRect(0, 0, canvas.width, canvas.height, 'black');
 
   // left-hand Pen
@@ -89,12 +93,13 @@ function drawEverything() {
   // right-hand Pen
   outlineRect(canvas.width/2 + PEN_INNER_GAP, canvas.height-PEN_HEIGHT, canvas.width/2 - PEN_SIDE_GAP - PEN_INNER_GAP, PEN_HEIGHT-PEN_BASE_GAP, 'red');
 
+  drawTiles();
+  
   for(var i=0; i < playerUnits.length; i++) {
     playerUnits[i].draw();
     playerUnits[i].label();
   }
   // shepherd with Hat power
-  // p1.draw();
-  drawHat(12, 3, "red");
-  drawHat(canvas.width-15, 3, "blue");
+  p1.draw();
+
 }
