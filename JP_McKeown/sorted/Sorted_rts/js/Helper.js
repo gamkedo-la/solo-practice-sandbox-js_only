@@ -34,3 +34,7 @@ function calculateMousePos(evt) {
     y: mouseY
   };
 }
+
+function rowColToArrayIndex(col, row) {
+  return col + TILE_COLS * row;
+}

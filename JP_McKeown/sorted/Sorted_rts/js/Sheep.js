@@ -95,7 +95,7 @@ function unitClass() {
 
   this.label = function() {
     if(this.isDead == false) {
-      drawText(this.id, this.x + UNIT_PLACEHOLDER_RADIUS +1, this.y +5, "black");
+      drawText(this.id, this.x + UNIT_PLACEHOLDER_RADIUS +1, this.y +5, "white");
     }
   }
 

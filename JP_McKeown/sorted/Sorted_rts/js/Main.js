@@ -12,6 +12,7 @@ var p2 = new leaderClass();
 window.onload = function() {
   canvas = document.getElementById('gameCanvas');
   canvasContext = canvas.getContext('2d');
+  canvasContext.font = "15px Arial";
   loadImages();
 }
 
@@ -94,7 +95,7 @@ function drawEverything() {
   outlineRect(canvas.width/2 + PEN_INNER_GAP, canvas.height-PEN_HEIGHT, canvas.width/2 - PEN_SIDE_GAP - PEN_INNER_GAP, PEN_HEIGHT-PEN_BASE_GAP, 'red');
 
   drawTiles();
-  
+
   for(var i=0; i < playerUnits.length; i++) {
     playerUnits[i].draw();
     playerUnits[i].label();
