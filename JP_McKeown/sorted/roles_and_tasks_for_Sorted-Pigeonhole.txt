@@ -1,0 +1,33 @@
+Roles/tasks list
+
+Art:
+"Sorting Hat" large version for intro
+unsorted sheep
+blue sheep
+red sheep
+grass tile
+pen tile
+special tiles where grass would be
+boundary of pen
+
+Particles:
+sorting process
+sheep arrives in correct pen
+
+Soundfx:
+sorting process begins
+sorted to blue
+sorted to red
+
+Music:
+designed for low volume
+
+Level Design:
+placing special tiles
+
+UI:
+
+Code:
+
+
+

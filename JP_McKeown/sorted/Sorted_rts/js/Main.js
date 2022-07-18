@@ -23,12 +23,12 @@ function imageLoadingDoneSoStartGame() {
       moveEverything();
       drawEverything();
     }, 1000/framesPerSecond);
-    
-  canvas.addEventListener('mousemove', function(evt) {
-        var mousePos = calculateMousePos(evt);
-        document.getElementById("debugText").innerHTML = "Cursor: " + mousePos.x + "," + mousePos.y;
-      } );
 
+  canvas.addEventListener('mousemove', function(evt) {
+    var mousePos = calculateMousePos(evt);
+    document.getElementById("debugText").innerHTML = "Cursor: " + mousePos.x + "," + mousePos.y;
+  });
+  
   canvas.addEventListener('click', function(evt) {
     var mousePos = calculateMousePos(evt);
     for(var i=0; i < PLAYER_START_UNITS; i++) {
@@ -46,8 +46,8 @@ function imageLoadingDoneSoStartGame() {
   // spawnReport();
 
   p1.reset();
-
   inputInit();
+
 }
 
 function spawnReport() {
