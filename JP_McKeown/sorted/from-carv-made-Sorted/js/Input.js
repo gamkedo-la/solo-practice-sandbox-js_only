@@ -1,3 +1,9 @@
+const STATE_CREDITS = 3;
+const STATE_EDIT = 0;
+const STATE_MENU = 2;
+const STATE_PLAY = 1;
+var gameState = STATE_PLAY;
+
 const KEY_LEFT_ARROW = 37;
 const KEY_UP_ARROW = 38;
 const KEY_RIGHT_ARROW = 39;
@@ -7,6 +13,9 @@ const KEY_W = 87;
 const KEY_A = 65;
 const KEY_S = 83;
 const KEY_D = 68;
+
+const KEY_F1 = 112;
+const KEY_F2 = 113;
 
 var mouseX = 0;
 var mouseY = 0;
@@ -46,10 +55,32 @@ function keySet(evt, whichCar, setTo) {
 	}
 }
 
+function keyMode(key) {
+  switch (gameState) {
+    case STATE_PLAY:
+      if(key == KEY_F1) {
+        gameState = STATE_EDIT;
+        loadLevel(level_1_goalNear);
+      }
+      break;
+    case STATE_EDIT:
+      if(key == KEY_F1) {
+        gameState = STATE_PLAY;
+        loadLevel(level_1);
+      }
+      break;
+    case STATE_MENU:
+      break;
+    default:
+      break;
+  }
+}
+
 // maybe flip set keyHeld_
 function keyPressed(evt) {
   keySet(evt, blueCar, true);
   keySet(evt, greenCar, true);
+  keyMode(evt.keyCode);
 	evt.preventDefault();
 }
 

@@ -13,11 +13,6 @@ const TILE_FLAG = 5;
 const TILE_WALL = 6;
 const TILE_PLAYERSTART = 9;
 
-const START_NORMAL = 0;
-const GOAL_NEAR_CARS = 1;
-const CARS_NEAR_GOAL = 2;
-var carStartPos = GOAL_NEAR_CARS;
-
 const level_1 = [
   0, 0, 0, 0, 0, 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
   0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,

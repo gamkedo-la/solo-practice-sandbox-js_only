@@ -20,8 +20,12 @@ function imageLoadingDoneSoStartGame() {
 
   canvasContext.font = "15px Arial";
 	setupInput();
-  loadLevel(level_1);
-  loadLevel(level_1_goalNear);
+
+  if(gameState == STATE_PLAY) {
+    loadLevel(level_1);
+  } else if(gameState == STATE_EDIT) {
+    loadLevel(level_1_goalNear);
+  }
   checkTilesFitCanvas();
 
   for(var i=0; i<NUM_SHEEP; i++) {
