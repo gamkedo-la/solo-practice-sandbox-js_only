@@ -30,7 +30,7 @@ function imageLoadingDoneSoStartGame() {
 
   for(var i=0; i<NUM_SHEEP; i++) {
     var spawnSheep = new sheepClass();
-    spawnSheep.reset(i);
+    spawnSheep.init(i);
     sheepList.push(spawnSheep);
   }
   ui_countPenned();
@@ -61,6 +61,8 @@ function drawAll() {
 	greenCar.draw();
   for(var i=0; i<NUM_SHEEP; i++) {
     sheepList[i].draw();
-    sheepList[i].label();
+    if(gameState == STATE_EDIT) {
+      sheepList[i].label();
+    }
   }
 } 
