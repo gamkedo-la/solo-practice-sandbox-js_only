@@ -21,6 +21,7 @@ var paddle2Y = 250;
 const PADDLE_THICKNESS = 10;
 const PADDLE_HEIGHT = 100;
 
+//Tracks the mouse position
 function calculateMousePos(evt) {
 	var rect = canvas.getBoundingClientRect();
 	var root = document.documentElement;
@@ -32,6 +33,7 @@ function calculateMousePos(evt) {
 	};
 }
 
+//Tracks mouse clicks
 function handleMouseClick(evt) {
 	if(showingWinScreen) {
 		player1Score = 0;
@@ -40,6 +42,7 @@ function handleMouseClick(evt) {
 	}
 }
 
+//Loads the program
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
 	canvasContext = canvas.getContext('2d');
@@ -59,6 +62,7 @@ window.onload = function() {
 		});
 }
 
+//Resets the ball after it touches a wall. Checks first to see if the game has been won.
 function ballReset() {
 	if(player1Score >= WINNING_SCORE ||
 		player2Score >= WINNING_SCORE) {
@@ -72,6 +76,7 @@ function ballReset() {
 	ballY = canvas.height/2;
 }
 
+//Computer player AI.
 function computerMovement() {
 	var paddle2YCenter = paddle2Y + (PADDLE_HEIGHT/2);
 	if(paddle2YCenter < ballY - 35) {
@@ -125,6 +130,7 @@ function moveEverything() {
 	}
 }
 
+//White net down middle of screen
 function drawNet() {
 	for(var i=0;i<canvas.height;i+=40) {
 		colorRect(canvas.width/2-1,i,2,20,'white');
@@ -157,7 +163,7 @@ function drawEverything() {
 	colorRect(canvas.width-PADDLE_THICKNESS,paddle2Y,PADDLE_THICKNESS,PADDLE_HEIGHT,'white');
 
 	// next line draws the ball
-	colorCircle(ballX, ballY, 10, 'white');
+	colorCircle(ballX, ballY, 10, 'red');
 
 	canvasContext.fillText(player1Score, 100, 100);
 	canvasContext.fillText(player2Score, canvas.width-100, 100);
