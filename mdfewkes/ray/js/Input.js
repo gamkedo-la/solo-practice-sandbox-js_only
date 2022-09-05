@@ -1,7 +1,7 @@
 window.addEventListener('keyup', function (event) { Key.onKeyup(event); event.preventDefault();});
 window.addEventListener('keydown', function (event) { Key.onKeydown(event); event.preventDefault();});
 
-document.addEventListener('mousedown', function (event) { Key.onKeydown(event.button + 300);});
+document.addEventListener('mousedown', function (event) { Key.onKeydown(event.button + 300); canvas.requestPointerLock()});
 document.addEventListener('mouseup', function (event) { Key.onKeyup(event.button + 300);});
 document.addEventListener('mousemove', mouseMove);
 document.addEventListener('wheel', function (event) { mouseScrollY += event.deltaY;});
@@ -13,6 +13,8 @@ var mouseY = 0;
 var mouseMovementX = 0;
 var mouseMovementY = 0;
 var mouseScrollY = 0;
+
+var pointerlock = false;
 
 function mouseMove(event) {
 	mouseX = event.clientX;
@@ -30,6 +32,20 @@ function isMouseInArea(x, y, width, height) {
 	}
 }
 
+function lockPointer() {
+	if (pointerlock) return;
+
+	canvas.requestPointerLock()
+	pointerlock = true;
+}
+
+function unlockPointer() {
+	if (!pointerlock) return;
+
+	document.exitPointerLock();
+	pointerlock = false;
+}
+
 const Key = {
 
 	_down: {},
@@ -41,6 +57,7 @@ const Key = {
 	SHIFT: 16,
 	CTRL: 17,
 	ALT: 18,
+	ESC: 27,
 	SPACE: 32,
 	LEFT: 37,
 	UP: 38,
@@ -124,5 +141,9 @@ const Key = {
 		mouseMovementX = 0;
 		mouseMovementY = 0;
 		mouseScrollY = 0;
+
+		if (Key.isJustPressed(Key.ESC)) {
+			unlockPointer();
+		}
 	}
 };

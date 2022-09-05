@@ -67,3 +67,23 @@ function angleBetweenTwoPoints(a, b) {
 function clamp(x, min, max) {
 	return Math.max(min, Math.min(x, max));
 }
+
+
+function rgbToHex (value) {
+	Math.round(value)
+	var hex = Number(Math.round(value)).toString(16);
+
+	if (hex.length < 2) {
+		hex = "0" + hex;
+	}
+	return hex.toUpperCase();
+}
+
+function fullColorHex(r, g, b, a = 1) {
+	var red = rgbToHex(r);
+	var green = rgbToHex(g);
+	var blue = rgbToHex(b);;
+	var alpha = rgbToHex(a);
+
+	return "#" + red + green + blue + alpha;
+}

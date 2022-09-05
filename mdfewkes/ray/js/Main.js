@@ -1,7 +1,7 @@
 let canvasContext;
 let canvas;
 
-var debug = true;
+var debug = false;
 
 var gameObjects = [];
 var walls = [];
@@ -162,8 +162,8 @@ function gameloop(time) {
 
 		canvasContext.resetTransform();//reset the transform matrix as it is cumulative
 		canvasContext.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
-		colorRect(0,0,800,300, "darkgrey");
-		colorRect(0,300,800,300, "lightgrey");
+		colorRect(0,0,800,300, "black");
+		colorRect(0,300,800,300, "black");
 
 		//3D
 		var FOV = 60;
@@ -187,6 +187,7 @@ function gameloop(time) {
 				//height = wallheight * canvas height / distance
 				//colorLine(i, canvas.height/2 - (wallHeight*canvas.width/2)/distance, i, canvas.height/2 + (wallHeight*canvas.width/2)/distance, 2, hit.wall.color);
 				colorRect(i, canvas.height/2 - wallHeight*canvas.width*0.5/distance, 1, wallHeight * canvas.height / distance, hit.wall.color);
+				colorRect(i, canvas.height/2 - wallHeight*canvas.width*0.5/distance, 1, wallHeight * canvas.height / distance, fullColorHex(0, 0, 0, distance/drawDistance * 256));
 			} else {
 				//colorLine(player.x, player.y, rayEnd.x, rayEnd.y, 1, "darkred");
 			}
