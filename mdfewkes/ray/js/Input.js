@@ -1,10 +1,10 @@
 window.addEventListener('keyup', function (event) { Key.onKeyup(event); event.preventDefault();});
 window.addEventListener('keydown', function (event) { Key.onKeydown(event); event.preventDefault();});
 
-document.addEventListener('mousedown', function (event) { Key.onKeydown(event.button + 300); canvas.requestPointerLock()});
-document.addEventListener('mouseup', function (event) { Key.onKeyup(event.button + 300);});
-document.addEventListener('mousemove', mouseMove);
-document.addEventListener('wheel', function (event) { mouseScrollY += event.deltaY;});
+document.getElementById('gameCanvas').addEventListener('mousedown', mouseDown);
+document.getElementById('gameCanvas').addEventListener('mouseup', mouseUp);
+document.getElementById('gameCanvas').addEventListener('mousemove', mouseMove);
+document.getElementById('gameCanvas').addEventListener('wheel', function (event) { mouseScrollY += event.deltaY;});
 
 document.getElementById("gameCanvas").addEventListener('contextmenu', event => event.preventDefault());
 
@@ -30,6 +30,15 @@ function isMouseInArea(x, y, width, height) {
 	} else {
 		return false;
 	}
+}
+
+function mouseDown(event) {
+	Key.onKeydown(event.button + 300);
+	canvas.requestPointerLock()
+}
+
+function mouseUp(event) {
+	Key.onKeyup(event.button + 300);
 }
 
 function lockPointer() {
