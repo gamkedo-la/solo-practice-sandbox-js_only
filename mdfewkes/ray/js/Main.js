@@ -41,8 +41,10 @@ function gamestart() {
 	window.requestAnimationFrame(gameloop);
 
 	//generate a random room
-	/*var x = -250;
+	var x = -250;
 	var y = -250;
+	var wallTexture = new Image();
+	wallTexture.src = './images/textTexture100x100.png';
 	console.log("x:" + x + "," + "y:" + y);
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
@@ -50,6 +52,7 @@ function gamestart() {
 		x += rndFloat(0, 100);
 		y += rndFloat(-50, 50);
 		newWall.p2 = {x:x, y:y};
+		newWall.texture = wallTexture;
 	}
 	console.log("x:" + x + "," + "y:" + y);
 	for (var i = 0; i < 10; i++) {
@@ -58,6 +61,7 @@ function gamestart() {
 		x += rndFloat(-50, 50);
 		y += rndFloat(0, 100);
 		newWall.p2 = {x:x, y:y};
+		newWall.texture = wallTexture;
 	}
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
@@ -65,6 +69,7 @@ function gamestart() {
 		x += rndFloat(0, -100);
 		y += rndFloat(-50, 50);
 		newWall.p2 = {x:x, y:y};
+		newWall.texture = wallTexture;
 	}
 	console.log("x:" + x + "," + "y:" + y);
 	for (var i = 0; i < 10; i++) {
@@ -73,12 +78,13 @@ function gamestart() {
 		x += rndFloat(-50, 50);
 		y += rndFloat(0, -100);
 		newWall.p2 = {x:x, y:y};
+		newWall.texture = wallTexture;
 	}
 	console.log("x:" + x + "," + "y:" + y);
-	world[world.length-1].p2 = world[0].p1;*/
+	walls[walls.length-1].p2 = walls[0].p1;
 
 
-	var newWall = new WallClass();
+	/*var newWall = new WallClass();
 	newWall.p1 = {x:-100, y:-100};
 	newWall.p2 = {x:300, y:-100};
 	newWall.color = "red";
@@ -121,7 +127,7 @@ function gamestart() {
 
 	testsound1 = AudioMan.createSound3D("./audio/temp_engine1.ogg", {pos:{x:200, y:150}}, true, 1).play();
 	testsound2 = AudioMan.createSound3D("./audio/UI_Typewriter_temp01.wav", {pos:{x:50, y:250}}, true, 1).play();
-	testsound3 = AudioMan.createSound3D("./audio/TT rough vox only.mp3", {pos:{x:-50, y:175}}, true, 1).play();
+	testsound3 = AudioMan.createSound3D("./audio/TT rough vox only.mp3", {pos:{x:-50, y:175}}, true, 1).play();*/
 	generateAudGeo();
 }
 
@@ -130,7 +136,6 @@ function gameloop(time) {
 	time /= 1000;
 	deltaTime = time - lastTime;
 	lastTime = time;
-	//console.log(deltaTime);
 
 	//Update loop
 	for (var i = 0; i < gameObjects.length; i++) {
@@ -186,11 +191,22 @@ function gameloop(time) {
 				if (cameraAng > 2*pi) cameraAng -= 2*pi;
 				if (cameraAng < 0) cameraAng += 2*pi;
 				var distance = hit.distance * Math.cos(cameraAng);
+				var distanceAlongWall = distanceBetweenTwoPoints(hit.wall.p1, hit);
 
-				//height = wallheight * canvas height / distance
-				//colorLine(i, canvas.height/2 - (wallHeight*canvas.width/2)/distance, i, canvas.height/2 + (wallHeight*canvas.width/2)/distance, 2, hit.wall.color);
-				colorRect(i, canvas.height/2 - wallHeight*canvas.width*0.5/distance, 1, wallHeight * canvas.height / distance, hit.wall.color);
-				colorRect(i, canvas.height/2 - wallHeight*canvas.width*0.5/distance, 1, wallHeight * canvas.height / distance, fullColorHex(0, 0, 0, distance/drawDistance/2 * 512));
+				var x = i;
+				var y = canvas.height/2 - wallHeight*canvas.width*0.5/distance;
+				var w = 1;
+				var h = wallHeight * canvas.height / distance;
+
+				colorRect(x, y, w, h, hit.wall.color);
+				if (hit.wall.texture != null) {
+					canvasContext.drawImage(hit.wall.texture,
+						distanceAlongWall * 24 % 100, 0, //Majic number to unstretch texture
+						1, 100,
+						x, y,
+						w, h);
+				}
+				colorRect(x, y, w, h, fullColorHex(0, 0, 0, distance/drawDistance/2 * 512));
 			} else {
 				//colorLine(player.x, player.y, rayEnd.x, rayEnd.y, 1, "darkred");
 			}
