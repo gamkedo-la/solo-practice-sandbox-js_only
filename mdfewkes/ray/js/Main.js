@@ -49,8 +49,8 @@ function gamestart() {
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
 		newWall.p1 = {x:x, y:y};
-		x += rndFloat(0, 100);
-		y += rndFloat(-50, 50);
+		x += rndFloat(0, 50);
+		y += rndFloat(-25, 25);
 		newWall.p2 = {x:x, y:y};
 		newWall.texture = wallTexture;
 	}
@@ -58,16 +58,16 @@ function gamestart() {
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
 		newWall.p1 = {x:x, y:y};
-		x += rndFloat(-50, 50);
-		y += rndFloat(0, 100);
+		x += rndFloat(-25, 25);
+		y += rndFloat(0, 50);
 		newWall.p2 = {x:x, y:y};
 		newWall.texture = wallTexture;
 	}
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
 		newWall.p1 = {x:x, y:y};
-		x += rndFloat(0, -100);
-		y += rndFloat(-50, 50);
+		x += rndFloat(0, -50);
+		y += rndFloat(-25, 25);
 		newWall.p2 = {x:x, y:y};
 		newWall.texture = wallTexture;
 	}
@@ -75,8 +75,8 @@ function gamestart() {
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
 		newWall.p1 = {x:x, y:y};
-		x += rndFloat(-50, 50);
-		y += rndFloat(0, -100);
+		x += rndFloat(-25, 25);
+		y += rndFloat(0, -50);
 		newWall.p2 = {x:x, y:y};
 		newWall.texture = wallTexture;
 	}
@@ -201,7 +201,7 @@ function gameloop(time) {
 				colorRect(x, y, w, h, hit.wall.color);
 				if (hit.wall.texture != null) {
 					canvasContext.drawImage(hit.wall.texture,
-						distanceAlongWall * 24 % 100, 0, //Majic number to unstretch texture
+						distanceAlongWall * (wallHeight * 5) % 100, 0, //Majic number to unstretch texture
 						1, 100,
 						x, y,
 						w, h);
