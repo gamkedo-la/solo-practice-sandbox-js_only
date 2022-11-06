@@ -61,6 +61,8 @@ const sun = new Sun();
 const rock = new Rock();
 const stroke = new StrokeTool();
 
+let skyColor = '';
+
 const reset = () => {
 
 };
@@ -70,10 +72,53 @@ const update = dt => {
     net.update(dt, [stroke, rock]);
     stroke.update(dt, inputMouse, rock);
 
+    console.log(sun.x, sun.y)
+    
+    if (sun.x < -90) {
+        skyColor = '#0B2A4D';
+    }
+    else if (sun.x < -50) {
+        skyColor = '#00326B';
+    }
+    else if (sun.x < -30) {
+        skyColor = '#0A478D';
+    }
+    else if (sun.x < -10) {
+        skyColor = '#1880C7';
+    }
+    else if (sun.x < 10) {
+        skyColor = '#5EB6F3';
+    }
+    else if (sun.x < 90 )  {
+        skyColor = '#EAE7E5';
+    }
+    else if (sun.x < canvas.width / 4) {
+        skyColor = '#FFFFFF';
+    }
+    else if (sun.x < canvas.width / 2) {
+        skyColor = '#FFE9DA';
+    }
+    else if (sun.x < canvas.width / 2 + canvas.width / 16) {
+        skyColor = '#FFC49C';
+    }
+    else if (sun.x < canvas.width / 2 + canvas.width / 8) {
+        skyColor = '#F19E66';
+    }
+    else if (sun.x < canvas.width / 2 + canvas.width / 8 + canvas.width / 8) {
+        skyColor = '#FF9248';
+    }
+    else if (sun.x < canvas.width / 2 + canvas.width / 8 + canvas.width / 8 + canvas.width / 8) {
+        skyColor = '#131345';
+    }
+    else {
+        skyColor = '#000000';
+    }
+    
     // console.log(stroke.x1 + " " + stroke.y1 + " to " + stroke.x2 + " " + stroke.y2);
 };
+
 const render = dt => {
-    canvasContext.fillStyle = 'white';
+    canvasContext.fillStyle = skyColor;
     canvasContext.fillRect(0, 0, canvas.width, canvas.height);
     
     sun.render(dt);
