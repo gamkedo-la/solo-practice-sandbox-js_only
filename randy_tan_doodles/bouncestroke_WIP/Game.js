@@ -71,8 +71,6 @@ const update = dt => {
     rock.update(dt, [stroke, net]);
     net.update(dt, [stroke, rock]);
     stroke.update(dt, inputMouse, rock);
-
-    console.log(sun.x, sun.y)
     
     if (sun.x < -90) {
         skyColor = '#0B2A4D';

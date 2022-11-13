@@ -8,6 +8,10 @@ const Net = function(cvs = canvas, ctx = canvasContext) {
     this.vibration = 0;
 
     this.colCheck = new Collision();
+    
+    this.sfx = new Audio();
+
+    this.sfx.src = './bounce.wav';
 
     this.update = (dt, col) => {                
         this.y = cvs.height - this.h;
@@ -25,6 +29,7 @@ const Net = function(cvs = canvas, ctx = canvasContext) {
                     if (this.colCheck.isColliding(
                         this.x, this.y, this.x + this.w, this.y + this.h,
                         c.x1, c.y1, c.x2, c.y2)) {
+                        this.sfx.play();
                         console.log("Net detects collision!");
                         
                         if (c.x1 < this.x) {                            
