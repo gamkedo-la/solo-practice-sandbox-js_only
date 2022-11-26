@@ -175,10 +175,12 @@ function gameloop(time) {
 
 		//3D
 		var FOV = 60;
-		var numRays = 800;
+		var numRays = canvas.width;
+		var drawWidth = canvas.width / numRays;
 		var drawDistance = 600;
 		var wallHeight = 5;
 		for (i = 0; i < numRays; i ++) {
+			// From half of FOV left, to half of FOV right
 			var angle = degToRad(-(FOV/2) + ((FOV / numRays) * i)) + player.ang;
 			var rayEnd = {x:Math.cos(angle) * drawDistance + player.x, y:Math.sin(angle) * drawDistance + player.y};
 			var hit = getClosestIntersection(player.pos, rayEnd);
@@ -188,15 +190,16 @@ function gameloop(time) {
 
 				// Correct for fisheye
 				var cameraAng = player.ang - angle;
-				if (cameraAng > 2*pi) cameraAng -= 2*pi;
-				if (cameraAng < 0) cameraAng += 2*pi;
+				//if (cameraAng > 2*pi) cameraAng -= 2*pi;
+				//if (cameraAng < 0) cameraAng += 2*pi;
+				cameraAng = wrap(cameraAng, 0, 2*pi);
 				var distance = hit.distance * Math.cos(cameraAng);
-				var distanceAlongWall = distanceBetweenTwoPoints(hit.wall.p1, hit);
 
-				var x = i;
+				var x = i * drawWidth;
 				var y = canvas.height/2 - wallHeight*canvas.width*0.5/distance;
-				var w = 1;
+				var w = drawWidth;
 				var h = wallHeight * canvas.height / distance;
+				var distanceAlongWall = distanceBetweenTwoPoints(hit.wall.p1, hit);
 
 				colorRect(x, y, w, h, hit.wall.color);
 				if (hit.wall.texture != null) {
@@ -206,7 +209,7 @@ function gameloop(time) {
 						x, y,
 						w, h);
 				}
-				colorRect(x, y, w, h, fullColorHex(0, 0, 0, distance/drawDistance/2 * 512));
+				colorRect(x, y, w, h, fullColorHex(20, 10, 20, distance/drawDistance/2 * 512));
 			} else {
 				//colorLine(player.x, player.y, rayEnd.x, rayEnd.y, 1, "darkred");
 			}

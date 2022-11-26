@@ -1,34 +1,6 @@
 var borderSize = 3;
 var borderBack = borderSize * 2;
 
-var mouseX = -1;
-var mouseY = -1;
-var mouseIsDown = false;
-var mouseJustPressed = false;
-var mouseJustReleased = false;
-
-function calculateMousePos(evt) {
-	var rect = eCanvas.getBoundingClientRect(),
-	root = document.documentElement;
-	mouseX = evt.clientX - rect.left - root.scrollLeft;
-	mouseY = evt.clientY - rect.top - root.scrollTop;
-
-	//console.log(mouseX + " " + mouseY);
-}
-
-function mouseDownEvent(evt) {
-	calculateMousePos(evt);
-	mouseIsDown = true;
-	mouseJustPressed = true;
-
-	//console.log("click");
-}
-
-function mouseUpEvent(evt) {
-	mouseIsDown = false;
-	mouseJustReleased = true;
-}
-
 function MainInterface(screenWidth, screenHeight) {
 	this.name = "Main Interface";
 	this.x = 0;

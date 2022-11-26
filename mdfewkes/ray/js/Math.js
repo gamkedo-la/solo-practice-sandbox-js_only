@@ -68,6 +68,12 @@ function clamp(x, min, max) {
 	return Math.max(min, Math.min(x, max));
 }
 
+function wrap(x, min, max) {
+	while (x < min) x += max - min;
+	while (x >= max) x -= max - min;
+	return x;
+}
+
 
 function rgbToHex (value) {
 	Math.round(value)
@@ -79,7 +85,7 @@ function rgbToHex (value) {
 	return hex.toUpperCase();
 }
 
-function fullColorHex(r, g, b, a = 1) {
+function fullColorHex(r, g, b, a = 255) {
 	var red = rgbToHex(r);
 	var green = rgbToHex(g);
 	var blue = rgbToHex(b);;

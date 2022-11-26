@@ -1,15 +1,98 @@
 var mainInterface;
 var pMouseX, pMouseY;
-var player = {x:0, y: 0, ang: 0}
+var player = {x:0, y: 0, ang: 3*pi/2, forwardX: 0, forwardY: 0}
 var walls = [];
 var debug = false;
 
-function pcalculateMousePos(evt) {
+var mouseX = -1;
+var mouseY = -1;
+var mouseIsDown = false;
+var mouseJustPressed = false;
+var mouseJustReleased = false;
+var wKey = false;
+var aKey = false;
+var sKey = false;
+var dKey = false;
+var qKey = false;
+var eKey = false;
+var pFocus = false;
+
+function calculateKeyboardDown(evt) {
+	switch(evt.keyCode) {
+	case 87:
+		wKey = true;
+		break;
+	case 65:
+		aKey = true;
+		break;
+	case 83:
+		sKey = true;
+		break;
+	case 68:
+		dKey = true;
+		break;
+	case 81:
+		qKey = true;
+		break;
+	case 69:
+		eKey = true;
+		break;
+	}
+}
+
+function calculateKeyboardUp(evt) {
+	switch(evt.keyCode) {
+	case 87:
+		wKey = false;
+		break;
+	case 65:
+		aKey = false;
+		break;
+	case 83:
+		sKey = false;
+		break;
+	case 68:
+		dKey = false;
+		break;
+	case 81:
+		qKey = false;
+		break;
+	case 69:
+		eKey = false;
+		break;
+	}
+}
+
+function calculateMousePos(evt) {
+	var rect = eCanvas.getBoundingClientRect(),
+	root = document.documentElement;
+	mouseX = evt.clientX - rect.left - root.scrollLeft;
+	mouseY = evt.clientY - rect.top - root.scrollTop;
+
+	pFocus = false;
+	//console.log(mouseX + " " + mouseY);
+}
+
+function mouseDownEvent(evt) {
+	calculateMousePos(evt);
+	mouseIsDown = true;
+	mouseJustPressed = true;
+
+	//console.log("click");
+}
+
+function mouseUpEvent(evt) {
+	mouseIsDown = false;
+	mouseJustReleased = true;
+}
+
+function pCalculateMousePos(evt) {
 	var rect = eCanvas.getBoundingClientRect(),
 	root = document.documentElement;
 	pMouseX = evt.clientX - rect.left - root.scrollLeft;
 	pMouseY = evt.clientY - rect.top - root.scrollTop;
 
+	pFocus = true;
 	//console.log(pMouseX + " " + pMouseY);
 }
 
@@ -22,7 +105,9 @@ window.onload = function() {
 	document.getElementById('editorCanvas').addEventListener('pointermove', calculateMousePos);
 	document.getElementById('editorCanvas').addEventListener('pointerdown', mouseDownEvent);
 	document.getElementById('editorCanvas').addEventListener('pointerup', mouseUpEvent);
-	document.getElementById('previewCanvas').addEventListener('pointermove', pcalculateMousePos);
+	window.addEventListener('keydown', calculateKeyboardDown);
+	window.addEventListener('keyup', calculateKeyboardUp);
+	document.getElementById('previewCanvas').addEventListener('pointermove', pCalculateMousePos);
 
 	mainInterface = new MainInterface(eCanvas.width, eCanvas.height);
 
@@ -47,6 +132,8 @@ window.onload = function() {
 }
 
 function nextFrame() {
+	drivePreview();
+
 	drawMapView();
 	drawPreview();
 	mainInterface.update();
@@ -57,20 +144,74 @@ function nextFrame() {
 	window.requestAnimationFrame(nextFrame);
 }
 
+function drivePreview() {
+	var moveSpeed = 1;
+	var lookSpeed = 0.02;
+
+	if (qKey) {
+		player.ang -= lookSpeed;
+	}
+	if (eKey) {
+		player.ang += lookSpeed;
+	}
+	player.ang = wrap(player.ang, 0, 2*pi);
+
+	player.forwardX = Math.cos(player.ang);
+	player.forwardY = Math.sin(player.ang);
+
+	var newX = player.x;
+	var newY = player.y;
+	if (pFocus) {
+		if (wKey) {
+			newX += player.forwardX * moveSpeed;
+			newY += player.forwardY * moveSpeed;
+		}
+		if (sKey) {
+			newX -= player.forwardX * moveSpeed;
+			newY -= player.forwardY * moveSpeed;
+		}
+		if (aKey) {
+			newX += player.forwardY * moveSpeed;
+			newY -= player.forwardX * moveSpeed;
+		}
+		if (dKey) {
+			newX -= player.forwardY * moveSpeed;
+			newY += player.forwardX * moveSpeed;
+		}
+	} else {
+		if (wKey) {
+			newY -= moveSpeed;
+		}
+		if (sKey) {
+			newY += moveSpeed;
+		}
+		if (aKey) {
+			newX -= moveSpeed;
+		}
+		if (dKey) {
+			newX += moveSpeed;
+		}
+
+	}
+	player.x = newX;
+	player.y = newY;
+}
+
 function drawMapView() {
-
-
 	//2D Camera logic
 	eCanvasContext.clearRect(0, 0, eCanvas.width, eCanvas.height);//clear the viewport AFTER the matrix is reset
 	colorRect(0, 0, eCanvas.width, eCanvas.height, 'black');
 	eCanvasContext.translate(eCanvas.width/2, eCanvas.height/2);
-	eCanvasContext.rotate(-player.ang + 3*pi/2);
+	//eCanvasContext.rotate(-player.ang + 3*pi/2);
 	eCanvasContext.translate(-player.x, -player.y);
 
 	//2D draw loops
 	for (var i = 0; i < walls.length; i++) {
 		walls[i].draw2D();
 	}
+
+	colorLine(player.x, player.y, player.x + player.forwardX * 10, player.y + player.forwardY * 10, 2, "darkgrey");
+	colorEmptyCircle(player.x, player.y, 5, "darkgrey");
 
 	eCanvasContext.resetTransform();//reset the transform matrix as it is cumulative
 }
@@ -82,6 +223,7 @@ function drawPreview() {
 	//3D
 	var FOV = 60;
 	var numRays = pCanvas.width;
+	var drawWidth = pCanvas.width / numRays;
 	var drawDistance = 600;
 	var wallHeight = 5;
 	for (i = 0; i < numRays; i ++) {
@@ -94,20 +236,19 @@ function drawPreview() {
 
 			// Correct for fisheye
 			var cameraAng = player.ang - angle;
-			if (cameraAng > 2*pi) cameraAng -= 2*pi;
-			if (cameraAng < 0) cameraAng += 2*pi;
-			var distance = hit.distance * Math.cos(cameraAng);
-			var distanceAlongWall = distanceBetweenTwoPoints(hit.wall.p1, hit);
+			cameraAng = wrap(cameraAng, 0, 2*pi);
+			var distance = hit.distance// * Math.cos(cameraAng);
 
-			var x = i;
+			var x = i * drawWidth;
 			var y = pCanvas.height/2 - wallHeight*pCanvas.width*0.5/distance;
-			var w = 1;
+			var w = drawWidth;
 			var h = wallHeight * pCanvas.height / distance;
+			var distanceAlongWall = distanceBetweenTwoPoints(hit.wall.p1, hit);
 
 			pColorRect(x, y, w, h, hit.wall.color);
 			if (hit.wall.texture != null) {
 				pCanvasContext.drawImage(hit.wall.texture,
-					distanceAlongWall * (wallHeight * 5) % 100, 0, //Majic number to unstretch texture
+					distanceAlongWall * (wallHeight * 5) % 100, 0, //Magic number to unstretch texture
 					1, 100,
 					x, y,
 					w, h);
