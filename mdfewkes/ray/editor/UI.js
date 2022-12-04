@@ -8,41 +8,46 @@ function MainInterface(screenWidth, screenHeight) {
 	this.w = screenWidth;
 	this.h = screenHeight;
 
-	parts = [
+	this.parts = [
 		new UIElement("topPane", 0, 0, this.w, 30, this),
+		new WallPane("wallPane", 0, 30, 150, 200, this),
+		new AudioPane("audioPane", 0, 30, 150, 200, this),
+		new EntityPane("entityPane", 0, 30, 150, 200, this),
 	]
-	var activeParts = [
-		parts[0],
+	this.active = [
+		this.parts[1],
+		this.parts[0],
 	]
-	this.active = activeParts;
 
-	parts[0].addPart(new UIButton("testbutton", 5, 5, 20, 20, parts[0]));
+	this.parts[0].addPart(new UIButtonWToolTip("wallModeButton", 5, 5, 20, 20, this.parts[0], "Wall Mode"));
+	this.parts[0].addPart(new UIButtonWToolTip("audioModeButton", 28, 5, 20, 20, this.parts[0], "Audio Mode"));
+	this.parts[0].addPart(new UIButtonWToolTip("entityModeButton", 51, 5, 20, 20, this.parts[0], "Entity Mode"));
 
-	this.update = function() {
+	this.parts[0].parts[0].activate = function() {editMode = WALL_MODE; mainInterface.active[0] = mainInterface.parts[1];};
+	this.parts[0].parts[1].activate = function() {editMode = AUDIO_MODE; mainInterface.active[0] = mainInterface.parts[2];};
+	this.parts[0].parts[2].activate = function() {editMode = ENTITY_MODE; mainInterface.active[0] = mainInterface.parts[3];};
+
+	this.updateUI = function() {
 		if (mouseJustPressed && isInElement(this, mouseX, mouseY)) {
 			leftMouseClick(mouseX, mouseY);
 		}
 	}
 
 	this.drawUI = function() {
-		draw();
+		for (var i = 0; i < this.active.length; i++) {
+			this.active[i].draw();
+		}
 	}
 
 	function leftMouseClick(x, y) {
-		for (var i = activeParts.length -1; i >= 0; i--) {
-			if (isInElement(activeParts[i], x, y)) {
-				activeParts[i].leftMouseClick(x, y);
+		for (var i = mainInterface.active.length -1; i >= 0; i--) {
+			if (isInElement(mainInterface.active[i], x, y)) {
+				mainInterface.active[i].leftMouseClick(x, y);
 
 				mouseJustPressed = false;
 
 				break;
 			}
-		}
-	}
-
-	function draw() {
-		for (var i = 0; i < activeParts.length; i++) {
-			activeParts[i].draw();
 		}
 	}
 }
@@ -140,6 +145,24 @@ class UIButton extends UIElement {
 	activate() {
 		console.log("click");
 	}
+}
+
+class UIButtonWToolTip extends UIButton {
+	constructor(name, x, y, w, h, parent, toolTip = "") {
+		super(name, x, y, w, h, parent);
+
+		this.toolTip = toolTip;
+	}
+
+	draw() {
+		super.draw();
+
+		if (this.toolTip != "" && isInElement(this, mouseX, mouseY)) {
+			this.setMostActive();
+			colorTextOutline(this.toolTip, mouseX + 14, mouseY + 11, "black", "white");
+		}
+	}
+
 }
 
 class UICloseButton extends UIButton {
@@ -305,3 +328,21 @@ class UIDropdownList extends UIElement {
 	}
 }
 
+
+
+
+
+
+
+
+class WallPane extends UIElement {
+
+}
+
+class AudioPane extends UIElement {
+	
+}
+
+class EntityPane extends UIElement {
+	
+}

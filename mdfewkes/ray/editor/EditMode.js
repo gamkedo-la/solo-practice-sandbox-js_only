@@ -45,7 +45,7 @@ function runWallMode() {
 			newWall.color = wallColor;
 			newWall.texture = wallTexture;
 
-			if (walls.length > 1) newWall.textureOffset = distanceBetweenTwoPoints(walls[walls.length-2].p2, lastWallPoint);
+			if (walls.length > 1) newWall.textureOffset = distanceBetweenTwoPoints(walls[walls.length-2].p2, lastWallPoint) + walls[walls.length-2].textureOffset;
 
 			lastWallPoint = getMousePositionInWorldSpace();
 		}

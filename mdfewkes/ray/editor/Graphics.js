@@ -36,10 +36,20 @@ function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY,withAngle) {
 	eCanvasContext.restore(); // undo the translation movement and rotation since save()
 }
 
-function colorText(showWords, textX,textY, fillColor, font = "30px Arial", alignmant = "left") {
+function colorText(showWords, textX,textY, fillColor, font = "15px Arial", alignmant = "left") {
 	eCanvasContext.textAlign = alignmant;
 
 	eCanvasContext.font = font;
+	eCanvasContext.fillStyle = fillColor;
+    eCanvasContext.fillText(showWords, textX, textY);
+}
+
+function colorTextOutline(showWords, textX,textY, fillColor, outlineColor, font = "15px Arial", alignmant = "left") {
+	eCanvasContext.textAlign = alignmant;
+
+	eCanvasContext.font = font;
+	eCanvasContext.fillStyle = outlineColor;
+    eCanvasContext.strokeText(showWords, textX, textY);
 	eCanvasContext.fillStyle = fillColor;
     eCanvasContext.fillText(showWords, textX, textY);
 }

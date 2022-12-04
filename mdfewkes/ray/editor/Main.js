@@ -131,7 +131,7 @@ function nextFrame() {
 	drawPreview();
 
 	drawMapView();
-	mainInterface.update();
+	mainInterface.updateUI();
 	driveEditor();
 	mainInterface.drawUI();
 
