@@ -10,7 +10,7 @@ function AudioManager() {
 	const DROPOFF_MAX = 400;
 	const HEADSHADOW_REDUCTION = 0.7;
 	const REVERB_MAX = 5;
-	const DOPLER_SCALE = 16;
+	const DOPLER_SCALE = 1/2;
 
 //--//Properties----------------------------------------------------------------
 	var initialized = false;
@@ -79,7 +79,7 @@ function AudioManager() {
 			for (var i in currentSoundSources) {
 				colorEmptyCircle(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 1, "blue");
 				colorEmptyCircle(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, 3, "green");
-				colorLine(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, player.pos.x, player.pos.y, 1, "green");
+				colorLine(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, player.pos.x, player.pos.y, 1, distanceBetweenTwoPoints(player.pos, currentSoundSources[i].pos) < DROPOFF_MAX ? "green" : "darkgreen");
 				for (var j in currentAudGeo) {
 					if (lineOfSight(currentAudGeo[j].point, currentSoundSources[i].parent.pos)) {
 						colorLine(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 
@@ -88,7 +88,7 @@ function AudioManager() {
 				}
 			}
 
-			for (var i in currentAudGeo) {
+			/*for (var i in currentAudGeo) {
 				colorEmptyCircle(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 3, "blue");
 				if (lineOfSight(currentAudGeo[i].point, player.pos)) {
 					colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, player.pos.x, player.pos.y, 1, "blue");
@@ -97,7 +97,7 @@ function AudioManager() {
 							currentAudGeo[currentAudGeo[i].connections[j]].point.x, currentAudGeo[currentAudGeo[i].connections[j]].point.y, 1, "darkblue");
 					}
 				}
-			}
+			}*/
 
 		}
 	};
@@ -273,7 +273,7 @@ function AudioManager() {
 			//Dopler
 			audioFile.playbackRate = this.rate;
 			var newDistance = distanceBetweenTwoPoints(player.pos, this.pos);
-			var dopler = (lastDistance - newDistance) / DOPLER_SCALE;
+			var dopler = (lastDistance - newDistance) * DOPLER_SCALE;
 			audioFile.playbackRate *= clamp(Math.pow(2, (dopler/12)), 0.8, 1.2);
 			lastDistance = newDistance;
 		}

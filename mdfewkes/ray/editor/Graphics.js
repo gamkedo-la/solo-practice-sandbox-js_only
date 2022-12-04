@@ -14,7 +14,7 @@ function colorCircle(centerX, centerY, radius, fillColor) {
 
 function colorEmptyCircle(centerX, centerY, radius, strokeColor) {
 	eCanvasContext.beginPath();
-	eCanvasContext.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+	eCanvasContext.arc(centerX, centerY, radius, 0, Math.PI*2);
 	eCanvasContext.strokeStyle = strokeColor;
 	eCanvasContext.stroke();
 }

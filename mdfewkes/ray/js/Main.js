@@ -84,7 +84,7 @@ function gamestart() {
 	walls[walls.length-1].p2 = walls[0].p1;
 
 
-	/*var newWall = new WallClass();
+	var newWall = new WallClass();
 	newWall.p1 = {x:-100, y:-100};
 	newWall.p2 = {x:300, y:-100};
 	newWall.color = "red";
@@ -127,7 +127,7 @@ function gamestart() {
 
 	testsound1 = AudioMan.createSound3D("./audio/temp_engine1.ogg", {pos:{x:200, y:150}}, true, 1).play();
 	testsound2 = AudioMan.createSound3D("./audio/UI_Typewriter_temp01.wav", {pos:{x:50, y:250}}, true, 1).play();
-	testsound3 = AudioMan.createSound3D("./audio/TT rough vox only.mp3", {pos:{x:-50, y:175}}, true, 1).play();*/
+	testsound3 = AudioMan.createSound3D("./audio/TT rough vox only.mp3", {pos:{x:-50, y:175}}, true, 1).play();
 	generateAudGeo();
 }
 
@@ -174,7 +174,7 @@ function gameloop(time) {
 		colorRect(0,300,800,300, bottomColor);
 
 		//3D
-		var FOV = 60;
+		var FOV = 90;
 		var numRays = canvas.width;
 		var drawWidth = canvas.width / numRays;
 		var drawDistance = 600;
@@ -196,7 +196,7 @@ function gameloop(time) {
 				var distance = hit.distance * Math.cos(cameraAng);
 
 				var x = i * drawWidth;
-				var y = canvas.height/2 - wallHeight*canvas.width*0.5/distance;
+				var y = canvas.height/2 - wallHeight*canvas.height*0.5/distance;
 				var w = drawWidth;
 				var h = wallHeight * canvas.height / distance;
 				var distanceAlongWall = distanceBetweenTwoPoints(hit.wall.p1, hit);

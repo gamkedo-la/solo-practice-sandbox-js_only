@@ -22,7 +22,9 @@ function MainInterface(screenWidth, screenHeight) {
 		if (mouseJustPressed && isInElement(this, mouseX, mouseY)) {
 			leftMouseClick(mouseX, mouseY);
 		}
+	}
 
+	this.drawUI = function() {
 		draw();
 	}
 
@@ -30,6 +32,9 @@ function MainInterface(screenWidth, screenHeight) {
 		for (var i = activeParts.length -1; i >= 0; i--) {
 			if (isInElement(activeParts[i], x, y)) {
 				activeParts[i].leftMouseClick(x, y);
+
+				mouseJustPressed = false;
+
 				break;
 			}
 		}

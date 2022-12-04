@@ -87,11 +87,6 @@ function mouseUpEvent(evt) {
 }
 
 function pCalculateMousePos(evt) {
-	var rect = eCanvas.getBoundingClientRect(),
-	root = document.documentElement;
-	pMouseX = evt.clientX - rect.left - root.scrollLeft;
-	pMouseY = evt.clientY - rect.top - root.scrollTop;
-
 	pFocus = true;
 	//console.log(pMouseX + " " + pMouseY);
 }
@@ -133,10 +128,12 @@ window.onload = function() {
 
 function nextFrame() {
 	drivePreview();
+	drawPreview();
 
 	drawMapView();
-	drawPreview();
 	mainInterface.update();
+	driveEditor();
+	mainInterface.drawUI();
 
 	mouseJustPressed = false;
 	mouseJustReleased = false;
@@ -202,7 +199,6 @@ function drawMapView() {
 	eCanvasContext.clearRect(0, 0, eCanvas.width, eCanvas.height);//clear the viewport AFTER the matrix is reset
 	colorRect(0, 0, eCanvas.width, eCanvas.height, 'black');
 	eCanvasContext.translate(eCanvas.width/2, eCanvas.height/2);
-	//eCanvasContext.rotate(-player.ang + 3*pi/2);
 	eCanvasContext.translate(-player.x, -player.y);
 
 	//2D draw loops
@@ -237,10 +233,10 @@ function drawPreview() {
 			// Correct for fisheye
 			var cameraAng = player.ang - angle;
 			cameraAng = wrap(cameraAng, 0, 2*pi);
-			var distance = hit.distance// * Math.cos(cameraAng);
+			var distance = hit.distance * Math.cos(cameraAng);
 
 			var x = i * drawWidth;
-			var y = pCanvas.height/2 - wallHeight*pCanvas.width*0.5/distance;
+			var y = pCanvas.height/2 - wallHeight*pCanvas.height*0.5/distance;
 			var w = drawWidth;
 			var h = wallHeight * pCanvas.height / distance;
 			var distanceAlongWall = distanceBetweenTwoPoints(hit.wall.p1, hit);
@@ -248,7 +244,7 @@ function drawPreview() {
 			pColorRect(x, y, w, h, hit.wall.color);
 			if (hit.wall.texture != null) {
 				pCanvasContext.drawImage(hit.wall.texture,
-					distanceAlongWall * (wallHeight * 5) % 100, 0, //Magic number to unstretch texture
+					(distanceAlongWall + hit.wall.textureOffset) * (wallHeight * 5) % 100, 0, //Majic number to unstretch texture
 					1, 100,
 					x, y,
 					w, h);
@@ -256,4 +252,8 @@ function drawPreview() {
 			pColorRect(x, y, w, h, fullColorHex(0, 0, 0, distance/drawDistance/2 * 512));
 		}
 	}
+}
+
+function getMousePositionInWorldSpace() {
+	return {x: mouseX + player.x - eCanvas.width/2, y: mouseY + player.y - eCanvas.height/2}
 }
