@@ -72,7 +72,7 @@ const Key = {
 	UP: 38,
 	RIGHT: 39,
 	DOWN: 40,
-	DELETE: 40,
+	DELETE: 46,
 	ZERO: 48,
 	ONE: 49,
 	TWO: 50,

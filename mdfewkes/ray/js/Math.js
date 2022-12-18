@@ -93,6 +93,34 @@ function fullColorHex(r, g, b, a = 255) {
 
 	return "#" + red + green + blue + alpha;
 }
+
+function colorHex(r, g, b,) {
+	var red = rgbToHex(r);
+	var green = rgbToHex(g);
+	var blue = rgbToHex(b);;
+
+	return "#" + red + green + blue;
+}
+
+function colorHexToRGB(hex) {
+    var r = parseInt(hex.slice(1, 3), 16);
+    var g = parseInt(hex.slice(3, 5), 16);
+    var b = parseInt(hex.slice(5, 7), 16);
+    
+    // return {r, g, b} 
+    return {r: r, g: g, b: b, a: 255};
+}
+
+function fullColorHexToRGB(hex) {
+    var r = parseInt(hex.slice(1, 3), 16);
+    var g = parseInt(hex.slice(3, 5), 16);
+    var b = parseInt(hex.slice(5, 7), 16);
+    var a = parseInt(hex.slice(7, 9), 16);
+    
+    // return {r, g, b} 
+    return {r: r, g: g, b: b, a: a};
+}
+
 function isLineIntersecting(p1, p2, p3, p4) {
 	var denominator = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x));
 
@@ -141,4 +169,14 @@ function getClosestIntersection(p1, p2) {
 	}
 
 	return closestPoint;
+}
+
+function getNearestPointOnLine(a, b, p) {
+	var atob = { x: b.x - a.x, y: b.y - a.y };
+	var atop = { x: p.x - a.x, y: p.y - a.y };
+	var len = atob.x * atob.x + atob.y * atob.y;
+	var dot = atop.x * atob.x + atop.y * atob.y;
+	var t = Math.min( 1, Math.max( 0, dot / len ) );
+	dot = ( b.x - a.x ) * ( p.y - a.y ) - ( b.y - a.y ) * ( p.x - a.x );
+	return {x: a.x + atob.x * t, y: a.y + atob.y * t};
 }

@@ -1,7 +1,6 @@
 var mainInterface;
 var pMouseX, pMouseY;
-var player = {x:0, y: 0, ang: 3*pi/2, forwardX: 0, forwardY: 0}
-var walls = [];
+var player = {x:0, y: 0, ang: d270, forwardX: 0, forwardY: 0}
 var debug = false;
 
 var mouseX = -1;
@@ -15,6 +14,7 @@ var sKey = false;
 var dKey = false;
 var qKey = false;
 var eKey = false;
+var delKey = false;
 var pFocus = false;
 
 function calculateKeyboardDown(evt) {
@@ -36,6 +36,9 @@ function calculateKeyboardDown(evt) {
 		break;
 	case 69:
 		eKey = true;
+		break;
+	case 46:
+		delKey = true;
 		break;
 	}
 }
@@ -59,6 +62,9 @@ function calculateKeyboardUp(evt) {
 		break;
 	case 69:
 		eKey = false;
+		break;
+	case 46:
+		delKey = false;
 		break;
 	}
 }
@@ -151,7 +157,7 @@ function drivePreview() {
 	if (eKey) {
 		player.ang += lookSpeed;
 	}
-	player.ang = wrap(player.ang, 0, 2*pi);
+	player.ang = wrap(player.ang, 0, d360);
 
 	player.forwardX = Math.cos(player.ang);
 	player.forwardY = Math.sin(player.ang);
@@ -177,21 +183,21 @@ function drivePreview() {
 		}
 	} else {
 		if (wKey) {
-			newY -= moveSpeed;
+			newY -= moveSpeed*3;
 		}
 		if (sKey) {
-			newY += moveSpeed;
+			newY += moveSpeed*3;
 		}
 		if (aKey) {
-			newX -= moveSpeed;
+			newX -= moveSpeed*3;
 		}
 		if (dKey) {
-			newX += moveSpeed;
+			newX += moveSpeed*3;
 		}
 
 	}
-	player.x = newX;
-	player.y = newY;
+	player.x = Math.round(newX);
+	player.y = Math.round(newY);
 }
 
 function drawMapView() {
@@ -204,6 +210,15 @@ function drawMapView() {
 	//2D draw loops
 	for (var i = 0; i < walls.length; i++) {
 		walls[i].draw2D();
+	}
+	for (var i = 0; i < audGeoPoints.length; i++) {
+		colorEmptyCircle(audGeoPoints[i].x, audGeoPoints[i].y, 1, "lightblue");
+	}
+	for (var i = 0; i < currentAudGeo.length; i++) {
+		for (var j = 0; j < currentAudGeo[i].connections.length; j++) {
+			var pos = {x: currentAudGeo[currentAudGeo[i].connections[j]].point.x, y: currentAudGeo[currentAudGeo[i].connections[j]].point.y}
+			colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, pos.x, pos.y, 1, "darkblue");
+		}
 	}
 
 	colorLine(player.x, player.y, player.x + player.forwardX * 10, player.y + player.forwardY * 10, 2, "darkgrey");
@@ -232,7 +247,7 @@ function drawPreview() {
 
 			// Correct for fisheye
 			var cameraAng = player.ang - angle;
-			cameraAng = wrap(cameraAng, 0, 2*pi);
+			cameraAng = wrap(cameraAng, 0, d360);
 			var distance = hit.distance * Math.cos(cameraAng);
 
 			var x = i * drawWidth;
@@ -244,16 +259,12 @@ function drawPreview() {
 			pColorRect(x, y, w, h, hit.wall.color);
 			if (hit.wall.texture != null) {
 				pCanvasContext.drawImage(hit.wall.texture,
-					(distanceAlongWall + hit.wall.textureOffset) * (wallHeight * 5) % 100, 0, //Majic number to unstretch texture
+					(distanceAlongWall + hit.wall.textureOffset) * (wallHeight * 5) % 100, 0, //5 is a magic number to unstretch texture
 					1, 100,
 					x, y,
 					w, h);
 			}
-			pColorRect(x, y, w, h, fullColorHex(0, 0, 0, distance/drawDistance/2 * 512));
+			pColorRect(x, y, w, h, fullColorHex(0, 0, 0, distance/drawDistance * 255));
 		}
 	}
-}
-
-function getMousePositionInWorldSpace() {
-	return {x: mouseX + player.x - eCanvas.width/2, y: mouseY + player.y - eCanvas.height/2}
 }

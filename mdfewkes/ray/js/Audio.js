@@ -454,29 +454,36 @@ function AudioManager() {
 
 }
 
+/*
 var fauxAudGeo = [
 	{x:100.01, y:99.99},
 	{x:100.01, y:200.01},
 	{x:-0.01, y:200.01},
 	{x:-0.01, y:149.99},
 	{x:50.01, y:149.99},
-	];
+];
+for (var i = 0; i < fauxAudGeo.length; i++) {
+	audGeoPoints.push(fauxAudGeo[i]);
+}
+*/
 
+var audGeoPoints = [];
 var currentAudGeo = []; //{point:{x,y}, connections:[indexs]}
+
 function generateAudGeo() {
 	currentAudGeo = new Array();
 
-	for (var i in fauxAudGeo) {
+	for (var i in audGeoPoints) {
 		//console.log("Checking point " + i);
 		var connect = [];
 
-		for (var j in fauxAudGeo) {
+		for (var j in audGeoPoints) {
 			if (i == j) continue;
 			//console.log("--Against point " + j);
 			var clear = true;
 
 			for (var k in walls) {
-				if (isLineIntersecting(fauxAudGeo[i], fauxAudGeo[j], walls[k].p1, walls[k].p2)) {
+				if (isLineIntersecting(audGeoPoints[i], audGeoPoints[j], walls[k].p1, walls[k].p2)) {
 					//console.log(walls[k]);
 					clear = false;
 					}
@@ -486,6 +493,6 @@ function generateAudGeo() {
 			}
 		}
 
-		currentAudGeo.push({point: fauxAudGeo[i], connections: connect});
+		currentAudGeo.push({point: audGeoPoints[i], connections: connect});
 	}
 }

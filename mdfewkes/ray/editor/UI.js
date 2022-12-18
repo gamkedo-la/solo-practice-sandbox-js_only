@@ -1,5 +1,7 @@
-var borderSize = 3;
-var borderBack = borderSize * 2;
+const borderSize = 3;
+const borderBack = borderSize * 2;
+
+var displaytext = "test";
 
 function MainInterface(screenWidth, screenHeight) {
 	this.name = "Main Interface";
@@ -10,11 +12,13 @@ function MainInterface(screenWidth, screenHeight) {
 
 	this.parts = [
 		new UIElement("topPane", 0, 0, this.w, 30, this),
-		new WallPane("wallPane", 0, 30, 150, 200, this),
+		new WallPane("wallPane", 0, 30, 0, 0, this),
 		new AudioPane("audioPane", 0, 30, 150, 200, this),
 		new EntityPane("entityPane", 0, 30, 150, 200, this),
+		new SelectionPane("selectionPane", 0, this.h, 200, 200, this),
 	]
 	this.active = [
+		this.parts[4],
 		this.parts[1],
 		this.parts[0],
 	]
@@ -22,10 +26,28 @@ function MainInterface(screenWidth, screenHeight) {
 	this.parts[0].addPart(new UIButtonWToolTip("wallModeButton", 5, 5, 20, 20, this.parts[0], "Wall Mode"));
 	this.parts[0].addPart(new UIButtonWToolTip("audioModeButton", 28, 5, 20, 20, this.parts[0], "Audio Mode"));
 	this.parts[0].addPart(new UIButtonWToolTip("entityModeButton", 51, 5, 20, 20, this.parts[0], "Entity Mode"));
+	this.parts[0].addPart(new UIToggleWToolTip("snapToggle", 97, 5, 20, 20, this.parts[0], "Snap to nearest wall anchor", true));
 
-	this.parts[0].parts[0].activate = function() {editMode = WALL_MODE; mainInterface.active[0] = mainInterface.parts[1];};
-	this.parts[0].parts[1].activate = function() {editMode = AUDIO_MODE; mainInterface.active[0] = mainInterface.parts[2];};
-	this.parts[0].parts[2].activate = function() {editMode = ENTITY_MODE; mainInterface.active[0] = mainInterface.parts[3];};
+	this.parts[0].parts[0].activate = function() {
+		switchMode(WALL_MODE); 
+		mainInterface.parts[1].setActive(true);
+		mainInterface.parts[2].setActive(false);
+		mainInterface.parts[3].setActive(false);
+	};
+	this.parts[0].parts[1].activate = function() {
+		switchMode(AUDIO_MODE); 
+		mainInterface.parts[1].setActive(false);
+		mainInterface.parts[2].setActive(true);
+		mainInterface.parts[3].setActive(false);
+	};
+	this.parts[0].parts[2].activate = function() {
+		switchMode(ENTITY_MODE); 
+		mainInterface.parts[1].setActive(false);
+		mainInterface.parts[2].setActive(false);
+		mainInterface.parts[3].setActive(true);
+};
+	this.parts[0].parts[3].onTrue = function() {snapToNearWallPoint = true};
+	this.parts[0].parts[3].onFalse = function() {snapToNearWallPoint = false};
 
 	this.updateUI = function() {
 		if (mouseJustPressed && isInElement(this, mouseX, mouseY)) {
@@ -37,6 +59,9 @@ function MainInterface(screenWidth, screenHeight) {
 		for (var i = 0; i < this.active.length; i++) {
 			this.active[i].draw();
 		}
+
+		displaytext = getDisplayText();
+		colorText(displaytext, this.x + this.w - borderBack, 15 + borderSize, "darkblue", "15px Arial", "right");
 	}
 
 	function leftMouseClick(x, y) {
@@ -85,6 +110,15 @@ class UIElement {
 
 	setMostActive() {
 		this.parent.active.push(this.parent.active.splice(this.parent.active.indexOf(this), 1)[0]);
+	}
+
+	setActive(isActive) {
+		if (isActive && !this.parent.active.includes(this)) {
+			this.parent.active.push(this);
+		}
+		if (!isActive && this.parent.active.includes(this)) {
+			this.parent.active.splice(this.parent.active.indexOf(this), 1);
+		}
 	}
 
 	leftMouseClick(x, y) {
@@ -162,6 +196,40 @@ class UIButtonWToolTip extends UIButton {
 			colorTextOutline(this.toolTip, mouseX + 14, mouseY + 11, "black", "white");
 		}
 	}
+
+}
+
+class UIToggleWToolTip extends UIButtonWToolTip {
+	constructor(name, x, y, w, h, parent, toolTip = "", toggle = false) {
+		super(name, x, y, w, h, parent);
+
+		this.toolTip = toolTip;
+		this.toggle = toggle;
+	}
+
+	draw() {
+		super.draw();
+
+		if (this.toggle) {
+			colorRect(this.x + borderSize*2, this.y + borderSize*2, this.w - borderBack*2, this.h - borderBack*2, 'blue');		
+		}
+	}
+
+	activate() {
+		this.toggle = this.toggle ? false : true;
+
+		if (this.toggle) this.onTrue();
+		else this.onFalse();
+	}
+
+	onTrue() {
+
+	}
+
+	onFalse() {
+
+	}
+
 
 }
 
@@ -333,16 +401,107 @@ class UIDropdownList extends UIElement {
 
 
 
-
-
 class WallPane extends UIElement {
+	constructor(name, x, y, w, h, parent) {
+		super(name, x, y, 30, 76, parent);
+
+		this.addPart(new UIButtonWToolTip("singleWallMode", 5, 5, 20, 20, this, "Add Walls"));
+		this.addPart(new UIButtonWToolTip("multiWallMode", 5, 28, 20, 20, this, "Add Connected Walls"));
+		this.addPart(new UIButtonWToolTip("selectWallMode", 5, 51, 20, 20, this, "Select Wall"));
+
+		this.parts[0].activate = function() {wallMode = ADD_SINGLE_WALL;};
+		this.parts[1].activate = function() {wallMode = ADD_MULTI_WALLS;};
+		this.parts[2].activate = function() {wallMode = SELECT_WALL;};
+	}
 
 }
 
 class AudioPane extends UIElement {
+	constructor(name, x, y, w, h, parent) {
+		super(name, x, y, 30, 76, parent);
+
+		this.addPart(new UIButtonWToolTip("addAudioNodeMode", 5, 5, 20, 20, this, "Add Audio Nodes"));
+		this.addPart(new UIButtonWToolTip("generateAudioGeo", 5, 28, 20, 20, this, "GenerateAudioGeo"));
+		this.addPart(new UIButtonWToolTip("selectAudioNodeMode", 5, 51, 20, 20, this, "Select Audio Nodes"));
+
+		this.parts[0].activate = function() {audioMode = ADD_AUDIO;};
+		this.parts[1].activate = function() {generateAudGeo();};
+		this.parts[2].activate = function() {audioMode = SELECT_AUDIO;};
+	}
 	
 }
 
 class EntityPane extends UIElement {
+	constructor(name, x, y, w, h, parent) {
+		super(name, x, y, 30, 76, parent);
+	}
 	
+}
+
+class SelectionPane extends UIElement{
+	constructor(name, x, y, w, h, parent) {
+		super(name, x, y - h, w, h, parent);
+
+		this.bottom = y;
+	}
+
+	draw() {
+		if (selectedElement == null) {
+			this.h = 30;
+			this.w = 200;
+		} else {
+			if (editMode == WALL_MODE) {
+				this.h = 90;
+				this.w = 200;
+			}
+			if (editMode == AUDIO_MODE) {
+				this.h = 75;
+				this.w = 200;
+			}
+			if (editMode == ENTITY_MODE) {
+				this.h = 100;
+				this.w = 200;
+			}
+		}
+		this.y = this.bottom - this.h;
+
+		super.draw();
+
+		if (selectedElement != null) {
+			if (editMode == WALL_MODE) {
+				var textP1 = "p1 {x: " + selectedElement.p1.x + ", y: " + selectedElement.p1.y + "}";
+				var textP2 = "p2 {x: " + selectedElement.p2.x + ", y: " + selectedElement.p2.y + "}";
+				var textColor = "Color: " + selectedElement.color;
+				colorText(textP1, this.x + borderSize + 20, this.y + 15 + borderSize, "darkblue");
+				colorText(textP2, this.x + borderSize + 20, this.y + 30 + borderSize, "darkblue");
+				colorText(textColor, this.x + borderSize + 20, this.y + 45 + borderSize, "darkblue");
+
+			}
+			if (editMode == AUDIO_MODE) {
+				var index = audGeoPoints.indexOf(selectedElement);
+				var textPos = index + " {x: " + selectedElement.x + ", y: " + selectedElement.y + "}";
+				colorText(textPos, this.x + borderSize + 20, this.y + 15 + borderSize, "darkblue");
+
+				if (currentAudGeo.length > 0 
+					&& currentAudGeo[index].point.x == selectedElement.x 
+					&& currentAudGeo[index].point.y == selectedElement.y) {
+
+					var textConnected = "[";
+					for (var i in currentAudGeo[index].connections) {
+						textConnected = textConnected + " " + currentAudGeo[index].connections[i];
+					}
+					textConnected = textConnected + " ]";
+					colorText(textConnected, this.x + borderSize + 20, this.y + 30 + borderSize, "darkblue");
+				}
+
+			}
+			if (editMode == ENTITY_MODE) {
+
+			}
+		}
+		var pos = getMousePositionInWorldSpace();
+		var text = "{x: " + pos.x + ", y: " + pos.y + "}";
+		colorText(text, this.x + this.w*0.5, this.bottom - 13 + borderSize, "darkblue", "15px Arial", "center");
+	}
+
 }

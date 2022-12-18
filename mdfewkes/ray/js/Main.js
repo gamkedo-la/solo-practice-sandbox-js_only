@@ -4,7 +4,6 @@ let canvas;
 var debug = false;
 
 var gameObjects = [];
-var walls = [];
 var distanceBuffer = [];
 
 var player = new PlayerClass();
