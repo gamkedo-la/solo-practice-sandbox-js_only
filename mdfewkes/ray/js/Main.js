@@ -11,6 +11,8 @@ var player = new PlayerClass();
 var deltaTime = window.performance.now();
 var lastTime = 0;
 
+var FOV = 90;
+
 var topColor = "lightgrey";
 var bottomColor = "gray"
 
@@ -44,7 +46,7 @@ function gamestart() {
 	var y = -250;
 	var wallTexture = new Image();
 	wallTexture.src = './images/textTexture100x100.png';
-	console.log("x:" + x + "," + "y:" + y);
+	//console.log("x:" + x + "," + "y:" + y);
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
 		newWall.p1 = {x:x, y:y};
@@ -53,7 +55,7 @@ function gamestart() {
 		newWall.p2 = {x:x, y:y};
 		newWall.texture = wallTexture;
 	}
-	console.log("x:" + x + "," + "y:" + y);
+	//console.log("x:" + x + "," + "y:" + y);
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
 		newWall.p1 = {x:x, y:y};
@@ -70,7 +72,7 @@ function gamestart() {
 		newWall.p2 = {x:x, y:y};
 		newWall.texture = wallTexture;
 	}
-	console.log("x:" + x + "," + "y:" + y);
+	//console.log("x:" + x + "," + "y:" + y);
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
 		newWall.p1 = {x:x, y:y};
@@ -79,7 +81,7 @@ function gamestart() {
 		newWall.p2 = {x:x, y:y};
 		newWall.texture = wallTexture;
 	}
-	console.log("x:" + x + "," + "y:" + y);
+	//console.log("x:" + x + "," + "y:" + y);
 	walls[walls.length-1].p2 = walls[0].p1;
 
 
@@ -128,6 +130,14 @@ function gamestart() {
 	testsound2 = AudioMan.createSound3D("./audio/UI_Typewriter_temp01.wav", {pos:{x:50, y:250}}, true, 1).play();
 	testsound3 = AudioMan.createSound3D("./audio/TT rough vox only.mp3", {pos:{x:-50, y:175}}, true, 1).play();
 	generateAudGeo();
+
+	var testEntity = new TestEntity();
+	var testEntity1 = new TestEntity();
+	testEntity1.pos = {x: 200, y:150};
+	var testEntity2 = new TestEntity();
+	testEntity2.pos = {x: 50, y:250};
+	var testEntity3 = new TestEntity();
+	testEntity3.pos = {x: -50, y:175};
 }
 
 function gameloop(time) {
@@ -173,45 +183,62 @@ function gameloop(time) {
 		colorRect(0,300,800,300, bottomColor);
 
 		//3D
-		var FOV = 90;
 		var numRays = canvas.width;
 		var drawWidth = canvas.width / numRays;
 		var drawDistance = 600;
 		var wallHeight = 5;
-		for (i = 0; i < numRays; i ++) {
+		var rays = [];
+		for (var i = 0; i < numRays; i ++) {
 			// From half of FOV left, to half of FOV right
 			var angle = degToRad(-(FOV/2) + ((FOV / numRays) * i)) + player.ang;
 			var rayEnd = {x:Math.cos(angle) * drawDistance + player.x, y:Math.sin(angle) * drawDistance + player.y};
 			var hit = getClosestIntersection(player.pos, rayEnd);
 
 			if (hit != null) {
-				//colorLine(player.x, player.y, hit.x, hit.y, 1, hit.wall.color); //2d
-
-				// Correct for fisheye
-				var cameraAng = player.ang - angle;
-				//if (cameraAng > 2*pi) cameraAng -= 2*pi;
-				//if (cameraAng < 0) cameraAng += 2*pi;
-				cameraAng = wrap(cameraAng, 0, 2*pi);
-				var distance = hit.distance * Math.cos(cameraAng);
-
-				var x = i * drawWidth;
-				var y = canvas.height/2 - wallHeight*canvas.height*0.5/distance;
-				var w = drawWidth;
-				var h = wallHeight * canvas.height / distance;
-				var distanceAlongWall = distanceBetweenTwoPoints(hit.wall.p1, hit);
-
-				colorRect(x, y, w, h, hit.wall.color);
-				if (hit.wall.texture != null) {
-					canvasContext.drawImage(hit.wall.texture,
-						distanceAlongWall * (wallHeight * 5) % 100, 0, //Majic number to unstretch texture
-						1, 100,
-						x, y,
-						w, h);
-				}
-				colorRect(x, y, w, h, fullColorHex(20, 10, 20, distance/drawDistance/2 * 512));
-			} else {
-				//colorLine(player.x, player.y, rayEnd.x, rayEnd.y, 1, "darkred");
+				hit.i = i;
+				rays.push(hit);
 			}
+		}
+
+		rays.sort((a, b) => (a.distance < b.distance) ? 1 : -1);
+		gameObjects.sort((a, b) => (a.distance < b.distance) ? 1 : -1);
+
+		var objectIndex = 0;
+		for (var i = 0; i < rays.length; i ++) {
+			//colorLine(player.x, player.y, rays[i].x, rays[i].y, 1, rays[i].wall.color); //2d
+
+			//Draw game objects that have a greater depth than the current ray
+			for (objectIndex; objectIndex < gameObjects.length; objectIndex++) {
+				if (gameObjects[objectIndex].distance > rays[i].distance) gameObjects[objectIndex].draw3D();
+				else break;
+			}
+
+			// Correct for fisheye, TODO - Fix texture lookup as well
+			var cameraAng = player.ang - angle;
+			//if (cameraAng > 2*pi) cameraAng -= 2*pi;
+			//if (cameraAng < 0) cameraAng += 2*pi;
+			cameraAng = wrap(cameraAng, 0, 2*pi);
+			var distance = rays[i].distance// * Math.cos(cameraAng); //comment out solution while looking for texture fix
+
+			var x = rays[i].i * drawWidth;
+			var y = canvas.height/2 - wallHeight*canvas.height*0.5/distance;
+			var w = drawWidth;
+			var h = wallHeight * canvas.height / distance;
+			var distanceAlongWall = distanceBetweenTwoPoints(rays[i].wall.p1, rays[i]);
+
+			colorRect(x, y, w, h, rays[i].wall.color);
+			if (rays[i].wall.texture != null) {
+				canvasContext.drawImage(rays[i].wall.texture,
+					distanceAlongWall * (wallHeight * 5) % 100, 0, //Magic number to unstretch texture
+					1, 100,
+					x, y,
+					w, h);
+			}
+			colorRect(x, y, w, h, fullColorHex(20, 10, 20, distance/drawDistance/2 * 512));
+		}
+
+		for (objectIndex; objectIndex < gameObjects.length; objectIndex++) {
+			gameObjects[objectIndex].draw3D();
 		}
 
 	}

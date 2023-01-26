@@ -1,18 +1,14 @@
-function PlayerClass() {
-	this.pos =  {x:0, y:0};
-	this.x = 0;
-	this.y = 0;
-	this.ang = 3*pi/2;
-	this.forward = {x:0, y:0};
+class PlayerClass extends Entity{
+	constructor() {
+		super();
 
-	var lookSpeed = 0.75;
-	var moveSpeed = 50;
+		this._lookSpeed = 0.75;
+		this._moveSpeed = 50;
+	}
 
-	gameObjects.push(this);
-
-	this.update = function(){
+	update() {
 		//player look
-		this.ang += mouseMovementX * deltaTime * lookSpeed;
+		this.ang += mouseMovementX * deltaTime * this._lookSpeed;
 		if (this.ang > 2*pi) this.ang -= 2*pi;
 		if (this.ang < 0) this.ang += 2*pi;
 
@@ -25,23 +21,23 @@ function PlayerClass() {
 		var newY = this.pos.y;
 		var moving = false;
 		if (Key.isDown(Key.W)) {
-			newX += this.forward.x * deltaTime * moveSpeed;
-			newY += this.forward.y * deltaTime * moveSpeed;
+			newX += this.forward.x * deltaTime * this._moveSpeed;
+			newY += this.forward.y * deltaTime * this._moveSpeed;
 			moving = true;
 		}
 		if (Key.isDown(Key.S)) {
-			newX -= this.forward.x * deltaTime * moveSpeed;
-			newY -= this.forward.y * deltaTime * moveSpeed;
+			newX -= this.forward.x * deltaTime * this._moveSpeed;
+			newY -= this.forward.y * deltaTime * this._moveSpeed;
 			moving = true;
 		}
 		if (Key.isDown(Key.A)) {
-			newX += this.forward.y * deltaTime * moveSpeed;
-			newY -= this.forward.x * deltaTime * moveSpeed;
+			newX += this.forward.y * deltaTime * this._moveSpeed;
+			newY -= this.forward.x * deltaTime * this._moveSpeed;
 			moving = true;
 		}
 		if (Key.isDown(Key.D)) {
-			newX -= this.forward.y * deltaTime * moveSpeed;
-			newY += this.forward.x * deltaTime * moveSpeed;
+			newX -= this.forward.y * deltaTime * this._moveSpeed;
+			newY += this.forward.x * deltaTime * this._moveSpeed;
 			moving = true;
 
 		}
@@ -56,18 +52,12 @@ function PlayerClass() {
 		}
 		this.pos.x = newX;
 		this.pos.y = newY;
-		this.x = this.pos.x;
-		this.y = this.pos.y;
-	};
 
-	this.draw2D = function(){
+		super.update();
+	}
+
+	draw2D() {
 		colorLine(this.pos.x, this.pos.y, this.pos.x + this.forward.x * 10, this.pos.y +this.forward.y * 10, 2, "darkgrey");
 		colorEmptyCircle(this.pos.x, this.pos.y, 5, "darkgrey");
-	};
-
-	this.draw3D = function(){};
-
-	this.destroy = function(){
-		gameObjects.splice(gameObjects.indexoOf(this), 2);
-	};
+	}
 }
