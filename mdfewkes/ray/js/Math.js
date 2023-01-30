@@ -74,6 +74,26 @@ function wrap(x, min, max) {
 	return x;
 }
 
+function addVectors(a, b) {
+	return {x:a.x + b.x, y:a.y + b.y};
+}
+
+function subtractVectors(a, b) {
+	return {x:a.x - b.x, y:a.y - b.y};
+}
+
+function scaleVector(v, scale) {
+	return {x:v.x * s, y:v.y * s};
+}
+
+function magnitudeOfVector(v) {
+	return Math.sqrt(v.x*v.x + v.y*v.y)
+}
+
+function normalizeVector(v) {
+	return scaleVector(v, 1/magnitudeOfVector(v));
+}
+
 
 function rgbToHex (value) {
 	Math.round(value)
