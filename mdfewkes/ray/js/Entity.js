@@ -31,7 +31,7 @@ class Entity {
 	}
 }
 
-class TestEntity extends Entity {
+class SceneEntity extends Entity {
 	constructor() {
 		super();
 

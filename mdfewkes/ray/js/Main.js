@@ -1,5 +1,5 @@
-let canvasContext;
-let canvas;
+var canvasContext;
+var canvas;
 
 var debug = false;
 
@@ -14,7 +14,7 @@ var lastTime = 0;
 var FOV = 90;
 
 var topColor = "lightgrey";
-var bottomColor = "gray"
+var bottomColor = "gray";
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -131,12 +131,12 @@ function gamestart() {
 	testsound3 = AudioMan.createSound3D("./audio/TT rough vox only.mp3", {pos:{x:-50, y:175}}, true, 1).play();
 	generateAudGeo();
 
-	var testEntity = new TestEntity();
-	var testEntity1 = new TestEntity();
+	var testEntity = new SceneEntity();
+	var testEntity1 = new SceneEntity();
 	testEntity1.pos = {x: 200, y:150};
-	var testEntity2 = new TestEntity();
+	var testEntity2 = new SceneEntity();
 	testEntity2.pos = {x: 50, y:250};
-	var testEntity3 = new TestEntity();
+	var testEntity3 = new SceneEntity();
 	testEntity3.pos = {x: -50, y:175};
 }
 

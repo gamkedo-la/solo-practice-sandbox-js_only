@@ -482,7 +482,7 @@ class SelectionPane extends UIElement{
 				var textPos = index + " {x: " + selectedElement.x + ", y: " + selectedElement.y + "}";
 				colorText(textPos, this.x + borderSize + 20, this.y + 15 + borderSize, "darkblue");
 
-				if (currentAudGeo.length > 0 && currentAudGeo.length-1 >= indexs
+				if (currentAudGeo.length > 0 && currentAudGeo.length-1 >= index
 					&& currentAudGeo[index].point.x == selectedElement.x 
 					&& currentAudGeo[index].point.y == selectedElement.y) {
 

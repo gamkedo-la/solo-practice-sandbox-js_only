@@ -1,6 +1,10 @@
 var mainInterface;
 var pMouseX, pMouseY;
-var player = {x:0, y: 0, ang: d270, forwardX: 0, forwardY: 0}
+var player = {x:0, y: 0, ang: d270, forwardX: 0, forwardY: 0};
+var gameObjects = [];
+var objectImage = new Image();
+objectImage.src = './images/testEntity.png';
+var distanceBuffer = [];
 var debug = false;
 
 var mouseX = -1;
@@ -16,6 +20,10 @@ var qKey = false;
 var eKey = false;
 var delKey = false;
 var pFocus = false;
+
+var FOV = 90;
+var topColor = "lightgrey";
+var bottomColor = "gray";
 
 function calculateKeyboardDown(evt) {
 	switch(evt.keyCode) {
@@ -129,17 +137,26 @@ window.onload = function() {
 	newWall.p2 = {x:-100, y:-100};
 	newWall.color = "green";
 
+	var testEntity = {x: 0, y:0, distance: 0};
+	gameObjects.push(testEntity);
+	var testEntity1 = {x: 200, y:150, distance: 0};
+	gameObjects.push(testEntity1);
+	var testEntity2 = {x: 50, y:250, distance: 0};
+	gameObjects.push(testEntity2);
+	var testEntity3 = {x: -50, y:175, distance: 0};
+	gameObjects.push(testEntity3);
+
 	nextFrame();
 }
 
 function nextFrame() {
-	drivePreview();
-	drawPreview();
-
 	drawMapView();
 	mainInterface.updateUI();
 	driveEditor();
 	mainInterface.drawUI();
+
+	drivePreview();
+	drawPreview();
 
 	mouseJustPressed = false;
 	mouseJustReleased = false;
@@ -211,14 +228,14 @@ function drawMapView() {
 	for (var i = 0; i < walls.length; i++) {
 		walls[i].draw2D();
 	}
-	for (var i = 0; i < audGeoPoints.length; i++) {
-		colorEmptyCircle(audGeoPoints[i].x, audGeoPoints[i].y, 1, "lightblue");
-	}
 	for (var i = 0; i < currentAudGeo.length; i++) {
 		for (var j = 0; j < currentAudGeo[i].connections.length; j++) {
 			var pos = {x: currentAudGeo[currentAudGeo[i].connections[j]].point.x, y: currentAudGeo[currentAudGeo[i].connections[j]].point.y}
 			colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, pos.x, pos.y, 1, "darkblue");
 		}
+	}
+	for (var i = 0; i < audGeoPoints.length; i++) {
+		colorEmptyCircle(audGeoPoints[i].x, audGeoPoints[i].y, 1, "lightblue");
 	}
 
 	colorLine(player.x, player.y, player.x + player.forwardX * 10, player.y + player.forwardY * 10, 2, "darkgrey");
@@ -228,43 +245,78 @@ function drawMapView() {
 }
 
 function drawPreview() {
-	pColorRect(0, 0, pCanvas.width, pCanvas.height/2, 'lightblue');
-	pColorRect(0, pCanvas.height/2, pCanvas.width, pCanvas.height/2, 'lightgreen');
+	pColorRect(0,0,800,300, topColor);
+	pColorRect(0,300,800,300, bottomColor);
 
 	//3D
-	var FOV = 60;
 	var numRays = pCanvas.width;
 	var drawWidth = pCanvas.width / numRays;
 	var drawDistance = 600;
 	var wallHeight = 5;
-	for (i = 0; i < numRays; i ++) {
+	var rays = [];
+	for (var i = 0; i < numRays; i ++) {
+		// From half of FOV left, to half of FOV right
 		var angle = degToRad(-(FOV/2) + ((FOV / numRays) * i)) + player.ang;
 		var rayEnd = {x:Math.cos(angle) * drawDistance + player.x, y:Math.sin(angle) * drawDistance + player.y};
-		var hit = getClosestIntersection({x: player.x, y: player.y}, rayEnd);
+		var hit = getClosestIntersection(player, rayEnd);
 
 		if (hit != null) {
-			//colorLine(player.x, player.y, hit.x, hit.y, 1, hit.wall.color); //2d
-
-			// Correct for fisheye
-			var cameraAng = player.ang - angle;
-			cameraAng = wrap(cameraAng, 0, d360);
-			var distance = hit.distance * Math.cos(cameraAng);
-
-			var x = i * drawWidth;
-			var y = pCanvas.height/2 - wallHeight*pCanvas.height*0.5/distance;
-			var w = drawWidth;
-			var h = wallHeight * pCanvas.height / distance;
-			var distanceAlongWall = distanceBetweenTwoPoints(hit.wall.p1, hit);
-
-			pColorRect(x, y, w, h, hit.wall.color);
-			if (hit.wall.texture != null) {
-				pCanvasContext.drawImage(hit.wall.texture,
-					(distanceAlongWall + hit.wall.textureOffset) * (wallHeight * 5) % 100, 0, //5 is a magic number to unstretch texture
-					1, 100,
-					x, y,
-					w, h);
-			}
-			pColorRect(x, y, w, h, fullColorHex(0, 0, 0, distance/drawDistance * 255));
+			hit.i = i;
+			rays.push(hit);
 		}
 	}
+
+
+	for (var i = 0; i < gameObjects.length; i++) {
+		gameObjects[i].distance = distanceBetweenTwoPoints(gameObjects[i], player);
+	}
+	rays.sort((a, b) => (a.distance < b.distance) ? 1 : -1);
+	gameObjects.sort((a, b) => (a.distance < b.distance) ? 1 : -1);
+
+	var objectIndex = 0;
+	for (var i = 0; i < rays.length; i ++) {
+		//colorLine(player.x, player.y, rays[i].x, rays[i].y, 1, rays[i].wall.color); //2d
+
+		//Draw game objects that have a greater depth than the current ray
+		for (objectIndex; objectIndex < gameObjects.length; objectIndex++) {
+			if (gameObjects[objectIndex].distance > rays[i].distance) DrawEntity(gameObjects[objectIndex]);
+			else break;
+		}
+
+		// Correct for fisheye, TODO - Fix texture lookup as well
+		var cameraAng = player.ang - angle;
+		//if (cameraAng > 2*pi) cameraAng -= 2*pi;
+		//if (cameraAng < 0) cameraAng += 2*pi;
+		cameraAng = wrap(cameraAng, 0, 2*pi);
+		var distance = rays[i].distance// * Math.cos(cameraAng); //comment out solution while looking for texture fix
+
+		var x = rays[i].i * drawWidth;
+		var y = pCanvas.height/2 - wallHeight*pCanvas.height*0.5/distance;
+		var w = drawWidth;
+		var h = wallHeight * pCanvas.height / distance;
+		var distanceAlongWall = distanceBetweenTwoPoints(rays[i].wall.p1, rays[i]);
+
+		pColorRect(x, y, w, h, rays[i].wall.color);
+		if (rays[i].wall.texture != null) {
+			pCanvasContext.drawImage(rays[i].wall.texture,
+				distanceAlongWall * (wallHeight * 5) % 100, 0, //Magic number to unstretch texture
+				1, 100,
+				x, y,
+				w, h);
+		}
+		pColorRect(x, y, w, h, fullColorHex(20, 10, 20, distance/drawDistance/2 * 512));
+	}
+	for (objectIndex; objectIndex < gameObjects.length; objectIndex++) {
+		DrawEntity(gameObjects[objectIndex]);
+	}
+}
+
+function DrawEntity(entity) {
+	var drawAngle = wrap(radToDeg(angleBetweenTwoPoints(player, entity) - player.ang), -180, 180);
+
+	var size = 5 * pCanvas.height / entity.distance;
+	var drawX = pCanvas.width*0.5 - size*0.5 + drawAngle * pCanvas.width/FOV;
+	var drawY = pCanvas.height*0.5 - size*0.5;
+
+	pCanvasContext.drawImage(objectImage, drawX, drawY, size, size);
 }
