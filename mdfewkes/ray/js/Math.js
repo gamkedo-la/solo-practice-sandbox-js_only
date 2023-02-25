@@ -36,6 +36,17 @@ function rndInt(min, max) {
 	return Math.round( Math.random() * (max - min) + min );
 }
 
+function roundToDecimalPlace(value, places) {
+	for (var i = 0; i < places; i++) {
+		value *= 10;
+	}
+	value = Math.round(value);
+	for (var i = 0; i < places; i++) {
+		value /= 10;
+	}
+	return value;
+}
+
 function rndFloat(min, max) {
 	if(max == null) {
 		max = min || 1;

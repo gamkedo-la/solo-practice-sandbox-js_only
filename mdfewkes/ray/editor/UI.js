@@ -45,7 +45,7 @@ function MainInterface(screenWidth, screenHeight) {
 		mainInterface.parts[1].setActive(false);
 		mainInterface.parts[2].setActive(false);
 		mainInterface.parts[3].setActive(true);
-};
+	};
 	this.parts[0].parts[3].onTrue = function() {snapToNearWallPoint = true};
 	this.parts[0].parts[3].onFalse = function() {snapToNearWallPoint = false};
 
@@ -106,6 +106,7 @@ class UIElement {
 	addPart(part, isActive = true) {
 		this.parts.push(part);
 		if (isActive) this.active.push(part);
+		return part;
 	}
 
 	setMostActive() {
@@ -443,6 +444,37 @@ class SelectionPane extends UIElement{
 		super(name, x, y - h, w, h, parent);
 
 		this.bottom = y;
+
+		this.audioButtons = [
+			this.addPart(new UIButton("nudgeLeft", 150, 150, 10, 10, this), false),
+			this.addPart(new UIButton("nudgeUp", 160, 140, 10, 10, this), false),
+			this.addPart(new UIButton("nudgeRight", 170, 150, 10, 10, this), false),
+			this.addPart(new UIButton("nudgeDown", 160, 160, 10, 10, this), false)
+		];
+		this.audioButtons[0].activate = function() {
+			if (selectedElement!= null) {
+				selectedElement.x += -0.01;
+				selectedElement.x = roundToDecimalPlace(selectedElement.x, 2);
+			}
+		};
+		this.audioButtons[1].activate = function() {
+			if (selectedElement!= null) {
+				selectedElement.y += -0.01;
+				selectedElement.y = roundToDecimalPlace(selectedElement.y, 2);
+			}
+		};
+		this.audioButtons[2].activate = function() {
+			if (selectedElement!= null) {
+				selectedElement.x += 0.01;
+				selectedElement.x = roundToDecimalPlace(selectedElement.x, 2);
+			}
+		};
+		this.audioButtons[3].activate = function() {
+			if (selectedElement!= null) {
+				selectedElement.y += 0.01;
+				selectedElement.y = roundToDecimalPlace(selectedElement.y, 2);
+			}
+		};
 	}
 
 	draw() {
@@ -455,7 +487,7 @@ class SelectionPane extends UIElement{
 				this.w = 200;
 			}
 			if (editMode == AUDIO_MODE) {
-				this.h = 75;
+				this.h = 90;
 				this.w = 200;
 			}
 			if (editMode == ENTITY_MODE) {
@@ -477,9 +509,10 @@ class SelectionPane extends UIElement{
 				colorText(textColor, this.x + borderSize + 20, this.y + 45 + borderSize, "darkblue");
 
 			}
+
 			if (editMode == AUDIO_MODE) {
 				var index = audGeoPoints.indexOf(selectedElement);
-				var textPos = index + " {x: " + selectedElement.x + ", y: " + selectedElement.y + "}";
+				var textPos = index + " {x: " + selectedElement.x.toFixed(2) + ", y: " + selectedElement.y.toFixed(2) + "}";
 				colorText(textPos, this.x + borderSize + 20, this.y + 15 + borderSize, "darkblue");
 
 				if (currentAudGeo.length > 0 && currentAudGeo.length-1 >= index
@@ -494,11 +527,26 @@ class SelectionPane extends UIElement{
 					colorText(textConnected, this.x + borderSize + 20, this.y + 30 + borderSize, "darkblue");
 				}
 
+				for (var i = 0; i < this.audioButtons.length; i++) {
+					this.audioButtons[i].setActive(true);
+				}
+
+			} else {
+				for (var i = 0; i < this.audioButtons.length; i++) {
+					this.audioButtons[i].setActive(false);
+				}
 			}
+
 			if (editMode == ENTITY_MODE) {
 
 			}
+
+		} else {
+			for (var i = 0; i < this.audioButtons.length; i++) {
+				this.audioButtons[i].setActive(false);
+			}
 		}
+
 		var pos = getMousePositionInWorldSpace();
 		var text = "{x: " + pos.x + ", y: " + pos.y + "}";
 		colorText(text, this.x + this.w*0.5, this.bottom - 13 + borderSize, "darkblue", "15px Arial", "center");
