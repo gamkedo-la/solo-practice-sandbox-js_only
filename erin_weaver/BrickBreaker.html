@@ -1,0 +1,163 @@
+<!-- 
+    Author: Erin Weaver
+    Create Date: 22 Feb 2023
+    
+    Description: Basic HTML5/Javascript Brick Game
+-->  
+
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding"> 
+
+        <title>Brick Breaker</title>
+    </head>
+    
+    <body>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+    
+        <script>
+            var ballX = 75, ballSpeedX = 6;
+            var ballY = 75, ballSpeedY = 8; 
+
+            const PADDLE_WIDTH = 100; 
+            const PADDLE_THICKNESS = 10;
+            const PADDLE_DIST_FROM_EDGE = 60; 
+            var paddleX = 400;
+            
+            var canvas, canvasContext;
+
+            var mouseX = 0;
+            var mouseY = 0;
+
+            const BRICK_WIDTH =100;
+            const BRICK_HEIGHT = 50;
+            const BRICK_COUNT = 8; 
+            var brickGrid = new Array(BRICK_COUNT); //same as: var brickGrid = [BRICK_COUNT];
+
+            //only called when the mouse is moved
+            function updateMousePos(event){
+                var rect = canvas.getBoundingClientRect();
+                var root = document.documentElement;
+
+                //this accounts for position on page regardless of scrolling
+                mouseX = event.clientX - rect.left - root.scrollLeft;
+                mouseY = event.clientY - rect.top - root.scrollTop;
+
+                paddleX = mouseX - PADDLE_WIDTH/2; 
+            }
+
+            function brickReset(){
+                for(var i=0; i<BRICK_COUNT; i++){ //loop through each value in array
+                    if(Math.random() < 0.5){
+                        brickGrid[i] = true; 
+                    } else{
+                        brickGrid[i] = false;
+                    } //end of else (rand check)
+                } // end of for each brick  
+            } // end of brickReset
+
+            window.onload = function(){
+                canvas = document.getElementById('gameCanvas');
+                canvasContext = canvas.getContext('2d');
+
+                var framesPerSecond = 30;
+                setInterval(updateAll, 1000/framesPerSecond); 
+                
+                canvas.addEventListener('mousemove', updateMousePos)
+
+                brickReset();
+            }
+
+            function ballReset(){
+                ballX = canvas.width/2;
+                ballY = canvas.height/2;
+            }
+
+            function updateAll(){
+                moveAll();
+                drawAll();
+            }
+
+            function moveAll(){
+                ballX += ballSpeedX;
+                ballY += ballSpeedY;
+
+                if(ballX > canvas.width){ //Right
+                    ballSpeedX *= -1;
+                }
+
+                if(ballX < 0){ //Left
+                    ballSpeedX *= -1;
+                }
+
+                if(ballY > canvas.height){ //Bottom
+                    ballReset();
+                }
+
+                if(ballY < 0){ //Top
+                    ballSpeedY *= -1;
+                }
+
+                var paddleTopEdgeY = canvas.height-PADDLE_DIST_FROM_EDGE;
+                var paddleBottomEdgeY = paddleTopEdgeY + PADDLE_THICKNESS;
+                var paddleLeftEdgeX = paddleX;
+                var paddleRightEdgeX = paddleLeftEdgeX + PADDLE_WIDTH;
+
+                if( ballY > paddleTopEdgeY && // below top of paddle
+                    ballY < paddleBottomEdgeY && // above bottom of paddle
+                    ballX > paddleLeftEdgeX && // right of the left side of paddle
+                    ballX < paddleRightEdgeX){ //left of the right side of paddle
+                    
+                    ballSpeedY *= -1;
+
+                    var centerofPaddleX = paddleX + PADDLE_WIDTH/2;
+                    var ballDistFromPaddleCenterX = ballX - centerofPaddleX;
+                    ballSpeedX = ballDistFromPaddleCenterX * 0.35;
+                }
+            }
+
+            function drawBricks(){
+                for (var i=0; i<BRICK_COUNT; i++){ //set up counter starting at 0, keep counting if less than number of bricks,
+                    //add one to number after operation runs and keep going until > or = to number of bricks
+                    if(brickGrid[i]){
+                        colorRect(BRICK_WIDTH*i, 0, BRICK_WIDTH-2, BRICK_HEIGHT, 'blue');
+                    } // end of is this brick here
+                } // end of for each brick
+            } // end of drawBrick 
+
+            function drawAll(){
+                //clear screen to black
+                colorRect(0,0, canvas.width,canvas.height, 'black');
+                //draw ball
+                colorCircle(ballX,ballY, 10, 'white');
+                //draw paddle
+                colorRect(paddleX, canvas.height-PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_THICKNESS, "white")
+                //draw mouse coordinates
+                colorText(mouseX+","+mouseY, mouseX,mouseY, 'yellow');
+                //draw bricks
+                drawBricks();
+
+            }
+
+            function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor){
+                canvasContext.fillStyle = fillColor;
+                canvasContext.fillRect(topLeftX,topLeftY, boxWidth,boxHeight);
+            }
+
+            function colorCircle(centerX,centerY, radius, fillColor){
+                canvasContext.fillStyle = fillColor;
+                canvasContext.beginPath();
+                canvasContext.arc(centerX,centerY, radius, 0,Math.PI*2, true);
+                canvasContext.fill();
+            }
+
+            function colorText(showWords, textX, textY, fillColor){
+                canvasContext.fillStyle = fillColor;
+                canvasContext.fillText(showWords, textX, textY);
+            }
+        </script>
+    </body>
+</html>
