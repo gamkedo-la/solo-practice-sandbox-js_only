@@ -6,6 +6,7 @@ function WallClass(x1 = 0, y1 = 0, x2 = 0, y2 = 0, color = "darkgrey") {
 	this.color = color;
 	this.texture = null;
 	this.textureOffset = 0;
+	this.transparency = false;
 
 	walls.push(this);
 

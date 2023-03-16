@@ -454,19 +454,6 @@ function AudioManager() {
 
 }
 
-/*
-var fauxAudGeo = [
-	{x:100.01, y:99.99},
-	{x:100.01, y:200.01},
-	{x:-0.01, y:200.01},
-	{x:-0.01, y:149.99},
-	{x:50.01, y:149.99},
-];
-for (var i = 0; i < fauxAudGeo.length; i++) {
-	audGeoPoints.push(fauxAudGeo[i]);
-}
-*/
-
 var audGeoPoints = [];
 var currentAudGeo = []; //{point:{x,y}, connections:[indexs]}
 
@@ -496,3 +483,16 @@ function generateAudGeo() {
 		currentAudGeo.push({point: audGeoPoints[i], connections: connect});
 	}
 }
+
+// For testing
+var fauxAudGeo = [
+	{x:100.01, y:99.99},
+	{x:100.01, y:200.01},
+	{x:-0.01, y:200.01},
+	{x:-0.01, y:149.99},
+	{x:50.01, y:149.99},
+];
+for (var i = 0; i < fauxAudGeo.length; i++) {
+	audGeoPoints.push(fauxAudGeo[i]);
+}
+

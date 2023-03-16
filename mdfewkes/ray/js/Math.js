@@ -202,6 +202,24 @@ function getClosestIntersection(p1, p2) {
 	return closestPoint;
 }
 
+function getAllIntersections(p1, p2) {
+	var crossPoints = [];
+
+	for (var i in walls) {
+		var point = getPointAtLineIntersection(p1, p2, walls[i].p1, walls[i].p2);
+		if (point != null) {
+			var distance = distanceBetweenTwoPoints(p1, point);
+			newPoint = point;
+			newPoint.wall = walls[i];
+			newPoint.distance = distance;
+
+			crossPoints.push(newPoint);
+		}
+	}
+	crossPoints.sort((a, b) => (a.distance > b.distance) ? 1 : -1);
+	return crossPoints;
+}
+
 function getNearestPointOnLine(a, b, p) {
 	var atob = { x: b.x - a.x, y: b.y - a.y };
 	var atop = { x: p.x - a.x, y: p.y - a.y };

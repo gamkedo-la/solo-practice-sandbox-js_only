@@ -22,6 +22,7 @@ var delKey = false;
 var pFocus = false;
 
 var FOV = 90;
+var heightScale = 5;
 var topColor = "lightgrey";
 var bottomColor = "gray";
 
@@ -252,7 +253,7 @@ function drawPreview() {
 	var numRays = pCanvas.width;
 	var drawWidth = pCanvas.width / numRays;
 	var drawDistance = 600;
-	var wallHeight = 5;
+	var wallHeight = heightScale;
 	var rays = [];
 	for (var i = 0; i < numRays; i ++) {
 		// From half of FOV left, to half of FOV right
@@ -299,7 +300,7 @@ function drawPreview() {
 		pColorRect(x, y, w, h, rays[i].wall.color);
 		if (rays[i].wall.texture != null) {
 			pCanvasContext.drawImage(rays[i].wall.texture,
-				distanceAlongWall * (wallHeight * 5) % 100, 0, //Magic number to unstretch texture
+				distanceAlongWall * (wallHeight * wallHeight) % 100, 0, //Magic number to unstretch texture
 				1, 100,
 				x, y,
 				w, h);

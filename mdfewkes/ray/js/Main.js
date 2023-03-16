@@ -12,6 +12,7 @@ var deltaTime = window.performance.now();
 var lastTime = 0;
 
 var FOV = 90;
+var heightScale = 8;
 
 var topColor = "lightgrey";
 var bottomColor = "gray";
@@ -45,7 +46,7 @@ function gamestart() {
 	var x = -250;
 	var y = -250;
 	var wallTexture = new Image();
-	wallTexture.src = './images/textTexture100x100.png';
+	wallTexture.src = './images/text2Texture100x100.png';
 	//console.log("x:" + x + "," + "y:" + y);
 	for (var i = 0; i < 10; i++) {
 		var newWall = new WallClass();
@@ -182,11 +183,12 @@ function gameloop(time) {
 		colorRect(0,0,800,300, topColor);
 		colorRect(0,300,800,300, bottomColor);
 
+		//var thisTime = window.performance.now();
 		//3D
 		var numRays = canvas.width;
 		var drawWidth = canvas.width / numRays;
 		var drawDistance = 600;
-		var wallHeight = 5;
+		var wallHeight = heightScale;
 		var rays = [];
 		for (var i = 0; i < numRays; i ++) {
 			// From half of FOV left, to half of FOV right
@@ -194,9 +196,22 @@ function gameloop(time) {
 			var rayEnd = {x:Math.cos(angle) * drawDistance + player.x, y:Math.sin(angle) * drawDistance + player.y};
 			var hit = getClosestIntersection(player.pos, rayEnd);
 
-			if (hit != null) {
+			/*if (hit != null) {
 				hit.i = i;
 				rays.push(hit);
+			}*/
+
+			var hits = getAllIntersections(player.pos, rayEnd);
+
+			for (var j = 0; j < hits.length; j++) {
+				var hit = hits[j];
+				hit.i = i;
+
+				rays.push(hit);
+
+				if (!hit.wall.transparency) {
+					break;
+				}
 			}
 		}
 
@@ -229,7 +244,7 @@ function gameloop(time) {
 			colorRect(x, y, w, h, rays[i].wall.color);
 			if (rays[i].wall.texture != null) {
 				canvasContext.drawImage(rays[i].wall.texture,
-					distanceAlongWall * (wallHeight * 5) % 100, 0, //Magic number to unstretch texture
+					(distanceAlongWall * wallHeight) % 100, 0, //Magic number to unstretch texture
 					1, 100,
 					x, y,
 					w, h);
@@ -240,6 +255,7 @@ function gameloop(time) {
 		for (objectIndex; objectIndex < gameObjects.length; objectIndex++) {
 			gameObjects[objectIndex].draw3D();
 		}
+		//console.log(window.performance.now() - thisTime);
 
 	}
 
