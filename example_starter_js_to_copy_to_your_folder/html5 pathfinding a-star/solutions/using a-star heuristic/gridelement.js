@@ -63,14 +63,14 @@ function GridElement() {
     var tileTopEdgeY = this.tilR * TILE_H;
 
     colorRect(tileLeftEdgeX, tileTopEdgeY,
-        TILE_W - TILE_GAP, TILE_H - TILE_GAP, tileBGColor);
+        TILE_W, TILE_H, tileBGColor);
     canvasContext.fillStyle = 'white';
     canvasContext.fillText(pieceName,
         tileLeftEdgeX + TILE_W / 2, tileTopEdgeY + TILE_H / 2);
 
     if (tileOverIdx == this.tilIdx) { // mouseover?
         outlineRect(tileLeftEdgeX, tileTopEdgeY,
-            TILE_W - TILE_GAP, TILE_H - TILE_GAP, 'green');
+            TILE_W, TILE_H, 'green');
     }
   }
   
@@ -89,7 +89,7 @@ function GridElement() {
   }
 
   function GetGridAtCR(atC,atR) {
-    return grid[atC + atR * TILE_COLS];
+    return grid[atC + atR * ROOM_COLS];
   }
   
   this.myUnvisitedNeighbors = function() {

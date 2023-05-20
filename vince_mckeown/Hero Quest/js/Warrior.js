@@ -1,17 +1,19 @@
-// tuning constants
-const PLAYER_MOVE_SPEED = 3.0;
-
 function warriorClass() {
-  // variables to keep track of position
-  this.x = 75;
-  this.y = 75;
+  this.x;
+  this.y;
   this.movesAvailable = 6;
+  this.startIdx;
+  this.rightIdx;
+  this.leftIdx;
+  this.topIdx;
+  this.bottomIdx;
 
   // keyboard hold state variables, to use keys more like buttons
   this.keyHeld_North = false;
   this.keyHeld_East = false;
   this.keyHeld_South = false;
   this.keyHeld_West = false;
+  this.waitForKeyRelease = false;
 
   // key controls used for this
   this.setupControls = function(northKey,eastKey,southKey,westKey) {
@@ -28,7 +30,6 @@ function warriorClass() {
   }
   
   this.reset = function() {
-    this.keysHeld = 0;
     if(this.homeX == undefined) {
       for(var i=0; i<roomGrid.length; i++) {
         if( roomGrid[i] == TILE_PLAYER) {
@@ -56,23 +57,30 @@ function warriorClass() {
 	}
 	
 	this.checkPathFinding();
-	
+    if(this.waitForKeyRelease){
+      return;
+    }
     if(this.keyHeld_North) {
       nextY -= TILE_H;
-	  this.movesAvailable--;
+	    this.movesAvailable--;
+      this.waitForKeyRelease = true;
     }
     if(this.keyHeld_East) {
       nextX += TILE_W;
-	  this.movesAvailable--;
+	    this.movesAvailable--;
+      this.waitForKeyRelease = true;
     }
     if(this.keyHeld_South) {
       nextY += TILE_H;
-	  this.movesAvailable--;
+	    this.movesAvailable--;
+      this.waitForKeyRelease = true;
     }
     if(this.keyHeld_West) {
       nextX -= TILE_W;
-	  this.movesAvailable--;
+	    this.movesAvailable--;
+      this.waitForKeyRelease = true;
     }
+    console.log(this.movesAvailable)
         
     var walkIntoTileIndex = getTileIndexAtPixelCoord(nextX,nextY);
     var walkIntoTileType = TILE_WALL;
@@ -114,6 +122,7 @@ function warriorClass() {
   this.checkPathFinding = function(){
 	  var startX = this.x;
 	  var startY = this.y;
+
 	  var xLeftOfCurrentIdx = startX + TILE_W;
 	  var xRightOfCurrentIdx = startX - TILE_W;
 	  var yAboveCurrentIdx = startY - TILE_H;
@@ -123,28 +132,30 @@ function warriorClass() {
 		leftIdx = 0;
 	  }
 	  if(xRightOfCurrentIdx > canvas.width){
-		rightIdx = 0;
+		rightIdx = ROOM_COLS;
 	  }
 	  if(yAboveCurrentIdx < 0){
 		yAboveCurrentIdx = 0;
 	  }
 	  if(yBelowCurrentIdx > canvas.height){
-		yBelowCurrentIdx = 0;
+		yBelowCurrentIdx = ROOM_ROWS;
 	  }
 	  
-	  var startIdx = getTileIndexAtPixelCoord(startX,startY);
-	  var rightIdx = getTileIndexAtPixelCoord(xLeftOfCurrentIdx,startY);
-	  var leftIdx = getTileIndexAtPixelCoord(xRightOfCurrentIdx,startY);
-	  var topIdx = getTileIndexAtPixelCoord(startX,yAboveCurrentIdx);
-	  var bottomIdx = getTileIndexAtPixelCoord(startX,yBelowCurrentIdx);
+	  this.startIdx = getTileIndexAtPixelCoord(startX,startY);
+	  this.rightIdx = getTileIndexAtPixelCoord(xLeftOfCurrentIdx,startY);
+	  this.leftIdx = getTileIndexAtPixelCoord(xRightOfCurrentIdx,startY);
+	  this.topIdx = getTileIndexAtPixelCoord(startX,yAboveCurrentIdx);
+	  this.bottomIdx = getTileIndexAtPixelCoord(startX,yBelowCurrentIdx);
 	  
-	  console.log("C: " + startIdx + " R: " + rightIdx + " L: " + leftIdx + " T: " + topIdx + " B: " + bottomIdx);	
-
-	  
+	  console.log("C: " + this.startIdx + " R: " + this.rightIdx + " L: " + this.leftIdx + " T: " + this.topIdx + " B: " + this.bottomIdx);		  
   }
   
   this.draw = function() {
     drawBitmapCenteredAtLocationWithRotation( this.myBitmap, this.x, this.y, 0.0 );
+    let tileCol = this.startIdx / ROOM_COLS;
+    console.log(tileCol)  // Need to calculate an X and Y position for the tile to be drawn using the Tile Index
+    //colorRect(this.startIdx, topLeftY, TILE_W, TILE_H, "blue")
+
   }
 
 } // end of class

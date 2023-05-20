@@ -1,8 +1,5 @@
-const TILE_W = 25;
-const TILE_H = 25;
-const TILE_GAP = 1;
-const TILE_COLS = 24;
-const TILE_ROWS = 24;
+const ROOM_COLS = 24;
+const ROOM_ROWS = 24;
 var tileGrid = 
    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -40,11 +37,11 @@ const PATH = 5;
 const INFINITY_START_DISTANCE = 999999;
 
 function tileCoordToIndex(tileCol, tileRow) {
-    return (tileCol + TILE_COLS * tileRow);
+    return (tileCol + ROOM_COLS * tileRow);
 }
 
 function drawTiles() {
-    var tileCount = TILE_COLS * TILE_ROWS;
+    var tileCount = ROOM_COLS * ROOM_ROWS;
     for (var eachTil = 0; eachTil < tileCount; eachTil++) {
         grid[eachTil].display();
     } // end of for eachTil

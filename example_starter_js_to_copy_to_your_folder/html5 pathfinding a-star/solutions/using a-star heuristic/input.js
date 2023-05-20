@@ -28,7 +28,7 @@ function mouseclicked(evt) {
         return;
     }
 
-    if (tileOverIdx < 0 || tileOverIdx >= tileGrid.length) { // invalid or off board
+    if (tileOverIdx < 0 || tileOverIdx >= grid.length) { // invalid or off board
         return;
     }
 
@@ -50,7 +50,7 @@ function mousemoved(evt) {
     var tileOverCol = Math.floor(mouseX / TILE_W);
     var tileOverRow = Math.floor(mouseY / TILE_H);
 
-    mouseOverSidebar = (tileOverCol >= TILE_COLS);
+    mouseOverSidebar = (tileOverCol >= ROOM_COLS);
     if(mouseOverSidebar) {
         tileOverIdx = -1;
     } else {
