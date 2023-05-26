@@ -3,6 +3,8 @@ var canvas, canvasContext;
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');
     canvasContext = canvas.getContext('2d');
+    canvas = document.getElementById('gameCanvas');
+    canvasContext = canvas.getContext('2d');
 
     initInput();
 
@@ -26,7 +28,7 @@ function drawEverything() {
 
     canvasContext.textAlign = "left";
     canvasContext.fillStyle = 'white';
-    var rightAreaX = TILE_W * TILE_COLS;
+    var rightAreaX = TILE_W * ROOM_COLS;
     var lineSkip = 15;
     var lineY = 20;
     canvasContext.fillText("Click to toggle wall", rightAreaX, lineY);
@@ -38,4 +40,9 @@ function drawEverything() {
         lineY += lineSkip;
         canvasContext.fillText("DOING PATHFINDING...", rightAreaX, lineY);
     }
+    drawPlayerCard();
+}
+
+function drawPlayerCard(){
+    
 }

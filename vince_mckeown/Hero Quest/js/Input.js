@@ -18,15 +18,27 @@ function initInput() {
 function setKeyHoldState(thisKey, thisPlayer, setTo) {
   if(thisKey == thisPlayer.controlKeyForNorth) {
     thisPlayer.keyHeld_North = setTo;
+    if(setTo == false){
+      p1.waitForKeyRelease = false;
+    }
   }
   if(thisKey == thisPlayer.controlKeyForEast) {
     thisPlayer.keyHeld_East = setTo;
+    if(setTo == false){
+      p1.waitForKeyRelease = false;
+    }
   }
   if(thisKey == thisPlayer.controlKeyForSouth) {
     thisPlayer.keyHeld_South = setTo;
+    if(setTo == false){
+      p1.waitForKeyRelease = false;
+    }
   }
   if(thisKey == thisPlayer.controlKeyForWest) {
     thisPlayer.keyHeld_West = setTo;
+    if(setTo == false){
+      p1.waitForKeyRelease = false;
+    }
   }
 }
 
