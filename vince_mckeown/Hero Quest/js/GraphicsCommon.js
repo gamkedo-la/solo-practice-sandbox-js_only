@@ -24,3 +24,9 @@ function drawLine(pos1X, pos1Y, pos2X, pos2Y){
 	canvasContext.lineTo(pos2X, pos2Y);
 	canvasContext.stroke();	
 }
+
+
+function drawText(text, posX, posY){
+  canvasContext.fillStyle = 'white';
+  canvasContext.fillText(text, posX, posY);
+}
