@@ -5,10 +5,10 @@ document.getElementById('gameCanvas').addEventListener('mousedown', mouseDown);
 document.getElementById('gameCanvas').addEventListener('mouseup', mouseUp);
 document.getElementById('gameCanvas').addEventListener('mousemove', mouseMove);
 
-var mouseX = 0;
-var mouseY = 0;
-var mouseMovementX = 0;
-var mouseMovementY = 0;
+let mouseX = 0;
+let mouseY = 0;
+let mouseMovementX = 0;
+let mouseMovementY = 0;
 
 function mouseMove(event) {
 	mouseX = event.clientX;

@@ -1,12 +1,12 @@
-var canvasContext;
-var canvas;
-var screenWidth;
-var screenHeight;
+let canvasContext;
+let canvas;
+let screenWidth;
+let screenHeight;
 
-var debug = false;
+let debug = false;
 
-var deltaTime = window.performance.now();
-var lastTime = 0;
+let deltaTime = 0;
+let lastTime = 0;
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -33,8 +33,9 @@ function waitingforgesture() {
 }
 
 function gamestart() {
-	console.log("Start Game");
 	colorRect(0, 0, screenWidth, screenHeight, 'black');
+
+	SetupCombat();
 
 	window.requestAnimationFrame(gameloop);
 }
@@ -47,10 +48,7 @@ function gameloop(time) {
 	deltaTime = time - lastTime;
 	lastTime = time;
 
-	if (debug) {
-
-	}
-
+	RunCombat();
 
 	window.requestAnimationFrame(gameloop);
 };

@@ -27,15 +27,15 @@ function rndInt(min, max) {
 		max = min || 1;
 		min = 0;
 	}
-	return Math.round( Math.random() * (max - min) + min );
+	return Math.floor( Math.random() * (max - min) + min );
 }
 
 function roundToDecimalPlace(value, places) {
-	for (var i = 0; i < places; i++) {
+	for (let i = 0; i < places; i++) {
 		value *= 10;
 	}
 	value = Math.round(value);
-	for (var i = 0; i < places; i++) {
+	for (let i = 0; i < places; i++) {
 		value /= 10;
 	}
 	return value;
@@ -58,13 +58,13 @@ function rndOneIn(max = 2){
 }
 
 function distanceBetweenTwoPoints(a,b) {
-	var dx = a.x - b.x;
-	var dy = a.y - b.y;
+	let dx = a.x - b.x;
+	let dy = a.y - b.y;
 	return Math.sqrt(dx * dx + dy * dy);
 }
 
 function angleBetweenTwoPoints(a, b) {
-	var angle = Math.atan2(b.y - a.y, b.x - a.x);
+	let angle = Math.atan2(b.y - a.y, b.x - a.x);
 	//angle *= -1;
 	return angle;
 }
@@ -102,7 +102,7 @@ function normalizeVector(v) {
 
 function rgbToHex (value) {
 	Math.round(value)
-	var hex = Number(Math.round(value)).toString(16);
+	let hex = Number(Math.round(value)).toString(16);
 
 	if (hex.length < 2) {
 		hex = "0" + hex;
@@ -111,48 +111,48 @@ function rgbToHex (value) {
 }
 
 function fullColorHex(r, g, b, a = 255) {
-	var red = rgbToHex(r);
-	var green = rgbToHex(g);
-	var blue = rgbToHex(b);;
-	var alpha = rgbToHex(a);
+	let red = rgbToHex(r);
+	let green = rgbToHex(g);
+	let blue = rgbToHex(b);;
+	let alpha = rgbToHex(a);
 
 	return "#" + red + green + blue + alpha;
 }
 
 function colorHex(r, g, b,) {
-	var red = rgbToHex(r);
-	var green = rgbToHex(g);
-	var blue = rgbToHex(b);;
+	let red = rgbToHex(r);
+	let green = rgbToHex(g);
+	let blue = rgbToHex(b);;
 
 	return "#" + red + green + blue;
 }
 
 function colorHexToRGB(hex) {
-    var r = parseInt(hex.slice(1, 3), 16);
-    var g = parseInt(hex.slice(3, 5), 16);
-    var b = parseInt(hex.slice(5, 7), 16);
+    let r = parseInt(hex.slice(1, 3), 16);
+    let g = parseInt(hex.slice(3, 5), 16);
+    let b = parseInt(hex.slice(5, 7), 16);
     
     // return {r, g, b} 
     return {r: r, g: g, b: b, a: 255};
 }
 
 function fullColorHexToRGB(hex) {
-    var r = parseInt(hex.slice(1, 3), 16);
-    var g = parseInt(hex.slice(3, 5), 16);
-    var b = parseInt(hex.slice(5, 7), 16);
-    var a = parseInt(hex.slice(7, 9), 16);
+    let r = parseInt(hex.slice(1, 3), 16);
+    let g = parseInt(hex.slice(3, 5), 16);
+    let b = parseInt(hex.slice(5, 7), 16);
+    let a = parseInt(hex.slice(7, 9), 16);
     
     // return {r, g, b} 
     return {r: r, g: g, b: b, a: a};
 }
 
 function isLineIntersecting(p1, p2, p3, p4) {
-	var denominator = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x));
+	let denominator = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x));
 
 	if(denominator == 0.0) return false;
 
-	var t = (((p1.x - p3.x) * (p3.y - p4.y)) - ((p1.y - p3.y) * (p3.x - p4.x))) / denominator;
-	var u = -(((p1.x - p2.x) * (p1.y - p3.y)) - ((p1.y - p2.y) * (p1.x - p3.x))) / denominator;
+	let t = (((p1.x - p3.x) * (p3.y - p4.y)) - ((p1.y - p3.y) * (p3.x - p4.x))) / denominator;
+	let u = -(((p1.x - p2.x) * (p1.y - p3.y)) - ((p1.y - p2.y) * (p1.x - p3.x))) / denominator;
 
 	if (t >= 0.0 && t <= 1.0 && u >= 0.0 && u <= 1.0) return true;
 	
@@ -160,12 +160,12 @@ function isLineIntersecting(p1, p2, p3, p4) {
 };
 
 function getPointAtLineIntersection(p1, p2, p3, p4) {
-	var denominator = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x));
+	let denominator = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x));
 
 	if(denominator == 0.0) return null;
 
-	var t = (((p1.x - p3.x) * (p3.y - p4.y)) - ((p1.y - p3.y) * (p3.x - p4.x))) / denominator;
-	var u = -(((p1.x - p2.x) * (p1.y - p3.y)) - ((p1.y - p2.y) * (p1.x - p3.x))) / denominator;
+	let t = (((p1.x - p3.x) * (p3.y - p4.y)) - ((p1.y - p3.y) * (p3.x - p4.x))) / denominator;
+	let u = -(((p1.x - p2.x) * (p1.y - p3.y)) - ((p1.y - p2.y) * (p1.x - p3.x))) / denominator;
 
 	if (t >= 0.0 && t <= 1.0 && u >= 0.0 && u <= 1.0) {
 		return {x: p1.x + t * (p2.x - p1.x),
@@ -176,13 +176,13 @@ function getPointAtLineIntersection(p1, p2, p3, p4) {
 };
 
 function getClosestIntersection(p1, p2) {
-	var closestPoint = null;
-	var distance = 1000;
+	let closestPoint = null;
+	let distance = 1000;
 
-	for (var i in walls) {
-		var point = getPointAtLineIntersection(p1, p2, walls[i].p1, walls[i].p2);
+	for (let i in walls) {
+		let point = getPointAtLineIntersection(p1, p2, walls[i].p1, walls[i].p2);
 		if (point != null) {
-			var newDistance = distanceBetweenTwoPoints(p1, point);
+			let newDistance = distanceBetweenTwoPoints(p1, point);
 
 			if (newDistance < distance) {
 				closestPoint = point;
@@ -197,12 +197,12 @@ function getClosestIntersection(p1, p2) {
 }
 
 function getAllIntersections(p1, p2) {
-	var crossPoints = [];
+	let crossPoints = [];
 
-	for (var i in walls) {
-		var point = getPointAtLineIntersection(p1, p2, walls[i].p1, walls[i].p2);
+	for (let i in walls) {
+		let point = getPointAtLineIntersection(p1, p2, walls[i].p1, walls[i].p2);
 		if (point != null) {
-			var distance = distanceBetweenTwoPoints(p1, point);
+			let distance = distanceBetweenTwoPoints(p1, point);
 			newPoint = point;
 			newPoint.wall = walls[i];
 			newPoint.distance = distance;
@@ -215,11 +215,11 @@ function getAllIntersections(p1, p2) {
 }
 
 function getNearestPointOnLine(a, b, p) {
-	var atob = { x: b.x - a.x, y: b.y - a.y };
-	var atop = { x: p.x - a.x, y: p.y - a.y };
-	var len = atob.x * atob.x + atob.y * atob.y;
-	var dot = atop.x * atob.x + atop.y * atob.y;
-	var t = Math.min( 1, Math.max( 0, dot / len ) );
+	let atob = { x: b.x - a.x, y: b.y - a.y };
+	let atop = { x: p.x - a.x, y: p.y - a.y };
+	let len = atob.x * atob.x + atob.y * atob.y;
+	let dot = atop.x * atob.x + atop.y * atob.y;
+	let t = Math.min( 1, Math.max( 0, dot / len ) );
 	dot = ( b.x - a.x ) * ( p.y - a.y ) - ( b.y - a.y ) * ( p.x - a.x );
 	return {x: a.x + atob.x * t, y: a.y + atob.y * t};
 }
