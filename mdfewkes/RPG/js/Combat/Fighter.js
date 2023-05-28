@@ -15,6 +15,8 @@ class Fighter {
 	}
 
 	GetInputEvent(fighterInitiativeIndex) {
+		if (this.currentHP == 0) return new Event();
+
 		let inputEvent = new TimerEvent(0,1);
 		inputEvent.fighter = this;
 		inputEvent.onEnd = function() {
@@ -24,8 +26,10 @@ class Fighter {
 	}
 
 	receiveDamage(amount) {
-		console.log("receiveDamage " + amount);
+		console.log(this.name + " receiveDamage " + amount);
 		this.currentHP -= roundToDecimalPlace(amount, 0);
+
+		if (this.currentHP < 0) this.currentHP = 0;
 	}
 }
 
