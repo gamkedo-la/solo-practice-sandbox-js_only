@@ -55,6 +55,10 @@ function tileTypeHasTransparency(checkTileType) {
           checkTileType == TILE_DOOR);
 }
 
+function whatIsMyColumn(tilIdx){
+  return (tilIdx % ROOM_COLS);
+}
+
 function drawRoom() {
   var tileIndex = 0;
   var tileLeftEdgeX = 0;
