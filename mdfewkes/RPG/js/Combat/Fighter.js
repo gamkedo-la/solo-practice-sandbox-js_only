@@ -40,9 +40,6 @@ class PlayerFighter extends Fighter {
 
 		let inputEvent = new PlayerCombatInputEvent(this);
 		inputEvent.fighter = this;
-		inputEvent.onEnd = function() {
-			this.fighter.schedualedSkill = rndOneFromList(this.fighter.skillList);
-		}
 		return inputEvent;
 	}
 }
