@@ -98,13 +98,19 @@ class PolyEvent extends Event {
 	}
 
 	Update() {
-		for (let i = this.EventList.length - 1; i >= 0; i--) {
+		let indexsOfFinishedEvents = [];
+
+		for (let i =0; i < this.EventList.length; i++) {
 			let isFinished = this.EventList[i].Update();
 
 			if (isFinished) {
 				this.EventList[i].onEnd();
-				this.EventList.splice(i, 1);
+				indexsOfFinishedEvents.push(i);
 			}
+		}
+
+		for (let i = indexsOfFinishedEvents.length-1; i >= 0; i--) {
+				this.EventList.splice(i, 1);
 		}
 
 		if (this.EventList.length == 0) return true;

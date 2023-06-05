@@ -53,7 +53,7 @@ function rndOneIn(max = 2){
 	return rndInt(0,max) === 0;
 }
 
- function rndOneFrom(items){
+ function rndOneFromList(items){
 	return items[rndInt(items.length)];
 }
 

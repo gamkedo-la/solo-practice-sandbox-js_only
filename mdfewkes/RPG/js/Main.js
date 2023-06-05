@@ -3,10 +3,13 @@ let canvas;
 let screenWidth;
 let screenHeight;
 
+let UI;
+
 let debug = false;
 
 let deltaTime = 0;
 let lastTime = 0;
+
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -34,6 +37,7 @@ function waitingforgesture() {
 
 function gamestart() {
 	colorRect(0, 0, screenWidth, screenHeight, 'black');
+	UI = new UIMainInterface(screenWidth, screenHeight);
 
 	SetupCombat();
 

@@ -1,59 +1,6 @@
 const borderSize = 3;
 const borderBack = borderSize * 2;
 
-var displaytext = "test";
-
-function MainInterface(screenWidth, screenHeight) {
-	this.name = "Main Interface";
-	this.x = 0;
-	this.y = 0;
-	this.w = screenWidth;
-	this.h = screenHeight;
-
-	this.parts = [
-	]
-	this.active = [
-	]
-
-	this.updateUI = function() {
-		if (mouseJustPressed && isInElement(this, mouseX, mouseY)) {
-			leftMouseClick(mouseX, mouseY);
-		}
-	}
-
-	this.drawUI = function() {
-		for (var i = 0; i < this.active.length; i++) {
-			this.active[i].draw();
-		}
-
-		displaytext = getDisplayText();
-		colorText(displaytext, this.x + this.w - borderBack, 15 + borderSize, "darkblue", "15px Arial", "right");
-	}
-
-	function leftMouseClick(x, y) {
-		for (var i = mainInterface.active.length -1; i >= 0; i--) {
-			if (isInElement(mainInterface.active[i], x, y)) {
-				mainInterface.active[i].leftMouseClick(x, y);
-
-				mouseJustPressed = false;
-
-				break;
-			}
-		}
-	}
-}
-
-function isInElement(uiElement, x, y) {
-    var topLeftX = uiElement.x;
-    var topLeftY = uiElement.y;
-    var bottomRightX = topLeftX + uiElement.w;
-    var bottomRightY = topLeftY + uiElement.h;
-    var boolResult = (x >= topLeftX && x <= bottomRightX &&
-        y >= topLeftY && y <= bottomRightY);
-    // console.log("topLeftX: " + topLeftX + " TopeLeftY: " + topLeftY + " bottomRightX: " + bottomRightX + " bottomRightY: " + bottomRightY);
-    return boolResult;
-}
-
 class UIElement {
 	constructor(name, x, y, w, h, parent) {
 		this.name = name;
@@ -69,10 +16,33 @@ class UIElement {
 		this.active = [];
 	}
 
+	update() {
+		for (var i = 0; i < this.active.length; i++) {
+			this.active[i].update();
+		}
+	}
+
+	draw() {
+		colorRect(this.x, this.y, this.w, this.h, 'blue');
+		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'lightblue');
+
+		for (var i = 0; i < this.active.length; i++) {
+			this.active[i].draw();
+		}
+	}
+
 	addPart(part, isActive = true) {
 		this.parts.push(part);
 		if (isActive) this.active.push(part);
 		return part;
+	}
+
+	removePart(part) {
+		var partIndex = this.parts.indexOf(part);
+		if (partIndex < 0) return;
+
+		this.parts[partIndex].setActive(false);
+		this.parts.splice(partIndex, 1);
 	}
 
 	setMostActive() {
@@ -80,11 +50,21 @@ class UIElement {
 	}
 
 	setActive(isActive) {
-		if (isActive && !this.parent.active.includes(this)) {
+		if (isActive && !this.isActive()) {
 			this.parent.active.push(this);
+			return;
 		}
-		if (!isActive && this.parent.active.includes(this)) {
+		if (!isActive && this.isActive()) {
 			this.parent.active.splice(this.parent.active.indexOf(this), 1);
+			return;
+		}
+	}
+
+	isActive() {
+		if (this.parent.active.includes(this)) {
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -99,8 +79,7 @@ class UIElement {
 		}
 	}
 
-	updatePosition(x = this.xoff, y = this.yoff, w = this.w, h = this.h, parent = this.parent) {
-		this.parent = parent;
+	updatePosition(x = this.xoff, y = this.yoff, w = this.w, h = this.h) {
 		this.xoff = x;
 		this.yoff = y;
 		this.x = this.xoff + this.parent.x;
@@ -112,15 +91,45 @@ class UIElement {
 			this.parts[i].updatePosition();
 		}
 	}
+}
+
+function isInElement(uiElement, x, y) {
+    var topLeftX = uiElement.x;
+    var topLeftY = uiElement.y;
+    var bottomRightX = topLeftX + uiElement.w;
+    var bottomRightY = topLeftY + uiElement.h;
+    var boolResult = (x >= topLeftX && x <= bottomRightX &&
+        y >= topLeftY && y <= bottomRightY);
+    // console.log("topLeftX: " + topLeftX + " TopeLeftY: " + topLeftY + " bottomRightX: " + bottomRightX + " bottomRightY: " + bottomRightY);
+    return boolResult;
+}
+
+class UIMainInterface extends UIElement {
+	constructor(screenWidth, screenHeight) {
+		super("", 0, 0, screenWidth, screenHeight, {x:0, y:0});
+	}
+
+	update() {
+		super.update();
+
+		if (Key.isJustPressed(Key.MOUSE_LEFT) && isInElement(this, mouseX, mouseY)) {
+			leftMouseClick(mouseX, mouseY);
+		}
+	}
 
 	draw() {
-		colorRect(this.x, this.y, this.w, this.h, 'blue');
-		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'lightblue');
-
 		for (var i = 0; i < this.active.length; i++) {
 			this.active[i].draw();
 		}
 	}
+
+	setMostActive() {}
+
+	setActive(isActive) {}
+
+	isActive() { return true; }
+
+	updatePosition(x, y, w, h) {}
 }
 
 class UIButton extends UIElement {
@@ -130,7 +139,7 @@ class UIButton extends UIElement {
 
 	leftMouseClick(x, y) {
 		this.setMostActive();
-		this.activate();
+		this.onClick();
 	}
 
 	draw() {
@@ -139,11 +148,11 @@ class UIButton extends UIElement {
 
 		if (isInElement(this, mouseX, mouseY)) {
 			colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'dodgerblue');
-			if (mouseJustPressed) colorCircle(this.x + this.w * 0.5, this.y + this.h * 0.5, (this.w + this.h) * 0.25 + 10, 'white');
+			if (Key.isJustPressed(Key.MOUSE_LEFT)) colorCircle(this.x + this.w * 0.5, this.y + this.h * 0.5, (this.w + this.h) * 0.25 + 10, 'white');
 		}
 	}
 
-	activate() {
+	onClick() {
 		console.log("click");
 	}
 }
@@ -182,7 +191,7 @@ class UIToggleWToolTip extends UIButtonWToolTip {
 		}
 	}
 
-	activate() {
+	onClick() {
 		this.toggle = this.toggle ? false : true;
 
 		if (this.toggle) this.onTrue();
@@ -208,8 +217,8 @@ class UICloseButton extends UIButton {
 		colorLine(this.x, this.y + this.h, this.x + this.w, this.y, 3, 'blue');
 	}
 
-	activate() {
-		this.parent.parent.active.splice(this.parent.parent.active.indexOf(this.parent), 1);
+	onClick() {
+		this.parent.setActive(false);
 	}
 }
 
@@ -234,11 +243,8 @@ class UIMoveBar extends UIElement {
 		this.parentY = this.parent.y;
 	}
 
-	draw() {
-		colorRect(this.x, this.y, this.w, this.h, 'blue');
-		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'skyblue');
-
-		if (!mouseIsDown || mouseX < 0 || mouseX >= eCanvas.width || mouseY < 0 || mouseY >= eCanvas.height) {
+	update() {
+		if (!mouseIsDown || mouseX < 0 || mouseY < 0 || mouseX >= screenWidth || mouseY >= screenHeight) {
 			this.grabbed = false;
 		}
 
@@ -247,6 +253,11 @@ class UIMoveBar extends UIElement {
 			var newY = this.parentY + mouseY - this.grabbedY;
 			this.parent.updatePosition(newX, newY);
 		}
+	}
+
+	draw() {
+		colorRect(this.x, this.y, this.w, this.h, 'blue');
+		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'skyblue');
 	}
 }
 
@@ -286,7 +297,7 @@ class UIDropdown extends UIElement {
 		var height = this.list.length * (this.size + 3);
 		var y = this.center ? -height * 0.5 : 0;
 		if (this.y + y < 0) y -= this.y + y;
-		if (this.y + height + y > eCanvas.height) y -= this.y + height + y - eCanvas.height
+		if (this.y + height + y > screenHeight) y -= this.y + height + y - screenHeightc
 		this.addPart(new UIDropdownList(this.name + " dropdown list", 0, y, this.w, height, this), this.open);
 		this.listElement = this.parts[0];
 	}
@@ -312,13 +323,11 @@ class UIDropdown extends UIElement {
 		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'skyblue');
 		colorText(this.list[this.value], this.x + this.w * 0.5, this.y + this.size, 'black', this.parent.size + "px Arial", this.textAlignment);
 
-		for (var i = 0; i < this.active.length; i++) {
-			this.active[i].draw();
-		}
+		super.draw();
 	}
 
-	updatePosition(x = this.xoff, y = this.yoff, w = this.w, h = this.h, parent = this.parent) {
-		super.updatePosition(x, y, w, h, parent);
+	updatePosition(x = this.xoff, y = this.yoff, w = this.w, h = this.h) {
+		super.updatePosition(x, y, w, h);
 		this.updateListElement();
 	}
 }
@@ -331,7 +340,7 @@ class UIDropdownList extends UIElement {
 	}
 
 	draw() {
-		if (mouseJustPressed && !this.justOpened) {
+		if (Key.isJustPressed(Key.MOUSE_LEFT) && !this.justOpened) {
 			if (isInElement(this, mouseX, mouseY)) {
 				this.parent.value = this.quantizeMousePosition();
 			}

@@ -20,7 +20,7 @@ class Fighter {
 		let inputEvent = new TimerEvent(0,1);
 		inputEvent.fighter = this;
 		inputEvent.onEnd = function() {
-			this.fighter.schedualedSkill = rndOneFrom(this.fighter.skillList);
+			this.fighter.schedualedSkill = rndOneFromList(this.fighter.skillList);
 		}
 		return inputEvent;
 	}
@@ -30,57 +30,6 @@ class Fighter {
 		this.currentHP -= roundToDecimalPlace(amount, 0);
 
 		if (this.currentHP < 0) this.currentHP = 0;
-	}
-}
-
-class Skill {
-	constructor() {
-
-	}
-
-	onUse(owner, targets) {
-
-	}
-}
-
-class SkillEvent extends TimerEvent {
-	constructor(owner, targets, skill) {
-		super();
-
-		this.owner = owner;
-		this.targets = targets;
-		this.skill = skill;
-	}
-
-	onEnd() {
-		this.skill.onUse(this.owner, this.targets);
-	}
-}
-
-class AttackMeleeBase extends Skill {
-	constructor() {
-		super();
-		this.power = 30;
-	}
-
-	onUse(owner, targets) {
-		for (let i = 0; i < targets.length; i++) {
-			let damage = (100/(100 + targets[i].meleeDefence)) * owner.meleeAttack * (this.power * 0.0135);
-			targets[i].receiveDamage(damage);
-		}
-	}
-}
-
-class AttackRangeBase extends Skill {
-	constructor() {
-		super();
-		this.power = 30;
-	}
-
-	onUse(owner, targets) {
-		for (let i = 0; i < targets.length; i++) {
-			let damage = (100/(100 + targets[i].rangedDefence)) * owner.rangedAttack * (this.power * 0.0135);
-			targets[i].receiveDamage(damage);
-		}
+		if (this.currentHP > this.maxHP) this.currentHP = this.maxHP;
 	}
 }
