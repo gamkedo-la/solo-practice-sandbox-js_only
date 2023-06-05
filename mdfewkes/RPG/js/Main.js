@@ -3,8 +3,6 @@ let canvas;
 let screenWidth;
 let screenHeight;
 
-let UI;
-
 let debug = false;
 
 let deltaTime = 0;
@@ -37,7 +35,6 @@ function waitingforgesture() {
 
 function gamestart() {
 	colorRect(0, 0, screenWidth, screenHeight, 'black');
-	UI = new UIMainInterface(screenWidth, screenHeight);
 
 	SetupCombat();
 
@@ -46,8 +43,6 @@ function gamestart() {
 
 function gameloop(time) {
 
-	Key.update();
-
 	time /= 1000;
 	deltaTime = time - lastTime;
 	lastTime = time;
@@ -55,4 +50,6 @@ function gameloop(time) {
 	RunCombat();
 
 	window.requestAnimationFrame(gameloop);
+
+	Key.update();
 };

@@ -9,8 +9,8 @@ class Skill {
 }
 
 class SkillEvent extends TimerEvent {
-	constructor(owner, targets, skill) {
-		super();
+	constructor(owner, targets, skill, time = 1) {
+		super(time);
 
 		this.owner = owner;
 		this.targets = targets;

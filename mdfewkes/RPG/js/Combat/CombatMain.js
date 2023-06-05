@@ -1,5 +1,6 @@
 let combatEventSequencer = new EventSequencer();
 let fighters = [];
+let combatUI;
 
 function RunCombat() {
 	if (combatEventSequencer.EventList.length == 0) {
@@ -14,9 +15,11 @@ function RunCombat() {
 	}
 
 	combatEventSequencer.Update();
+	combatUI.update();
 
 	colorRect(0,0,800,600, "black");
 	combatEventSequencer.Draw();
+	combatUI.draw();
 
 	for (let i = 0; i < fighters.length; i++) {
 		colorText(fighters[i].name + " " + fighters[i].currentHP + "/" + fighters[i].maxHP, 20, 20 + i * 20, "white", "15px Arial");
@@ -24,7 +27,7 @@ function RunCombat() {
 }
 
 function SetupCombat() {
-	fighters.push(new Fighter());
+	fighters.push(new PlayerFighter());
 	fighters[0].name = "Rad";
 	fighters[0].meleeAttack = 80;
 	fighters[0].meleeDefence = 100;
@@ -32,7 +35,7 @@ function SetupCombat() {
 	fighters[0].rangedDefence = 80;
 	fighters[0].team = 0;
 
-	fighters.push(new Fighter());
+	fighters.push(new PlayerFighter());
 	fighters[1].name = "Ram";
 	fighters[1].meleeAttack = 100;
 	fighters[1].meleeDefence = 80;
@@ -55,13 +58,16 @@ function SetupCombat() {
 	fighters[3].rangedAttack = 80;
 	fighters[3].rangedDefence = 100;
 	fighters[3].team = 1;
+
+	combatUI = new UIMainInterface(screenWidth, screenHeight);
+	combatUI.name = "combatUI"
 }
 
 function CalculateTurns() {
 	for (let i = 0; i < fighters.length; i++) {
 		let target = rndOneFromList(GetAllMemberOfAnotherTeam(fighters[i].team));
 		if (target == null) continue;
-		console.log(fighters[i].name + " attacks " + target.name);
+		//console.log(fighters[i].name + " attacks " + target.name);
 		let skillToAdd = new SkillEvent(fighters[i], [target], fighters[i].schedualedSkill);
 		combatEventSequencer.EventList.push(skillToAdd);
 	}

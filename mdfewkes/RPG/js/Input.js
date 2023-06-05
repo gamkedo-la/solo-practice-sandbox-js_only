@@ -11,8 +11,8 @@ let mouseMovementX = 0;
 let mouseMovementY = 0;
 
 function mouseMove(event) {
-	mouseX = event.clientX;
-	mouseY = event.clientY;
+	mouseX = event.offsetX;
+	mouseY = event.offsetY;
 	mouseMovementX += event.movementX;
 	mouseMovementY += event.movementY;
 }
@@ -27,11 +27,11 @@ function isMouseInArea(x, y, width, height) {
 }
 
 function mouseDown(event) {
-	Key.onKeydown(event.button + 300);
+	Key.onKeydown({keyCode: event.button + 300});
 }
 
 function mouseUp(event) {
-	Key.onKeyup(event.button + 300);
+	Key.onKeyup({keyCode: event.button + 300});
 }
 
 const Key = {
@@ -99,15 +99,15 @@ const Key = {
 	MOUSE_RIGHT:302,
 
 	isDown(keyCode) {
-		return this._down[keyCode];
+		return (this._down[keyCode] == true);
 	},
 
 	isJustPressed(keyCode) {
-		return this._pressed[keyCode];
+		return (this._pressed[keyCode] == true);
 	},
 
 	isJustReleased(keyCode) {
-		return this._released[keyCode];
+		return (this._released[keyCode] == true);
 	},
 
 	onKeydown(event) {

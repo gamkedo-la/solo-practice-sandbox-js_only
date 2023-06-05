@@ -35,6 +35,7 @@ class UIElement {
 		this.parts.push(part);
 		if (isActive) this.active.push(part);
 		return part;
+
 	}
 
 	removePart(part) {
@@ -112,8 +113,8 @@ class UIMainInterface extends UIElement {
 	update() {
 		super.update();
 
-		if (Key.isJustPressed(Key.MOUSE_LEFT) && isInElement(this, mouseX, mouseY)) {
-			leftMouseClick(mouseX, mouseY);
+		if (Key.isJustPressed(Key.MOUSE_LEFT) /*&& isInElement(this, mouseX, mouseY)*/) {
+			this.leftMouseClick(mouseX, mouseY);
 		}
 	}
 
@@ -150,6 +151,8 @@ class UIButton extends UIElement {
 			colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'dodgerblue');
 			if (Key.isJustPressed(Key.MOUSE_LEFT)) colorCircle(this.x + this.w * 0.5, this.y + this.h * 0.5, (this.w + this.h) * 0.25 + 10, 'white');
 		}
+
+		super.draw();
 	}
 
 	onClick() {

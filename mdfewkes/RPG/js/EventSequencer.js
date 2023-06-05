@@ -5,6 +5,7 @@ class EventSequencer {
 
 	Update() {
 		if (this.EventList.length > 0) {
+			//console.log(this.EventList[0])
 			let isFinished = this.EventList[0].Update();
 
 			if (isFinished) {
