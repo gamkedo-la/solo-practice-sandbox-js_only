@@ -24,11 +24,16 @@ class PlayerBattleMenu extends UIElement {
 		this.addPart(this.label);
 
 		this.skills = [];
+		this.targets = [];
 
 		this.fighter = null;
 	}
 
 	setupMenu() {
+		this.setupSkillList();
+	}
+
+	setupSkillList() {
 		this.skills.length = 0;
 
 		for (let i = 0; i < this.fighter.skillList.length; i++) {
@@ -37,12 +42,33 @@ class PlayerBattleMenu extends UIElement {
 			newSkillUI.fighter = this.fighter;
 			newSkillUI.onClick = function() {
 				this.fighter.schedualedSkill = newSkill;
-				this.parent.removeFromParent();
+				this.parent.skills.length = 0;
+				this.parent.setupTargetList();
 			}
 			newSkillUI.addToParent();
 
 			let newLabel = new UITextLabel("skill label", 5, 15, 140, 5, newSkillUI);
 			newLabel.label = newSkill.name;
+			newLabel.addToParent();
+		}
+	}
+
+	setupTargetList() {
+		this.targets.length = 0;
+		var targetFighters = GetAllMemberOfAnotherTeam(this.fighter.team);
+
+		for (let i = 0; i < targetFighters.length; i++) {
+			let newTarget = targetFighters[i];
+			let newTargetUI = new UIButton(newTarget.name, 20, 25 + (30 * i), 150, 20, this);
+			newTargetUI.fighter = this.fighter;
+			newTargetUI.onClick = function() {
+				this.fighter.schedualedTargets = [newTarget];
+				this.parent.removeFromParent();
+			}
+			newTargetUI.addToParent();
+
+			let newLabel = new UITextLabel("skill label", 5, 15, 140, 5, newTargetUI);
+			newLabel.label = newTarget.name;
 			newLabel.addToParent();
 		}
 	}

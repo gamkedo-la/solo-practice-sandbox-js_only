@@ -11,7 +11,7 @@ function RunCombat() {
 			if (fighters[i].currentHP <= 0) continue;
 			combatEventSequencer.EventList.push(fighters[i].GetInputEvent());
 		}
-		combatEventSequencer.EventList.push({Update(){CalculateTurns();return true;}, Draw(){}, onEnd(){}});
+		combatEventSequencer.EventList.push({Update(){return true;}, Draw(){}, onEnd(){CalculateTurns();}});
 	}
 
 	combatEventSequencer.Update();
@@ -28,7 +28,7 @@ function RunCombat() {
 
 function SetupCombat() {
 	fighters.push(new PlayerFighter());
-	fighters[0].name = "Rad";
+	fighters[0].name = "Rad MDRA";
 	fighters[0].meleeAttack = 80;
 	fighters[0].meleeDefence = 100;
 	fighters[0].rangedAttack = 100;
@@ -36,7 +36,7 @@ function SetupCombat() {
 	fighters[0].team = 0;
 
 	fighters.push(new PlayerFighter());
-	fighters[1].name = "Ram";
+	fighters[1].name = "Ram MARD";
 	fighters[1].meleeAttack = 100;
 	fighters[1].meleeDefence = 80;
 	fighters[1].rangedAttack = 80;
@@ -44,7 +44,7 @@ function SetupCombat() {
 	fighters[1].team = 0;
 
 	fighters.push(new Fighter());
-	fighters[2].name = "Ted";
+	fighters[2].name = "Ted MARA";
 	fighters[2].meleeAttack = 100;
 	fighters[2].meleeDefence = 80;
 	fighters[2].rangedAttack = 100;
@@ -52,7 +52,7 @@ function SetupCombat() {
 	fighters[2].team = 1;
 
 	fighters.push(new Fighter());
-	fighters[3].name = "Tod";
+	fighters[3].name = "Tod MDRD";
 	fighters[3].meleeAttack = 80;
 	fighters[3].meleeDefence = 100;
 	fighters[3].rangedAttack = 80;
@@ -65,11 +65,9 @@ function SetupCombat() {
 
 function CalculateTurns() {
 	for (let i = 0; i < fighters.length; i++) {
-		let target = rndOneFromList(GetAllMemberOfAnotherTeam(fighters[i].team));
-		if (target == null) continue;
-		//console.log(fighters[i].name + " attacks " + target.name);
-		let skillToAdd = new SkillEvent(fighters[i], [target], fighters[i].schedualedSkill);
+		let skillToAdd = new SkillEvent(fighters[i], fighters[i].schedualedTargets, fighters[i].schedualedSkill);
 		combatEventSequencer.EventList.push(skillToAdd);
+		//console.log(fighters[i].name + " attacks " + fighters[i].schedualedTargets[0].name);
 	}
 }
 

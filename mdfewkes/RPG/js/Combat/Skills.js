@@ -12,18 +12,13 @@ class SkillEvent extends TimerEvent {
 	onEnd() {
 		if (this.fighter.currentHp <= 0) return;
 		this.skill.onUse(this.fighter, this.targets);
-		console.log(this.fighter.name + " " + this.skill.name);
+		//console.log(this.fighter.name + " " + this.skill.name);
 	}
 }
 
 class Skill {
-	constructor() {
-
-	}
-
-	onUse(owner, targets) {
-
-	}
+	constructor() {}
+	onUse(owner, targets) {}
 }
 
 class AttackMeleeBase extends Skill {

@@ -5,12 +5,13 @@ class EventSequencer {
 
 	Update() {
 		if (this.EventList.length > 0) {
-			//console.log(this.EventList[0])
 			let isFinished = this.EventList[0].Update();
 
 			if (isFinished) {
-				this.EventList[0].onEnd();
-				this.EventList.splice(0, 1);
+				//this.EventList[0].onEnd();
+				//this.EventList.splice(0, 1);
+
+				this.EventList.splice(0, 1)[0].onEnd();;				
 			}
 		}
 	}
@@ -28,21 +29,17 @@ class EventSequencer {
 	AddNextEvent(event) {
 		this.EventList.splice(1, 0, event);
 	}
+
+	AddFirstEvent(event) {
+		this.EventList.splice(0, 0, event);
+	}
 }
 
 class Event {
-	constructor() {
-	}
-
-	Update() {
-		return true;
-	}
-
-	Draw() {
-	}
-
-	onEnd() {
-	}
+	constructor() {}
+	Update() {return true;}
+	Draw() {}
+	onEnd() {}
 
 }
 
@@ -105,13 +102,13 @@ class PolyEvent extends Event {
 			let isFinished = this.EventList[i].Update();
 
 			if (isFinished) {
-				this.EventList[i].onEnd();
+				//this.EventList[i].onEnd();
 				indexsOfFinishedEvents.push(i);
 			}
 		}
 
 		for (let i = indexsOfFinishedEvents.length-1; i >= 0; i--) {
-				this.EventList.splice(i, 1);
+				this.EventList.splice(i, 1)[0].onEnd();
 		}
 
 		if (this.EventList.length == 0) return true;
@@ -132,10 +129,11 @@ class PolyEvent extends Event {
 }
 
 class ParameterLerpEvent extends Event {
-	constructor(parameterName, parameterObject, startValue, endValue, duration = 1, relative = false) {
+	constructor(parameterName, parameterObject, startValue, endValue, duration = 0.5, relative = false, decimals = 0) {
 		super();
 		this.timeElapsed = 0;
 		this.timeGoal = duration;
+		this.decimals = decimals
 
 		this.parameterName = parameterName;
 		this.parameterObject = parameterObject;
@@ -161,7 +159,7 @@ class ParameterLerpEvent extends Event {
 		let b = this.endValue;
 		let t = this.timeElapsed / this.timeGoal;
 
-		this.parameterObject[this.parameterName] = lerp(a, b, t);
+		this.parameterObject[this.parameterName] = roundToDecimalPlace(lerp(a, b, t), this.decimals);
 
 		return false
 	}

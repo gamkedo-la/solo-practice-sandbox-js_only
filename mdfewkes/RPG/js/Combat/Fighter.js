@@ -10,6 +10,7 @@ class Fighter {
 
 		this.skillList = [new AttackMeleeBase(), new AttackRangeBase()];
 		this.schedualedSkill = null;
+		this.schedualedTargets = [];
 
 		this.team = 0;
 	}
@@ -21,16 +22,23 @@ class Fighter {
 		inputEvent.fighter = this;
 		inputEvent.onEnd = function() {
 			this.fighter.schedualedSkill = rndOneFromList(this.fighter.skillList);
+			this.fighter.schedualedTargets = [rndOneFromList(GetAllMemberOfAnotherTeam(this.fighter.team))];
 		}
 		return inputEvent;
 	}
 
 	receiveDamage(amount) {
 		//console.log(this.name + " receiveDamage " + amount);
-		this.currentHP -= roundToDecimalPlace(amount, 0);
+		// this.currentHP -= roundToDecimalPlace(amount, 0);
 
-		if (this.currentHP < 0) this.currentHP = 0;
-		if (this.currentHP > this.maxHP) this.currentHP = this.maxHP;
+		// if (this.currentHP < 0) this.currentHP = 0;
+		// if (this.currentHP > this.maxHP) this.currentHP = this.maxHP;
+
+		var targetHP = roundToDecimalPlace(this.currentHP - amount);
+		if (targetHP < 0) targetHP = 0;
+		if (targetHP > this.maxHP) targetHP = this.maxHP;
+
+		combatEventSequencer.AddFirstEvent(new ParameterLerpEvent("currentHP", this, this.currentHP, targetHP));
 	}
 }
 
