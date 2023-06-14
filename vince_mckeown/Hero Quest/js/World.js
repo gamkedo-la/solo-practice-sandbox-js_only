@@ -26,6 +26,24 @@ const TILE_GOAL = 3;
 const TILE_KEY = 4;
 const TILE_DOOR = 5;
 
+function nameOfTileType(tileType){
+  if(tileType == 0){
+    return "Ground"
+  } else if (tileType == 1){
+    return "Wall"
+  } else if (tileType == 2){
+    return "Player"
+  } else if (tileType == 3){
+    return "Goal"
+  } else if (tileType == 4){
+    return "Key"
+  } else if (tileType == 5){
+    return "Door"
+  } else {
+    return "Unknown"
+  }
+}
+
 function roomTileToIndex(tileCol, tileRow) {
   return (tileCol + ROOM_COLS*tileRow);
 }
