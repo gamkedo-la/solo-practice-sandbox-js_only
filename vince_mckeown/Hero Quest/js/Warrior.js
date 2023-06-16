@@ -191,17 +191,20 @@ function warriorClass() {
            tileTypeHere = roomGrid[tileType];
            tileName = nameOfTileType(tileTypeHere);
            //if(tileName != "Wall"){
-            colorRect(currentTileCol*TILE_W, nextRowAbove*TILE_W, TILE_W, TILE_H, "green");
-            drawText("Up " + i, currentTileCol+TILE_W/2 - 20, nextRowAbove*TILE_H+TILE_H/2);
-            drawText(tileName, currentTileCol+TILE_W/2 - 20, nextRowAbove*TILE_H+TILE_H/2+20);
+            colorRect(currentTileCol*TILE_W, nextRowAbove, TILE_W, TILE_H, "green");
+            drawText("Up " + i, currentTileCol*TILE_W+TILE_W/2 - 20, nextRowAbove+TILE_H/2);
+            drawText(tileName, currentTileCol*TILE_W+TILE_W/2 - 20, nextRowAbove+TILE_H/2+20);
            //}
-
 
            //colorRect(currentTileCol*TILE_W, nextRowAbove, TILE_W, TILE_H, "green");
            //drawText("Up " + i, currentTileCol*TILE_W+TILE_W/2 - 20, nextRowAbove+TILE_H/2,);
            //down
+           tileType = getTileIndexAtPixelCoord(currentTileCol*TILE_W, nextRowBelow*TILE_H + (i*TILE_H));
+           tileTypeHere = roomGrid[tileType];
+           tileName = nameOfTileType(tileTypeHere);
            colorRect(currentTileCol*TILE_W, nextRowBelow, TILE_W, TILE_H, "purple");
            drawText("Down " + i, currentTileCol*TILE_W+TILE_W/2 - 20, nextRowBelow+TILE_H/2,);
+           drawText(tileName, currentTileCol*TILE_W+TILE_W/2 - 20, nextRowBelow+TILE_H/2+20);
          }
       } 
   }
