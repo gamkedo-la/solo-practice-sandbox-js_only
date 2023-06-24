@@ -26,7 +26,7 @@ function drawLine(pos1X, pos1Y, pos2X, pos2Y){
 }
 
 
-function drawText(text, posX, posY){
-  canvasContext.fillStyle = 'white';
+function drawText(text, posX, posY, color){
+  canvasContext.fillStyle = color;
   canvasContext.fillText(text, posX, posY);
 }

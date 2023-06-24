@@ -59,7 +59,7 @@ function getTileIndexAtPixelCoord(pixelX,pixelY) {
   // first check whether the tile coords fall within valid bounds
   if(tileCol < 0 || tileCol >= ROOM_COLS ||
      tileRow < 0 || tileRow >= ROOM_ROWS) {
-     document.getElementById("debugText").innerHTML = "out of bounds:"+pixelX+","+pixelY;
+    // document.getElementById("debugText").innerHTML = "out of bounds:"+pixelX+","+pixelY;
      return undefined;
   }
   
@@ -93,6 +93,7 @@ function drawRoom() {
         canvasContext.drawImage(tilePics[TILE_GROUND], tileLeftEdgeX, tileTopEdgeY);
       }
       canvasContext.drawImage(tilePics[tileTypeHere], tileLeftEdgeX, tileTopEdgeY);
+      drawText(tileIndex, tileLeftEdgeX, tileTopEdgeY+15, "white");
       
       tileIndex++; // increment which index we're going to next check for in the room
       tileLeftEdgeX += TILE_W; // jump horizontal draw position to next tile over by tile width
