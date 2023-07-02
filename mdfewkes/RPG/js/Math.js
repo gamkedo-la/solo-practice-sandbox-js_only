@@ -88,7 +88,7 @@ function subtractVectors(a, b) {
 }
 
 function scaleVector(v, scale) {
-	return {x:v.x * s, y:v.y * s};
+	return {x:v.x * scale, y:v.y * scale};
 }
 
 function magnitudeOfVector(v) {
@@ -96,7 +96,11 @@ function magnitudeOfVector(v) {
 }
 
 function normalizeVector(v) {
-	return scaleVector(v, 1/magnitudeOfVector(v));
+	let mag = magnitudeOfVector(v);
+	if (mag < 0.0001) {
+		mag = 0.0001;
+	}
+	return scaleVector(v, 1/mag);
 }
 
 
