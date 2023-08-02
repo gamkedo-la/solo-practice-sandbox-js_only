@@ -1,4 +1,4 @@
-var spriteSheet1Pic = document.createElement("img");
+var grassPic = document.createElement("img");
 var spriteCharacterPic = document.createElement("img");
 var spriteEnemyPic = document.createElement("img");
 
@@ -29,7 +29,7 @@ function loadImageForRoomCode(trackCode, fileName)  {
 function loadImages() {
 	
 		var imageList = [
-			{varName: spriteSheet1Pic, theFile: "spriteSheet1.png"},
+			{varName: grassPic, theFile: "spriteSheet1.png", sX: 0, sY: 0},
 			{varName: spriteCharacterPic, theFile: "spritePlayer.png"},
 			{varName: spriteEnemyPic, theFile: "spriteEnemy.png"},
 		];

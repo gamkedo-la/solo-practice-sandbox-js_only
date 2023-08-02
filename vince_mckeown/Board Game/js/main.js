@@ -18,8 +18,8 @@ window.onload = function() {
 	canvasContext = canvas.getContext('2d'),
 	width = canvas.width = window.innerWidth,
 	height = canvas.height = window.innerHeight,
-	tileWidth = 60,
-	tileHeight = 30,
+	tileWidth = 58,
+	tileHeight = 29,
 
 	canvasContext.translate(width / 2, 50);
 

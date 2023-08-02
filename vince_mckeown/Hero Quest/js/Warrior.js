@@ -1,7 +1,7 @@
 function warriorClass() {
   this.x;
   this.y;
-  this.maxMoves = 7;
+  this.maxMoves = 6;
   this.movesAvailable = this.maxMoves;
   this.startIdx;
   this.rightIdx;
@@ -113,6 +113,8 @@ function warriorClass() {
               document.getElementById("debugText").innerHTML = "Keys: " + this.keysHeld;
               roomGrid[walkIntoTileIndex] = TILE_GROUND; // remove key
               this.walkable = true;
+              this.x = nextX;
+              this.y = nextY;
               break;
           case TILE_WALL:
           default:
@@ -154,15 +156,16 @@ function warriorClass() {
 
   this.draw = function() {
       drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, 0.0);
-      //CHANGE THIS TO A FOR LOOP WITH A LIST
+      //CHANGE THIS TO A LIST
       //right
       let currentTileCol = whatIsMyColumn(this.startIdx);
       let currentTileRow = Math.floor(this.startIdx / ROOM_COLS);
       let currentTileColPix = currentTileCol * TILE_W;
       let currentTileRowPix = currentTileRow * TILE_H;
       document.getElementById("debugText").innerHTML = "Current Tile Col: " + currentTileCol + " Current Tile Row: "+ currentTileRow;
-
-      for(i=0; i<this.movesAvailable-1; i++){
+      let movesAvailableDisplay = this.movesAvailable;
+   
+      for(i=0; i<movesAvailableDisplay; i++){
 
          let nextTileColRight = currentTileCol + i;
          let nextTileColRightPix = nextTileColRight * TILE_W;
@@ -175,50 +178,35 @@ function warriorClass() {
          document.getElementById("debugText").innerHTML = "Next Tile Right: " + nextTileColRight + " Next Col Left: "+ nextTileColLeft;
 
          if(i>0){
-           //right
-           let tileIndex = getTileIndexAtPixelCoord(nextTileColRightPix, currentTileRowPix);
-           let tileTypeHere = roomGrid[tileIndex];
-           let tileName = nameOfTileType(tileTypeHere);
-           if(tileName != "Wall"){
-            colorRect(nextTileColRightPix, currentTileRowPix, TILE_W, TILE_H, "blue");
-            drawText("Right " + i, nextTileColRightPix+TILE_W/2 - 20, currentTileRowPix+TILE_H/2, "orange");
-            drawText(tileName, nextTileColRightPix+TILE_W/2 - 20, currentTileRowPix+TILE_H/2+20, "orange");
-            drawText(tileIndex, nextTileColRightPix+TILE_W/2 - 20, currentTileRowPix+TILE_H/2-20, "orange");
-           }
-           //left
-           tileType = getTileIndexAtPixelCoord(nextTileColLeftPix, currentTileRowPix);
-           tileTypeHere = roomGrid[tileType];
-           tileName = nameOfTileType(tileTypeHere);
-           if(tileName != "Wall"){
-            colorRect(nextTileColLeftPix, currentTileRowPix, TILE_W, TILE_H, "red");
-            drawText("Left " + i, nextTileColLeftPix+TILE_W/2 - 20, currentTileRowPix+TILE_H/2, "orange");
-            drawText(tileName, nextTileColLeftPix+TILE_W/2 - 20, currentTileRowPix+TILE_H/2+20, "orange");
-           }
+          //right
+
            //up
            tileType = getTileIndexAtPixelCoord(currentTileColPix, nextRowAbovePix);
            tileTypeHere = roomGrid[tileType];
            tileName = nameOfTileType(tileTypeHere);
-           if(tileName != "Wall"){
-            colorRect(currentTileColPix, nextRowAbovePix, TILE_W, TILE_H, "green");
-            drawText("Up " + i, currentTileColPix+TILE_W/2 - 20, nextRowAbovePix+TILE_H/2, "orange");
-            drawText(tileName, currentTileColPix+TILE_W/2 - 20, nextRowAbovePix+TILE_H/2+20, "orange");
+          // if(tileName != "Wall"){
+            colorRect(nextTileColRightPix, nextRowAbovePix, TILE_W, TILE_H, "green");
+            drawText("Up " + i, nextTileColRightPix+TILE_W/2 - 20, nextRowAbovePix+TILE_H/2, "orange");
+            drawText(tileName, nextTileColRightPix+TILE_W/2 - 20, nextRowAbovePix+TILE_H/2+20, "orange");
             drawText(currentTileCol + ":" + currentTileRow, currentTileColPix, nextRowAbovePix, "black");
-           }
-          /* for(i=0; i<this.movesAvailable-2; i++){
-            //checkToTheLeft
-            tileType = getTileIndexAtPixelCoord(nextTileColLeftPix, currentTileRowPix);
-            tileTypeHere = roomGrid[tileType];
+          // }
+           for(ii=0; ii < movesAvailableDisplay-1; ii++){
+            let nextRowTileColRight = currentTileCol + ii;
+            let nextRowTileColRightPix = nextRowTileColRight * TILE_W
+            console.log("i: " + i + " ii: " + ii);
+            tileIndex = getTileIndexAtPixelCoord(nextRowTileColRightPix, nextRowAbovePix);
+            tileTypeHere = roomGrid[tileIndex];
             tileName = nameOfTileType(tileTypeHere);
-            if(tileName != "Wall"){
-             colorRect(nextTileColLeftPix, currentTileRowPix, TILE_W, TILE_H, "red");
-             drawText("Left " + i, nextTileColLeftPix+TILE_W/2 - 20, currentTileRowPix+TILE_H/2, "orange");
-             drawText(tileName, nextTileColLeftPix+TILE_W/2 - 20, currentTileRowPix+TILE_H/2+20, "orange");
-            }
-           } */
+          //  if(tileName != "Wall"){
+                colorRect(nextRowTileColRightPix, nextRowAbovePix, TILE_W, TILE_H, "pink");
+                drawText("Up R " + ii, nextRowTileColRightPix+TILE_W/2 - 20, nextRowAbovePix+TILE_H/2, "white");
+                drawText(tileName, nextRowTileColRightPix+TILE_W/2 - 20, nextRowAbovePix+TILE_H/2+20, "white");
+                drawText(tileIndex, nextRowTileColRightPix+TILE_W/2 - 20, nextRowAbovePix+TILE_H/2-20, "white");
+           // }
+           }
+           movesAvailableDisplay--
 
-           //colorRect(currentTileCol*TILE_W, nextRowAbove, TILE_W, TILE_H, "green");
-           //drawText("Up " + i, currentTileCol*TILE_W+TILE_W/2 - 20, nextRowAbove+TILE_H/2, , "orange");
-           //down
+           /* //down 
            tileType = getTileIndexAtPixelCoord(currentTileColPix, nextRowBelowPix);
            tileTypeHere = roomGrid[tileType];
            tileName = nameOfTileType(tileTypeHere);
@@ -226,7 +214,7 @@ function warriorClass() {
             colorRect(currentTileColPix, nextRowBelowPix, TILE_W, TILE_H, "purple");
             drawText("Down " + i, currentTileColPix+TILE_W/2 - 20, nextRowBelowPix+TILE_H/2, "orange");
             drawText(tileName, currentTileColPix+TILE_W/2 - 20, nextRowBelowPix+TILE_H/2+20, "orange");
-           }
+           } */ 
         }
       } 
   }
