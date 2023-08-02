@@ -37,6 +37,7 @@ function gamestart() {
 	colorRect(0, 0, screenWidth, screenHeight, 'black');
 
 	SetupCombat();
+	SetupExplore();
 
 	window.requestAnimationFrame(gameloop);
 }
@@ -47,7 +48,7 @@ function gameloop(time) {
 	deltaTime = time - lastTime;
 	lastTime = time;
 
-	RunCombat();
+	RunExplore();
 
 	window.requestAnimationFrame(gameloop);
 
