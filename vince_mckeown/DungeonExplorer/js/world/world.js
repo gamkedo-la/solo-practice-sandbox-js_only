@@ -173,7 +173,7 @@ function drawTracks(){
 			} else {
 				canvasContext.drawImage(trackPics[trackTypeHere], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
 			}
-			//minimap:  This needs refactored
+			//minimap:  This needs refactored and moved.  Minimap is moving with camera pan and needs to be seperated
 			if(trackTypeHere == 0){
 				colorRect(miniMapX, miniMapY, 4, 4, "white");
 			} else if (trackTypeHere == 1 || trackTypeHere == 11 || trackTypeHere == 12 ){
