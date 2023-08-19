@@ -84,8 +84,8 @@ function drawImageTile(x, y, index) {
 		}
 		canvasContext.save();
 		canvasContext.translate((x - y) * tileWidth / 2, (x + y) * tileHeight / 2);  
-		canvasContext.drawImage(spriteSheet1Pic, index * tileWidth, 0, tileWidth, spriteSheet1Pic.height,
-			-tileWidth / 2, 0, tileWidth, spriteSheet1Pic.height);
-		
+		canvasContext.drawImage(grassPic, index * tileWidth, 0, tileWidth, grassPic.height,
+			-tileWidth / 2, 0, tileWidth, grassPic.height);
+
 		canvasContext.restore();
 	}
