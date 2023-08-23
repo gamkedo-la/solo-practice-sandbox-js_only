@@ -68,7 +68,8 @@ function loadImages() {
 			{trackType: TILE_PITTRAP_UNARMED, theFile: "track_pittrap.png"},
 			{trackType: TILE_SPIKES_ARMED, theFile: "track_road.png"},
 			{trackType: TILE_SPIKES_UNARMED, theFile: "track_spikes.png"},
-			{trackType: TILE_STAIRS_DOWN, theFile: "stairsDown.png"}
+			{trackType: TILE_STAIRS_DOWN, theFile: "stairsDown.png"},
+			{trackType: TILE_CHAIR, theFile: "chair.png"}
 		];
 			
 	picsToLoad = imageList.length;
