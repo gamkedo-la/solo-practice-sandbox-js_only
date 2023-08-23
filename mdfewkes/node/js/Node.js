@@ -1,92 +1,109 @@
 class NodeMaster {
 	constructor() {
-		this.nodes = [];
+		this._nodes = [];
 	}
 
 	AddNode(nodeToAdd) {
-		this.nodes.push(nodeToAdd);
-	}
-
-	Update() {
-		for (var i = 0; i < this.nodes.length; i++) {
-			this.nodes[i].ClearProcced();
-		}
-
-		for (var i = 0; i < this.nodes.length; i++) {
-			this.nodes[i].Process();
-		}
-	}
-}
-var nodeMaster = new NodeMaster();
-
-class NodeBase {
-	constructor() {
-		this.procced = false;
-		nodeMaster.AddNode(this);
-	}
-
-	OnProcess() {}
-
-	ClearProcced() {
-		this.procced = false;
+		this._nodes.push(nodeToAdd);
 	}
 
 	Process() {
-		if (this.procced) return;
-		this.procced = true;
+		for (let i = 0; i < this._nodes.length; i++) {
+			this._nodes[i].ClearProcced();
+		}
+
+		for (let i = 0; i < this._nodes.length; i++) {
+			this._nodes[i].Process();
+		}
+	}
+}
+
+class NodeBase {
+	constructor(nodeMaster) {
+		this._procced = false;
+		nodeMaster.AddNode(this);
+	}
+
+	GetInletList() {
+		let inletList = [];
+		for (let prop in this) {
+			if (prop.toLowerCase().includes("inlet")) {
+				inletList.push(prop)
+			}
+		}
+		return inletList;
+	}
+
+	GetOutletList() {
+		let outletList = [];
+		for (let prop in this) {
+			if (prop.toLowerCase().includes("outlet")) {
+				outletList.push(prop)
+			}
+		}
+		return outletList;
+	}
+
+	Process() {
+		if (this._procced) return;
+		this._procced = true;
 		this.OnProcess();
 	}
+
+	ClearProcced() {
+		this._procced = false;
+	}
+
+	OnProcess() {}
 }
 
 class Inlet {
 	constructor(parentNode) {
-		this.connection = null;
-		this.parentNode = parentNode;
+		this._connection = null;
+		this._parentNode = parentNode;
 	}
 
 	GetValue() {
-		if (this.connection == null) return 0;
-		return this.connection.GetValue();
+		if (this._connection == null) return 0;
+		return this._connection.GetValue();
 	}
 
 	Connect(outlet) {
-		this.connection = outlet;
+		this._connection = outlet;
+	}
+
+	Disconnect(outlet) {
+		this._connection = null;
 	}
 }
 
 class Outlet {
 	constructor(parentNode) {
-		this.value = 0;
-		this.parentNode = parentNode;
+		this._value = 0;
+		this._parentNode = parentNode;
 	}
 
 	GetValue() {
-		this.parentNode.Process();
-		return this.value;
+		this._parentNode.Process();
+		return this._value;
+	}
+
+	SetValue(value) {
+		this._value = value;
 	}
 
 	Connect(inlet) {
 		inlet.Connect(this);
 	}
-}
 
-class NodeTest extends NodeBase {
-	constructor() {
-		super();
-
-		this.inlet = new Inlet(this);
-		this.outlet = new Outlet(this);
-	}
-
-	OnProcess() {
-		var value = this.inlet.GetValue();
-		this.outlet.value = this.outlet.value + value;
+	Disconnect(inlet) {
+		inlet.Disconnect(this);
 	}
 }
 
 class NodeAdd extends NodeBase {
-	constructor() {
-		super();
+	constructor(nodeMaster) {
+		super(nodeMaster);
 
 		this.inletA = new Inlet(this);
 		this.inletB = new Inlet(this);
@@ -94,13 +111,14 @@ class NodeAdd extends NodeBase {
 	}
 
 	OnProcess() {
-		this.outlet.value = this.inletA.GetValue() + this.inletB.GetValue();
+		let value = this.inletA.GetValue() + this.inletB.GetValue();;
+		this.outlet.SetValue(value);
 	}
 }
 
 class NodeSubtract extends NodeBase {
-	constructor() {
-		super();
+	constructor(nodeMaster) {
+		super(nodeMaster);
 
 		this.inletA = new Inlet(this);
 		this.inletB = new Inlet(this);
@@ -108,13 +126,14 @@ class NodeSubtract extends NodeBase {
 	}
 
 	OnProcess() {
-		this.outlet.value = this.inletA.GetValue() - this.inletB.GetValue();
+		let value = this.inletA.GetValue() - this.inletB.GetValue();
+		this.outlet.SetValue(value);
 	}
 }
 
 class NodeMultiply extends NodeBase {
-	constructor() {
-		super();
+	constructor(nodeMaster) {
+		super(nodeMaster);
 
 		this.inletA = new Inlet(this);
 		this.inletB = new Inlet(this);
@@ -122,13 +141,14 @@ class NodeMultiply extends NodeBase {
 	}
 
 	OnProcess() {
-		this.outlet.value = this.inletA.GetValue() * this.inletB.GetValue();
+		let value = this.inletA.GetValue() * this.inletB.GetValue();
+		this.outlet.SetValue(value);
 	}
 }
 
 class NodeDivide extends NodeBase {
-	constructor() {
-		super();
+	constructor(nodeMaster) {
+		super(nodeMaster);
 
 		this.inletA = new Inlet(this);
 		this.inletB = new Inlet(this);
@@ -136,13 +156,14 @@ class NodeDivide extends NodeBase {
 	}
 
 	OnProcess() {
-		this.outlet.value = this.inletA.GetValue() / this.inletB.GetValue();
+		let value = this.inletA.GetValue() / this.inletB.GetValue();
+		this.outlet.SetValue(value);
 	}
 }
 
 class NodeAnd extends NodeBase {
-	constructor() {
-		super();
+	constructor(nodeMaster) {
+		super(nodeMaster);
 
 		this.inletA = new Inlet(this);
 		this.inletB = new Inlet(this);
@@ -150,13 +171,14 @@ class NodeAnd extends NodeBase {
 	}
 
 	OnProcess() {
-		this.outlet.value = this.inletA.GetValue() && this.inletB.GetValue();
+		let value = this.inletA.GetValue() && this.inletB.GetValue;
+		this.outlet.SetValue(value);
 	}
 }
 
 class NodeOr extends NodeBase {
-	constructor() {
-		super();
+	constructor(nodeMaster) {
+		super(nodeMaster);
 
 		this.inletA = new Inlet(this);
 		this.inletB = new Inlet(this);
@@ -164,13 +186,14 @@ class NodeOr extends NodeBase {
 	}
 
 	OnProcess() {
-		this.outlet.value = this.inletA.GetValue() || this.inletB.GetValue();
+		let value = this.inletA.GetValue() || this.inletB.GetValue();
+		this.outlet.SetValue(value);
 	}
 }
 
 class NodeXor extends NodeBase {
-	constructor() {
-		super();
+	constructor(nodeMaster) {
+		super(nodeMaster);
 
 		this.inletA = new Inlet(this);
 		this.inletB = new Inlet(this);
@@ -178,28 +201,30 @@ class NodeXor extends NodeBase {
 	}
 
 	OnProcess() {
-		var valueA = this.inletA.GetValue();
-		var valueB = this.inletB.GetValue();
-		this.outlet.value =  (valueA || valueB) && !(valueA && valueB);
+		let valueA = this.inletA.GetValue();
+		let valueB = this.inletB.GetValue();
+		let value = (valueA || valueB) && !(valueA && valueB);
+		this.outlet.SetValue(value);
 	}
 }
 
 class NodeNot extends NodeBase {
-	constructor() {
-		super();
+	constructor(nodeMaster) {
+		super(nodeMaster);
 
 		this.inlet = new Inlet(this);
 		this.outlet = new Outlet(this);
 	}
 
 	OnProcess() {
-		this.outlet.value = !this.inletA.GetValue();
+		let value = !this.inletA.GetValue();
+		this.outlet.SetValue(value);
 	}
 }
 
 class NodeNand extends NodeBase {
-	constructor() {
-		super();
+	constructor(nodeMaster) {
+		super(nodeMaster);
 
 		this.inletA = new Inlet(this);
 		this.inletB = new Inlet(this);
@@ -207,13 +232,14 @@ class NodeNand extends NodeBase {
 	}
 
 	OnProcess() {
-		this.outlet.value = !(this.inletA.GetValue() && this.inletB.GetValue());
+		let value = !(this.inletA.GetValue() && this.inletB.GetValue());
+		this.outlet.SetValue(value);
 	}
 }
 
 class NodeNor extends NodeBase {
-	constructor() {
-		super();
+	constructor(nodeMaster) {
+		super(nodeMaster);
 
 		this.inletA = new Inlet(this);
 		this.inletB = new Inlet(this);
@@ -221,13 +247,14 @@ class NodeNor extends NodeBase {
 	}
 
 	OnProcess() {
-		this.outlet.value = !(this.inletA.GetValue() || this.inletB.GetValue());
+		let value = !(this.inletA.GetValue() || this.inletB.GetValue());
+		this.outlet.SetValue(value);
 	}
 }
 
 class NodeNxor extends NodeBase {
-	constructor() {
-		super();
+	constructor(nodeMaster) {
+		super(nodeMaster);
 
 		this.inletA = new Inlet(this);
 		this.inletB = new Inlet(this);
@@ -235,8 +262,38 @@ class NodeNxor extends NodeBase {
 	}
 
 	OnProcess() {
-		var valueA = this.inletA.GetValue();
-		var valueB = this.inletB.GetValue();
-		this.outlet.value =  !(valueA || valueB) || (valueA && valueB);
+		let valueA = this.inletA.GetValue();
+		let valueB = this.inletB.GetValue();
+		let value =  !(valueA || valueB) || (valueA && valueB);
+		this.outlet.SetValue(value);
+	}
+}
+
+class NodeInput extends NodeBase {
+	constructor(nodeMaster) {
+		super(nodeMaster);
+
+		this.value = 0;
+
+		this.outlet = new Outlet(this);
+	}
+
+	OnProcess() {
+		let value = this.value;
+		this.outlet.SetValue(value);
+	}
+}
+
+class NodeOutput extends NodeBase {
+	constructor(nodeMaster) {
+		super(nodeMaster);
+
+		this.value = 0;
+
+		this.inlet = new Inlet(this);
+	}
+
+	OnProcess() {
+		this.value = this.inlet.GetValue();
 	}
 }
