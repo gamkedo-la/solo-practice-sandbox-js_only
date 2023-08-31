@@ -7,6 +7,7 @@ var spiderPic = document.createElement("img");
 var shadowPic = document.createElement("img");
 var feedbackGUIPic = document.createElement("img");
 var healthbarPic = document.createElement("img");
+var rockBulletPic = document.createElement("img");
 
 
 //var titlepagePic = document.createElement("img");
@@ -48,6 +49,7 @@ function loadImages() {
 			{varName: shadowPic, theFile: "shadow.png"},
 			{varName: feedbackGUIPic, theFile: "feedbackGUI.png"},
 			{varName: healthbarPic, theFile: "healthbar.png"},
+			{varName: rockBulletPic, theFile: "rockBullet.png"},
 
 			
 			{trackType: TILE_ROAD, theFile: "track_road.png"},

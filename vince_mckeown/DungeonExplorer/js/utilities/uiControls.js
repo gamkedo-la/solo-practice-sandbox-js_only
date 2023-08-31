@@ -2,6 +2,7 @@ const KEY_W = 87; // "W"
 const KEY_S = 83; // "S"
 const KEY_A = 65; // "A"
 const KEY_D = 68; // "D"
+const KEY_SPACEBAR = 32; 
 
 const KEY_LEFT_ARROW = 37;
 const KEY_UP_ARROW = 38;
@@ -32,8 +33,12 @@ function keyPressed(evt) {
 	evt.preventDefault();
 	
 	var paused = KEY_P;
+	var addRockBulletKey = KEY_SPACEBAR;
 	if(paused == evt.keyCode){
 		changePauseState();
+	}
+	if(addRockBulletKey == evt.keyCode){
+		addRockBullet();
 	}
 	
 }
