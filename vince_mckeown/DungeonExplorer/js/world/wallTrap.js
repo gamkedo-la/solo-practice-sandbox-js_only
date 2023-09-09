@@ -1,13 +1,18 @@
 var rockBulletList = [];
+var wallTrapList = [];
 
-function addRockBullet(){
-	var tempBullet = new rockBulletClass();
+function wallTrap(){
+
+}
+
+function addRockBullet(xPos, yPos){
+	var tempBullet = new rockBulletClass(xPos, yPos);
 	rockBulletList.push(tempBullet);
 }
 
-function rockBulletClass(){
-	this.x = 370;
-	this.y = 0;
+function rockBulletClass(xPos, yPos){
+	this.x = xPos || 370;
+	this.y = yPos || 0;
 	this.width = 10	
     this.height = 10;
 	this.isoEnemyFootY = 30;
