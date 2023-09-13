@@ -7,6 +7,7 @@ var spiderPic = document.createElement("img");
 var shadowPic = document.createElement("img");
 var feedbackGUIPic = document.createElement("img");
 var healthbarPic = document.createElement("img");
+var rockBulletPic = document.createElement("img");
 
 
 //var titlepagePic = document.createElement("img");
@@ -48,6 +49,7 @@ function loadImages() {
 			{varName: shadowPic, theFile: "shadow.png"},
 			{varName: feedbackGUIPic, theFile: "feedbackGUI.png"},
 			{varName: healthbarPic, theFile: "healthbar.png"},
+			{varName: rockBulletPic, theFile: "rockBullet.png"},
 
 			
 			{trackType: TILE_ROAD, theFile: "track_road.png"},
@@ -68,7 +70,25 @@ function loadImages() {
 			{trackType: TILE_PITTRAP_UNARMED, theFile: "track_pittrap.png"},
 			{trackType: TILE_SPIKES_ARMED, theFile: "track_road.png"},
 			{trackType: TILE_SPIKES_UNARMED, theFile: "track_spikes.png"},
-			{trackType: TILE_STAIRS_DOWN, theFile: "stairsDown.png"}
+			{trackType: TILE_STAIRS_DOWN, theFile: "stairsDown.png"},
+			{trackType: TILE_CHAIR, theFile: "chair.png"},
+			{trackType: TILE_CHAIR2, theFile: "chair2.png"},
+			{trackType: TILE_CHAIR3, theFile: "chair3.png"},
+			{trackType: TILE_CHAIR4, theFile: "chair4.png"},
+			{trackType: TILE_CHAIR5, theFile: "chair5.png"},
+			{trackType: TILE_CHAIR6, theFile: "chair6.png"},
+			{trackType: TILE_CHAIR7, theFile: "chair7.png"},
+			{trackType: TILE_CHAIR8, theFile: "chair8.png"},
+			{trackType: TILE_CHAIR9, theFile: "chair9.png"},
+			{trackType: TILE_CHAIR10, theFile: "chair10.png"},
+			{trackType: TILE_CHAIR11, theFile: "chair11.png"},
+			{trackType: TILE_TABLE1, theFile: "table1.png"},
+			{trackType: TILE_TABLE2, theFile: "table2.png"},
+			{trackType: TILE_TABLE3, theFile: "table3.png"},
+			{trackType: TILE_TABLE4, theFile: "table4.png"},
+			{trackType: TILE_TABLE5, theFile: "table5.png"},
+			{trackType: TILE_WALL_TRAP, theFile: "wallTrap.png"},
+			{trackType: TILE_WALL_TRAP2, theFile: "wallTrap2.png"}
 		];
 			
 	picsToLoad = imageList.length;

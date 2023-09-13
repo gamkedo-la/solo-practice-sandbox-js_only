@@ -170,6 +170,9 @@ function moveEverything() {
 		for(var i = 0; i < ratList.length; i++){
 			ratList[i].movement();
 		}
+		for(var i = 0; i < rockBulletList.length; i++){
+			rockBulletList[i].movement();
+		}
 		updatedCameraPosition();
 	}
 }
@@ -189,26 +192,35 @@ function checkAllPlayerAndEnemyCollisions(){
 	for(var i = 0; i < orcList.length; i++){
 		playerOne.checkCollisionsAgainst(orcList[i]);
 		for(var ii = i+1; ii < orcList.length; ii++){
-		orcList[i].checkCollisionsAgainst(orcList[ii]);
-		orcList[i].checkCollisionsAgainst(playerOne);
+			orcList[i].checkCollisionsAgainst(orcList[ii]);
+			orcList[i].checkCollisionsAgainst(playerOne);
 		}
 	}
 	//check ogres
 	for(var i = 0; i < ogreList.length; i++){
 		playerOne.checkCollisionsAgainst(ogreList[i]);
 		for(var ii = i+1; ii < orcList.length; ii++){
-		ogreList[i].checkCollisionsAgainst(ogreList[ii]);
-		ogreList[i].checkCollisionsAgainst(playerOne);
+			ogreList[i].checkCollisionsAgainst(ogreList[ii]);
+			ogreList[i].checkCollisionsAgainst(playerOne);
 		}
 	}
 	//check rats
 	for(var i = 0; i < ratList.length; i++){
 		playerOne.checkCollisionsAgainst(ratList[i]);
 		for(var ii = i+1; ii < ratList.length; ii++){
-		ratList[i].checkCollisionsAgainst(ratList[ii]);
-		ratList[i].checkCollisionsAgainst(playerOne);
+			ratList[i].checkCollisionsAgainst(ratList[ii]);
+			ratList[i].checkCollisionsAgainst(playerOne);
+		}
+	}
+	for(var i = 0; i < rockBulletList.length; i++){
+		playerOne.checkCollisionsAgainst(rockBulletList[i]);
+		for(var ii = i+1; ii < rockBulletList.length; ii++){
+		//	rockBulletList[i].checkCollisionsAgainst(rockBulletList[ii]);
+		//	rockBulletList[i].checkCollisionsAgainst(playerOne);
 		}
 	} 
+ 
+
 }
 
 
@@ -230,6 +242,9 @@ function drawEverything() {
 		}
 		for(var i = 0; i < ratList.length; i++){
 			ratList[i].draw();
+		}
+		for(var i = 0; i < rockBulletList.length; i++){
+			rockBulletList[i].draw();
 		}
 		finishedCameraPan();
 		canvasContext.drawImage(feedbackGUIPic,0, canvas.height-50);
