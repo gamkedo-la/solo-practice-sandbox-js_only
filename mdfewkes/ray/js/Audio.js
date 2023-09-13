@@ -486,13 +486,11 @@ function generateAudGeo() {
 
 // For testing
 var fauxAudGeo = [
-	{x:100.01, y:99.99},
-	{x:100.01, y:200.01},
-	{x:-0.01, y:200.01},
-	{x:-0.01, y:149.99},
-	{x:50.01, y:149.99},
+	{x: 101, y: 101},
+	{x:-101, y: 101},
+	{x: 101, y:-101},
+	{x:-101, y:-101},
 ];
 for (var i = 0; i < fauxAudGeo.length; i++) {
 	audGeoPoints.push(fauxAudGeo[i]);
 }
-

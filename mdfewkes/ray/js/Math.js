@@ -14,6 +14,16 @@ function radToDeg(radians){
 	return radians * 180/pi;
 }
 
+function clamp(x, min, max) {
+	return Math.max(min, Math.min(x, max));
+}
+
+function wrap(x, min, max) {
+	while (x < min) x += max - min;
+	while (x >= max) x -= max - min;
+	return x;
+}
+
 function lerp(v0, v1, t) {
 	return v0*(1-t)+v1*t
 }
@@ -59,31 +69,10 @@ function rndOneIn(max = 2){
 	return rndInt(0,max) === 0;
 }
 
- function rndOneFrom(items){
+function rndOneFrom(items){
 	return items[rndInt(items.length)];
 }
 
-function distanceBetweenTwoPoints(a,b) {
-	var dx = a.x - b.x;
-	var dy = a.y - b.y;
-	return Math.sqrt(dx * dx + dy * dy);
-}
-
-function angleBetweenTwoPoints(a, b) {
-	var angle = Math.atan2(b.y - a.y, b.x - a.x);
-	//angle *= -1;
-	return angle;
-}
-
-function clamp(x, min, max) {
-	return Math.max(min, Math.min(x, max));
-}
-
-function wrap(x, min, max) {
-	while (x < min) x += max - min;
-	while (x >= max) x -= max - min;
-	return x;
-}
 
 function addVectors(a, b) {
 	return {x:a.x + b.x, y:a.y + b.y};
@@ -105,52 +94,18 @@ function normalizeVector(v) {
 	return scaleVector(v, 1/magnitudeOfVector(v));
 }
 
-
-function rgbToHex (value) {
-	Math.round(value)
-	var hex = Number(Math.round(value)).toString(16);
-
-	if (hex.length < 2) {
-		hex = "0" + hex;
-	}
-	return hex.toUpperCase();
+function distanceBetweenTwoPoints(a,b) {
+	var dx = a.x - b.x;
+	var dy = a.y - b.y;
+	return Math.sqrt(dx * dx + dy * dy);
 }
 
-function fullColorHex(r, g, b, a = 255) {
-	var red = rgbToHex(r);
-	var green = rgbToHex(g);
-	var blue = rgbToHex(b);;
-	var alpha = rgbToHex(a);
-
-	return "#" + red + green + blue + alpha;
+function angleBetweenTwoPoints(a, b) {
+	var angle = Math.atan2(b.y - a.y, b.x - a.x);
+	//angle *= -1;
+	return angle;
 }
 
-function colorHex(r, g, b,) {
-	var red = rgbToHex(r);
-	var green = rgbToHex(g);
-	var blue = rgbToHex(b);;
-
-	return "#" + red + green + blue;
-}
-
-function colorHexToRGB(hex) {
-    var r = parseInt(hex.slice(1, 3), 16);
-    var g = parseInt(hex.slice(3, 5), 16);
-    var b = parseInt(hex.slice(5, 7), 16);
-    
-    // return {r, g, b} 
-    return {r: r, g: g, b: b, a: 255};
-}
-
-function fullColorHexToRGB(hex) {
-    var r = parseInt(hex.slice(1, 3), 16);
-    var g = parseInt(hex.slice(3, 5), 16);
-    var b = parseInt(hex.slice(5, 7), 16);
-    var a = parseInt(hex.slice(7, 9), 16);
-    
-    // return {r, g, b} 
-    return {r: r, g: g, b: b, a: a};
-}
 
 function isLineIntersecting(p1, p2, p3, p4) {
 	var denominator = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x));
@@ -163,7 +118,7 @@ function isLineIntersecting(p1, p2, p3, p4) {
 	if (t >= 0.0 && t <= 1.0 && u >= 0.0 && u <= 1.0) return true;
 	
 	return false;
-};
+}
 
 function getPointAtLineIntersection(p1, p2, p3, p4) {
 	var denominator = ((p1.x - p2.x) * (p3.y - p4.y)) - ((p1.y - p2.y) * (p3.x - p4.x));
@@ -179,7 +134,7 @@ function getPointAtLineIntersection(p1, p2, p3, p4) {
 	}
 
 	return null;
-};
+}
 
 function getClosestIntersection(p1, p2) {
 	var closestPoint = null;
@@ -228,4 +183,51 @@ function getNearestPointOnLine(a, b, p) {
 	var t = Math.min( 1, Math.max( 0, dot / len ) );
 	dot = ( b.x - a.x ) * ( p.y - a.y ) - ( b.y - a.y ) * ( p.x - a.x );
 	return {x: a.x + atob.x * t, y: a.y + atob.y * t};
+}
+
+
+function rgbToHex (value) {
+	Math.round(value)
+	var hex = Number(Math.round(value)).toString(16);
+
+	if (hex.length < 2) {
+		hex = "0" + hex;
+	}
+	return hex.toUpperCase();
+}
+
+function fullColorHex(r, g, b, a = 255) {
+	var red = rgbToHex(r);
+	var green = rgbToHex(g);
+	var blue = rgbToHex(b);;
+	var alpha = rgbToHex(a);
+
+	return "#" + red + green + blue + alpha;
+}
+
+function colorHex(r, g, b,) {
+	var red = rgbToHex(r);
+	var green = rgbToHex(g);
+	var blue = rgbToHex(b);;
+
+	return "#" + red + green + blue;
+}
+
+function colorHexToRGB(hex) {
+    var r = parseInt(hex.slice(1, 3), 16);
+    var g = parseInt(hex.slice(3, 5), 16);
+    var b = parseInt(hex.slice(5, 7), 16);
+    
+    // return {r, g, b} 
+    return {r: r, g: g, b: b, a: 255};
+}
+
+function fullColorHexToRGB(hex) {
+    var r = parseInt(hex.slice(1, 3), 16);
+    var g = parseInt(hex.slice(3, 5), 16);
+    var b = parseInt(hex.slice(5, 7), 16);
+    var a = parseInt(hex.slice(7, 9), 16);
+    
+    // return {r, g, b} 
+    return {r: r, g: g, b: b, a: a};
 }

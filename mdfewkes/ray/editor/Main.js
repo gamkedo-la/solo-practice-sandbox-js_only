@@ -1,4 +1,3 @@
-var mainInterface;
 var pMouseX, pMouseY;
 var player = {x:0, y: 0, ang: d270, forwardX: 0, forwardY: 0};
 var gameObjects = [];
@@ -119,8 +118,6 @@ window.onload = function() {
 	window.addEventListener('keyup', calculateKeyboardUp);
 	document.getElementById('previewCanvas').addEventListener('pointermove', pCalculateMousePos);
 
-	mainInterface = new MainInterface(eCanvas.width, eCanvas.height);
-
 	var newWall = new WallClass();
 	newWall.p1 = {x:-100, y:-100};
 	newWall.p2 = {x:100, y:-100};
@@ -140,21 +137,23 @@ window.onload = function() {
 
 	var testEntity = {x: 0, y:0, distance: 0};
 	gameObjects.push(testEntity);
-	var testEntity1 = {x: 200, y:150, distance: 0};
+	var testEntity1 = {x: 50, y:50, distance: 0};
 	gameObjects.push(testEntity1);
-	var testEntity2 = {x: 50, y:250, distance: 0};
+	var testEntity2 = {x: -50, y:50, distance: 0};
 	gameObjects.push(testEntity2);
-	var testEntity3 = {x: -50, y:175, distance: 0};
+	var testEntity3 = {x: 50, y:-50, distance: 0};
 	gameObjects.push(testEntity3);
+	var testEntity4 = {x: -50, y:-50, distance: 0};
+	gameObjects.push(testEntity4);
+
+	setupUI(eCanvas.width, eCanvas.height);
 
 	nextFrame();
 }
 
 function nextFrame() {
-	drawMapView();
-	mainInterface.updateUI();
-	driveEditor();
-	mainInterface.drawUI();
+	mainInterface.update();
+	mainInterface.draw();
 
 	drivePreview();
 	drawPreview();
@@ -226,14 +225,14 @@ function drawMapView() {
 	eCanvasContext.translate(-player.x, -player.y);
 
 	//2D draw loops
-	for (var i = 0; i < walls.length; i++) {
-		walls[i].draw2D();
-	}
 	for (var i = 0; i < currentAudGeo.length; i++) {
 		for (var j = 0; j < currentAudGeo[i].connections.length; j++) {
 			var pos = {x: currentAudGeo[currentAudGeo[i].connections[j]].point.x, y: currentAudGeo[currentAudGeo[i].connections[j]].point.y}
-			colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, pos.x, pos.y, 1, "darkblue");
+			colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, pos.x, pos.y, 1, "dodgerblue");
 		}
+	}
+	for (var i = 0; i < walls.length; i++) {
+		walls[i].draw2D();
 	}
 	for (var i = 0; i < audGeoPoints.length; i++) {
 		colorEmptyCircle(audGeoPoints[i].x, audGeoPoints[i].y, 1, "lightblue");
@@ -305,7 +304,7 @@ function drawPreview() {
 				x, y,
 				w, h);
 		}
-		pColorRect(x, y, w, h, fullColorHex(20, 10, 20, distance/drawDistance/2 * 512));
+		pColorRect(x, y, w, h, fullColorHex(20, 10, 30, distance/drawDistance * 384));
 	}
 	for (objectIndex; objectIndex < gameObjects.length; objectIndex++) {
 		DrawEntity(gameObjects[objectIndex]);

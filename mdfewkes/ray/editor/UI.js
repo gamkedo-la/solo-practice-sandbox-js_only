@@ -1,79 +1,130 @@
-const borderSize = 3;
-const borderBack = borderSize * 2;
+var borderSize = 2;
+var borderBack = borderSize * 2;
 
-var displaytext = "test";
+class UIElement {
+	constructor(name, x, y, w, h) {
+		this.name = name;
+		this.parent = {x:0, y:0};
+		this._mi = null;
 
-function MainInterface(screenWidth, screenHeight) {
-	this.name = "Main Interface";
-	this.x = 0;
-	this.y = 0;
-	this.w = screenWidth;
-	this.h = screenHeight;
+		this.parts = [];
+		this.active = [];
 
-	this.parts = [
-		new UIElement("topPane", 0, 0, this.w, 30, this),
-		new WallPane("wallPane", 0, 30, 0, 0, this),
-		new AudioPane("audioPane", 0, 30, 150, 200, this),
-		new EntityPane("entityPane", 0, 30, 150, 200, this),
-		new SelectionPane("selectionPane", 0, this.h, 200, 200, this),
-	]
-	this.active = [
-		this.parts[4],
-		this.parts[1],
-		this.parts[0],
-	]
-
-	this.parts[0].addPart(new UIButtonWToolTip("wallModeButton", 5, 5, 20, 20, this.parts[0], "Wall Mode"));
-	this.parts[0].addPart(new UIButtonWToolTip("audioModeButton", 28, 5, 20, 20, this.parts[0], "Audio Mode"));
-	this.parts[0].addPart(new UIButtonWToolTip("entityModeButton", 51, 5, 20, 20, this.parts[0], "Entity Mode"));
-	this.parts[0].addPart(new UIToggleWToolTip("snapToggle", 97, 5, 20, 20, this.parts[0], "Snap to nearest wall anchor", true));
-
-	this.parts[0].parts[0].activate = function() {
-		switchMode(WALL_MODE); 
-		mainInterface.parts[1].setActive(true);
-		mainInterface.parts[2].setActive(false);
-		mainInterface.parts[3].setActive(false);
-	};
-	this.parts[0].parts[1].activate = function() {
-		switchMode(AUDIO_MODE); 
-		mainInterface.parts[1].setActive(false);
-		mainInterface.parts[2].setActive(true);
-		mainInterface.parts[3].setActive(false);
-	};
-	this.parts[0].parts[2].activate = function() {
-		switchMode(ENTITY_MODE); 
-		mainInterface.parts[1].setActive(false);
-		mainInterface.parts[2].setActive(false);
-		mainInterface.parts[3].setActive(true);
-	};
-	this.parts[0].parts[3].onTrue = function() {snapToNearWallPoint = true};
-	this.parts[0].parts[3].onFalse = function() {snapToNearWallPoint = false};
-
-	this.updateUI = function() {
-		if (mouseJustPressed && isInElement(this, mouseX, mouseY)) {
-			leftMouseClick(mouseX, mouseY);
-		}
+		this.updatePosition(x, y, w, h);
 	}
 
-	this.drawUI = function() {
+	update() {
+		for (var i = this.active.length-1; i >= 0; i--) {
+			this.active[i].update();
+		}
+
+		this.onUpdate();
+	}
+
+	onUpdate() {}
+
+	draw() {
+		this.onDraw();
+
 		for (var i = 0; i < this.active.length; i++) {
 			this.active[i].draw();
 		}
-
-		displaytext = getDisplayText();
-		colorText(displaytext, this.x + this.w - borderBack, 15 + borderSize, "darkblue", "15px Arial", "right");
 	}
 
-	function leftMouseClick(x, y) {
-		for (var i = mainInterface.active.length -1; i >= 0; i--) {
-			if (isInElement(mainInterface.active[i], x, y)) {
-				mainInterface.active[i].leftMouseClick(x, y);
+	onDraw() {
+		colorRect(this.x, this.y, this.w, this.h, 'blue');
+		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'lightblue');		
+	}
 
+	leftMouseClick(x, y) {
+		this.setMostActive();
+
+		for (var i = this.active.length -1; i >= 0; i--) {
+			if (isInElement(this.active[i], x, y)) {
+				this.active[i].leftMouseClick(x, y);
 				mouseJustPressed = false;
-
-				break;
+				return;
 			}
 		}
+
+		this.onLeftMouseClick();
+	}
+
+	onLeftMouseClick() {
+	}
+
+	addPart(part, isActive = true) {
+		part.parent = this;
+		part.updatePosition();
+
+		this.parts.push(part);
+		if (isActive) this.active.push(part);
+
+		return part;
+	}
+
+	removePart(part) {
+		var partIndex = this.parts.indexOf(part);
+		if (partIndex < 0) return;
+
+		this.parts[partIndex].setActive(false);
+		this.parts.splice(partIndex, 1);
+	}
+
+	setMostActive() {
+		if (!this.isActive()) {
+			this.setActive();
+			return;
+		}
+
+		this.parent.active.splice(this.parent.active.indexOf(this), 1);
+		this.parent.active.push(this);
+	}
+
+	setLeastActive() {
+		if (!this.isActive()) {
+			this.setActive();
+			return;
+		}
+
+		this.parent.active.splice(this.parent.active.indexOf(this), 1);
+		this.parent.active.unshift(this);
+	}
+
+	setActive(isActive = true) {
+		if (isActive && !this.isActive()) {
+			this.parent.active.push(this);
+			return;
+		}
+		if (!isActive && this.isActive()) {
+			this.parent.active.splice(this.parent.active.indexOf(this), 1);
+			return;
+		}
+	}
+
+	isActive() {
+		return this.parent.active.includes(this);
+	}
+
+	updatePosition(x = this.xoff, y = this.yoff, w = this.w, h = this.h) {
+		this.xoff = x;
+		this.yoff = y;
+		this.x = this.xoff + this.parent.x;
+		this.y = this.yoff + this.parent.y;
+		this.w = w;
+		this.h = h;
+
+		for (var i = 0; i < this.parts.length; i++) {
+			this.parts[i].updatePosition();
+		}
+	}
+
+	mi() {
+		if (this._mi == null) {
+			this._mi = this.parent.mi();
+		}
+
+		return this._mi;
 	}
 }
 
@@ -88,168 +139,248 @@ function isInElement(uiElement, x, y) {
     return boolResult;
 }
 
-class UIElement {
-	constructor(name, x, y, w, h, parent) {
-		this.name = name;
-		this.parent = parent;
-		this.xoff = x;
-		this.yoff = y;
-		this.x = this.xoff + this.parent.x;
-		this.y = this.yoff + this.parent.y;
-		this.w = w;
-		this.h = h;
+class UIMainInterface extends UIElement {
+	constructor(name, screenWidth, screenHeight) {
+		super(name, 0, 0, screenWidth, screenHeight);
+		this._mi = this;
 
-		this.parts = [];
-		this.active = [];
-	}
-
-	addPart(part, isActive = true) {
-		this.parts.push(part);
-		if (isActive) this.active.push(part);
-		return part;
-	}
-
-	setMostActive() {
-		this.parent.active.push(this.parent.active.splice(this.parent.active.indexOf(this), 1)[0]);
-	}
-
-	setActive(isActive) {
-		if (isActive && !this.parent.active.includes(this)) {
-			this.parent.active.push(this);
-		}
-		if (!isActive && this.parent.active.includes(this)) {
-			this.parent.active.splice(this.parent.active.indexOf(this), 1);
-		}
-	}
-
-	leftMouseClick(x, y) {
-		this.setMostActive();
-
-		for (var i = this.active.length -1; i >= 0; i--) {
-			if (isInElement(this.active[i], x, y)) {
-				this.active[i].leftMouseClick(x, y);
-				break;
-			}
-		}
-	}
-
-	updatePosition(x = this.xoff, y = this.yoff, w = this.w, h = this.h, parent = this.parent) {
-		this.parent = parent;
-		this.xoff = x;
-		this.yoff = y;
-		this.x = this.xoff + this.parent.x;
-		this.y = this.yoff + this.parent.y;
-		this.w = w;
-		this.h = h;
-
-		for (var i = 0; i < this.parts.length; i++) {
-			this.parts[i].updatePosition();
-		}
+		this.lateDraw = [];
 	}
 
 	draw() {
-		colorRect(this.x, this.y, this.w, this.h, 'blue');
-		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'lightblue');
+		super.draw();
+
+		for (var i = 0; i < this.lateDraw.length; i++) {
+			this.lateDraw[i].lateDraw();
+		}
+
+		this.lateDraw.length = 0;
+	}
+
+	onUpdate() {
+		if (mouseJustPressed /*&& isInElement(this, mouseX, mouseY)*/) {
+			this.leftMouseClick(mouseX, mouseY);
+		}
+	}
+
+	onDraw() {}
+	setMostActive() {}
+	setLeastActive() {}
+	setActive(isActive) {}
+	isActive() { return true; }
+}
+
+class UIMaskBox extends UIElement {
+	constructor(name, x, y, w, h) {
+		super(name, x, y, w, h);
+
+		this.xoffset = 0;
+		this.yoffset = 0;
+		this.offsetChanged = false;
+
+		this.canvas = document.createElement("Canvas");
+		this.canvasContext = this.canvas.getContext("2d");
+
+		this.canvas.width = canvas.width;
+		this.canvas.height = canvas.height;
+
+		this.drawBorder = false;
+	}
+
+	onUpdate() {
+		if (!this.offsetChanged) return;
+
+		this.x += this.xoffset;
+		this.y += this.yoffset;
+
+		for (var i = 0; i < this.active.length; i++) {
+			this.active[i].updatePosition();
+		}
+
+		this.x -= this.xoffset;
+		this.y -= this.yoffset;
+	}
+
+	draw() {
+		var stowCanvas = canvas;
+		var stowContext = canvasContext;
+		canvas = this.canvas;
+		canvasContext = this.canvasContext;
+
+		if (this.drawBorder) {
+			super.onDraw();
+		} else {
+			colorRect(this.x, this.y, this.w, this.h, 'lightblue');		
+		}
 
 		for (var i = 0; i < this.active.length; i++) {
 			this.active[i].draw();
 		}
+
+		canvas = stowCanvas;
+		canvasContext = stowContext;
+
+		this.onDraw();
+	}
+
+	onDraw() {
+		canvasContext.drawImage( 
+			this.canvas,
+			this.x, this.y, 
+			this.w, this.h,
+			this.x, this.y,
+			this.w, this.h
+		);
+	}
+
+	setOffset(x, y) {
+		this.xoffset = x;
+		this.yoffset = y;
+		this.offsetChanged = true;
+	}
+
+	setOffsetX(x) {
+		this.setOffset(x, this.yoffset);
+	}
+
+	setOffsetY(y) {
+		this.setOffset(this.xoffset, y);
+	}
+
+	addOffset(x, y) {
+		this.setOffset(this.xoffset + x, this.yoffset + y);
+	}
+
+	addOffsetX(x) {
+		this.addOffset(x, 0);
+	}
+
+	addOffsetY(y) {
+		this.addOffset(0, y);
 	}
 }
 
 class UIButton extends UIElement {
-	constructor(name, x, y, w, h, parent) {
-		super(name, x, y, w, h, parent);
+	constructor(name, x, y, w, h) {
+		super(name, x, y, w, h);
 	}
 
-	leftMouseClick(x, y) {
-		this.setMostActive();
-		this.activate();
+	onLeftMouseClick() {
+		this.onClick();
 	}
 
-	draw() {
-		colorRect(this.x, this.y, this.w, this.h, 'blue');
-		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'lightblue');
+	onDraw() {
+		super.onDraw();
 
 		if (isInElement(this, mouseX, mouseY)) {
 			colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'dodgerblue');
-			if (mouseJustPressed) colorCircle(this.x + this.w * 0.5, this.y + this.h * 0.5, (this.w + this.h) * 0.25 + 10, 'white');
+			if (mouseJustPressed) {
+				colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'white');
+			}
 		}
 	}
 
-	activate() {
-		console.log("click");
+	onClick() {
+		console.log("clicked " + this.name);
+	}
+}
+
+class UICloseButton extends UIButton {
+	onDraw() {
+		super.onDraw();
+
+		colorLine(this.x, this.y, this.x + this.w, this.y + this.h, 3, 'blue');
+		colorLine(this.x, this.y + this.h, this.x + this.w, this.y, 3, 'blue');
+	}
+
+	onLeftMouseClick() {
+		super.onLeftMouseClick();
+		this.parent.setActive(false);
 	}
 }
 
 class UIButtonWToolTip extends UIButton {
-	constructor(name, x, y, w, h, parent, toolTip = "") {
-		super(name, x, y, w, h, parent);
+	constructor(name, x, y, w, h, tipText = "") {
+		super(name, x, y, w, h);
 
-		this.toolTip = toolTip;
+		this.toolTip = tipText;
+		this.textAlignment = "start";
 	}
 
-	draw() {
-		super.draw();
+	onDraw() {
+		super.onDraw();
 
 		if (this.toolTip != "" && isInElement(this, mouseX, mouseY)) {
-			this.setMostActive();
-			colorTextOutline(this.toolTip, mouseX + 14, mouseY + 11, "black", "white");
+			this.mi().lateDraw.push(this);
 		}
 	}
 
+	lateDraw() {
+		colorText(this.toolTip, mouseX+1, mouseY+1, "white", "14px Arial", this.textAlignment);
+		colorText(this.toolTip, mouseX-1, mouseY+1, "white", "14px Arial", this.textAlignment);
+		colorText(this.toolTip, mouseX+1, mouseY-1, "white", "14px Arial", this.textAlignment);
+		colorText(this.toolTip, mouseX-1, mouseY-1, "white", "14px Arial", this.textAlignment);
+		colorText(this.toolTip, mouseX,   mouseY,   "black", "14px Arial", this.textAlignment);
+	}
 }
 
-class UIToggleWToolTip extends UIButtonWToolTip {
-	constructor(name, x, y, w, h, parent, toolTip = "", toggle = false) {
-		super(name, x, y, w, h, parent);
+class UIToggle extends UIButton {
+	constructor(name, x, y, w, h) {
+		super(name, x, y, w, h);
 
-		this.toolTip = toolTip;
-		this.toggle = toggle;
+		this.toggle = false;
 	}
 
-	draw() {
-		super.draw();
+	onDraw() {
+		super.onDraw();
 
 		if (this.toggle) {
 			colorRect(this.x + borderSize*2, this.y + borderSize*2, this.w - borderBack*2, this.h - borderBack*2, 'blue');		
 		}
 	}
 
-	activate() {
+	onLeftMouseClick() {
 		this.toggle = this.toggle ? false : true;
 
 		if (this.toggle) this.onTrue();
 		else this.onFalse();
+
+		super.onLeftMouseClick();
 	}
 
-	onTrue() {
-
-	}
-
-	onFalse() {
-
-	}
-
-
+	onClick() {}
+	onTrue() {}
+	onFalse() {}
 }
 
-class UICloseButton extends UIButton {
-	draw() {
-		super.draw();
+class UIToggleWToolTip extends UIToggle {
+	constructor(name, x, y, w, h, tipText = "") {
+		super(name, x, y, w, h);
 
-		colorLine(this.x, this.y, this.x + this.w, this.y + this.h, 3, 'blue');
-		colorLine(this.x, this.y + this.h, this.x + this.w, this.y, 3, 'blue');
+		this.toolTip = tipText;
+		this.textAlignment = "start";
 	}
 
-	activate() {
-		this.parent.parent.active.splice(this.parent.parent.active.indexOf(this.parent), 1);
+	onDraw() {
+		super.onDraw();
+
+		if (this.toolTip != "" && isInElement(this, mouseX, mouseY)) {
+			this.mi().lateDraw.push(this);
+		}
+	}
+
+	lateDraw() {
+		colorText(this.toolTip, mouseX+1, mouseY+1, "white", "14px Arial", this.textAlignment);
+		colorText(this.toolTip, mouseX-1, mouseY+1, "white", "14px Arial", this.textAlignment);
+		colorText(this.toolTip, mouseX+1, mouseY-1, "white", "14px Arial", this.textAlignment);
+		colorText(this.toolTip, mouseX-1, mouseY-1, "white", "14px Arial", this.textAlignment);
+		colorText(this.toolTip, mouseX,   mouseY,   "black", "14px Arial", this.textAlignment);
 	}
 }
 
 class UIMoveBar extends UIElement {
-	constructor(name, x, y, w, h, parent) {
-		super(name, x, y, w, h, parent);
+	constructor(name, x, y, w, h) {
+		super(name, x, y, w, h);
 
 		this.grabbed = false;
 		this.grabbedX = -1;
@@ -258,9 +389,7 @@ class UIMoveBar extends UIElement {
 		this.parentY = -1;
 	}
 
-	leftMouseClick(x, y) {
-		this.setMostActive();
-
+	onLeftMouseClick() {
 		this.grabbed = true;
 		this.grabbedX = mouseX;
 		this.grabbedY = mouseY;
@@ -268,39 +397,42 @@ class UIMoveBar extends UIElement {
 		this.parentY = this.parent.y;
 	}
 
-	draw() {
-		colorRect(this.x, this.y, this.w, this.h, 'blue');
-		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'skyblue');
-
-		if (!mouseIsDown || mouseX < 0 || mouseX >= eCanvas.width || mouseY < 0 || mouseY >= eCanvas.height) {
+	onUpdate() {
+		if (!mouseIsDown || mouseX < 0 || mouseY < 0 || mouseX >= this.mi.w || mouseY >= this.mi.h) {
 			this.grabbed = false;
 		}
 
 		if (this.grabbed) {
 			var newX = this.parentX + mouseX - this.grabbedX;
 			var newY = this.parentY + mouseY - this.grabbedY;
+
 			this.parent.updatePosition(newX, newY);
 		}
+	}
+
+	onDraw() {
+		super.onDraw();
+		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'skyblue');
 	}
 }
 
 class UITextLabel extends UIElement {
-	constructor(name, x, y, w, h, parent) {
-		super(name, x, y, w, h, parent);
+	constructor(name, x, y, w, h, text = "") {
+		super(name, x, y, w, h);
 
 		this.size = 14;
 		this.textAlignment = "left";
-		this.label = "";
+		this.label = text;
 	}
 
-	draw() {
+	onDraw() {
 		colorText(this.label, this.x, this.y, 'black', this.size + "px Arial", this.textAlignment)
 	}
 }
 
 class UIDropdown extends UIElement {
-	constructor(name, x, y, w, h, parent) {
-		super(name, x, y, w, h, parent);
+	constructor(name, x, y, w, h) {
+		super(name, x, y, w, h);
 
 		this.value = 0;
 		this.list = [];
@@ -309,76 +441,79 @@ class UIDropdown extends UIElement {
 		this.textAlignment = "center";
 
 		this.open = false;
-		this.listElement;
 		this.updateListElement();
-		this.activeIndex = -1;
+	}
+
+	onLeftMouseClick() {
+		if (!this.open) {
+			this.openList();
+		}
+	}
+
+	onDraw() {
+		colorRect(this.x, this.y, this.w, this.h, 'blue');
+		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'skyblue');
+		colorText(this.list[this.value], this.x + this.w * 0.5, this.y + this.size, 'black', this.parent.size + "px Arial", this.textAlignment);
+	}
+
+	updatePosition(x = this.xoff, y = this.yoff, w = this.w, h = this.h) {
+		super.updatePosition(x, y, w, h);
+		this.updateListElement();
 	}
 
 	updateListElement() {
+		if (this.list == undefined) return;
+
 		this.parts.length = 0;
 		this.active.length = 0;
 		var height = this.list.length * (this.size + 3);
 		var y = this.center ? -height * 0.5 : 0;
 		if (this.y + y < 0) y -= this.y + y;
-		if (this.y + height + y > eCanvas.height) y -= this.y + height + y - eCanvas.height
+		if (this.y + height + y > canvas.height) y -= this.y + height + y - canvas.height
 		this.addPart(new UIDropdownList(this.name + " dropdown list", 0, y, this.w, height, this), this.open);
-		this.listElement = this.parts[0];
 	}
 
 	closeList() {
 		if (this.active.length > 0) this.active.length = 0;
 		this.open = false;
+		mouseJustPressed = false;
 	}
 
-	leftMouseClick(x, y) {
-		this.setMostActive();
-
-		if (!this.open) {
-			this.active.push(this.parts[0]);
-			this.open = true;
-			//mouseJustPressed = false;
-			this.listElement.justOpened = true;
-		}
-	}
-
-	draw() {
-		colorRect(this.x, this.y, this.w, this.h, 'blue');
-		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'skyblue');
-		colorText(this.list[this.value], this.x + this.w * 0.5, this.y + this.size, 'black', this.parent.size + "px Arial", this.textAlignment);
-
-		for (var i = 0; i < this.active.length; i++) {
-			this.active[i].draw();
-		}
-	}
-
-	updatePosition(x = this.xoff, y = this.yoff, w = this.w, h = this.h, parent = this.parent) {
-		super.updatePosition(x, y, w, h, parent);
-		this.updateListElement();
+	openList() {
+		this.active.push(this.parts[0]);
+		this.open = true;
+		this.parts[0].justOpened = true;
 	}
 }
 
 class UIDropdownList extends UIElement {
-	constructor(name, x, y, w, h, parent) {
-		super(name, x, y, w, h, parent);
+	constructor(name, x, y, w, h) {
+		super(name, x, y, w, h);
 
-		this.justOpened = true;
+		this.justOpened = false;
 	}
 
-	draw() {
+	onUpdate() {
 		if (mouseJustPressed && !this.justOpened) {
 			if (isInElement(this, mouseX, mouseY)) {
-				this.parent.value = this.quantizeMousePosition();
+				this.parent.value = this.quantizeMousePositionY();
+				mouseJustPressed = false;
+				mouseJustReleased = true;
 			}
 			this.parent.closeList();
 			return;
 		}
 
+		this.justOpened = false;
+	}
+
+	onDraw() {
 		colorRect(this.x, this.y, this.w, this.h, 'blue');
 		colorRect(this.x + borderSize, this.y + borderSize, this.w - borderBack, this.h - borderBack, 'skyblue');
 
 		var value = this.parent.value;
 		if (isInElement(this, mouseX, mouseY)) {
-			value = this.quantizeMousePosition();
+			value = this.quantizeMousePositionY();
 
 		}
 		colorRect(this.x + borderSize, this.y + borderSize + value * (this.parent.size + 3), this.w - borderBack, (this.parent.size + 3) - borderBack, 'lightcyan');
@@ -388,168 +523,9 @@ class UIDropdownList extends UIElement {
 		for (var i = 0; i < list.length; i++) {
 			colorText(list[i], this.x + this.w * 0.5, this.y + (this.parent.size + 3) * i + this.parent.size - 1, 'black', this.parent.size - 1 + "px Arial", this.parent.textAlignment);
 		}
-
-		this.justOpened = false;
 	}
 
-	quantizeMousePosition() {
+	quantizeMousePositionY() {
 		return Math.min(Math.floor((mouseY - this.y) / (this.parent.size + 3)), this.parent.list.length - 1);
 	}
-}
-
-
-
-
-
-
-class WallPane extends UIElement {
-	constructor(name, x, y, w, h, parent) {
-		super(name, x, y, 30, 76, parent);
-
-		this.addPart(new UIButtonWToolTip("singleWallMode", 5, 5, 20, 20, this, "Add Walls"));
-		this.addPart(new UIButtonWToolTip("multiWallMode", 5, 28, 20, 20, this, "Add Connected Walls"));
-		this.addPart(new UIButtonWToolTip("selectWallMode", 5, 51, 20, 20, this, "Select Wall"));
-
-		this.parts[0].activate = function() {wallMode = ADD_SINGLE_WALL;};
-		this.parts[1].activate = function() {wallMode = ADD_MULTI_WALLS;};
-		this.parts[2].activate = function() {wallMode = SELECT_WALL;};
-	}
-
-}
-
-class AudioPane extends UIElement {
-	constructor(name, x, y, w, h, parent) {
-		super(name, x, y, 30, 76, parent);
-
-		this.addPart(new UIButtonWToolTip("addAudioNodeMode", 5, 5, 20, 20, this, "Add Audio Nodes"));
-		this.addPart(new UIButtonWToolTip("generateAudioGeo", 5, 28, 20, 20, this, "GenerateAudioGeo"));
-		this.addPart(new UIButtonWToolTip("selectAudioNodeMode", 5, 51, 20, 20, this, "Select Audio Nodes"));
-
-		this.parts[0].activate = function() {audioMode = ADD_AUDIO;};
-		this.parts[1].activate = function() {generateAudGeo();};
-		this.parts[2].activate = function() {audioMode = SELECT_AUDIO;};
-	}
-	
-}
-
-class EntityPane extends UIElement {
-	constructor(name, x, y, w, h, parent) {
-		super(name, x, y, 30, 76, parent);
-	}
-	
-}
-
-class SelectionPane extends UIElement{
-	constructor(name, x, y, w, h, parent) {
-		super(name, x, y - h, w, h, parent);
-
-		this.bottom = y;
-
-		this.audioButtons = [
-			this.addPart(new UIButton("nudgeLeft", 150, 150, 10, 10, this), false),
-			this.addPart(new UIButton("nudgeUp", 160, 140, 10, 10, this), false),
-			this.addPart(new UIButton("nudgeRight", 170, 150, 10, 10, this), false),
-			this.addPart(new UIButton("nudgeDown", 160, 160, 10, 10, this), false)
-		];
-		this.audioButtons[0].activate = function() {
-			if (selectedElement!= null) {
-				selectedElement.x += -0.01;
-				selectedElement.x = roundToDecimalPlace(selectedElement.x, 2);
-			}
-		};
-		this.audioButtons[1].activate = function() {
-			if (selectedElement!= null) {
-				selectedElement.y += -0.01;
-				selectedElement.y = roundToDecimalPlace(selectedElement.y, 2);
-			}
-		};
-		this.audioButtons[2].activate = function() {
-			if (selectedElement!= null) {
-				selectedElement.x += 0.01;
-				selectedElement.x = roundToDecimalPlace(selectedElement.x, 2);
-			}
-		};
-		this.audioButtons[3].activate = function() {
-			if (selectedElement!= null) {
-				selectedElement.y += 0.01;
-				selectedElement.y = roundToDecimalPlace(selectedElement.y, 2);
-			}
-		};
-	}
-
-	draw() {
-		if (selectedElement == null) {
-			this.h = 30;
-			this.w = 200;
-		} else {
-			if (editMode == WALL_MODE) {
-				this.h = 90;
-				this.w = 200;
-			}
-			if (editMode == AUDIO_MODE) {
-				this.h = 90;
-				this.w = 200;
-			}
-			if (editMode == ENTITY_MODE) {
-				this.h = 100;
-				this.w = 200;
-			}
-		}
-		this.y = this.bottom - this.h;
-
-		super.draw();
-
-		if (selectedElement != null) {
-			if (editMode == WALL_MODE) {
-				var textP1 = "p1 {x: " + selectedElement.p1.x + ", y: " + selectedElement.p1.y + "}";
-				var textP2 = "p2 {x: " + selectedElement.p2.x + ", y: " + selectedElement.p2.y + "}";
-				var textColor = "Color: " + selectedElement.color;
-				colorText(textP1, this.x + borderSize + 20, this.y + 15 + borderSize, "darkblue");
-				colorText(textP2, this.x + borderSize + 20, this.y + 30 + borderSize, "darkblue");
-				colorText(textColor, this.x + borderSize + 20, this.y + 45 + borderSize, "darkblue");
-
-			}
-
-			if (editMode == AUDIO_MODE) {
-				var index = audGeoPoints.indexOf(selectedElement);
-				var textPos = index + " {x: " + selectedElement.x.toFixed(2) + ", y: " + selectedElement.y.toFixed(2) + "}";
-				colorText(textPos, this.x + borderSize + 20, this.y + 15 + borderSize, "darkblue");
-
-				if (currentAudGeo.length > 0 && currentAudGeo.length-1 >= index
-					&& currentAudGeo[index].point.x == selectedElement.x 
-					&& currentAudGeo[index].point.y == selectedElement.y) {
-
-					var textConnected = "[";
-					for (var i in currentAudGeo[index].connections) {
-						textConnected = textConnected + " " + currentAudGeo[index].connections[i];
-					}
-					textConnected = textConnected + " ]";
-					colorText(textConnected, this.x + borderSize + 20, this.y + 30 + borderSize, "darkblue");
-				}
-
-				for (var i = 0; i < this.audioButtons.length; i++) {
-					this.audioButtons[i].setActive(true);
-				}
-
-			} else {
-				for (var i = 0; i < this.audioButtons.length; i++) {
-					this.audioButtons[i].setActive(false);
-				}
-			}
-
-			if (editMode == ENTITY_MODE) {
-
-			}
-
-		} else {
-			for (var i = 0; i < this.audioButtons.length; i++) {
-				this.audioButtons[i].setActive(false);
-			}
-		}
-
-		var pos = getMousePositionInWorldSpace();
-		var text = "{x: " + pos.x + ", y: " + pos.y + "}";
-		colorText(text, this.x + this.w*0.5, this.bottom - 13 + borderSize, "darkblue", "15px Arial", "center");
-	}
-
 }

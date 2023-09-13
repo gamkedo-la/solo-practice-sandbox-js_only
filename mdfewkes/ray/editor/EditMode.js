@@ -139,7 +139,7 @@ function runWallMode() {
 	colorEmptyCircle(mouseX, mouseY, 5, "white");
 	if (lastPoint != null) {
 		var pos = getWorldPositionInScreenSpace(lastPoint);
-		//colorEmptyCircle(pos.x, pos.y, 3, "grey");
+		colorEmptyCircle(pos.x, pos.y, 3, "grey");
 		colorLine(pos.x - 5, pos.y, pos.x + 5, pos.y, 1, "grey");
 		colorLine(pos.x, pos.y - 5, pos.x, pos.y + 5, 1, "grey");
 	}
@@ -152,6 +152,7 @@ function runAudioMode() {
 		if (audioMode == ADD_AUDIO) {
 			audGeoPoints.push({x: mousePos.x, y: mousePos.y});
 			selectedElement = audGeoPoints[audGeoPoints.length-1];
+			generateAudGeo();
 		}
 
 		if (audioMode == SELECT_AUDIO) {
@@ -171,6 +172,7 @@ function runAudioMode() {
 		audGeoPoints.splice(audGeoPoints.indexOf(selectedElement), 1);
 		delKey = false;
 		selectedElement = null;
+		generateAudGeo();
 	}
 
 	if (selectedElement != null) {
