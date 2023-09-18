@@ -50,10 +50,9 @@ function loadImages() {
 			{varName: feedbackGUIPic, theFile: "feedbackGUI.png"},
 			{varName: healthbarPic, theFile: "healthbar.png"},
 			{varName: rockBulletPic, theFile: "rockBullet.png"},
-
-			
+	
 			{trackType: TILE_ROAD, theFile: "track_road.png"},
-			{trackType: TILE_WALL, theFile:  "track_wall.png"},	
+			{trackType: TILE_WALL, theFile:  "track_wall2.png"},	
 			{trackType: TILE_WALL_WITH_TORCH, theFile:  "track_wall_with_torch.png"},
 			{trackType: TILE_YELLOW_DOOR, theFile:  "track_yellowdoor.png"},
 			{trackType: TILE_RED_DOOR, theFile:  "track_reddoor.png"},		

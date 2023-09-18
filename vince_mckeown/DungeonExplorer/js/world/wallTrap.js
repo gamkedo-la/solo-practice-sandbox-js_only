@@ -32,18 +32,90 @@ function rockBulletClass(xPos, yPos){
 	this.canMoveEast = true;
 	this.canMoveSouth = true;
 	this.canMoveWest = true;
+	this.wallImmuninity = 0;
 
     this.movement = function() {
 		var nextX = this.x; 
 		var nextY = this.y; 
-
+	
         if(this.moveSouth){
             nextY += this.speed;
         }
 
-        this.x = nextX;
-        this.y = nextY;
-    }
+		var walkIntoTileIndex = getTileIndexAtPixelCoord(nextX,nextY);
+		var walkIntoTileType = TILE_WALL;
+		
+		if(walkIntoTileType != undefined){	
+			walkIntoTileType = roomGrid[walkIntoTileIndex];
+		}
+
+		if(this.wallImmuninity < 6){
+			this.wallImmuninity++;
+		}
+		switch(walkIntoTileType) {
+			case TILE_WALL:
+				if(this.wallImmuninity < 5){
+					break;
+				}
+			case TILE_ROAD:
+			case TILE_SPIKES_UNARMED:
+			case TILE_PITTRAP_UNARMED:
+			case TILE_WALL_TRAP:
+			case TILE_WALL_TRAP2:
+				this.x = nextX;
+				this.y = nextY;
+				break;
+			case TILE_YELLOW_DOOR:
+			case TILE_RED_DOOR:
+			case TILE_BLUE_DOOR:	
+			case TILE_TREASURE:	
+			case TILE_YELLOW_KEY:				
+			case TILE_FINISH:
+			case TILE_STAIRS_DOWN:
+			case TILE_STAIRS:
+			case TILE_PITTRAP_ARMED:
+			case TILE_SPIKES_ARMED:
+			case TILE_WALL:
+			case TILE_WALL_WITH_TORCH:
+			case TILE_TABLE:
+			case TILE_BOOKSHELF:
+			default:
+				break;
+		} // END OF SWITCH CASE	
+	}	// END OF THIS.MOVEMENT
+
+		
+	this.checkCollisionsAgainst = function(otherHumanoid){
+		if(this.collisionTest(otherHumanoid)){
+			console.log("collision");
+			if(this.keyHeld_North){
+				this.canMoveNorth = false;
+				this.y += this.playerMovementSpeed * COLLIDE_BUMP_MULT;
+			} else if(this.keyHeld_East){
+				this.canMoveEast = false;
+				this.x -= this.playerMovementSpeed * COLLIDE_BUMP_MULT;
+			} else if(this.keyHeld_South){
+				this.canMoveSouth = false;
+				this.y -= this.playerMovementSpeed * COLLIDE_BUMP_MULT;
+			} else if(this.keyHeld_West){
+				this.canMoveWest = false;
+				this.x += this.playerMovementSpeed * COLLIDE_BUMP_MULT;				
+			}
+		} else {
+			this.canMoveNorth = true;
+			this.canMoveEast = true;
+			this.canMoveSouth = true;
+			this.canMoveWest = true;
+		}
+	}
+	
+	this.collisionTest = function(otherHumanoid){
+		if(	this.x > otherHumanoid.x - 20 && this.x < otherHumanoid.x + 20 &&
+			this.y > otherHumanoid.y - 20 && this.y < otherHumanoid.y + 20){
+				return true;
+		}
+		return false;
+	}
 
     this.draw = function(){
         gameCoordToIsoCoord(this.x,this.y);
