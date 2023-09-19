@@ -86,5 +86,6 @@
 
 * 2023/09/15 (1.5h) getting back into it
   getting the repo cloned, reading the basics of canvas to refresh my memory, getting a bouncing square
+* 2023/09/19 alt-tab away from the browser was messing up animations.
 
 # === CUT ===
