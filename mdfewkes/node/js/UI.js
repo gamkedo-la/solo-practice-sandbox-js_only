@@ -1,5 +1,5 @@
-var borderSize = 2;
-var borderBack = borderSize * 2;
+var borderSize = 1;
+var borderBack = 3;//borderSize * 2;
 
 class UIElement {
 	constructor(name, x, y, w, h) {
@@ -107,12 +107,12 @@ class UIElement {
 	}
 
 	updatePosition(x = this.xoff, y = this.yoff, w = this.w, h = this.h) {
+		this.w = w;
+		this.h = h;
 		this.xoff = x;
 		this.yoff = y;
 		this.x = this.xoff + this.parent.x;
 		this.y = this.yoff + this.parent.y;
-		this.w = w;
-		this.h = h;
 
 		for (var i = 0; i < this.parts.length; i++) {
 			this.parts[i].updatePosition();
