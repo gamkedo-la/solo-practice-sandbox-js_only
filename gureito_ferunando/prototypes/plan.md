@@ -58,10 +58,10 @@
 ## P1
 
 ### stage 1
-* camera follows the player
 * end of the world moves ever forward
 * the player is a simple blue polygonal shape
 * the end of the world is a jagged, glitchy, random, red line
+
 ### stage 2
 * place twisting canyon walls around a center channel
 * player knows how far the end of the world is
@@ -79,6 +79,7 @@
 ### ===DONE===
 * first pass of: player controls with the keyboard
   * up accelerates, down breaks, left/right strafes
+* first pass of: camera follows the player
 
 ----
 
