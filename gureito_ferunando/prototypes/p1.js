@@ -32,6 +32,13 @@ var player = {
     accel: 5,
 };
 
+var eotw = {
+    x: 0,
+    y: 100,
+    vy: -10,
+    accel: -2,
+}
+
 var camera = {
     x: 0,
     y: 0,
@@ -75,16 +82,25 @@ function tick(dt) {
     player.y += player.vy * dt;
 
     camera.y = player.y + camera.dy;
+
+    eotw.vy += eotw.accel*dt
+    eotw.y += eotw.vy * dt
     
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, 400, 300);
-    ctx.fillStyle = "blue";
 
     x = player.x - camera.x + 200;
     y = player.y - camera.y + 150;
 
+    ctx.fillStyle = "blue";
     ctx.fillRect(x - 10, y - 10, 20, 20);
 
+    x = eotw.x - camera.x + 200
+    y = eotw.y - camera.y + 150;
+
+    ctx.fillStyle = "orange"
+    ctx.fillRect(0,y,400, 300-y)
+    
     ctx.fillStyle = "red";
     ctx.fillText(`player velocity=<${player.vx, player.vy}> currently @ <${player.x.toPrecision(2)},${player.y.toPrecision(2)}>`,0,290)
 }

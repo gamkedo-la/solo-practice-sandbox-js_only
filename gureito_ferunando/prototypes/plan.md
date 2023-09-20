@@ -58,7 +58,6 @@
 ## P1
 
 ### stage 1
-* end of the world moves ever forward
 * the player is a simple blue polygonal shape
 * the end of the world is a jagged, glitchy, random, red line
 
@@ -80,6 +79,7 @@
 * first pass of: player controls with the keyboard
   * up accelerates, down breaks, left/right strafes
 * first pass of: camera follows the player
+* first pass of: end of the world moves ever forward
 
 ----
 
