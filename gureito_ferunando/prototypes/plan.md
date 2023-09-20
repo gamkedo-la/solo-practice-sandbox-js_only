@@ -61,7 +61,6 @@
 ## P1
 
 ### stage 2
-* player has a min/max speed
 
 * place twisting canyon walls around a center channel
 * player knows how far the end of the world is
@@ -81,10 +80,11 @@
 * thank player for sticking until the end
 
 ### ===DONE===
+* player has a min/max speed
+* first pass of: end of the world moves ever forward
+* first pass of: camera follows the player
 * first pass of: player controls with the keyboard
   * up accelerates, down breaks, left/right strafes
-* first pass of: camera follows the player
-* first pass of: end of the world moves ever forward
 
 ----
 
