@@ -1,3 +1,22 @@
+# 2023/09/19
+
+relized why i want to make a river raid clone, so transforming this to be, instead, a *series* of prototypes.
+i want to both explore different mechanics/directions to make it mine, and to build up skills and rythm.
+and after a series of prototypes, finally plan up a (first) whole game.
+starting to think of this as my "river raid" cycle, more than one game "inspired" by it, and that it probably will mean similar cycles for other important games in the future...
+
+so, for this: 
+make a few javascript prototypes,
+collect the learned lessons, 
+choose the tech i want to use for the final project, 
+make a second series of prototypes on that tech to learn it.
+make the first game of the river raid cycle.
+
+# 2023/09/15
+
+not trying to do it as godot, going basic javascript route for now, to get myself started again.
+resetting all tasks, not trying to plan for an specific date to be done, but, try and keep track of time spent, so i can get a better feel for my pace.
+
 # 2023/09/11
 
 i realized that friday and weekends are "lost" days.
@@ -11,8 +30,3 @@ so, listing everything i think i will need to do, and i want to do, and iterate 
 i think i need to embrace the fact that my "first pass concept planning" will be waaaay overscope and optimistic, and use this to find vhat might make them different from what's out there that would make *me* want to play it, then focus and iterate on *these* things.
 also need to learn not to feel pained when cutting features off my idea-full first concept.
 yes, obvious in hindsight, but these are hard for me 😅
-
-# 2023/09/15
-
-not trying to do it as godot, going basic javascript route for now, to get myself started again.
-resetting all tasks, not trying to plan for an specific date to be done, but, try and keep track of time spent, so i can get a better feel for my pace.
