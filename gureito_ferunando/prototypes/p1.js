@@ -3,11 +3,6 @@ const ctx = canvas.getContext("2d");
 
 window.requestAnimationFrame(animate);
 
-var x = 10;
-var y = 10;
-var vx = 50;
-var vy = 30;
-
 var last_time = performance.now();
 let frame_count = 0;
 
@@ -26,19 +21,51 @@ function animate(t) {
     window.requestAnimationFrame(animate);
 }
 
-function tick(dt) {
-    if (x > 380 || x < 0.1) {
-        vx *= -1;
-    }
-    if (y > 280 || y < 0.1) {
-        vy *= -1;
-    }
-    x += vx * dt;
-    y += vy * dt;
+// ============================================================================
 
+var player = {
+    x: 200,
+    y: 200,
+    speed: 0,
+    vx: 0,
+    vy: 0,
+};
+
+function keyboard(k) {
+    switch (k.key) {
+        case "ArrowLeft":
+            if (k.type === "keydown") {
+                player.vx = -10;
+            } else {
+                player.vx = 0;
+            }
+            break;
+        case "ArrowRight":
+            if (k.type === "keydown") {
+                player.vx = 10;
+            } else {
+                player.vx = 0;
+            }
+            break;
+        case "ArrowUp":
+            if (k.type === "keydown") {
+                player.vy -= 10;
+            }
+            break;
+        case "ArrowDown":
+            if (k.type === "keydown") {
+                player.vy += 10;
+            }
+            break;
+    }
+}
+window.onkeydown = keyboard;
+window.onkeyup = keyboard;
+function tick(dt) {
+    player.x += player.vx * dt;
+    player.y += player.vy * dt;
     ctx.fillStyle = "black";
     ctx.fillRect(0, 0, 400, 300);
     ctx.fillStyle = "blue";
-    ctx.fillRect(x, y, 20, 20);
-
+    ctx.fillRect(player.x - 10, player.y - 10, 20, 20);
 }
