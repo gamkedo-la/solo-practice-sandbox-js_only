@@ -46,7 +46,10 @@
 ## questions i woul like answered
 
 * does player accelerating move them to the bottom of the screen and slowing down move them to the middle of the screen confuses?
-* does player sideways movement reduces velocity?
+* does sideways movement interacts with the velocity in non trivial ways?
+  * when player moves sideways, the *speed* is kept within the limits, and when they stop strafing, we keep vy as it is -> might slow the player if close to the max
+  * when player moves sideways, we decelerate vy at the same time but different rate -> slows the player all the time but is consistent
+  * when player moves sideways, they can also accelerate forward but at a bigger fuel cost or maybe damage? 
 * does player needs to slow down to refuel?
 * does player needs to slow down to pick up ammo?
 * does the minimum speed increases with time?
@@ -57,21 +60,23 @@
 
 ## P1
 
-### stage 1
-* the player is a simple blue polygonal shape
-* the end of the world is a jagged, glitchy, random, red line
-
 ### stage 2
+* player has a min/max speed
+
 * place twisting canyon walls around a center channel
 * player knows how far the end of the world is
 * player knows how long they've been playing
 
 ### stage 3
+* player has different acceleration for x and y.
 * player dies if they hit the wall
 * player dies if the end of the world catches up (reaches the middle of the screen?)
 * end of the world accelerates over time
 
 ### delivery
+* the player is a simple blue polygonal shape
+* the end of the world is a jagged, glitchy, random, orange frontier
+* tweak all them parameters to a point i feel it's good.
 * show time and distance travelled on prayer death
 * thank player for sticking until the end
 
@@ -82,6 +87,7 @@
 * first pass of: end of the world moves ever forward
 
 ----
+
 
 * playing field scrolls by
 * player controls with the gamepad

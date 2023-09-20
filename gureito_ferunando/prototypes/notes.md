@@ -1,3 +1,10 @@
+# 2023/09/20
+
+realized that i have yet to internalize: there is no *first pass* on a prototype.
+the **whole** prototype is a first pass.
+and that's ok.
+that's its *intent*.
+
 # 2023/09/19
 
 relized why i want to make a river raid clone, so transforming this to be, instead, a *series* of prototypes.
