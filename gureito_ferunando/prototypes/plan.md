@@ -78,6 +78,7 @@
 * thank player for sticking until the end
 
 ### DONE
+* player restarts on command
 * player knows how long they've been playing
 * player knows how far the end of the world is
 * player has different acceleration for x and y.

@@ -82,7 +82,10 @@ function keyboard(k) {
             break
         case "ArrowDown":
             input.y = (k.type === "keydown") ? 1 : 0
-            break;
+            break
+        case "Escape":
+            start()
+            break
     }
 }
 
