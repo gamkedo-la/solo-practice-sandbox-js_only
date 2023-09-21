@@ -62,7 +62,6 @@
 
 ### stage 2
 
-* player knows how long they've been playing
 * player controls with the gamepad
 
 ### stage 3
@@ -79,6 +78,7 @@
 * thank player for sticking until the end
 
 ### DONE
+* player knows how long they've been playing
 * player knows how far the end of the world is
 * player has different acceleration for x and y.
 * player has a min/max speed
