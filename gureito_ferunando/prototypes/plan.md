@@ -62,32 +62,39 @@
 
 ### stage 2
 
-* place twisting canyon walls around a center channel
-* player knows how far the end of the world is
 * player knows how long they've been playing
+* player controls with the gamepad
 
 ### stage 3
-* player has different acceleration for x and y.
+
+* place twisting canyon walls around a center channel
 * player dies if they hit the wall
 * player dies if the end of the world catches up (reaches the middle of the screen?)
 * end of the world accelerates over time
+* restart on death and on command
 
 ### delivery
-* the player is a simple blue polygonal shape
-* the end of the world is a jagged, glitchy, random, orange frontier
 * tweak all them parameters to a point i feel it's good.
 * show time and distance travelled on prayer death
 * thank player for sticking until the end
 
-### ===DONE===
+### DONE
+* player knows how far the end of the world is
+* player has different acceleration for x and y.
 * player has a min/max speed
-* first pass of: end of the world moves ever forward
-* first pass of: camera follows the player
-* first pass of: player controls with the keyboard
+* end of the world moves ever forward
+* camera follows the player
+* player controls with the keyboard
   * up accelerates, down breaks, left/right strafes
 
-----
+### CUT
 
+not ideal for a prototype:
+* the player is a simple blue polygonal shape
+* the end of the world is a jagged, glitchy, random, orange frontier
+
+
+----
 
 * playing field scrolls by
 * player controls with the gamepad

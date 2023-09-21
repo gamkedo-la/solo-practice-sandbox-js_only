@@ -83,6 +83,10 @@ function keyboard(k) {
 window.onkeydown = keyboard;
 window.onkeyup = keyboard;
 
+ctx.font = '24px "Courier New"'
+
+const dist_measure = ctx.measureText('9,999,999')
+
 function tick(dt) {
     if (input.x != 0) {
         player.vx += params.player.ax * input.x * dt
@@ -105,20 +109,26 @@ function tick(dt) {
     eotw.y += eotw.vy * dt
 
     ctx.fillStyle = "black"
-    ctx.fillRect(0, 0, 400, 300)
+    ctx.fillRect(0, 0, 800, 600)
 
-    x = player.x - camera.x + 200
-    y = player.y - camera.y + 150
+    x = player.x - camera.x + 400
+    y = player.y - camera.y + 250
 
     ctx.fillStyle = "blue"
-    ctx.fillRect(x - 10, y - 10, 20, 20)
+    ctx.fillRect(x - 7, y - 10, 14, 20)
 
-    x = eotw.x - camera.x + 200
-    y = eotw.y - camera.y + 150
+    x = eotw.x - camera.x + 400
+    y = eotw.y - camera.y + 250
 
     ctx.fillStyle = "orange"
-    ctx.fillRect(0, y, 400, 300 - y)
+    ctx.fillRect(0, y, 800, 600 - y)
 
-    ctx.fillStyle = "red"
-    ctx.fillText(`player velocity=<${player.vx},${player.vy}> currently @ <${player.x.toPrecision(2)},${player.y.toPrecision(2)}>`, 0, 290)
+    ctx.fillStyle = "cyan"
+    let dist = `${Math.round((eotw.y - player.y - 10) / 4).toLocaleString()}`
+    let dist_width = ctx.measureText(dist).width
+    ctx.fillText(dist, dist_measure.width - dist_width, 26)
+    ctx.fillText(" meters behind you.", dist_measure.width, 26)
+
+    // ctx.fillStyle = "red"
+    // ctx.fillText(`player velocity=<${player.vx},${player.vy}> currently @ <${player.x.toPrecision(2)},${player.y.toPrecision(2)}>`, 0, 290)
 }
