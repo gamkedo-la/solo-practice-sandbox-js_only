@@ -172,6 +172,7 @@ function moveEverything() {
 		}
 		for(var i = 0; i < rockBulletList.length; i++){
 			rockBulletList[i].movement();
+			removeBulletFromList();
 		}
 		updatedCameraPosition();
 	}

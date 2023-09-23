@@ -1,6 +1,14 @@
 var rockBulletList = [];
 var wallTrapList = [];
 
+function removeBulletFromList(){
+	for(var i = 0; i < rockBulletList.length; i++){
+	  if(rockBulletList[i].dead){
+		rockBulletList.splice(i,1);
+	  }
+	}
+  }
+
 function wallTrap(){
 
 }
@@ -33,6 +41,7 @@ function rockBulletClass(xPos, yPos){
 	this.canMoveSouth = true;
 	this.canMoveWest = true;
 	this.wallImmuninity = 0;
+	this.dead = false;
 
     this.movement = function() {
 		var nextX = this.x; 
@@ -80,6 +89,7 @@ function rockBulletClass(xPos, yPos){
 			case TILE_TABLE:
 			case TILE_BOOKSHELF:
 			default:
+				this.dead = true;
 				break;
 		} // END OF SWITCH CASE	
 	}	// END OF THIS.MOVEMENT
