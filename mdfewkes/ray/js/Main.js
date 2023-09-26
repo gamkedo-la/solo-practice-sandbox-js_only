@@ -11,7 +11,7 @@ var player = new PlayerClass();
 var deltaTime = window.performance.now();
 var lastTime = 0;
 
-var FOV = 90;
+var FOV = 60;
 var heightScale = 8;
 
 var topColor = "lightgrey";
