@@ -213,11 +213,12 @@ function checkAllPlayerAndEnemyCollisions(){
 			ratList[i].checkCollisionsAgainst(playerOne);
 		}
 	}
+	//check wallTrap
 	for(var i = 0; i < rockBulletList.length; i++){
 		playerOne.checkCollisionsAgainst(rockBulletList[i]);
 		for(var ii = i+1; ii < rockBulletList.length; ii++){
-		//	rockBulletList[i].checkCollisionsAgainst(rockBulletList[ii]);
-		//	rockBulletList[i].checkCollisionsAgainst(playerOne);
+			rockBulletList[i].checkCollisionsAgainst(rockBulletList[ii]);
+			rockBulletList[i].checkCollisionsAgainst(playerOne);
 		}
 	} 
  

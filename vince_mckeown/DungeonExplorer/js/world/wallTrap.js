@@ -89,7 +89,7 @@ function rockBulletClass(xPos, yPos){
 			case TILE_TABLE:
 			case TILE_BOOKSHELF:
 			default:
-				this.dead = true;
+				this.collision();
 				break;
 		} // END OF SWITCH CASE	
 	}	// END OF THIS.MOVEMENT
@@ -111,6 +111,7 @@ function rockBulletClass(xPos, yPos){
 				this.canMoveWest = false;
 				this.x += this.playerMovementSpeed * COLLIDE_BUMP_MULT;				
 			}
+			this.collision();
 		} else {
 			this.canMoveNorth = true;
 			this.canMoveEast = true;
@@ -125,6 +126,11 @@ function rockBulletClass(xPos, yPos){
 				return true;
 		}
 		return false;
+	}
+
+	this.collision = function(){
+		this.dead = true;
+		crashIntoConeSound.play();
 	}
 
     this.draw = function(){
