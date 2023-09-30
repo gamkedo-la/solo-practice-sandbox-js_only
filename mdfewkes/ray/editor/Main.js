@@ -20,7 +20,7 @@ var eKey = false;
 var delKey = false;
 var pFocus = false;
 
-var FOV = 90;
+var FOV = 60;
 var heightScale = 5;
 var topColor = "lightgrey";
 var bottomColor = "gray";
