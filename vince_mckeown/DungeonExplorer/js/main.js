@@ -172,8 +172,14 @@ function moveEverything() {
 		}
 		for(var i = 0; i < rockBulletList.length; i++){
 			rockBulletList[i].movement();
-			removeBulletFromList();
 		}
+		for(var i = 0; i < smokeList.length; i++){
+			smokeList[i].move();
+		}
+
+		removeBulletFromList();
+		removeSmokeFromList();
+
 		updatedCameraPosition();
 	}
 }
@@ -221,8 +227,6 @@ function checkAllPlayerAndEnemyCollisions(){
 			rockBulletList[i].checkCollisionsAgainst(playerOne);
 		}
 	} 
- 
-
 }
 
 
@@ -247,6 +251,11 @@ function drawEverything() {
 		}
 		for(var i = 0; i < rockBulletList.length; i++){
 			rockBulletList[i].draw();
+			removeBulletFromList();
+		}
+		for(var i = 0; i < smokeList.length; i++){
+			smokeList[i].draw();
+			removeSmokeFromList();
 		}
 		finishedCameraPan();
 		canvasContext.drawImage(feedbackGUIPic,0, canvas.height-50);
