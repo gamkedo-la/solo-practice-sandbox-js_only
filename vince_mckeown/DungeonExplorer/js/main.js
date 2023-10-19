@@ -172,8 +172,14 @@ function moveEverything() {
 		}
 		for(var i = 0; i < rockBulletList.length; i++){
 			rockBulletList[i].movement();
-			removeBulletFromList();
 		}
+		for(var i = 0; i < smokeList.length; i++){
+			smokeList[i].move();
+		}
+
+		removeBulletFromList();
+		removeSmokeFromList();
+
 		updatedCameraPosition();
 	}
 }
@@ -213,15 +219,14 @@ function checkAllPlayerAndEnemyCollisions(){
 			ratList[i].checkCollisionsAgainst(playerOne);
 		}
 	}
+	//check wallTrap
 	for(var i = 0; i < rockBulletList.length; i++){
 		playerOne.checkCollisionsAgainst(rockBulletList[i]);
 		for(var ii = i+1; ii < rockBulletList.length; ii++){
-		//	rockBulletList[i].checkCollisionsAgainst(rockBulletList[ii]);
-		//	rockBulletList[i].checkCollisionsAgainst(playerOne);
+			rockBulletList[i].checkCollisionsAgainst(rockBulletList[ii]);
+			rockBulletList[i].checkCollisionsAgainst(playerOne);
 		}
 	} 
- 
-
 }
 
 
@@ -246,6 +251,11 @@ function drawEverything() {
 		}
 		for(var i = 0; i < rockBulletList.length; i++){
 			rockBulletList[i].draw();
+			removeBulletFromList();
+		}
+		for(var i = 0; i < smokeList.length; i++){
+			smokeList[i].draw();
+			removeSmokeFromList();
 		}
 		finishedCameraPan();
 		canvasContext.drawImage(feedbackGUIPic,0, canvas.height-50);

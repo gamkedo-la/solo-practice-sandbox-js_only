@@ -7,7 +7,7 @@ function removeBulletFromList(){
 		rockBulletList.splice(i,1);
 	  }
 	}
-  }
+}
 
 function wallTrap(){
 
@@ -21,7 +21,7 @@ function addRockBullet(xPos, yPos){
 function rockBulletClass(xPos, yPos){
 	this.x = xPos || 370;
 	this.y = yPos || 0;
-	this.width = 10	
+	this.width = 10;	
     this.height = 10;
 	this.isoEnemyFootY = 30;
 	this.offSetWidth = 0;
@@ -89,7 +89,7 @@ function rockBulletClass(xPos, yPos){
 			case TILE_TABLE:
 			case TILE_BOOKSHELF:
 			default:
-				this.dead = true;
+				this.collision();
 				break;
 		} // END OF SWITCH CASE	
 	}	// END OF THIS.MOVEMENT
@@ -111,6 +111,7 @@ function rockBulletClass(xPos, yPos){
 				this.canMoveWest = false;
 				this.x += this.playerMovementSpeed * COLLIDE_BUMP_MULT;				
 			}
+			this.collision();
 		} else {
 			this.canMoveNorth = true;
 			this.canMoveEast = true;
@@ -127,10 +128,20 @@ function rockBulletClass(xPos, yPos){
 		return false;
 	}
 
+	this.collision = function(){
+		this.dead = true;
+		crashIntoConeSound.play();
+		
+		addSmoke(this.x, this.y, 600);
+		addSmoke(this.x, this.y, 600);
+		addSmoke(this.x, this.y, 600);
+		addSmoke(this.x, this.y, 600);
+		addSmoke(this.x, this.y, 600);
+	}
+
     this.draw = function(){
         gameCoordToIsoCoord(this.x,this.y);
        // colorRect(isoDrawX-(this.width/2), isoDrawY-this.height - ISO_CHAR_FOOT_Y, 200, 200, 'red');
         canvasContext.drawImage(rockBulletPic,isoDrawX-(this.width/2), isoDrawY-this.height - ISO_CHAR_FOOT_Y);
     }
-
 }
