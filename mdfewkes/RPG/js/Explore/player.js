@@ -7,16 +7,16 @@ class Player {
 	}
 
 	Update() {
-		if (Key.isDown(Key.UP)) {
+		if (Key.isDown(Key.UP) || Key.isDown(Key.W)) {
 			this.vel.y -= 1;
 		}
-		if (Key.isDown(Key.DOWN)) {
+		if (Key.isDown(Key.DOWN) || Key.isDown(Key.S)) {
 			this.vel.y += 1;
 		}
-		if (Key.isDown(Key.LEFT)) {
+		if (Key.isDown(Key.LEFT) || Key.isDown(Key.A)) {
 			this.vel.x -= 1;
 		}
-		if (Key.isDown(Key.RIGHT)) {
+		if (Key.isDown(Key.RIGHT) || Key.isDown(Key.D)) {
 			this.vel.x += 1;
 		}
 
@@ -28,6 +28,6 @@ class Player {
 	}
 
 	Draw() {
-		colorCircle(this.pos.x, this.pos.y, 15, 'white');
+		colorCircle(this.pos.x, this.pos.y, 16, 'white');
 	}
 }
