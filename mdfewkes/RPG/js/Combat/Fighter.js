@@ -16,15 +16,7 @@ class Fighter {
 	}
 
 	GetInputEvent() {
-		if (this.currentHP == 0) return new Event();
-
-		let inputEvent = new TimerEvent(1);
-		inputEvent.fighter = this;
-		inputEvent.onEnd = function() {
-			this.fighter.schedualedSkill = rndOneFromList(this.fighter.skillList);
-			this.fighter.schedualedTargets = [rndOneFromList(GetAllMemberOfAnotherTeam(this.fighter.team))];
-		}
-		return inputEvent;
+		return new Event();
 	}
 
 	receiveDamage(amount) {
@@ -48,6 +40,20 @@ class PlayerFighter extends Fighter {
 
 		let inputEvent = new PlayerCombatInputEvent(this);
 		inputEvent.fighter = this;
+		return inputEvent;
+	}
+}
+
+class ComputerFighter extends Fighter {
+	GetInputEvent() {
+		if (this.currentHP == 0) return new Event();
+
+		let inputEvent = new TimerEvent(0.5);
+		inputEvent.fighter = this;
+		inputEvent.onEnd = function() {
+			this.fighter.schedualedSkill = rndOneFromList(this.fighter.skillList);
+			this.fighter.schedualedTargets = [rndOneFromList(GetAllMemberOfAnotherTeam(this.fighter.team))];
+		}
 		return inputEvent;
 	}
 }

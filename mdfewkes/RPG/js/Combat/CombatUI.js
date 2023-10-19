@@ -3,30 +3,31 @@ class PlayerCombatInputEvent extends Event {
 		super();
 		this.fighter = fighter;
 
-		this.UI = new PlayerBattleMenu("", 0, 0, 0, 0, combatUI);
-		this.UI.addToParent();
-		this.UI.label.label = fighter.name;
-		this.UI.fighter = this.fighter;
+		this.UI = combatUI.addPart(new PlayerBattleMenu("", this.fighter), false);
 
 		this.UI.setupMenu();
+		this.initialized = false;
 	}
 
 	Update() {
+		if (!this.initialized) {
+			this.UI.setActive(true);
+
+			this.initialized = true;
+		}
+
 		return !this.UI.isActive();
 	}
 }
 
 class PlayerBattleMenu extends UIElement {
-	constructor(name, x, y, w, h, parent) {
-		super("Player Battle Menu", 100, 300, 600, 200, parent);
+	constructor(name, fighter) {
+		super("Player Battle Menu " + fighter.name, 100, 300, 600, 200);
 
-		this.label = new UITextLabel("name", 20, 20, 100, 20, this);
-		this.addPart(this.label);
+		this.fighter = fighter;
 
-		this.skills = [];
-		this.targets = [];
-
-		this.fighter = null;
+		this.label = this.addPart(new UITextLabel("name", 20, 20, 100, 20));
+		this.label.label = this.fighter.name;
 	}
 
 	setupMenu() {
@@ -34,42 +35,49 @@ class PlayerBattleMenu extends UIElement {
 	}
 
 	setupSkillList() {
-		this.skills.length = 0;
+		this.active.length = 1;
+		this.parts.length = 1;
 
 		for (let i = 0; i < this.fighter.skillList.length; i++) {
 			let newSkill = this.fighter.skillList[i];
-			let newSkillUI = new UIButton(newSkill.name, 20, 25 + (30 * i), 150, 20, this);
+			let newSkillUI = this.addPart(new UIButton(newSkill.name, 20, 25 + (30 * i), 150, 20));
 			newSkillUI.fighter = this.fighter;
 			newSkillUI.onClick = function() {
 				this.fighter.schedualedSkill = newSkill;
-				this.parent.skills.length = 0;
-				this.parent.setupTargetList();
+				this.parent.setupTargetList(this);
 			}
-			newSkillUI.addToParent();
 
-			let newLabel = new UITextLabel("skill label", 5, 15, 140, 5, newSkillUI);
+			let newLabel = newSkillUI.addPart(new UITextLabel("skill label", 5, 15, 140, 5));
 			newLabel.label = newSkill.name;
-			newLabel.addToParent();
+			//newLabel.addToParent();
 		}
 	}
 
-	setupTargetList() {
-		this.targets.length = 0;
+	setupTargetList(skillUIReference) {
+		this.active.length = 1;
+		skillUIReference.setActive(true);
+		skillUIReference.onClick = function(){
+			this.parent.setupSkillList();
+		};
+
 		var targetFighters = GetAllMemberOfAnotherTeam(this.fighter.team);
 
 		for (let i = 0; i < targetFighters.length; i++) {
 			let newTarget = targetFighters[i];
-			let newTargetUI = new UIButton(newTarget.name, 20, 25 + (30 * i), 150, 20, this);
+			let newTargetUI = this.addPart(new UIButton(newTarget.name, 190, 25 + (30 * i), 150, 20));
 			newTargetUI.fighter = this.fighter;
 			newTargetUI.onClick = function() {
 				this.fighter.schedualedTargets = [newTarget];
 				this.parent.removeFromParent();
 			}
-			newTargetUI.addToParent();
 
-			let newLabel = new UITextLabel("skill label", 5, 15, 140, 5, newTargetUI);
+			let newLabel = newTargetUI.addPart(new UITextLabel("skill label", 5, 15, 140, 5, newTargetUI));
 			newLabel.label = newTarget.name;
-			newLabel.addToParent();
+			//newLabel.addToParent();
 		}
+	}
+
+	removeFromParent() {
+		this.parent.removePart(this);
 	}
 }

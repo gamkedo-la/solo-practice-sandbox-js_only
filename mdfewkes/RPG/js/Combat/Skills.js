@@ -10,9 +10,25 @@ class SkillEvent extends TimerEvent {
 	}
 
 	onEnd() {
-		if (this.fighter.currentHp <= 0) return;
+		if (this.fighter.currentHP <= 0) return;
+		console.log(this.fighter.currentHP + " " + this.fighter.name);
+
+		var noLivingTarget = true;
+		for (var i = 0; i < this.targets.length; i++) {
+			if (this.targets[i].currentHP > 0) {
+				noLivingTarget = false
+			}
+		}
+
+		if (noLivingTarget) {
+			this.targets = [rndOneFromList(GetAllMemberOfAnotherTeam(this.fighter.team))];
+			if (this.targets == null) {
+				return;
+			}
+		}
+
 		this.skill.onUse(this.fighter, this.targets);
-		//console.log(this.fighter.name + " " + this.skill.name);
+		console.log(this.fighter.name + " " + this.skill.name + " " + this.targets[0].name);
 	}
 }
 

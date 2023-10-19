@@ -8,6 +8,8 @@ let debug = false;
 let deltaTime = 0;
 let lastTime = 0;
 
+let mouseJustPressed = false;
+
 
 window.onload = function() {
 	canvas = document.getElementById('gameCanvas');
@@ -47,6 +49,7 @@ function gameloop(time) {
 	time /= 1000;
 	deltaTime = time - lastTime;
 	lastTime = time;
+	mouseJustPressed = Key.isJustPressed(Key.MOUSE_LEFT);
 
 	RunExplore();
 

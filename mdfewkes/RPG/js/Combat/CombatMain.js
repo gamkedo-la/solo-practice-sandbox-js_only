@@ -29,33 +29,33 @@ function RunCombat() {
 function SetupCombat() {
 	fighters.push(new PlayerFighter());
 	fighters[0].name = "Rad MDRA";
-	fighters[0].meleeAttack = 80;
+	fighters[0].meleeAttack = 70;
 	fighters[0].meleeDefence = 100;
 	fighters[0].rangedAttack = 100;
-	fighters[0].rangedDefence = 80;
+	fighters[0].rangedDefence = 70;
 	fighters[0].team = 0;
 
 	fighters.push(new PlayerFighter());
 	fighters[1].name = "Ram MARD";
 	fighters[1].meleeAttack = 100;
-	fighters[1].meleeDefence = 80;
-	fighters[1].rangedAttack = 80;
+	fighters[1].meleeDefence = 70;
+	fighters[1].rangedAttack = 70;
 	fighters[1].rangedDefence = 100;
 	fighters[1].team = 0;
 
-	fighters.push(new Fighter());
+	fighters.push(new ComputerFighter());
 	fighters[2].name = "Ted MARA";
 	fighters[2].meleeAttack = 100;
-	fighters[2].meleeDefence = 80;
+	fighters[2].meleeDefence = 70;
 	fighters[2].rangedAttack = 100;
-	fighters[2].rangedDefence = 80;
+	fighters[2].rangedDefence = 70;
 	fighters[2].team = 1;
 
-	fighters.push(new Fighter());
+	fighters.push(new ComputerFighter());
 	fighters[3].name = "Tod MDRD";
-	fighters[3].meleeAttack = 80;
+	fighters[3].meleeAttack = 70;
 	fighters[3].meleeDefence = 100;
-	fighters[3].rangedAttack = 80;
+	fighters[3].rangedAttack = 70;
 	fighters[3].rangedDefence = 100;
 	fighters[3].team = 1;
 

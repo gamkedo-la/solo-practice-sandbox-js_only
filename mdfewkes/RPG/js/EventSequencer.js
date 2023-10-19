@@ -40,7 +40,6 @@ class Event {
 	Update() {return true;}
 	Draw() {}
 	onEnd() {}
-
 }
 
 class TimerEvent extends Event {

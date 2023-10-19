@@ -54,6 +54,7 @@ function rndOneIn(max = 2){
 }
 
  function rndOneFromList(items){
+ 	if (items.length == 0) return null;
 	return items[rndInt(items.length)];
 }
 
