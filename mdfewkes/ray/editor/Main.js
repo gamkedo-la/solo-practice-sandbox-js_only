@@ -17,7 +17,10 @@ var sKey = false;
 var dKey = false;
 var qKey = false;
 var eKey = false;
+var yKey = false;
+var zKey = false;
 var delKey = false;
+var ctrlKey = false;
 var pFocus = false;
 
 var FOV = 60;
@@ -45,8 +48,17 @@ function calculateKeyboardDown(evt) {
 	case 69:
 		eKey = true;
 		break;
+	case 89:
+		yKey = true;
+		break;
+	case 90:
+		zKey = true;
+		break;
 	case 46:
 		delKey = true;
+		break;
+	case 17:
+		ctrlKey = true;
 		break;
 	}
 }
@@ -71,8 +83,17 @@ function calculateKeyboardUp(evt) {
 	case 69:
 		eKey = false;
 		break;
+	case 89:
+		yKey = false;
+		break;
+	case 90:
+		zKey = false;
+		break;
 	case 46:
 		delKey = false;
+		break;
+	case 17:
+		ctrlKey = false;
 		break;
 	}
 }
@@ -228,7 +249,7 @@ function drawMapView() {
 	for (var i = 0; i < currentAudGeo.length; i++) {
 		for (var j = 0; j < currentAudGeo[i].connections.length; j++) {
 			var pos = {x: currentAudGeo[currentAudGeo[i].connections[j]].point.x, y: currentAudGeo[currentAudGeo[i].connections[j]].point.y}
-			colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, pos.x, pos.y, 1, "dodgerblue");
+			colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, pos.x, pos.y, 1, "darkblue");
 		}
 	}
 	for (var i = 0; i < walls.length; i++) {

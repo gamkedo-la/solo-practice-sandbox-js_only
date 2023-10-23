@@ -16,6 +16,10 @@ var snapDistance = 5;
 var selectDistance = 5;
 var selectedElement = null;
 
+var actionListUndoStack = [];
+var actionListRedoStack = [];
+var MAX_UNDO = 200;
+
 var wallMode = SELECT_WALL;
 var wallColor = "purple";
 var wallTexture = new Image();
@@ -24,6 +28,15 @@ wallTexture.src = './images/text2Texture100x100.png';
 var audioMode = SELECT_AUDIO;
 
 function driveEditor() {
+	if (ctrlKey && zKey) {
+		undoAction();
+		zKey = false;
+	}
+	if (ctrlKey && yKey) {
+		redoAction();
+		yKey = false;
+	}
+
 	if (editMode == WALL_MODE) runWallMode();
 	if (editMode == AUDIO_MODE) runAudioMode()
 	if (editMode == ENTITY_MODE) runEntityMode()
@@ -80,14 +93,8 @@ function runWallMode() {
 			if (lastPoint == null) {
 				lastPoint = mousePos;
 			} else if (lastPoint != null) {
-				var newWall = new WallClass();
-				newWall.p1 = lastPoint;
-				newWall.p2 = mousePos;
-				newWall.color = wallColor;
-				newWall.texture = wallTexture;
-
+				performAction(new addWallAction(lastPoint, mousePos));
 				lastPoint = null;
-				selectedElement = newWall;
 			}
 		}
 
@@ -95,16 +102,10 @@ function runWallMode() {
 			if (lastPoint == null) {
 				lastPoint = mousePos;
 			} else if (lastPoint != null) {
-				var newWall = new WallClass();
-				newWall.p1 = lastPoint;
-				newWall.p2 = mousePos;
-				newWall.color = wallColor;
-				newWall.texture = wallTexture;
-
-				//if (walls.length > 1) newWall.textureOffset = distanceBetweenTwoPoints(walls[walls.length-2].p2, lastPoint) + walls[walls.length-2].textureOffset;
-
+				performAction(new addWallAction(lastPoint, mousePos));
 				lastPoint = mousePos;
-				selectedElement = newWall;
+
+				//Code to connect textures between walls
 			}
 		}
 
@@ -122,9 +123,8 @@ function runWallMode() {
 	}
 
 	if (delKey && selectedElement != null) {
-		walls.splice(walls.indexOf(selectedElement), 1);
+		performAction(new deleteWallAction());
 		delKey = false;
-		selectedElement = null;
 	}
 
 	if (selectedElement != null) {
@@ -150,9 +150,7 @@ function runAudioMode() {
 		var mousePos = getMousePositionInWorldSpace();
 
 		if (audioMode == ADD_AUDIO) {
-			audGeoPoints.push({x: mousePos.x, y: mousePos.y});
-			selectedElement = audGeoPoints[audGeoPoints.length-1];
-			generateAudGeo();
+			performAction(new addAudioNodeAction({x: mousePos.x, y: mousePos.y}));
 		}
 
 		if (audioMode == SELECT_AUDIO) {
@@ -169,10 +167,8 @@ function runAudioMode() {
 	}
 
 	if (delKey && selectedElement != null) {
-		audGeoPoints.splice(audGeoPoints.indexOf(selectedElement), 1);
+		performAction(new deleteAudioNodeAction());
 		delKey = false;
-		selectedElement = null;
-		generateAudGeo();
 	}
 
 	if (selectedElement != null) {
@@ -184,7 +180,6 @@ function runAudioMode() {
 }
 
 function runEntityMode() {
-
 }
 
 function getMousePositionInWorldSpace() {
@@ -214,4 +209,158 @@ function getMousePositionInWorldSpace() {
 
 function getWorldPositionInScreenSpace(pos) {
 	return {x: pos.x - player.x + eCanvas.width/2, y: pos.y - player.y + eCanvas.height/2}
+}
+
+function performAction(action) {
+	actionListUndoStack.push(action);
+	actionListRedoStack.length = 0;
+	action.execute();
+
+	if (actionListUndoStack.length > MAX_UNDO) {
+		actionListUndoStack.splice(actionListUndoStack.length - MAX_UNDO, 1);
+	}
+}
+
+function undoAction() {
+	if (actionListUndoStack.length == 0) return;
+
+	var action = actionListUndoStack.pop();
+	actionListRedoStack.push(action);
+	action.undo();
+}
+
+function redoAction() {
+	if (actionListRedoStack == 0) return;
+
+	var action = actionListRedoStack.pop();
+	actionListUndoStack.push(action);
+	action.redo();
+}
+
+function addWallAction(point1, point2) {
+	var wall = null;
+	var lastSelected = null;
+
+	this.execute = function() {
+		wall = new WallClass();
+		wall.p1 = point1;
+		wall.p2 = point2;
+		wall.color = wallColor;
+		wall.texture = wallTexture;
+
+		lastSelected = selectedElement;
+		selectedElement = wall;
+
+		return this;
+	}
+
+	this.undo = function() {
+		walls.splice(walls.indexOf(wall), 1);
+
+		selectedElement = lastSelected;
+		if (lastPoint == wall.p2) {
+			lastPoint = wall.p1;
+		}
+	}
+
+	this.redo = function() {
+		walls.push(wall);
+
+		selectedElement = wall;
+		if (lastPoint == wall.p1) {
+			lastPoint = wall.p2;
+		}
+	}
+}
+
+function deleteWallAction() {
+	var wall = null;
+
+	this.execute = function() {
+		wall = selectedElement;
+
+		walls.splice(walls.indexOf(wall), 1);
+		selectedElement = null;
+
+		return this;
+	}
+
+	this.undo = function() {
+		walls.push(wall);
+
+		selectedElement = wall;
+	}
+
+	this.redo = function() {
+		walls.splice(walls.indexOf(selectedElement), 1);
+
+		selectedElement = null;
+	}
+}
+
+function addAudioNodeAction(position) {
+	var audGeoPoint = null;
+	var lastSelected = null;
+
+	this.execute = function() {
+		audGeoPoint = position;
+
+		audGeoPoints.push(audGeoPoint);
+
+		lastSelected = selectedElement;
+		selectedElement = audGeoPoint;
+
+		generateAudGeo();
+
+		return this;
+	}
+
+	this.undo = function() {
+		audGeoPoints.splice(audGeoPoints.indexOf(audGeoPoints), 1);
+
+		selectedElement = lastSelected;
+		
+		generateAudGeo();
+	}
+
+	this.redo = function() {
+		audGeoPoints.push(audGeoPoint);
+		selectedElement = audGeoPoints[audGeoPoints.length-1];	
+
+		selectedElement = audGeoPoint;	
+		
+		generateAudGeo();
+	}
+}
+
+function deleteAudioNodeAction() {
+	var audGeoPoint = null;
+
+	this.execute = function() {
+		audGeoPoint = selectedElement;
+
+		audGeoPoints.splice(audGeoPoints.indexOf(audGeoPoint), 1);
+
+		selectedElement = null;
+		
+		generateAudGeo();
+
+		return this;
+	}
+
+	this.undo = function() {
+		audGeoPoints.push(audGeoPoint);
+
+		selectedElement = audGeoPoint;
+		
+		generateAudGeo();
+	}
+
+	this.redo = function() {
+		audGeoPoints.splice(audGeoPoints.indexOf(audGeoPoint), 1);
+
+		selectedElement = null;
+		
+		generateAudGeo();
+	}
 }
