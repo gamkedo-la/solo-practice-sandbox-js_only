@@ -211,6 +211,25 @@ function getWorldPositionInScreenSpace(pos) {
 	return {x: pos.x - player.x + eCanvas.width/2, y: pos.y - player.y + eCanvas.height/2}
 }
 
+function getOverlappingWallEdgesAsPointPairList(pos) {
+	var distanceThreshhold = 1;
+	var pointPairList = [];
+
+	for (var i = 0; i < walls.length; i++) {
+		var distanceP1 = distanceBetweenTwoPoints(pos, walls[i].p1);
+		var distanceP2 = distanceBetweenTwoPoints(pos, walls[i].p2);
+
+		if (distanceP1 < distanceThreshhold) {
+			pointPairList.push([walls[i].p1, walls[i].p2]);
+		}
+		if (distanceP2 < distanceThreshhold) {
+			pointPairList.push([walls[i].p2, walls[i].p1]);
+		}
+	}
+
+	return pointPairList;
+}
+
 function performAction(action) {
 	actionListUndoStack.push(action);
 	actionListRedoStack.length = 0;
@@ -304,6 +323,17 @@ function addAudioNodeAction(position) {
 
 	this.execute = function() {
 		audGeoPoint = position;
+
+		// Code to push position away from edges
+		var overlapingPointsList = getOverlappingWallEdgesAsPointPairList(position);
+		var pushVector = {x:0, y:0};
+		for (var i = 0; i < overlapingPointsList.length; i++) {
+			var pointPairAsDirection = subtractVectors(overlapingPointsList[i][0], overlapingPointsList[i][1]);
+			pointPairAsDirection = normalizeVector(pointPairAsDirection);
+			pushVector = addVectors(pushVector, pointPairAsDirection);
+		}
+		pushVector = normalizeVector(pushVector);
+		audGeoPoint = addVectors(audGeoPoint, pushVector);
 
 		audGeoPoints.push(audGeoPoint);
 

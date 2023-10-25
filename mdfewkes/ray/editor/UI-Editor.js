@@ -69,13 +69,23 @@ class AudioPane extends UIElement {
 	constructor(name, x, y, w, h) {
 		super(name, x, y, 30, 76);
 
-		this.addPart(new UIButtonWToolTip("addAudioNodeMode", 5, 5, 20, 20, "Add Audio Nodes"));
+		this.addPart(new UIButtonWToolTip("addAudioNodeMode",    5, 5,  20, 20, "Add Audio Nodes"));
 		this.addPart(new UIButtonWToolTip("selectAudioNodeMode", 5, 28, 20, 20, "Select Audio Nodes"));
+		//this.addPart(new UIButtonWToolTip("recalculateAudioGeo", 5, 51, 20, 20, "Recalculate Audio Geo"));
 
 		this.parts[0].onClick = function() {audioMode = ADD_AUDIO;};
 		this.parts[1].onClick = function() {audioMode = SELECT_AUDIO;};
+		//this.parts[2].onClick = function() {generateAudGeo();};
 
 		generateAudGeo();
+	}
+
+	setActive(active) {
+		super.setActive(active);
+
+		if (active) {
+			generateAudGeo();
+		}
 	}
 	
 }
@@ -160,6 +170,7 @@ class SelectionPane extends UIElement{
 
 			if (editMode == AUDIO_MODE) {
 				var index = audGeoPoints.indexOf(selectedElement);
+				if (index == undefined) index = 0;
 				var textPos = index + " {x: " + selectedElement.x + ", y: " + selectedElement.y + "}";
 				colorText(textPos, this.x + borderSize + 20, this.y + 15 + borderSize, "darkblue");
 

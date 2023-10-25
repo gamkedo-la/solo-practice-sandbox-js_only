@@ -83,7 +83,7 @@ function subtractVectors(a, b) {
 }
 
 function scaleVector(v, scale) {
-	return {x:v.x * s, y:v.y * s};
+	return {x:v.x * scale, y:v.y * scale};
 }
 
 function magnitudeOfVector(v) {
