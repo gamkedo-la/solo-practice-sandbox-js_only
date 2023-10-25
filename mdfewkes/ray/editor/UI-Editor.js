@@ -171,7 +171,7 @@ class SelectionPane extends UIElement{
 			if (editMode == AUDIO_MODE) {
 				var index = audGeoPoints.indexOf(selectedElement);
 				if (index == undefined) index = 0;
-				var textPos = index + " {x: " + selectedElement.x + ", y: " + selectedElement.y + "}";
+				var textPos = index + " {x: " + selectedElement.x.toFixed(2) + ", y: " + selectedElement.y.toFixed(2) + "}";
 				colorText(textPos, this.x + borderSize + 20, this.y + 15 + borderSize, "darkblue");
 
 				if (currentAudGeo.length > 0 && currentAudGeo.length-1 >= index

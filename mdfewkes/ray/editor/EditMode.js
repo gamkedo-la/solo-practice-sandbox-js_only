@@ -43,9 +43,9 @@ function driveEditor() {
 }
 
 function switchMode(newMode) {
-	editMode = newMode;
 	lastPoint = null;
 	selectedElement = null;
+	editMode = newMode;
 }
 
 function getDisplayText() {
@@ -212,17 +212,16 @@ function getWorldPositionInScreenSpace(pos) {
 }
 
 function getOverlappingWallEdgesAsPointPairList(pos) {
-	var distanceThreshhold = 1;
 	var pointPairList = [];
 
 	for (var i = 0; i < walls.length; i++) {
 		var distanceP1 = distanceBetweenTwoPoints(pos, walls[i].p1);
 		var distanceP2 = distanceBetweenTwoPoints(pos, walls[i].p2);
 
-		if (distanceP1 < distanceThreshhold) {
+		if (distanceP1 < snapDistance) {
 			pointPairList.push([walls[i].p1, walls[i].p2]);
 		}
-		if (distanceP2 < distanceThreshhold) {
+		if (distanceP2 < snapDistance) {
 			pointPairList.push([walls[i].p2, walls[i].p1]);
 		}
 	}
@@ -330,6 +329,7 @@ function addAudioNodeAction(position) {
 		for (var i = 0; i < overlapingPointsList.length; i++) {
 			var pointPairAsDirection = subtractVectors(overlapingPointsList[i][0], overlapingPointsList[i][1]);
 			pointPairAsDirection = normalizeVector(pointPairAsDirection);
+			scaleVector(pointPairAsDirection, (snapDistance - distanceBetweenTwoPoints(audGeoPoint, overlapingPointsList[i][0])) / snapDistance);
 			pushVector = addVectors(pushVector, pointPairAsDirection);
 		}
 		pushVector = normalizeVector(pushVector);
