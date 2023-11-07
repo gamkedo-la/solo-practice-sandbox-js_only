@@ -10,7 +10,7 @@ function AudioManager() {
 	const DROPOFF_MAX = 400;
 	const HEADSHADOW_REDUCTION = 0.7;
 	const REVERB_MAX = 5;
-	const DOPLER_SCALE = 1/2;
+	const DOPLER_SCALE = 1/24;
 
 //--//Properties----------------------------------------------------------------
 	var initialized = false;
@@ -274,7 +274,7 @@ function AudioManager() {
 			audioFile.playbackRate = this.rate;
 			var newDistance = distanceBetweenTwoPoints(player.pos, this.pos);
 			var dopler = (lastDistance - newDistance) * DOPLER_SCALE;
-			audioFile.playbackRate *= clamp(Math.pow(2, (dopler/12)), 0.8, 1.2);
+			audioFile.playbackRate *= clamp(Math.pow(2, dopler), 0.8, 1.2);
 			lastDistance = newDistance;
 		}
 
@@ -455,7 +455,7 @@ function AudioManager() {
 }
 
 var audGeoPoints = [];
-var currentAudGeo = []; //{point:{x,y}, connections:[indexs]}
+var currentAudGeo = []; //{point:{x,y}, connections:[indexs], index: i}
 
 function generateAudGeo() {
 	currentAudGeo = new Array();
@@ -473,14 +473,14 @@ function generateAudGeo() {
 				if (isLineIntersecting(audGeoPoints[i], audGeoPoints[j], walls[k].p1, walls[k].p2)) {
 					//console.log(walls[k]);
 					clear = false;
-					}
 				}
+			}
 			if (clear) {
 				connect.push(j);
 			}
 		}
 
-		currentAudGeo.push({point: audGeoPoints[i], connections: connect});
+		currentAudGeo.push({point: audGeoPoints[i], connections: connect, index: i});
 	}
 }
 
@@ -492,5 +492,5 @@ var fauxAudGeo = [
 	{x:-101, y:-101},
 ];
 for (var i = 0; i < fauxAudGeo.length; i++) {
-	audGeoPoints.push(fauxAudGeo[i]);
+	//audGeoPoints.push(fauxAudGeo[i]);
 }

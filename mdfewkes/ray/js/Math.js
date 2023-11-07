@@ -91,7 +91,7 @@ function magnitudeOfVector(v) {
 }
 
 function normalizeVector(v) {
-	if (v.x == 0 || v.y == 0) return {x:0, y:0};
+	if (v.x == 0 && v.y == 0) return {x:0, y:0};
 	return scaleVector(v, 1/magnitudeOfVector(v));
 }
 

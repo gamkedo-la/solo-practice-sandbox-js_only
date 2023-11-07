@@ -1,6 +1,7 @@
 var pMouseX, pMouseY;
 var player = {x:0, y: 0, ang: d270, forwardX: 0, forwardY: 0};
 var gameObjects = [];
+var currentMap = new MapClass();
 var objectImage = new Image();
 objectImage.src = './images/testEntity.png';
 var distanceBuffer = [];
@@ -246,17 +247,25 @@ function drawMapView() {
 	eCanvasContext.translate(-player.x, -player.y);
 
 	//2D draw loops
-	for (var i = 0; i < currentAudGeo.length; i++) {
-		for (var j = 0; j < currentAudGeo[i].connections.length; j++) {
-			var pos = {x: currentAudGeo[currentAudGeo[i].connections[j]].point.x, y: currentAudGeo[currentAudGeo[i].connections[j]].point.y}
-			colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, pos.x, pos.y, 1, "darkblue");
-		}
-	}
 	for (var i = 0; i < walls.length; i++) {
 		walls[i].draw2D();
 	}
-	for (var i = 0; i < audGeoPoints.length; i++) {
-		colorEmptyCircle(audGeoPoints[i].x, audGeoPoints[i].y, 1, "lightblue");
+	colorLine(currentMap.playerStart.x + 5, currentMap.playerStart.y, currentMap.playerStart.x - 5, currentMap.playerStart.y, 1, "darkgrey");
+	colorLine(currentMap.playerStart.x, currentMap.playerStart.y + 5, currentMap.playerStart.x, currentMap.playerStart.y - 5, 1, "darkgrey");
+	colorEmptyCircle(currentMap.playerStart.x, currentMap.playerStart.y, 5, "darkgrey");
+	if (editMode == AUDIO_MODE) {
+		for (var i = 0; i < currentAudGeo.length; i++) {
+			for (var j = 0; j < currentAudGeo[i].connections.length; j++) {
+				var pos = {x: currentAudGeo[currentAudGeo[i].connections[j]].point.x, y: currentAudGeo[currentAudGeo[i].connections[j]].point.y}
+				colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, pos.x, pos.y, 1, "darkblue");
+			}
+			if (lineOfSight(currentAudGeo[i].point, currentMap.playerStart)) {
+				colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, currentMap.playerStart.x, currentMap.playerStart.y, 1, "darkblue");
+			}
+		}
+		for (var i = 0; i < audGeoPoints.length; i++) {
+			colorEmptyCircle(audGeoPoints[i].x, audGeoPoints[i].y, 1, "lightblue");
+		}
 	}
 
 	colorLine(player.x, player.y, player.x + player.forwardX * 10, player.y + player.forwardY * 10, 2, "darkgrey");

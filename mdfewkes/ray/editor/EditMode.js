@@ -324,12 +324,12 @@ function addAudioNodeAction(position) {
 		audGeoPoint = position;
 
 		// Code to push position away from edges
-		var overlapingPointsList = getOverlappingWallEdgesAsPointPairList(position);
+		var overlapingPointsList = getOverlappingWallEdgesAsPointPairList(audGeoPoint);
 		var pushVector = {x:0, y:0};
 		for (var i = 0; i < overlapingPointsList.length; i++) {
 			var pointPairAsDirection = subtractVectors(overlapingPointsList[i][0], overlapingPointsList[i][1]);
 			pointPairAsDirection = normalizeVector(pointPairAsDirection);
-			scaleVector(pointPairAsDirection, (snapDistance - distanceBetweenTwoPoints(audGeoPoint, overlapingPointsList[i][0])) / snapDistance);
+			pointPairAsDirection = scaleVector(pointPairAsDirection, (snapDistance - distanceBetweenTwoPoints(audGeoPoint, overlapingPointsList[i][0])) / snapDistance);
 			pushVector = addVectors(pushVector, pointPairAsDirection);
 		}
 		pushVector = normalizeVector(pushVector);
@@ -393,4 +393,78 @@ function deleteAudioNodeAction() {
 		
 		generateAudGeo();
 	}
+}
+
+function populateAudioNodesFromWallEdges() {
+	audGeoPoints.length = 0;
+	var positions = [];
+
+	for (var i = 0; i < walls.length; i++) {
+		if (positions.indexOf(JSON.stringify(walls[i].p1)) == -1) {
+			positions.push(JSON.stringify(walls[i].p1));
+		}
+		if (positions.indexOf(JSON.stringify(walls[i].p2)) == -1) {
+			positions.push(JSON.stringify(walls[i].p2));
+		}
+	}
+
+	// console.log(positions);
+
+	for (var j = 0; j < positions.length; j++) {
+		var audGeoPoint = JSON.parse(positions[j]);
+
+		// Code to push position away from edges
+		var overlapingPointsList = getOverlappingWallEdgesAsPointPairList(audGeoPoint);
+		var pushVector = {x:0, y:0};
+		for (var i = 0; i < overlapingPointsList.length; i++) {
+			var pointPairAsDirection = subtractVectors(overlapingPointsList[i][0], overlapingPointsList[i][1]);
+			pointPairAsDirection = normalizeVector(pointPairAsDirection);
+			pointPairAsDirection = scaleVector(pointPairAsDirection, (snapDistance - distanceBetweenTwoPoints(audGeoPoint, overlapingPointsList[i][0])) / snapDistance);
+			pushVector = addVectors(pushVector, pointPairAsDirection);
+		}
+		pushVector = normalizeVector(pushVector);
+		audGeoPoint = addVectors(audGeoPoint, pushVector);
+
+		audGeoPoints.push(audGeoPoint);
+	}
+
+	generateAudGeo();
+}
+
+function cullAudioNodesThatDontConnectToPlayerStartPoint() {
+	var visited = [];
+	var stack = [];
+	audGeoPoints.length = 0;
+
+	for (var i = 0; i < currentAudGeo.length; i++) {
+		var clear = true;
+		for (var k in walls) {
+			if (isLineIntersecting(currentMap.playerStart, currentAudGeo[i].point, walls[k].p1, walls[k].p2)) {
+				clear = false;
+			}
+		}
+		if (clear) {
+			stack.push(currentAudGeo[i].index);
+		}
+	}
+
+	// console.log(stack)
+
+	while (stack.length > 0) {
+		var index =  stack.pop();
+		if (visited.includes(index)) continue;
+		visited.push(index);
+
+		for (var i = 0; i < currentAudGeo[index].connections.length; i++) {
+			if (!visited.includes(currentAudGeo[index].connections[i])) stack.push(currentAudGeo[index].connections[i]);
+		}
+	}
+
+	// console.log(visited);
+
+	for (var i = 0; i < visited.length; i++) {
+		audGeoPoints.push(currentAudGeo[visited[i]].point);
+	}
+
+	generateAudGeo();
 }
