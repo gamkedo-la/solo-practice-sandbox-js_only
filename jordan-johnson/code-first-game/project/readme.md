@@ -20,3 +20,24 @@ This game was made in JavaScript using HTML 5 canvas.
 - moved to the left side of the screen resized the box 10, 100 for width and height
 - put the move code into a function call move Everything
 - use a anonymous function to call both draw everything and move everything.
+
+### Ball Bouncing
+- got the ball bouncing from one end of the screen to next
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
