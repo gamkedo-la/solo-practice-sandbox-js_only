@@ -29,11 +29,17 @@ function drawRect(topX,topY, width, height, color){
 function drawEverything() {
 	
 	// Draws the black background
-	drawRect(0,0,canvas.width, canvas.height, "Black")
+	drawRect(0,0,canvas.width, canvas.height, "Black");
 
 	// Draws the Player Paddle
-	drawRect(0,210,10,100, "White")
+	drawRect(0,210,10,100, "White");
 
 	// Draws the ball
-	drawRect(ballX, 200,10,10,'red')
+	//drawRect(ballX, 200,10,10,'red')
+
+	canvasContext.fillStyle = "red";
+	canvasContext.beginPath();
+	canvasContext.arc(ballX,100,10,0, Math.PI *2, true);
+	canvasContext.fill();
+
 }
