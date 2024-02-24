@@ -25,7 +25,7 @@ This game was made in JavaScript using HTML 5 canvas.
 - got the ball bouncing from one end of the screen to next
 
 
-
+- Create a function to Draw a circle on screen 
 
 
 

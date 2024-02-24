@@ -36,10 +36,20 @@ function drawEverything() {
 
 	// Draws the ball
 	//drawRect(ballX, 200,10,10,'red')
+	colorCircle(ballX, 150, 10, 'white')
+	
+}
 
-	canvasContext.fillStyle = "red";
+
+function colorCircle(centerX, centerY, radius, drawColor){
+	canvasContext.fillStyle = drawColor;
 	canvasContext.beginPath();
-	canvasContext.arc(ballX,100,10,0, Math.PI *2, true);
+
+	//first 2 are the center of the circle 
+	// 3rd -> the radius 
+	// Last 2: Angle and radians we want to go around the circle from 0 to 2pi 
+	// Clockwise or counter clockwise 
+	canvasContext.arc(centerX,centerY, radius ,0, Math.PI *2, true);
 	canvasContext.fill();
 
 }
