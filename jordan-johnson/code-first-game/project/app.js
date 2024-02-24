@@ -1,9 +1,18 @@
 console.log('Hello World');
-var ballX = 50;
+
 var canvas = document.getElementById('gameCanvas');
 var canvasContext = canvas.getContext('2d');
 var framesperSecond = 30;
-var ballSpeedX = 5;
+var ballX = 50;
+var ballY = 50;
+
+var ballSpeedX = 10;
+var ballSpeedY = 4;
+
+var paddle1Y = 250;
+const PADDLE_HEIGHT = 100;
+
+
 setInterval(function () {
 	moveEveryThing();
 	drawEverything();
@@ -18,6 +27,17 @@ function moveEveryThing() {
 	}
 	if(ballX < 0 ){
 		ballSpeedX = -ballSpeedX;
+	}
+
+	//Vertical Movement 
+	ballY += ballSpeedY;
+
+	if(ballY > canvas.height){
+		ballSpeedY = -ballSpeedY;
+
+	}
+	if(ballY < 0 ){
+		ballSpeedY = -ballSpeedY;
 	}
 }
 
@@ -35,8 +55,7 @@ function drawEverything() {
 	drawRect(0,210,10,100, "White");
 
 	// Draws the ball
-	//drawRect(ballX, 200,10,10,'red')
-	colorCircle(ballX, 150, 10, 'white')
+	colorCircle(ballX, ballY, 10, 'white')
 	
 }
 

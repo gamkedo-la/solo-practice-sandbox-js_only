@@ -27,9 +27,15 @@ This game was made in JavaScript using HTML 5 canvas.
 
 - Create a function to Draw a circle on screen 
 
+### Bouncing ball Vertical 
+- created variables for BallY and ball speed y. 
+- use the code for the movement speed X and use it for the vertical moved as well. 
+- in the drawRect function update the ball's y position with the stored variable ballY. 
 
 
+### Update paddle with user mouse movement
 
+- create a variable for the first paddles Y position  and constant for the paddles height. 
 
 
 
