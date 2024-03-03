@@ -2,7 +2,7 @@ let combatEventSequencer = new EventSequencer();
 let fighters = [];
 let combatUI;
 
-function RunCombat() {
+function RunCombat(deltaTime) {
 	if (combatEventSequencer.length == 0) {
 		for (let i = fighters.length-1; i >= 0; i--) {
 			if (fighters[i].currentHP <= 0) fighters.splice(i, 1);
@@ -14,7 +14,7 @@ function RunCombat() {
 		combatEventSequencer.AddEvent({Update(){return true;}, Draw(){}, onEnd(){CalculateTurns();}});
 	}
 
-	combatEventSequencer.Update();
+	combatEventSequencer.Update(deltaTime);
 	combatUI.update();
 
 	colorRect(0,0,800,600, "black");

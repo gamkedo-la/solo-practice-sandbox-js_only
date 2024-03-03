@@ -5,7 +5,6 @@ let screenHeight;
 
 let debug = false;
 
-let deltaTime = 0;
 let lastTime = 0;
 
 let mouseJustPressed = false;
@@ -47,11 +46,11 @@ function gamestart() {
 function gameloop(time) {
 
 	time /= 1000;
-	deltaTime = time - lastTime;
+	let deltaTime = time - lastTime;
 	lastTime = time;
 	mouseJustPressed = Key.isJustPressed(Key.MOUSE_LEFT);
 
-	RunExplore();
+	RunExplore(deltaTime);
 
 	window.requestAnimationFrame(gameloop);
 

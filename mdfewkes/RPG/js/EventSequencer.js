@@ -3,9 +3,9 @@ class EventSequencer {
 		this._eventQueue = [];
 	}
 
-	Update() {
+	Update(deltaTime) {
 		if (this._eventQueue.length > 0) {
-			let isFinished = this._eventQueue[0].Update();
+			let isFinished = this._eventQueue[0].Update(deltaTime);
 
 			if (isFinished) {
 				this._eventQueue.splice(0, 1)[0].onEnd();;				
@@ -50,7 +50,7 @@ class TimerEvent extends Event {
 		this._timeGoal = time;
 	}
 
-	Update() {
+	Update(deltaTime) {
 		this._timeElapsed += deltaTime;
 
 		if (this._timeElapsed >= this._timeGoal) return true;
@@ -68,12 +68,12 @@ class DelayEvent extends Event {
 		this._event = delayedEvent;
 	}
 
-	Update() {
+	Update(deltaTime) {
 		this._timeElapsed += deltaTime;
 		let isFinished = false;
 
 		if (this._timeElapsed >= this._timeGoal) {
-			isFinished = this._event.Update();
+			isFinished = this._event.Update(deltaTime);
 		}
 
 		return isFinished;
@@ -96,11 +96,11 @@ class PolyEvent extends Event {
 		this._eventList = eventList;
 	}
 
-	Update() {
+	Update(deltaTime) {
 		let indexsOfFinishedEvents = [];
 
 		for (let i =0; i < this._eventList.length; i++) {
-			let isFinished = this._eventList[i].Update();
+			let isFinished = this._eventList[i].Update(deltaTime);
 
 			if (isFinished) {
 				indexsOfFinishedEvents.push(i);
@@ -151,7 +151,7 @@ class ParameterLerpEvent extends Event {
 		this._parameterObject[this._parameterName] = this._startValue;
 	}
 
-	Update() {
+	Update(deltaTime) {
 		this._timeElapsed += deltaTime;
 
 		if (this._timeElapsed > this._timeGoal) return true;

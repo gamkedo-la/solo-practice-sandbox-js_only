@@ -1,8 +1,8 @@
 let player;
 
-function RunExplore() {
+function RunExplore(deltaTime) {
 
-	player.Update();
+	player.Update(deltaTime);
 	
 	colorRect(0,0,800,600, "black");
 	player.Draw();

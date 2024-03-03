@@ -6,7 +6,7 @@ class Player {
 		this.speed = 100;
 	}
 
-	Update() {
+	Update(deltaTime) {
 		if (Key.isDown(Key.UP) || Key.isDown(Key.W)) {
 			this.vel.y -= 1;
 		}
