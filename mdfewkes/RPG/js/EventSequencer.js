@@ -1,37 +1,38 @@
 class EventSequencer {
 	constructor() {
-		this.EventList = [];
+		this._eventQueue = [];
 	}
 
 	Update() {
-		if (this.EventList.length > 0) {
-			let isFinished = this.EventList[0].Update();
+		if (this._eventQueue.length > 0) {
+			let isFinished = this._eventQueue[0].Update();
 
 			if (isFinished) {
-				//this.EventList[0].onEnd();
-				//this.EventList.splice(0, 1);
-
-				this.EventList.splice(0, 1)[0].onEnd();;				
+				this._eventQueue.splice(0, 1)[0].onEnd();;				
 			}
 		}
 	}
 
 	Draw() {
-		if (this.EventList.length > 0) {
-			this.EventList[0].Draw();
+		if (this._eventQueue.length > 0) {
+			this._eventQueue[0].Draw();
 		}
 	}
 
 	AddEvent(event) {
-		this.EventList.push(event);
+		this._eventQueue.push(event);
 	}
 
 	AddNextEvent(event) {
-		this.EventList.splice(1, 0, event);
+		this._eventQueue.splice(1, 0, event);
 	}
 
 	AddFirstEvent(event) {
-		this.EventList.splice(0, 0, event);
+		this._eventQueue.splice(0, 0, event);
+	}
+
+	get length() {
+		return this._eventQueue.length;
 	}
 }
 
@@ -45,84 +46,85 @@ class Event {
 class TimerEvent extends Event {
 	constructor(time = 1) {
 		super();
-		this.timeElapsed = 0;
-		this.timeGoal = time;
+		this._timeElapsed = 0;
+		this._timeGoal = time;
 	}
 
 	Update() {
-		this.timeElapsed += deltaTime;
+		this._timeElapsed += deltaTime;
 
-		if (this.timeElapsed >= this.timeGoal) return true;
-		else return false
+		if (this._timeElapsed >= this._timeGoal) return true;
+		
+		return false
 	}
 }
 
 class DelayEvent extends Event {
 	constructor(delayedEvent, time = 1) {
 		super();
-		this.timeElapsed = 0;
-		this.timeGoal = time;
+		this._timeElapsed = 0;
+		this._timeGoal = time;
 
-		this.event = delayedEvent;
+		this._event = delayedEvent;
 	}
 
 	Update() {
-		this.timeElapsed += deltaTime;
+		this._timeElapsed += deltaTime;
 		let isFinished = false;
 
-		if (this.timeElapsed >= this.timeGoal) {
-			isFinished = this.event.Update();
+		if (this._timeElapsed >= this._timeGoal) {
+			isFinished = this._event.Update();
 		}
 
 		return isFinished;
 	}
 
 	Draw() {
-		if (this.timeElapsed >= this.timeGoal) {
-			this.event.Draw();
+		if (this._timeElapsed >= this._timeGoal) {
+			this._event.Draw();
 		}
 	}
 
 	onEnd() {
-		this.event.onEnd();
+		this._event.onEnd();
 	}
 }
 
 class PolyEvent extends Event {
 	constructor(eventList = []) {
 		super();
-		this.EventList = eventList;
+		this._eventList = eventList;
 	}
 
 	Update() {
 		let indexsOfFinishedEvents = [];
 
-		for (let i =0; i < this.EventList.length; i++) {
-			let isFinished = this.EventList[i].Update();
+		for (let i =0; i < this._eventList.length; i++) {
+			let isFinished = this._eventList[i].Update();
 
 			if (isFinished) {
-				//this.EventList[i].onEnd();
 				indexsOfFinishedEvents.push(i);
 			}
 		}
 
 		for (let i = indexsOfFinishedEvents.length-1; i >= 0; i--) {
-				this.EventList.splice(i, 1)[0].onEnd();
+				this._eventList.splice(indexsOfFinishedEvents[i], 1)[0].onEnd();
 		}
 
-		if (this.EventList.length == 0) return true;
-		else return false;
+		if (this._eventList.length == 0) return true;
+		
+		return false;
 	}
 
 	Draw() {
-		for (let i = 0; i < this.EventList.length; i++) {
-			this.EventList[i].Draw();
+		for (let i = 0; i < this._eventList.length; i++) {
+			this._eventList[i].Draw();
 		}
 	}
 
 	onEnd() {
-		for (let i = 0; i < this.EventList.length; i++) {
-			this.EventList[i].onEnd();
+		for (let i = 0; i < this._eventList.length; i++) {
+			this._eventList[i].onEnd();
 		}
 	}
 }
@@ -130,40 +132,40 @@ class PolyEvent extends Event {
 class ParameterLerpEvent extends Event {
 	constructor(parameterName, parameterObject, startValue, endValue, duration = 0.5, relative = false, decimals = 0) {
 		super();
-		this.timeElapsed = 0;
-		this.timeGoal = duration;
-		this.decimals = decimals
+		this._timeElapsed = 0;
+		this._timeGoal = duration;
+		this._decimals = decimals
 
-		this.parameterName = parameterName;
-		this.parameterObject = parameterObject;
-		this.startValue = startValue;
-		this.endValue = endValue;
+		this._parameterName = parameterName;
+		this._parameterObject = parameterObject;
+		this._startValue = startValue;
+		this._endValue = endValue;
 
 		if (relative) {
-			let initialValue = this.parameterObject[this.parameterName];
+			let initialValue = this._parameterObject[this._parameterName];
 
-			this.startValue = startValue + initialValue;
-			this.endValue = endValue + initialValue;
+			this._startValue = startValue + initialValue;
+			this._endValue = endValue + initialValue;
 		}
 
-		this.parameterObject[this.parameterName] = this.startValue;
+		this._parameterObject[this._parameterName] = this._startValue;
 	}
 
 	Update() {
-		this.timeElapsed += deltaTime;
+		this._timeElapsed += deltaTime;
 
-		if (this.timeElapsed > this.timeGoal) return true;
+		if (this._timeElapsed > this._timeGoal) return true;
 
-		let a = this.startValue;
-		let b = this.endValue;
-		let t = this.timeElapsed / this.timeGoal;
+		let a = this._startValue;
+		let b = this._endValue;
+		let t = this._timeElapsed / this._timeGoal;
 
-		this.parameterObject[this.parameterName] = roundToDecimalPlace(lerp(a, b, t), this.decimals);
+		this._parameterObject[this._parameterName] = roundToDecimalPlace(lerp(a, b, t), this._decimals);
 
 		return false
 	}
 
 	onEnd() {
-		this.parameterObject[this.parameterName] = this.endValue;
+		this._parameterObject[this._parameterName] = this._endValue;
 	}
 }

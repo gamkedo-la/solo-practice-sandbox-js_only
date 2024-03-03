@@ -3,15 +3,15 @@ let fighters = [];
 let combatUI;
 
 function RunCombat() {
-	if (combatEventSequencer.EventList.length == 0) {
+	if (combatEventSequencer.length == 0) {
 		for (let i = fighters.length-1; i >= 0; i--) {
 			if (fighters[i].currentHP <= 0) fighters.splice(i, 1);
 		}
 		for (let i = 0; i < fighters.length; i++) {
 			if (fighters[i].currentHP <= 0) continue;
-			combatEventSequencer.EventList.push(fighters[i].GetInputEvent());
+			combatEventSequencer.AddEvent(fighters[i].GetInputEvent());
 		}
-		combatEventSequencer.EventList.push({Update(){return true;}, Draw(){}, onEnd(){CalculateTurns();}});
+		combatEventSequencer.AddEvent({Update(){return true;}, Draw(){}, onEnd(){CalculateTurns();}});
 	}
 
 	combatEventSequencer.Update();
@@ -66,7 +66,7 @@ function SetupCombat() {
 function CalculateTurns() {
 	for (let i = 0; i < fighters.length; i++) {
 		let skillToAdd = new SkillEvent(fighters[i], fighters[i].schedualedTargets, fighters[i].schedualedSkill);
-		combatEventSequencer.EventList.push(skillToAdd);
+		combatEventSequencer.AddEvent(skillToAdd);
 		//console.log(fighters[i].name + " attacks " + fighters[i].schedualedTargets[0].name);
 	}
 }
