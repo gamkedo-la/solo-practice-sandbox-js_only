@@ -261,10 +261,13 @@ function drawMapView() {
 		for (var i = 0; i < currentAudGeo.length; i++) {
 			for (var j = 0; j < currentAudGeo[i].connections.length; j++) {
 				var pos = {x: currentAudGeo[currentAudGeo[i].connections[j]].point.x, y: currentAudGeo[currentAudGeo[i].connections[j]].point.y}
-				colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, pos.x, pos.y, 1, "darkblue");
+				colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, pos.x, pos.y, 0.5, "blue");
 			}
 			if (lineOfSight(currentAudGeo[i].point, currentMap.playerStart)) {
 				colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, currentMap.playerStart.x, currentMap.playerStart.y, 1, "darkblue");
+			}
+			if (lineOfSight(currentAudGeo[i].point, player)) {
+				colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, player.x, player.y, 1, "darkblue");
 			}
 		}
 		for (var i = 0; i < audGeoPoints.length; i++) {
@@ -282,8 +285,8 @@ function drawPreview() {
 	canvas = pCanvas;
 	canvasContext = pCanvasContext;
 
-	colorRect(0,0,800,300, topColor);
-	colorRect(0,300,800,300, bottomColor);
+	colorRect(0,0,canvas.width,300, topColor);
+	colorRect(0,canvas.height/2,canvas.width,canvas.height/2, bottomColor);
 
 	//3D
 	var numRays = canvas.width;

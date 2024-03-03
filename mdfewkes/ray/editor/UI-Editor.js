@@ -87,6 +87,8 @@ class AudioPane extends UIElement {
 
 		if (active) {
 			generateAudGeo();
+			populateAudioNodesFromWallEdges();
+			cullAudioNodesThatDontConnectToPlayerStartPoint();
 		}
 	}
 	
