@@ -38,7 +38,8 @@ class EventSequencer {
 
 class Event {
 	constructor() {}
-	Update() {return true;}
+	// Return true when the event is finished
+	Update(deltaTime) {return true;}
 	Draw() {}
 	onEnd() {}
 }
@@ -59,20 +60,17 @@ class TimerEvent extends Event {
 	}
 }
 
-class DelayEvent extends Event {
+class DelayEvent extends TimerEvent {
 	constructor(delayedEvent, time = 1) {
-		super();
-		this._timeElapsed = 0;
-		this._timeGoal = time;
+		super(time);
 
 		this._event = delayedEvent;
 	}
 
 	Update(deltaTime) {
-		this._timeElapsed += deltaTime;
 		let isFinished = false;
 
-		if (this._timeElapsed >= this._timeGoal) {
+		if (super.Update(deltaTime)) {
 			isFinished = this._event.Update(deltaTime);
 		}
 

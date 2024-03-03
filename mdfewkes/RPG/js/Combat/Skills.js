@@ -11,7 +11,7 @@ class SkillEvent extends TimerEvent {
 
 	onEnd() {
 		if (this._fighter.currentHP <= 0) return;
-		console.log(this._fighter.currentHP + " " + this._fighter.name);
+		//console.log(this._fighter.currentHP + " " + this._fighter.name);
 
 		var noLivingTarget = true;
 		for (var i = 0; i < this._targets.length; i++) {
@@ -28,7 +28,7 @@ class SkillEvent extends TimerEvent {
 		}
 
 		this._skill.onUse(this._fighter, this._targets);
-		console.log(this._fighter.name + " " + this._skill.name + " " + this._targets[0].name);
+		//console.log(this._fighter.name + " " + this._skill.name + " " + this._targets[0].name);
 	}
 }
 
