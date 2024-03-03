@@ -2,38 +2,40 @@ class SkillEvent extends TimerEvent {
 	constructor(fighter, targets, skill, time = 1) {
 		super(time);
 
-		this.fighter = fighter;
-		this.targets = targets;
-		this.skill = skill;
+		this._fighter = fighter;
+		this._targets = targets;
+		this._skill = skill;
 
-		this.name = "Skill";
+		this.name = this._skill.name;
 	}
 
 	onEnd() {
-		if (this.fighter.currentHP <= 0) return;
-		console.log(this.fighter.currentHP + " " + this.fighter.name);
+		if (this._fighter.currentHP <= 0) return;
+		console.log(this._fighter.currentHP + " " + this._fighter.name);
 
 		var noLivingTarget = true;
-		for (var i = 0; i < this.targets.length; i++) {
-			if (this.targets[i].currentHP > 0) {
+		for (var i = 0; i < this._targets.length; i++) {
+			if (this._targets[i].currentHP > 0) {
 				noLivingTarget = false
 			}
 		}
 
 		if (noLivingTarget) {
-			this.targets = [rndOneFromList(GetAllMemberOfAnotherTeam(this.fighter.team))];
-			if (this.targets == null) {
+			this._targets = [rndOneFromList(GetAllMemberOfAnotherTeam(this._fighter.team))];
+			if (this._targets == null) {
 				return;
 			}
 		}
 
-		this.skill.onUse(this.fighter, this.targets);
-		console.log(this.fighter.name + " " + this.skill.name + " " + this.targets[0].name);
+		this._skill.onUse(this._fighter, this._targets);
+		console.log(this._fighter.name + " " + this._skill.name + " " + this._targets[0].name);
 	}
 }
 
 class Skill {
-	constructor() {}
+	constructor() {
+		this.name = "Skill";
+	}
 	onUse(owner, targets) {}
 }
 

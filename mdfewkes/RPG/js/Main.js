@@ -50,7 +50,7 @@ function gameloop(time) {
 	lastTime = time;
 	mouseJustPressed = Key.isJustPressed(Key.MOUSE_LEFT);
 
-	RunExplore(deltaTime);
+	RunCombat(deltaTime);
 
 	window.requestAnimationFrame(gameloop);
 
