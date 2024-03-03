@@ -309,9 +309,7 @@ class CircularBuffer {
 	SetBufferSampleLength(numberOfSamples) {
 		let newBuffer = [];
 		newBuffer.length = numberOfSamples;
-		for (let i = 0; i < newBuffer.length; i++) {
-			newBuffer[i] = 0;
-		}
+		newBuffer.fill(0);
 
 		for (let i = 0; i < this._buffer.length; i++) {
 			newBuffer[i] = this._buffer[this._index];

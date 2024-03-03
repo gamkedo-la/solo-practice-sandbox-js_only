@@ -41,6 +41,8 @@ function setupUI(screenWidth, screenHeight) {
 	mainInterface.parts[0].parts[4].onUpdate = function() {this.label = getDisplayText();};
 
 	mainInterface.onDraw = function() {
+		canvas = eCanvas;
+		canvasContext = eCanvasContext;
 		drawMapView();
 		driveEditor();
 	}

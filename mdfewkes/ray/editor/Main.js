@@ -7,6 +7,10 @@ objectImage.src = './images/testEntity.png';
 var distanceBuffer = [];
 var debug = false;
 
+var canvas, canvasContext;
+var eCanvas, eCanvasContext;
+var pCanvas, pCanvasContext;
+
 var mouseX = -1;
 var mouseY = -1;
 var mouseIsDown = false;
@@ -241,10 +245,10 @@ function drivePreview() {
 
 function drawMapView() {
 	//2D Camera logic
-	eCanvasContext.clearRect(0, 0, eCanvas.width, eCanvas.height);//clear the viewport AFTER the matrix is reset
-	colorRect(0, 0, eCanvas.width, eCanvas.height, 'black');
-	eCanvasContext.translate(eCanvas.width/2, eCanvas.height/2);
-	eCanvasContext.translate(-player.x, -player.y);
+	canvasContext.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
+	colorRect(0, 0, canvas.width, canvas.height, 'black');
+	canvasContext.translate(canvas.width/2, canvas.height/2);
+	canvasContext.translate(-player.x, -player.y);
 
 	//2D draw loops
 	for (var i = 0; i < walls.length; i++) {
@@ -271,16 +275,19 @@ function drawMapView() {
 	colorLine(player.x, player.y, player.x + player.forwardX * 10, player.y + player.forwardY * 10, 2, "darkgrey");
 	colorEmptyCircle(player.x, player.y, 5, "darkgrey");
 
-	eCanvasContext.resetTransform();//reset the transform matrix as it is cumulative
+	canvasContext.resetTransform();//reset the transform matrix as it is cumulative
 }
 
 function drawPreview() {
-	pColorRect(0,0,800,300, topColor);
-	pColorRect(0,300,800,300, bottomColor);
+	canvas = pCanvas;
+	canvasContext = pCanvasContext;
+
+	colorRect(0,0,800,300, topColor);
+	colorRect(0,300,800,300, bottomColor);
 
 	//3D
-	var numRays = pCanvas.width;
-	var drawWidth = pCanvas.width / numRays;
+	var numRays = canvas.width;
+	var drawWidth = canvas.width / numRays;
 	var drawDistance = 600;
 	var wallHeight = heightScale;
 	var rays = [];
@@ -326,7 +333,7 @@ function drawPreview() {
 		var h = wallHeight * pCanvas.height / distance;
 		var distanceAlongWall = distanceBetweenTwoPoints(rays[i].wall.p1, rays[i]);
 
-		pColorRect(x, y, w, h, rays[i].wall.color);
+		colorRect(x, y, w, h, rays[i].wall.color);
 		if (rays[i].wall.texture != null) {
 			pCanvasContext.drawImage(rays[i].wall.texture,
 				distanceAlongWall * (wallHeight * wallHeight) % 100, 0, //Magic number to unstretch texture
@@ -334,7 +341,7 @@ function drawPreview() {
 				x, y,
 				w, h);
 		}
-		pColorRect(x, y, w, h, fullColorHex(20, 10, 30, distance/drawDistance * 384));
+		colorRect(x, y, w, h, fullColorHex(20, 10, 30, distance/drawDistance * 384));
 	}
 	for (objectIndex; objectIndex < gameObjects.length; objectIndex++) {
 		DrawEntity(gameObjects[objectIndex]);
@@ -348,5 +355,5 @@ function DrawEntity(entity) {
 	var drawX = pCanvas.width*0.5 - size*0.5 + drawAngle * pCanvas.width/FOV;
 	var drawY = pCanvas.height*0.5 - size*0.5;
 
-	pCanvasContext.drawImage(objectImage, drawX, drawY, size, size);
+	canvasContext.drawImage(objectImage, drawX, drawY, size, size);
 }
