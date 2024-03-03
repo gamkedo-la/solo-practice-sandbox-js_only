@@ -50,6 +50,12 @@ window.onload = function() {
 	multNode = mainInterface.addPart(new UINode("Mult Node", 300, 100, 100, 20, multNode));
 	divNode = new NodeDivide(nodeMaster);
 	divNode = mainInterface.addPart(new UINode("Div Node", 300, 200, 100, 20, divNode));
+	delNode = new NodeDelay(nodeMaster);
+	delNode.SetBufferSampleLength(60);
+	delNode = mainInterface.addPart(new UINode("Del Node", 500, 100, 100, 20, delNode));
+	lagNode = new NodeLag(nodeMaster);
+	lagNode.SetBufferSampleLength(90);
+	lagNode = mainInterface.addPart(new UINode("Lag Node", 500, 200, 100, 20, lagNode));
 
 	constNode0 = new NodeInput(nodeMaster);
 	constNode0.value = 0;

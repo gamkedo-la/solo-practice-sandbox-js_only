@@ -297,3 +297,86 @@ class NodeOutput extends NodeBase {
 		this.value = this.inlet.GetValue();
 	}
 }
+
+class CircularBuffer {
+	constructor(numberOfSamples) {
+		this._buffer = [0];
+		this._index = 0;
+
+		this.SetBufferSampleLength(this.numberOfSamples);
+	}
+
+	SetBufferSampleLength(numberOfSamples) {
+		let newBuffer = [];
+		newBuffer.length = numberOfSamples;
+		for (let i = 0; i < newBuffer.length; i++) {
+			newBuffer[i] = 0;
+		}
+
+		for (let i = 0; i < this._buffer.length; i++) {
+			newBuffer[i] = this._buffer[this._index];
+			this._index++;
+			if (this._index >= this._buffer.length) {
+				this._index = 0;
+			}
+		}
+
+		this._buffer = newBuffer;
+		this._index = 0;
+	}
+
+	ReadWriteSample(value) {
+		this._index++;
+		if (this._index >= this._buffer.length) {
+			this._index = 0;
+		}
+
+		let sample = this._buffer[this._index];
+		this._buffer[this._index] = value;
+
+		return sample;
+	}
+	get numberOfSamples() {
+		return this._buffer.length;
+	}
+
+	GetSampleAt(index) {
+		if (index >= this._buffer.length) {
+			index = index % this._buffer.length;
+		}
+		return this._buffer[index];
+	}
+}
+
+class NodeDelay extends NodeBase {
+	constructor(nodeMaster) {
+		super(nodeMaster);
+
+		this.inlet = new Inlet(this);
+		this.outlet = new Outlet(this);
+
+		this._buffer = new CircularBuffer(0);
+	}
+
+	OnProcess() {
+		let value = this._buffer.ReadWriteSample(this.inlet.GetValue());
+		this.outlet.SetValue(value);
+	}
+
+	SetBufferSampleLength(numberOfSamples) {
+		this._buffer.SetBufferSampleLength(numberOfSamples);
+	}
+}
+
+class NodeLag extends NodeDelay {
+	OnProcess() {
+		this._buffer.ReadWriteSample(this.inlet.GetValue())
+		let value = 0;
+		for (let i = 0; i < this._buffer.numberOfSamples; i++) {
+			value += this._buffer.GetSampleAt(i);
+		}
+		value /= this._buffer.numberOfSamples;
+
+		this.outlet.SetValue(value);
+	}
+}
