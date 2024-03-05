@@ -86,9 +86,8 @@ class AudioPane extends UIElement {
 		super.setActive(active);
 
 		if (active) {
-			generateAudGeo();
 			populateAudioNodesFromWallEdges();
-			cullAudioNodesThatDontConnectToPlayerStartPoint();
+			cullAudioNodesThatDontConnectToPoint(currentMap.playerStart);
 		}
 	}
 	

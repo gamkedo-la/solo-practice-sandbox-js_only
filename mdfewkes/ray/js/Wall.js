@@ -1,12 +1,12 @@
 var walls = [];
 
-function WallClass(x1 = 0, y1 = 0, x2 = 0, y2 = 0, color = "darkgrey") {
-	this.p1 = {x:x1, y:y1};
-	this.p2 = {x:x2, y:y2};
-	this.color = color;
-	this.texture = null;
-	this.textureOffset = 0;
-	this.transparency = false;
+function WallClass(wallClone = {}) {
+	this.p1 = wallClone.p1 || {x:0, y:0};
+	this.p2 = wallClone.p2 || {x:0, y:0};
+	this.color = wallClone.color || "darkgrey";
+	this.texture = wallClone.texture || null;
+	this.textureOffset = wallClone.textureOffset || 0;
+	this.transparency = wallClone.transparency || false;
 
 	walls.push(this);
 
@@ -29,3 +29,21 @@ function lineOfSight(v1, v2) {
 	return true;
 };
 
+function getOverlappingWallEdgesAsPointPairList(pos) {
+	var pointPairList = [];
+	var snapDistance = 5;
+
+	for (var i = 0; i < walls.length; i++) {
+		var distanceP1 = distanceBetweenTwoPoints(pos, walls[i].p1);
+		var distanceP2 = distanceBetweenTwoPoints(pos, walls[i].p2);
+
+		if (distanceP1 < snapDistance) {
+			pointPairList.push([walls[i].p1, walls[i].p2]);
+		}
+		if (distanceP2 < snapDistance) {
+			pointPairList.push([walls[i].p2, walls[i].p1]);
+		}
+	}
+
+	return pointPairList;
+}

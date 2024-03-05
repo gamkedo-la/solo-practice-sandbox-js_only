@@ -1,12 +1,13 @@
-class PlayerClass extends Entity{
+class PlayerClass extends EntityClass{
 	constructor() {
 		super();
+		this.name = "Player";
 
 		this._lookSpeed = 0.75;
 		this._moveSpeed = 50;
 	}
 
-	update() {
+	update(deltaTime) {
 		//player look
 		this.ang += mouseMovementX * deltaTime * this._lookSpeed;
 		if (this.ang > 2*pi) this.ang -= 2*pi;

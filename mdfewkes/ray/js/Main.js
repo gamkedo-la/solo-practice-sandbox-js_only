@@ -7,9 +7,10 @@ var gameObjects = [];
 var distanceBuffer = [];
 
 var player = new PlayerClass();
+var currentMap = new LevelClass();
 
-var deltaTime = window.performance.now();
-var lastTime = 0;
+//var deltaTime = window.performance.now();
+var lastTime = window.performance.now();
 
 var FOV = 60;
 var heightScale = 8;
@@ -39,9 +40,9 @@ function waitingforgesture() {
 }
 
 function gamestart() {
-	AudioMan.init();
+	AudioMan.setListener(player);
 	window.requestAnimationFrame(gameloop);
-
+/*
 	//generate a random room
 	var x = -250;
 	var y = -250;
@@ -130,7 +131,8 @@ function gamestart() {
 	testsound1 = AudioMan.createSound3D("./audio/temp_engine1.ogg", {pos:{x:200, y:150}}, true, 1).play();
 	testsound2 = AudioMan.createSound3D("./audio/UI_Typewriter_temp01.wav", {pos:{x:50, y:250}}, true, 1).play();
 	testsound3 = AudioMan.createSound3D("./audio/TT rough vox only.mp3", {pos:{x:-50, y:175}}, true, 1).play();
-	generateAudGeo();
+	populateAudioNodesFromWallEdges();
+	cullAudioNodesThatDontConnectToPoint(player.pos);
 
 	var testEntity = new SceneEntity();
 	var testEntity1 = new SceneEntity();
@@ -139,17 +141,19 @@ function gamestart() {
 	testEntity2.pos = {x: 50, y:250};
 	var testEntity3 = new SceneEntity();
 	testEntity3.pos = {x: -50, y:175};
+	*/
+	currentMap = testLevel1.load();
 }
 
 function gameloop(time) {
 
 	time /= 1000;
-	deltaTime = time - lastTime;
+	var deltaTime = time - lastTime;
 	lastTime = time;
 
 	//Update loop
 	for (var i = 0; i < gameObjects.length; i++) {
-		gameObjects[i].update();
+		gameObjects[i].update(deltaTime);
 	}
 
 	if (debug) {

@@ -3,6 +3,11 @@ var printcycle = false;
 var printlist = [];
 
 var AudioMan = new AudioManager();
+
+function AudioManGestureTest() {
+	AudioMan.testInit();
+}
+
 function AudioManager() {
 //--//Constants-----------------------------------------------------------------
 	const VOLUME_INCREMENT = 0.05;
@@ -19,20 +24,35 @@ function AudioManager() {
 	var musicVolume, sfxVolume;
 	var currentMusicTrack = null;
 	var currentSoundSources = [];
-	var reverbBuffer = null;
+	var listener = {pos:{x:0,y:0}, ang: 0};
 
-	this.init = function() {
+	window.addEventListener('mousedown', AudioManGestureTest);
+	window.addEventListener('keydown', AudioManGestureTest);
+
+	this.testInit = function(e) {
+		if (navigator.userActivation.hasBeenActive) {
+			init();
+			window.removeEventListener('mousedown', AudioManGestureTest);
+			window.removeEventListener('keydown', AudioManGestureTest);
+		}
+	}
+
+	function init() {
 		if (initialized) return;
 
 		if (isServer) {
 			audioCtx = new window.AudioContext();
+			reverbBus = audioCtx.createConvolver();
 			sfxBus = audioCtx.createGain();
 			musicBus = audioCtx.createGain();
+			verbBus = audioCtx.createConvolver();
 			masterBus = audioCtx.createGain();
 
 			sfxVolume = 0.7;
 			musicVolume = 0.7;
 
+
+			reverbBus.connect(sfxBus);
 			sfxBus.gain.value = sfxVolume;
 			sfxBus.connect(masterBus);
 			musicBus.gain.value = musicVolume;
@@ -45,7 +65,7 @@ function AudioManager() {
 			request.responseType = 'arraybuffer';
 			request.onload = function() {
 				audioCtx.decodeAudioData(request.response, function(buffer) {
-					reverbBuffer = buffer;
+					verbBus.buffer = buffer;
 				});
 			};
 			request.send();
@@ -58,8 +78,12 @@ function AudioManager() {
 		console.log("Initialized Audio");
 	};
 
+	this.setListener = function(newListener) {
+		listener = newListener;
+	}
+
 	this.reset = function() {
-		if (!initialized) this.init();
+		if (!initialized) this.testInit();
 
 		for (var i = currentSoundSources.length-1; i >= 0; i--) {
 		 	currentSoundSources[i].stop();
@@ -68,7 +92,7 @@ function AudioManager() {
 	};
 
 	this.update = function() {
-		if (!initialized) this.init();
+		if (!initialized) this.testInit();
 
 		for (var i = currentSoundSources.length-1; i >= 0; i--) {
 			currentSoundSources[i].update();
@@ -79,7 +103,7 @@ function AudioManager() {
 			for (var i in currentSoundSources) {
 				colorEmptyCircle(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 1, "blue");
 				colorEmptyCircle(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, 3, "green");
-				colorLine(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, player.pos.x, player.pos.y, 1, distanceBetweenTwoPoints(player.pos, currentSoundSources[i].pos) < DROPOFF_MAX ? "green" : "darkgreen");
+				colorLine(currentSoundSources[i].pos.x, currentSoundSources[i].pos.y, listener.pos.x, listener.pos.y, 1, distanceBetweenTwoPoints(listener.pos, currentSoundSources[i].pos) < DROPOFF_MAX ? "green" : "darkgreen");
 				for (var j in currentAudGeo) {
 					if (lineOfSight(currentAudGeo[j].point, currentSoundSources[i].parent.pos)) {
 						colorLine(currentSoundSources[i].parent.pos.x, currentSoundSources[i].parent.pos.y, 
@@ -90,8 +114,8 @@ function AudioManager() {
 
 			/*for (var i in currentAudGeo) {
 				colorEmptyCircle(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 3, "blue");
-				if (lineOfSight(currentAudGeo[i].point, player.pos)) {
-					colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, player.pos.x, player.pos.y, 1, "blue");
+				if (lineOfSight(currentAudGeo[i].point, listener.pos)) {
+					colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, listener.pos.x, listener.pos.y, 1, "blue");
 					for (var j in currentAudGeo[i].connections) {
 						colorLine(currentAudGeo[i].point.x, currentAudGeo[i].point.y, 
 							currentAudGeo[currentAudGeo[i].connections[j]].point.x, currentAudGeo[currentAudGeo[i].connections[j]].point.y, 1, "darkblue");
@@ -104,7 +128,7 @@ function AudioManager() {
 
 //--//volume handling functions-------------------------------------------------
 	this.toggleMute = function() {
-		if (!initialized) this.init();
+		if (!initialized) this.testInit();
 
 		var newVolume = (masterBus.gain.value === 0 ? 1 : 0);
 		masterBus.gain.setTargetAtTime(newVolume, audioCtx.currentTime, 0.03);
@@ -113,7 +137,7 @@ function AudioManager() {
 	};
 
 	this.setMute = function(tOrF) {
-		if (!initialized) this.init();
+		if (!initialized) this.testInit();
 
 		var newVolume = (tOrF === false ? 1 : 0);
 		masterBus.gain.setTargetAtTime(newVolume, audioCtx.currentTime, 0.03);
@@ -122,7 +146,7 @@ function AudioManager() {
 	};
 
 	this.setMusicVolume = function(amount) {
-		if (!initialized) this.init();
+		if (!initialized) this.testInit();
 
 		musicVolume = clamp(amount, 0, 1);
 		musicBus.gain.setTargetAtTime(Math.pow(musicVolume, 2), audioCtx.currentTime, 0.03);
@@ -131,7 +155,7 @@ function AudioManager() {
 	};
 
 	this.setsfxVolume = function(amount) {
-		if (!initialized) this.init();
+		if (!initialized) this.testInit();
 
 		sfxVolume = clamp(amount, 0, 1);
 		sfxBus.gain.setTargetAtTime(Math.pow(sfxVolume, 2), audioCtx.currentTime, 0.03);
@@ -140,14 +164,14 @@ function AudioManager() {
 	};
 
 	this.turnVolumeUp = function() {
-		if (!initialized) this.init();
+		if (!initialized) this.testInit();
 
 		this.setMusicVolume(musicVolume + VOLUME_INCREMENT);
 		this.setsfxVolume(sfxVolume + VOLUME_INCREMENT);
 	};
 
 	this.turnVolumeDown = function() {
-		if (!initialized) this.init();
+		if (!initialized) this.testInit();
 
 		this.setMusicVolume(musicVolume - VOLUME_INCREMENT);
 		this.setsfxVolume(sfxVolume - VOLUME_INCREMENT);
@@ -191,7 +215,7 @@ function AudioManager() {
 
 //--//sound objects-------------------------------------------------------------
 	this.createSound3D = function(fileNameWithPath, parent, looping = false, mixVolume = 1, rate = 1, preservesPitch = false) {
-		if (!initialized) this.init();
+		if (!initialized) this.testInit();
 
 		var newSound = new Sound3D(fileNameWithPath, parent, looping, mixVolume, rate, preservesPitch);
 		currentSoundSources.push(newSound);
@@ -205,7 +229,7 @@ function AudioManager() {
 		this.parent = parent;
 		this.pos = calculatePropogationPosition(this.parent.pos);
 		var looping = looping;
-		var lastDistance = distanceBetweenTwoPoints(player.pos, this.pos);
+		var lastDistance = distanceBetweenTwoPoints(listener.pos, this.pos);
 
 
 		//Setup HTMLElement
@@ -215,14 +239,13 @@ function AudioManager() {
 		audioFile.webkitPreservesPitch = preservesPitch;
 		audioFile.playbackRate = this.rate;
 		audioFile.loop = looping;
-		audioFile.volume = Math.pow(this.mixVolume, 2);
+		audioFile.volume = this.mixVolume*this.mixVolume;
 
 		//Initialize WebAudio Elements
 		var source = null;
 		var gainNode = null;
 		var panNode = null;
 		var verbMixNode = null;
-		var verbNode = null;
 
 		if (isServer) {
 			//Setup nodes
@@ -230,20 +253,18 @@ function AudioManager() {
 			gainNode = audioCtx.createGain();
 			panNode = audioCtx.createStereoPanner();
 			verbMixNode = audioCtx.createGain();
-			verbNode = audioCtx.createConvolver();
 
 			source.connect(gainNode);
 			source.connect(verbMixNode);
-			verbMixNode.connect(verbNode);
-			verbNode.connect(gainNode);
 			gainNode.connect(panNode);
 			panNode.connect(sfxBus);
+			panNode.connect(verbMixNode);
+			verbMixNode.connect(reverbBus);
 
 
 			//Calculate volume panning and reverb
 			gainNode.gain.value = calcuateVolumeDropoff(this.pos);
 			verbMixNode.gain.value = calcuateReverbPresence(this.pos);
-			if (reverbBuffer != null) verbNode.buffer = reverbBuffer;
 			panNode.pan.value = calcuatePan(this.pos);
 		} else {
 			audioFile.volume *= calcuateVolumeDropoff(this.pos);
@@ -254,15 +275,11 @@ function AudioManager() {
 			//if (audioFile.paused) return;
 
 			//Recalculate position
-			//var thisTime = window.performance.now();
 			this.pos = calculatePropogationPosition(this.parent.pos);
-			//console.log(window.performance.now() - thisTime);
 
 			//Calculate volume panning and reverb
-			audioFile.volume = Math.pow(this.mixVolume, 2);
+			audioFile.volume = this.mixVolume*this.mixVolume;
 			if (isServer) {
-				if (verbNode.buffer == null && reverbBuffer != null) verbNode.buffer = reverbBuffer;
-
 				gainNode.gain.value = calcuateVolumeDropoff(this.pos);
 				verbMixNode.gain.value = calcuateReverbPresence(this.pos);
 				panNode.pan.value = calcuatePan(this.pos);
@@ -271,16 +288,16 @@ function AudioManager() {
 			}
 
 			//Dopler
-			audioFile.playbackRate = this.rate;
-			var newDistance = distanceBetweenTwoPoints(player.pos, this.pos);
-			var dopler = (lastDistance - newDistance) * DOPLER_SCALE;
-			audioFile.playbackRate *= clamp(Math.pow(2, dopler), 0.8, 1.2);
-			lastDistance = newDistance;
+			// audioFile.playbackRate = this.rate;
+			// var newDistance = distanceBetweenTwoPoints(listener.pos, this.pos);
+			// var dopler = (lastDistance - newDistance) * DOPLER_SCALE;
+			// audioFile.playbackRate *= clamp(Math.pow(2, dopler), 0.8, 1.2);
+			// lastDistance = newDistance;
 		}
 
 		this.play = function() {
 			//Dont play if out of range
-			if (distanceBetweenTwoPoints(player.pos, this.pos) > DROPOFF_MAX && !looping) {
+			if (distanceBetweenTwoPoints(listener.pos, this.pos) > DROPOFF_MAX && !looping) {
 				return false;
 			}
 
@@ -303,7 +320,7 @@ function AudioManager() {
 
 //--//Sound spatialization functions--------------------------------------------
 	function calcuatePan(location) {
-		var direction = radToDeg(-player.ang + angleBetweenTwoPoints(player.pos, location));
+		var direction = radToDeg(-listener.ang + angleBetweenTwoPoints(listener.pos, location));
 		if (direction >= 360) {
 			direction -= 360;
 		}
@@ -324,7 +341,7 @@ function AudioManager() {
 		}
 
 		//Proximity
-		var distance = distanceBetweenTwoPoints(player.pos, location);
+		var distance = distanceBetweenTwoPoints(listener.pos, location);
 		if (distance <= DROPOFF_MIN) {
 			var panReduction = distance/DROPOFF_MIN;
 			pan *= panReduction;
@@ -334,7 +351,7 @@ function AudioManager() {
 	};
 
 	function calcuateVolumeDropoff(location) {
-		var distance = distanceBetweenTwoPoints(player.pos, location);
+		var distance = distanceBetweenTwoPoints(listener.pos, location);
 
 		//Distance attenuation
 		var newVolume = 1;
@@ -346,7 +363,7 @@ function AudioManager() {
 
 
 		//Back of head attenuation
-		var direction = radToDeg(-player.ang + angleBetweenTwoPoints(player.pos, location));
+		var direction = radToDeg(-listener.ang + angleBetweenTwoPoints(listener.pos, location));
 		if (direction <= 0) {
 			direction += 360;
 		}
@@ -360,22 +377,21 @@ function AudioManager() {
 			newVolume *= lerpC(HEADSHADOW_REDUCTION, 1, (direction-180)/90);
 		}
 
-		return Math.pow(newVolume, 2);
+		return newVolume*newVolume;
 	};
 
 	function calcuateReverbPresence(location) {
-		var distance = distanceBetweenTwoPoints(player.pos, location);
+		var distance = distanceBetweenTwoPoints(listener.pos, location);
 
 		var verbVolume = 0;
-		verbVolume = Math.pow(distance/DROPOFF_MAX * REVERB_MAX, 1);
+		verbVolume = 1;//distance/DROPOFF_MAX * REVERB_MAX;
 
-		//console.log(verbVolume);
 		return verbVolume;
 	};
 
 	function calculatePropogationPosition(location) {
 		//Return if in line of sight
-		if (lineOfSight(location, player.pos)) {
+		if (lineOfSight(location, listener.pos)) {
 			//printlist.push("lineOfSight");
 			return location;
 		}
@@ -385,8 +401,8 @@ function AudioManager() {
 		var distance = DROPOFF_MAX;
 		var pos = location;
 		for (var i in currentAudGeo) {
-			//If AudGeo has lineOfSight to the player, use checkAudGeo() to find the distance through the network back to the sound location
-			if (lineOfSight(player.pos, currentAudGeo[i].point)) { //LineOfSight to player
+			//If AudGeo has lineOfSight to the listener, use checkAudGeo() to find the distance through the network back to the sound location
+			if (lineOfSight(listener.pos, currentAudGeo[i].point)) { //LineOfSight to listener
 				//printlist.push("* checking from " + i);
 				var newDistance = checkAudGeo(i, location, []); //Recursive function to find shortest distance through node netowrk
 				if (newDistance < distance) { //If a shorter distance than curent holding, replace with this distance and AudGeo
@@ -395,12 +411,12 @@ function AudioManager() {
 				}
 			}
 		}
-		distance += distanceBetweenTwoPoints(player.pos, pos); //Add the players distance to the AudGeo's network distance
+		distance += distanceBetweenTwoPoints(listener.pos, pos); //Add the listeners distance to the AudGeo's network distance
 
 		//Calculate new location from angle and distance
-		var direction = angleBetweenTwoPoints(player.pos, pos);
-		var newX = Math.cos(direction) * distance + player.pos.x;
-		var newY = Math.sin(direction) * distance + player.pos.y;
+		var direction = angleBetweenTwoPoints(listener.pos, pos);
+		var newX = Math.cos(direction) * distance + listener.pos.x;
+		var newY = Math.sin(direction) * distance + listener.pos.y;
 
 		var newLocation = {x:newX, y:newY};
 		return newLocation;
@@ -456,6 +472,93 @@ function AudioManager() {
 
 var audGeoPoints = [];
 var currentAudGeo = []; //{point:{x,y}, connections:[indexs], index: i}
+// For testing
+var fauxAudGeo = [
+	{x: 101, y: 101},
+	{x:-101, y: 101},
+	{x: 101, y:-101},
+	{x:-101, y:-101},
+];
+for (var i = 0; i < fauxAudGeo.length; i++) {
+	//audGeoPoints.push(fauxAudGeo[i]);
+}
+
+function populateAudioNodesFromWallEdges() {
+	audGeoPoints.length = 0;
+	var positions = [];
+	var snapDistance = 5;
+
+	for (var i = 0; i < walls.length; i++) {
+		if (positions.indexOf(JSON.stringify(walls[i].p1)) == -1) {
+			positions.push(JSON.stringify(walls[i].p1));
+		}
+		if (positions.indexOf(JSON.stringify(walls[i].p2)) == -1) {
+			positions.push(JSON.stringify(walls[i].p2));
+		}
+	}
+
+	// console.log(positions);
+
+	for (var j = 0; j < positions.length; j++) {
+		var audGeoPoint = JSON.parse(positions[j]);
+
+		// Code to push position away from edges
+		var overlapingPointsList = getOverlappingWallEdgesAsPointPairList(audGeoPoint);
+		var pushVector = {x:0, y:0};
+		for (var i = 0; i < overlapingPointsList.length; i++) {
+			var pointPairAsDirection = subtractVectors(overlapingPointsList[i][0], overlapingPointsList[i][1]);
+			pointPairAsDirection = normalizeVector(pointPairAsDirection);
+			pointPairAsDirection = scaleVector(pointPairAsDirection, (snapDistance - distanceBetweenTwoPoints(audGeoPoint, overlapingPointsList[i][0])) / snapDistance);
+			pushVector = addVectors(pushVector, pointPairAsDirection);
+		}
+		pushVector = normalizeVector(pushVector);
+		audGeoPoint = addVectors(audGeoPoint, pushVector);
+
+		audGeoPoints.push(audGeoPoint);
+	}
+
+	generateAudGeo();
+}
+
+function cullAudioNodesThatDontConnectToPoint(point) {
+	var visited = [];
+	var stack = [];
+	audGeoPoints.length = 0;
+
+	for (var i = 0; i < currentAudGeo.length; i++) {
+		var clear = true;
+		for (var k in walls) {
+			if (isLineIntersecting(point, currentAudGeo[i].point, walls[k].p1, walls[k].p2)) {
+				clear = false;
+			}
+		}
+		if (clear) {
+			stack.push(currentAudGeo[i].index);
+		}
+	}
+
+	// console.log(stack)
+
+	while (stack.length > 0) {
+		var index =  stack.pop();
+		if (visited.includes(index)) continue;
+		visited.push(index);
+
+		for (var i = 0; i < currentAudGeo[index].connections.length; i++) {
+			if (!visited.includes(currentAudGeo[index].connections[i])) {
+				stack.push(currentAudGeo[index].connections[i]);
+			}
+		}
+	}
+
+	// console.log(visited);
+
+	for (var i = 0; i < visited.length; i++) {
+		audGeoPoints.push(currentAudGeo[visited[i]].point);
+	}
+
+	generateAudGeo();
+}
 
 function generateAudGeo() {
 	currentAudGeo = new Array();
@@ -482,15 +585,4 @@ function generateAudGeo() {
 
 		currentAudGeo.push({point: audGeoPoints[i], connections: connect, index: i});
 	}
-}
-
-// For testing
-var fauxAudGeo = [
-	{x: 101, y: 101},
-	{x:-101, y: 101},
-	{x: 101, y:-101},
-	{x:-101, y:-101},
-];
-for (var i = 0; i < fauxAudGeo.length; i++) {
-	//audGeoPoints.push(fauxAudGeo[i]);
 }

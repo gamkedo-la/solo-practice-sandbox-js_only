@@ -1,9 +1,10 @@
-class Entity {
-	constructor() {
-		this.pos =  {x:0, y:0};
-		this.x = 0;
-		this.y = 0;
-		this.ang = d270;
+class EntityClass {
+	constructor(entityClone = {}) {
+		this.name = entityClone.name || "";
+		this.pos =  entityClone.pos || {x:0, y:0};
+		this.x = this.pos.x;
+		this.y = this.pos.y;
+		this.ang = entityClone.ang || d270;
 		this.forward = {x:0, y:0};
 		this.forward.x = Math.cos(this.ang);
 		this.forward.y = Math.sin(this.ang);
@@ -12,7 +13,7 @@ class Entity {
 		gameObjects.push(this);
 	}
 
-	update() {
+	update(deltaTime) {
 		this.x = this.pos.x;
 		this.y = this.pos.y;
 
@@ -31,9 +32,9 @@ class Entity {
 	}
 }
 
-class SceneEntity extends Entity {
-	constructor() {
-		super();
+class SceneEntity extends EntityClass {
+	constructor(entityClone = {}) {
+		super(entityClone);
 
 		this._image = new Image();
 		this._image.src = './images/testEntity.png';
