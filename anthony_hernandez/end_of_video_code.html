@@ -119,11 +119,9 @@ function moveEverything() {
 	}
 	if(ballY < 0) {
 		ballSpeedY = -ballSpeedY;
-		console.log("test2")
 	}
 	if(ballY > canvas.height) {
 		ballSpeedY = -ballSpeedY;
-		console.log("TEst");
 	}
 }
 
@@ -165,23 +163,11 @@ function drawEverything() {
 	canvasContext.fillText(player2Score, canvas.width-100, 100);
 }
 
-function generateRandomColorValue()
-{
-	return Math.floor(Math.random() * 256);
-}
-
 function colorCircle(centerX, centerY, radius, drawColor) {
 	canvasContext.fillStyle = drawColor;
 	canvasContext.beginPath();
 	canvasContext.arc(centerX, centerY, radius, 0,Math.PI*2,true);
-	let r = generateRandomColorValue();
-	let g = generateRandomColorValue();
-	let b = generateRandomColorValue();
-	let rgbColor = "rgb(" + r + "," + g + "," + b +")";
-	console.log(rgbColor);
-	canvasContext.fillStyle = rgbColor;
 	canvasContext.fill();
-	canvasContext.fillStyle = "white";
 }
 
 function colorRect(leftX,topY, width,height, drawColor) {
