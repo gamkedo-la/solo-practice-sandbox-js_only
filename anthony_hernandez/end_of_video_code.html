@@ -21,9 +21,6 @@ var paddle2Y = 250;
 const PADDLE_THICKNESS = 10;
 const PADDLE_HEIGHT = 100;
 
-// Initialize ball color
-let ballColor = "white";
-
 // Function for generating random RGB colro values
 function generateRandomColorValue()
 {
@@ -41,6 +38,9 @@ function generateRandomColor()
 	// return an rgb statement for canvasContext.fillStyle
 	return "rgb(" + rValue + "," + gValue + "," + bValue +")";
 }
+
+// Initialize ball color
+let ballColor = generateRandomColor();
 
 function calculateMousePos(evt) {
 	var rect = canvas.getBoundingClientRect();
@@ -116,9 +116,6 @@ function moveEverything() {
 		if(ballY > paddle1Y &&
 			ballY < paddle1Y+PADDLE_HEIGHT) {
 			ballSpeedX = -ballSpeedX;
-			
-			// Change ball color
-			ballColor = generateRandomColor();
 
 			var deltaY = ballY
 					-(paddle1Y+PADDLE_HEIGHT/2);
@@ -127,14 +124,13 @@ function moveEverything() {
 			player2Score++; // must be BEFORE ballReset()
 			ballReset();
 		}
+		// Change ball color
+		ballColor = generateRandomColor();
 	}
 	if(ballX > canvas.width) {
 		if(ballY > paddle2Y &&
 			ballY < paddle2Y+PADDLE_HEIGHT) {
 			ballSpeedX = -ballSpeedX;
-
-			// Change ball color
-			ballColor = generateRandomColor();
 
 			var deltaY = ballY
 					-(paddle2Y+PADDLE_HEIGHT/2);
@@ -143,6 +139,8 @@ function moveEverything() {
 			player1Score++; // must be BEFORE ballReset()
 			ballReset();	
 		}
+		// Change ball color
+		ballColor = generateRandomColor();
 	}
 	if(ballY < 0) {
 		ballSpeedY = -ballSpeedY;
