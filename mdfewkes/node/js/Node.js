@@ -298,7 +298,7 @@ class NodeOutput extends NodeBase {
 	}
 }
 
-class CircularBuffer {
+class DelayBuffer {
 	constructor(numberOfSamples) {
 		this._buffer = [0];
 		this._index = 0;
@@ -353,7 +353,7 @@ class NodeDelay extends NodeBase {
 		this.inlet = new Inlet(this);
 		this.outlet = new Outlet(this);
 
-		this._buffer = new CircularBuffer(0);
+		this._buffer = new DelayBuffer(0);
 	}
 
 	OnProcess() {

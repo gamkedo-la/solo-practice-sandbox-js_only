@@ -27,7 +27,7 @@ window.onload = function() {
 
 function waitingforgesture() {
 
-	colorRect(0,0,800,600, "black");
+	colorRect(0,0,canvas.width,canvas.height, "black");
 	colorText("Press Space to Play", canvas.width/2 - 120, canvas.height/2, "white", "30px Arial");
 
 	if (Key.isDown(Key.SPACE)) {
@@ -184,8 +184,8 @@ function gameloop(time) {
 
 		canvasContext.resetTransform();//reset the transform matrix as it is cumulative
 		canvasContext.clearRect(0, 0, canvas.width, canvas.height);//clear the viewport AFTER the matrix is reset
-		colorRect(0,0,800,300, topColor);
-		colorRect(0,300,800,300, bottomColor);
+		colorRect(0,0,canvas.width,canvas.height/2, topColor);
+		colorRect(0,canvas.height/2,canvas.width,canvas.height/2, bottomColor);
 
 		//var thisTime = window.performance.now();
 		//3D

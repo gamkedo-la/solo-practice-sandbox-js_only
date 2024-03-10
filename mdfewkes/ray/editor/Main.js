@@ -110,6 +110,11 @@ function calculateMousePos(evt) {
 	mouseY = evt.clientY - rect.top - root.scrollTop;
 
 	pFocus = false;
+
+	eCanvas.width = 1000;
+	eCanvas.height = 750;
+	pCanvas.width = 400;
+	pCanvas.height = 300;
 	//console.log(mouseX + " " + mouseY);
 }
 
@@ -128,6 +133,11 @@ function mouseUpEvent(evt) {
 
 function pCalculateMousePos(evt) {
 	pFocus = true;
+
+	eCanvas.width = 400;
+	eCanvas.height = 300;
+	pCanvas.width = 1000;
+	pCanvas.height = 750;
 	//console.log(pMouseX + " " + pMouseY);
 }
 
@@ -285,7 +295,7 @@ function drawPreview() {
 	canvas = pCanvas;
 	canvasContext = pCanvasContext;
 
-	colorRect(0,0,canvas.width,300, topColor);
+	colorRect(0,0,canvas.width,canvas.height/2, topColor);
 	colorRect(0,canvas.height/2,canvas.width,canvas.height/2, bottomColor);
 
 	//3D
@@ -331,9 +341,9 @@ function drawPreview() {
 		var distance = rays[i].distance// * Math.cos(cameraAng); //comment out solution while looking for texture fix
 
 		var x = rays[i].i * drawWidth;
-		var y = pCanvas.height/2 - wallHeight*pCanvas.height*0.5/distance;
+		var y = canvas.height/2 - wallHeight*canvas.height*0.5/distance;
 		var w = drawWidth;
-		var h = wallHeight * pCanvas.height / distance;
+		var h = wallHeight * canvas.height / distance;
 		var distanceAlongWall = distanceBetweenTwoPoints(rays[i].wall.p1, rays[i]);
 
 		colorRect(x, y, w, h, rays[i].wall.color);
@@ -354,9 +364,9 @@ function drawPreview() {
 function DrawEntity(entity) {
 	var drawAngle = wrap(radToDeg(angleBetweenTwoPoints(player, entity) - player.ang), -180, 180);
 
-	var size = 5 * pCanvas.height / entity.distance;
-	var drawX = pCanvas.width*0.5 - size*0.5 + drawAngle * pCanvas.width/FOV;
-	var drawY = pCanvas.height*0.5 - size*0.5;
+	var size = 5 * canvas.height / entity.distance;
+	var drawX = canvas.width*0.5 - size*0.5 + drawAngle * canvas.width/FOV;
+	var drawY = canvas.height*0.5 - size*0.5;
 
 	canvasContext.drawImage(objectImage, drawX, drawY, size, size);
 }
