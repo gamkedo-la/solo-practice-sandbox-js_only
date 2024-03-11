@@ -814,11 +814,11 @@ class UIMoveBar extends UIElement {
 }
 
 class UITextLabel extends UIElement {
-	constructor(name, x, y, w, h, text = "") {
+	constructor(name, x, y, w, h, text = "", textAlignment = "left") {
 		super(name, x, y, w, h);
 
 		this.size = 14;
-		this.textAlignment = "left";
+		this.textAlignment = textAlignment;
 		this.label = text;
 	}
 

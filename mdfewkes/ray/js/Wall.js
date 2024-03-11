@@ -13,8 +13,8 @@ function WallClass(wallClone = {}) {
 	this.draw2D = function(){
 		colorLine(this.p1.x, this.p1.y, this.p2.x, this.p2.y, 2, this.color);
 		if (debug) {
-			colorText(this.p1.x + ":" + this.p1.y, this.p1.x, this.p1.y, this.color, font = "15px Arial");
-			colorText(this.p2.x + ":" + this.p2.y, this.p2.x, this.p2.y, this.color, font = "15px Arial");
+			// colorText(this.p1.x + ":" + this.p1.y, this.p1.x, this.p1.y, this.color, font = "15px Arial");
+			// colorText(this.p2.x + ":" + this.p2.y, this.p2.x, this.p2.y, this.color, font = "15px Arial");
 		}
 	};
 }

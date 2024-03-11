@@ -1,4 +1,5 @@
 function LevelClass() {
+	this.playerStart = {x:0, y:0};
 	this.walls = [];
 	this.entities = [];
 	this.levelJSON = "{}";
@@ -15,7 +16,7 @@ function LevelClass() {
 		var parsedLevel = null;
 		if (this.levelJSON != "") {
 			parsedLevel = JSON.parse(this.levelJSON);
-			console.log(parsedLevel)
+			//console.log(parsedLevel)
 
 			if (parsedLevel.walls) {
 				for (let i = 0; i < parsedLevel.walls.length; i++) {
@@ -23,16 +24,26 @@ function LevelClass() {
 					this.walls.push(newWall);
 				}
 			}
+
 			if (parsedLevel.entities) {
 				for (let i = 0; i < parsedLevel.entities.length; i++) {
 					let newEntity = new SceneEntity(parsedLevel.entities[i]);
 					this.entities.push(newEntity);
 				}
 			}
-		}
 
-		topColor = this.topColor;
-		bottomColor = this.bottomColor;
+			if (parsedLevel.playerStart) {
+				this.playerStart = parsedLevel.playerStart;
+			}
+
+			if (parsedLevel.topColor) {
+				this.topColor = parsedLevel.topColor;
+			}
+			
+			if (parsedLevel.bottomColor) {
+				this.bottomColor = parsedLevel.bottomColor;
+			}
+		}
 
 		this.onLoad();
 

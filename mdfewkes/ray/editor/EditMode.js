@@ -182,6 +182,38 @@ function runAudioMode() {
 function runEntityMode() {
 }
 
+function outputLevelJSONtoConsole() {
+	var newLevel = {};
+
+	newLevel.playerStart = currentMap.playerStart;
+	newLevel.topColor = currentMap.topColor;
+	newLevel.bottomColor = currentMap.bottomColor;
+	if (walls.length > 0) {
+		newLevel.walls = walls;
+	}
+	if (gameObjects.length > 0) {
+		newLevel.entities = gameObjects;
+		for(var i = 0; i < newLevel.entities.length; i++) {
+			delete newLevel.entities[i].distance;
+		}
+	}
+	console.log(JSON.stringify(newLevel));
+}
+
+function createLevelFromJSON(levelJSON) {
+	var newLevel = new LevelClass();
+	newLevel.levelJSON = levelJSON;
+
+	return newLevel;
+}
+
+function loadLevel(level) {
+	gameObjects.length = 0;
+	walls.length = 0;
+	level.onLoad = function(){};
+	currentMap = level.load();
+}
+
 function getMousePositionInWorldSpace() {
 	var pos = {x: mouseX + player.x - eCanvas.width/2, y: mouseY + player.y - eCanvas.height/2};
 	var newPos = {x: Math.round(pos.x), y: Math.round(pos.y)};

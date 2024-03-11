@@ -1,7 +1,7 @@
 var pMouseX, pMouseY;
 var player = {x:0, y: 0, ang: d270, forwardX: 0, forwardY: 0};
 var gameObjects = [];
-var currentMap = new MapClass();
+var currentMap = new LevelClass();
 var objectImage = new Image();
 objectImage.src = './images/testEntity.png';
 var distanceBuffer = [];
@@ -30,8 +30,6 @@ var pFocus = false;
 
 var FOV = 60;
 var heightScale = 5;
-var topColor = "lightgrey";
-var bottomColor = "gray";
 
 function calculateKeyboardDown(evt) {
 	switch(evt.keyCode) {
@@ -136,8 +134,8 @@ function pCalculateMousePos(evt) {
 
 	eCanvas.width = 400;
 	eCanvas.height = 300;
-	pCanvas.width = 1000;
-	pCanvas.height = 750;
+	pCanvas.width = 800;
+	pCanvas.height = 600;
 	//console.log(pMouseX + " " + pMouseY);
 }
 
@@ -171,15 +169,15 @@ window.onload = function() {
 	newWall.p2 = {x:-100, y:-100};
 	newWall.color = "green";
 
-	var testEntity = {x: 0, y:0, distance: 0};
+	var testEntity = {name:"Rob", x: 0, y:0, distance: Infinity};
 	gameObjects.push(testEntity);
-	var testEntity1 = {x: 50, y:50, distance: 0};
+	var testEntity1 = {name:"Cat", x: 50, y:50, distance: Infinity};
 	gameObjects.push(testEntity1);
-	var testEntity2 = {x: -50, y:50, distance: 0};
+	var testEntity2 = {name:"Benny", x: -50, y:50, distance: Infinity};
 	gameObjects.push(testEntity2);
-	var testEntity3 = {x: 50, y:-50, distance: 0};
+	var testEntity3 = {name:"Hanna", x: 50, y:-50, distance: Infinity};
 	gameObjects.push(testEntity3);
-	var testEntity4 = {x: -50, y:-50, distance: 0};
+	var testEntity4 = {name:"Hector", x: -50, y:-50, distance: Infinity};
 	gameObjects.push(testEntity4);
 
 	setupUI(eCanvas.width, eCanvas.height);
@@ -295,8 +293,8 @@ function drawPreview() {
 	canvas = pCanvas;
 	canvasContext = pCanvasContext;
 
-	colorRect(0,0,canvas.width,canvas.height/2, topColor);
-	colorRect(0,canvas.height/2,canvas.width,canvas.height/2, bottomColor);
+	colorRect(0,0,canvas.width,canvas.height/2, currentMap.topColor);
+	colorRect(0,canvas.height/2,canvas.width,canvas.height/2, currentMap.bottomColor);
 
 	//3D
 	var numRays = canvas.width;
@@ -354,7 +352,7 @@ function drawPreview() {
 				x, y,
 				w, h);
 		}
-		colorRect(x, y, w, h, fullColorHex(20, 10, 30, distance/drawDistance * 384));
+		//colorRect(x, y, w, h, fullColorHex(20, 10, 30, distance/drawDistance * 384));
 	}
 	for (objectIndex; objectIndex < gameObjects.length; objectIndex++) {
 		DrawEntity(gameObjects[objectIndex]);

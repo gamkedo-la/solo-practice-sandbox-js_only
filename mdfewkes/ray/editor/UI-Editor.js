@@ -14,7 +14,7 @@ function setupUI(screenWidth, screenHeight) {
 	mainInterface.parts[0].addPart(new UIButtonWToolTip("audioModeButton", 28, 5, 20, 20, "Audio Mode"));
 	mainInterface.parts[0].addPart(new UIButtonWToolTip("entityModeButton", 51, 5, 20, 20, "Entity Mode"));
 	mainInterface.parts[0].addPart(new UIToggleWToolTip("snapToggle", 97, 5, 20, 20, "Snap to nearest wall anchor", true));
-	mainInterface.parts[0].addPart(new UITextLabel("modetextlabel", screenWidth/2, 20, 0, 0), true);
+	mainInterface.parts[0].addPart(new UITextLabel("modetextlabel", screenWidth/2, 20, 0, 0, "", "center"));
 
 	mainInterface.parts[0].parts[0].onClick = function() {
 		switchMode(WALL_MODE); 
@@ -37,10 +37,11 @@ function setupUI(screenWidth, screenHeight) {
 	mainInterface.parts[0].parts[3].toggle = true;
 	mainInterface.parts[0].parts[3].onTrue = function() {snapToNearWallPoint = true;};
 	mainInterface.parts[0].parts[3].onFalse = function() {snapToNearWallPoint = false;};
-	mainInterface.parts[0].parts[4].textAlignment = "center";
 	mainInterface.parts[0].parts[4].onUpdate = function() {this.label = getDisplayText();};
 
 	mainInterface.onDraw = function() {
+		mainInterface.parts[0].parts[4].updatePosition(eCanvas.width/2, 20, 0, 0);
+
 		canvas = eCanvas;
 		canvasContext = eCanvasContext;
 		drawMapView();

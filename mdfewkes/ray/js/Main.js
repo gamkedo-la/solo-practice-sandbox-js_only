@@ -42,107 +42,14 @@ function waitingforgesture() {
 function gamestart() {
 	AudioMan.setListener(player);
 	window.requestAnimationFrame(gameloop);
-/*
-	//generate a random room
-	var x = -250;
-	var y = -250;
-	var wallTexture = new Image();
-	wallTexture.src = './images/text2Texture100x100.png';
-	//console.log("x:" + x + "," + "y:" + y);
-	for (var i = 0; i < 10; i++) {
-		var newWall = new WallClass();
-		newWall.p1 = {x:x, y:y};
-		x += rndFloat(0, 50);
-		y += rndFloat(-25, 25);
-		newWall.p2 = {x:x, y:y};
-		newWall.texture = wallTexture;
-	}
-	//console.log("x:" + x + "," + "y:" + y);
-	for (var i = 0; i < 10; i++) {
-		var newWall = new WallClass();
-		newWall.p1 = {x:x, y:y};
-		x += rndFloat(-25, 25);
-		y += rndFloat(0, 50);
-		newWall.p2 = {x:x, y:y};
-		newWall.texture = wallTexture;
-	}
-	for (var i = 0; i < 10; i++) {
-		var newWall = new WallClass();
-		newWall.p1 = {x:x, y:y};
-		x += rndFloat(0, -50);
-		y += rndFloat(-25, 25);
-		newWall.p2 = {x:x, y:y};
-		newWall.texture = wallTexture;
-	}
-	//console.log("x:" + x + "," + "y:" + y);
-	for (var i = 0; i < 10; i++) {
-		var newWall = new WallClass();
-		newWall.p1 = {x:x, y:y};
-		x += rndFloat(-25, 25);
-		y += rndFloat(0, -50);
-		newWall.p2 = {x:x, y:y};
-		newWall.texture = wallTexture;
-	}
-	//console.log("x:" + x + "," + "y:" + y);
-	walls[walls.length-1].p2 = walls[0].p1;
 
-
-	var newWall = new WallClass();
-	newWall.p1 = {x:-100, y:-100};
-	newWall.p2 = {x:300, y:-100};
-	newWall.color = "red";
-	newWall = new WallClass();
-	newWall.p1 = {x:300, y:-100};
-	newWall.p2 = {x:300, y:300};
-	newWall.color = "orange";
-	newWall = new WallClass();
-	newWall.p1 = {x:300, y:300};
-	newWall.p2 = {x:-100, y:300};
-	newWall.color = "yellow";
-	newWall = new WallClass();
-	newWall.p1 = {x:-100, y:300};
-	newWall.p2 = {x:-100, y:-100};
-	newWall.color = "green";
-	newWall = new WallClass();
-	newWall.p1 = {x:100, y:100};
-	newWall.p2 = {x:-100, y:100};
-	newWall.color = "darkblue";
-	newWall = new WallClass();
-	newWall.p1 = {x:100, y:200};
-	newWall.p2 = {x:100, y:100};
-	newWall.color = "purple";
-	newWall = new WallClass();
-	newWall.p1 = {x:0, y:200};
-	newWall.p2 = {x:100, y:200};
-	newWall.color = "red";
-	newWall = new WallClass();
-	newWall.p1 = {x:0, y:150};
-	newWall.p2 = {x:0, y:200};
-	newWall.color = "orange";
-	newWall = new WallClass();
-	newWall.p1 = {x:0, y:150};
-	newWall.p2 = {x:50, y:150};
-	newWall.color = "yellow";
-	newWall = new WallClass();
-	newWall.p1 = {x:50, y:150};
-	newWall.p2 = {x:50, y:200};
-	newWall.color = "green";
+	currentMap = testLevel1.load();
 
 	testsound1 = AudioMan.createSound3D("./audio/temp_engine1.ogg", {pos:{x:200, y:150}}, true, 1).play();
 	testsound2 = AudioMan.createSound3D("./audio/UI_Typewriter_temp01.wav", {pos:{x:50, y:250}}, true, 1).play();
 	testsound3 = AudioMan.createSound3D("./audio/TT rough vox only.mp3", {pos:{x:-50, y:175}}, true, 1).play();
 	populateAudioNodesFromWallEdges();
 	cullAudioNodesThatDontConnectToPoint(player.pos);
-
-	var testEntity = new SceneEntity();
-	var testEntity1 = new SceneEntity();
-	testEntity1.pos = {x: 200, y:150};
-	var testEntity2 = new SceneEntity();
-	testEntity2.pos = {x: 50, y:250};
-	var testEntity3 = new SceneEntity();
-	testEntity3.pos = {x: -50, y:175};
-	*/
-	currentMap = testLevel1.load();
 }
 
 function gameloop(time) {
