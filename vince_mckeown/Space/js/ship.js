@@ -106,10 +106,6 @@ function shipClass() {
 		}
 		
 		drawBitmapCenteredAtLocationWithRotation(this.myBitmap, this.x, this.y, this.ang);
-
-		for (i=0; i < this.displayScoreList.length ; i++){
-			this.displayScoreList[i].draw();
-		}
 	}
 	
 	this.cannonFire = function(){
