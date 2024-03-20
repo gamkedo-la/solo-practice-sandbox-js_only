@@ -19,16 +19,16 @@ var levelNow = 0;
 var roomGrid = [];
 
 var levelOne = [
-					 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 1, 1, 1, 1, 1, 1, 2, 1, 1, 1,
-					 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+					 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+					 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					 2, 1, 1, 1, 1, 1, 3, 1, 1, 1,
+					 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
 				];
 					
 var levelTwo =[
@@ -45,7 +45,8 @@ var levelTwo =[
 				];
 					
 	const TILE_FLOOR_STONE_1 = 1;
-	const TILE_PLAYER = 2;
+	const TILE_WALL_STONE_1 = 2
+	const TILE_PLAYER = 3;
 
 	
 function gameCoordToIsoCoord (pixelX, pixelY){
@@ -82,8 +83,9 @@ function drawTracks(){
 			miniMapX += 4;
 			isoTileLeftEdgeX = (tileLeftEdgeX - tileTopEdgeY)/2;
 			isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/4;
-			tileCoordToIsoCoord(eachCol, eachRow);			 
-		tileIndex++;
+			tileCoordToIsoCoord(eachCol, eachRow);		
+			canvasContext.drawImage(trackPics[trackTypeHere], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);	 
+			tileIndex++;
 		} // end of each col
 		tileTopEdgeY += ROOM_H;
 	} // end of each row

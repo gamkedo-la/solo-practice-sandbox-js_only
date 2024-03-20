@@ -31,6 +31,7 @@ function loadImages() {
 			{varName: wizardPic, theFile: "wizard.png"},
 	
 			{trackType: TILE_FLOOR_STONE_1, theFile: "floor.png"},
+			{trackType: TILE_WALL_STONE_1, theFile: "wall_stone_1.png"},
 		];
 			
 	picsToLoad = imageList.length;
