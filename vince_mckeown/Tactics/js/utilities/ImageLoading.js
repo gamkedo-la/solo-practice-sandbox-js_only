@@ -32,6 +32,9 @@ function loadImages() {
 	
 			{trackType: TILE_FLOOR_STONE_1, theFile: "floor.png"},
 			{trackType: TILE_WALL_STONE_1, theFile: "wall_stone_1.png"},
+			{trackType: TILE_WALL_STONE_2, theFile: "wall_stone_2.png"},
+			{trackType: TILE_WALL_STONE_3, theFile: "wall_stone_3.png"},
+			{trackType: TILE_WALL_STONE_4, theFile: "wall_stone_4.png"},
 		];
 			
 	picsToLoad = imageList.length;
