@@ -19,16 +19,16 @@ var levelNow = 0;
 var roomGrid = [];
 
 var levelOne = [
-					 2, 2, 2, 3, 2, 2, 4, 5, 2, 4,
-					 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 3, 1, 1, 1, 1, 1, 6, 1, 1, 1,
-					 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 5, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 4, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 3, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 2, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 4, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-					 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+					 50, 52, 52, 53, 52, 52, 50, 50, 52, 52,
+					 51,  1,  2,  1,  1,  1,  1,  1,  1,  1,
+					 52,  1,  1,  1,  1,  1,100,  1,  1,  1,
+					 53,  1,  1,  2,  2,  1,  1,  1,  1,  1,
+					 52,  1,  3,  1,  1,  1,  2,  1,  4,  1,
+					 52,  1,  3,  3,  2,  1,  1,  3,  1,  1,
+					 50,  4,  1,  4,  2,  1,  1,  2,  1,  1,
+					 50,  4,  1,  3,  1,  1,  2,  1,  1,  1,
+					 51,  1,  1,  1,  1,  1,  1,  1,  3,  1,
+					 52,  1,  1,  1,  1,  1,  1,  1,  1,  1, 
 				];
 					
 var levelTwo =[
@@ -45,11 +45,14 @@ var levelTwo =[
 				];
 					
 	const TILE_FLOOR_STONE_1 = 1;
-	const TILE_WALL_STONE_1 = 2;
-	const TILE_WALL_STONE_2 = 3;
-	const TILE_WALL_STONE_3 = 4;
-	const TILE_WALL_STONE_4 = 5;
-	const TILE_PLAYER = 6;
+	const TILE_FLOOR_STONE_2 = 2;
+	const TILE_FLOOR_STONE_3 = 3;
+	const TILE_FLOOR_STONE_4 = 4;
+	const TILE_WALL_STONE_1 = 50;
+	const TILE_WALL_STONE_2 = 51;
+	const TILE_WALL_STONE_3 = 52;
+	const TILE_WALL_STONE_4 = 53;
+	const TILE_PLAYER = 100;
 
 	
 function gameCoordToIsoCoord (pixelX, pixelY){
