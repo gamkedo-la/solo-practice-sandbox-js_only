@@ -26,7 +26,7 @@ function updatedCameraPosition(){
 
 function shiftForCameraPan(){
 	canvasContext.save();
-	canvasContext.translate(-camPanX, -camPanY);
+	canvasContext.translate(Math.round(-camPanX), Math.round(-camPanY));
 }
 
 function finishedCameraPan(){

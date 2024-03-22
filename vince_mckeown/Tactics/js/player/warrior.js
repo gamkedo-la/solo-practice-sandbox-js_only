@@ -76,32 +76,22 @@ function warriorClass() {
 			collisionY = nextY 
 		} else if(this.keyHeld_North && this.keyHeld_East){
 			nextX += this.playerMovementSpeed;
-			this.miniMapX += this.playerMovementSpeed/10;
-			this.miniMapY -= this.playerMovementSpeed/10;
 		} else if(this.keyHeld_South && this.keyHeld_West){
 			nextX -= this.playerMovementSpeed;
-			this.miniMapX -= this.playerMovementSpeed/10;
-			this.miniMapY += this.playerMovementSpeed/10;
 		} else if(this.keyHeld_South && this.keyHeld_East){
-			nextY += this.playerMovementSpeed;
-			this.miniMapX += this.playerMovementSpeed/10;
-			this.miniMapY += this.playerMovementSpeed/10; 
+			nextY += this.playerMovementSpeed; 
 		} else if(this.keyHeld_North && this.canMoveNorth){
 			nextY -= this.playerMovementSpeed;
 			this.offSetHeight = this.height * 4;
-			this.miniMapY -= this.playerMovementSpeed/15;
 		} else if(this.keyHeld_East && this.canMoveEast){
 			nextX += this.playerMovementSpeed;
 			this.offSetHeight = this.height * 1;
-			this.miniMapX += this.playerMovementSpeed/15;
 		} else if(this.keyHeld_South && this.canMoveSouth){
 			nextY += this.playerMovementSpeed;
 			this.offSetHeight = this.height * 2;
-			this.miniMapY += this.playerMovementSpeed/15;
 		} else if(this.keyHeld_West && this.canMoveWest){
 			nextX -= this.playerMovementSpeed;
 			this.offSetHeight = this.height * 3;
-			this.miniMapX -= this.playerMovementSpeed/15;
 		} else {
 			this.offSetHeight = 0;
 		}
@@ -117,6 +107,17 @@ function warriorClass() {
 
 		switch(walkIntoTileType) {
 			case TILE_FLOOR_STONE_1:
+			case TILE_FLOOR_STONE_2:
+			case TILE_FLOOR_STONE_3:
+			case TILE_FLOOR_STONE_4:
+			case TILE_FLOOR_SEWER_1:
+			case TILE_FLOOR_SEWER_2:
+			case TILE_FLOOR_SEWER_3:
+			case TILE_FLOOR_SEWER_4:
+			case TILE_FLOOR_SEWER_5:
+			case TILE_FLOOR_SEWER_6:
+			case TILE_FLOOR_SEWER_7:
+
 				this.x = nextX;
 				this.y = nextY;
 				break;
