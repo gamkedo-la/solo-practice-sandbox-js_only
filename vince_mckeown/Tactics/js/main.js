@@ -59,27 +59,6 @@ function imageLoadingDoneSoStartGame(){
 	playerOne.init(wizardPic, "Nesquit");
 }
 
-//Adds an enemy 
-function addGoblin(){
-	var tempEnemy = new enemyClass();
-	goblinList.push(tempEnemy);
-}
-
-function addOrc(){
-	var tempEnemy = new enemyClass();
-	orcList.push(tempEnemy);
-}
-
-function addOgre(){
-	var tempEnemy = new enemyClass();
-	ogreList.push(tempEnemy);
-}
-
-function addRat(){
-	var tempEnemy = new ratClass();
-	ratList.push(tempEnemy);
-}
-
 function nextLevel() {
 	levelNow++;
 	if(levelNow > levelList.length) {

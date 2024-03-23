@@ -49,7 +49,6 @@ function loadImages() {
 			{trackType: TILE_WALL_STONE_4, theFile: "wall_stone_4.png"},
 			{trackType: TILE_WALL_STONE_5, theFile: "wall_stone_5.png"},
 			{trackType: TILE_COLUMN_STONE_1, theFile: "column_stone_1.png"}
-			
 		];
 			
 	picsToLoad = imageList.length;
