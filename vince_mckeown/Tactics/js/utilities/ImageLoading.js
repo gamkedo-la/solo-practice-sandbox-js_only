@@ -1,4 +1,7 @@
 var wizardPic = document.createElement("img");
+var titleScreenPic = document.createElement("img");
+var titleScreenWizardPic = document.createElement("img");
+var titleScreenFireBAllPic = document.createElement("img");
 
 var trackPics = [];
 
@@ -27,6 +30,10 @@ function loadImageForRoomCode(trackCode, fileName)  {
 function loadImages() {
 	
 		var imageList = [
+			//menuScreens
+			{varName: titleScreenPic, theFile: "titleScreen.png"},
+			{varName: titleScreenWizardPic, theFile: "titleScreenWizard.png"},
+			{varName: titleScreenFireBAllPic, theFile: "titleScreenFireBall.png"},
 			//characters
 			{varName: wizardPic, theFile: "wizard.png"},
 	

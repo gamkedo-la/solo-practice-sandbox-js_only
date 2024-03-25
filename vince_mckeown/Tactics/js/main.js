@@ -8,10 +8,10 @@ function resetEnemyLists(){
 }
 
 //game states
-var liveGame = true;
+var liveGame = false;
 var pauseScreen = false;
 var inventoryScreen = false;
-var mainMenu = false;
+var mainMenu = true;
 
 
 window.onload = function(){
@@ -91,9 +91,39 @@ function checkAllPlayerAndEnemyCollisions(){
 
 
 //All movement occurs here.  This is called every frame.
+var titleScreenWizardX = -100;
+var titleScreenWizardY = 0;
+var titleScreenWizardXWaitTime = 0;
+var titleScreenWizardXMoveRight = true;
 function drawEverything() {
-	colorRect(0,0,canvas.width,canvas.height, 'black');
+	if(mainMenu){
+		if(titleScreenWizardX < 0 && titleScreenWizardXMoveRight){
+			titleScreenWizardX++;
+		} else {
+			titleScreenWizardXMoveRight = false;
+			titleScreenWizardXWaitTime++;
+			if(titleScreenWizardXWaitTime > 100){
+				titleScreenWizardX--;
+
+			}
+		}
+		canvasContext.drawImage(titleScreenPic, 0, 0); 
+		if(titleScreenWizardXWaitTime > 20 && titleScreenWizardXWaitTime < 40){
+			canvasContext.drawImage(titleScreenFireBAllPic, 0, 0);
+		}
+		canvasContext.drawImage(titleScreenWizardPic, titleScreenWizardX, titleScreenWizardY);
+		if(titleScreenWizardXWaitTime > 100){
+			colorRect(200, 300, 400, 100, "blue")
+			colorText("Castle Tactics", 250, 370, "white", "36px Arial Black")
+		}
+		if(titleScreenWizardXWaitTime > 130){
+			mainMenu = false;
+			liveGame = true;
+		}
+
+	}
 	if(liveGame){
+		colorRect(0,0,canvas.width,canvas.height, 'black');
 		shiftForCameraPan();
 		drawTracks();
 		playerOne.draw();

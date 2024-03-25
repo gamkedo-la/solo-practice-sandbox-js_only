@@ -3,7 +3,6 @@ var isMuted = false;
 var soundSetforMeetings = false; //make false to hear at normal level
 
 //sounds
-var crashIntoConeSound = new SoundOverlapsClass("crashCone");
 
 function setFormat() {
     var audio = new Audio();
