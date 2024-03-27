@@ -2,6 +2,7 @@ var wizardPic = document.createElement("img");
 var titleScreenPic = document.createElement("img");
 var titleScreenWizardPic = document.createElement("img");
 var titleScreenFireBAllPic = document.createElement("img");
+var tileIndicatorPic = document.createElement("img");
 
 var trackPics = [];
 
@@ -34,6 +35,8 @@ function loadImages() {
 			{varName: titleScreenPic, theFile: "titleScreen.png"},
 			{varName: titleScreenWizardPic, theFile: "titleScreenWizard.png"},
 			{varName: titleScreenFireBAllPic, theFile: "titleScreenFireBall.png"},
+			{varName: tileIndicatorPic, theFile: "tileIndicator.png"},
+
 			//characters
 			{varName: wizardPic, theFile: "wizard.png"},
 	

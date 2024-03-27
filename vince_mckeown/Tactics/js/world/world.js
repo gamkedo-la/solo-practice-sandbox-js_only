@@ -98,6 +98,8 @@ function drawTracks(){
 	var isoTileTopEdgeY = 0;
 	var miniMapX = 750;
 	var miniMapY = 2;
+	var drawTileIndicators = true
+	var showTileNumber = true;
 	sharedAnimCycle++;
 	
 	for(var eachRow = 0; eachRow < ROOM_ROWS; eachRow++){
@@ -111,7 +113,15 @@ function drawTracks(){
 			isoTileLeftEdgeX = (tileLeftEdgeX - tileTopEdgeY)/2;
 			isoTileTopEdgeY = (tileLeftEdgeX + tileTopEdgeY)/4;
 			tileCoordToIsoCoord(eachCol, eachRow);		
-			canvasContext.drawImage(trackPics[trackTypeHere], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);	 
+			//canvasContext.drawImage(trackPics[trackTypeHere], isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
+			if(drawTileIndicators){
+				canvasContext.drawImage(tileIndicatorPic, isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
+				if(showTileNumber){
+					colorText(tileIndex, isoDrawX-10, isoDrawY-20, "orange", "10px Arial Black" );
+					//var playerTile = getTileIndexAtPixelCoord(playerOne.x,playerOne.y);
+				//	console.log(playerTile)
+				}
+			}	 
 			tileIndex++;
 		} // end of each col
 		tileTopEdgeY += ROOM_H;

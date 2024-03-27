@@ -8,10 +8,10 @@ function resetEnemyLists(){
 }
 
 //game states
-var liveGame = false;
+var liveGame = true;
 var pauseScreen = false;
 var inventoryScreen = false;
-var mainMenu = true;
+var mainMenu = false;
 
 
 window.onload = function(){
@@ -114,7 +114,7 @@ function drawEverything() {
 		canvasContext.drawImage(titleScreenWizardPic, titleScreenWizardX, titleScreenWizardY);
 		if(titleScreenWizardXWaitTime > 100){
 			colorRect(200, 300, 400, 100, "blue")
-			colorText("Castle Tactics", 250, 370, "white", "36px Arial Black")
+			colorText("Underground Tactics", 250, 370, "white", "36px Arial Black")
 		}
 		if(titleScreenWizardXWaitTime > 130){
 			mainMenu = false;
