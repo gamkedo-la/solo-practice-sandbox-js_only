@@ -33,14 +33,13 @@ function keyPressed(evt) {
 	evt.preventDefault();
 	
 	var paused = KEY_P;
-	var addRockBulletKey = KEY_SPACEBAR;
+	var toggleMovement = KEY_SPACEBAR;
 	if(paused == evt.keyCode){
 		changePauseState();
 	}
-	if(addRockBulletKey == evt.keyCode){
-		addRockBullet();
+	if(toggleMovement == evt.keyCode){
+		playerOne.usingPath = !playerOne.usingPath;
 	}
-	
 }
 
 function keyReleased(evt) {

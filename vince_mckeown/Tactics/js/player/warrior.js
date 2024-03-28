@@ -24,6 +24,7 @@ function warriorClass() {
 	this.trapCoolDownTimer = 0;
 	this.trapCoolDownCounter = 0;
 	this.movementArray = [67];
+	this.usingPath = false;
 
 	this.warriorPic = document.createElement("img");
 	
@@ -67,50 +68,77 @@ function warriorClass() {
 	 
 	this.movement = function() {
 		
-		var currentIndex = this.movementArray[0];
+		var currentIndex;
 
-		if(this.keyHeld_North){
-			currentIndex = indexN(currentIndex);
-			if(this.movementArray.length > 1 && this.movementArray[1] == currentIndex){
-				this.movementArray.shift();
-			} else {
-				this.movementArray.unshift(currentIndex);
+		if(this.usingPath == false){
+			currentIndex = this.movementArray[0];
+			if(this.keyHeld_North){
+				currentIndex = indexN(currentIndex);
+				if(this.movementArray.length > 1 && this.movementArray[1] == currentIndex){
+					this.movementArray.shift();
+				} else {
+					this.movementArray.unshift(currentIndex);
+				}
+				this.keyHeld_North = false;
 			}
-			this.keyHeld_North = false;
-		}
-		if(this.keyHeld_South){
-			currentIndex = indexS(currentIndex);
-			if(this.movementArray.length > 1 && this.movementArray[1] == currentIndex){
-				this.movementArray.shift();
-			} else {
-				this.movementArray.unshift(currentIndex);
+			if(this.keyHeld_South){
+				currentIndex = indexS(currentIndex);
+				if(this.movementArray.length > 1 && this.movementArray[1] == currentIndex){
+					this.movementArray.shift();
+				} else {
+					this.movementArray.unshift(currentIndex);
+				}
+				this.keyHeld_South = false;
 			}
-			this.keyHeld_South = false;
-		}
-		if(this.keyHeld_West){
-			currentIndex = indexW(currentIndex);
-			if(this.movementArray.length > 1 && this.movementArray[1] == currentIndex){
-				this.movementArray.shift();
-			} else {
-				this.movementArray.unshift(currentIndex);
+			if(this.keyHeld_West){
+				currentIndex = indexW(currentIndex);
+				if(this.movementArray.length > 1 && this.movementArray[1] == currentIndex){
+					this.movementArray.shift();
+				} else {
+					this.movementArray.unshift(currentIndex);
+				}
+				this.keyHeld_West = false;
 			}
-			this.keyHeld_West = false;
-		}
-		if(this.keyHeld_East){
-			currentIndex = indexE(currentIndex);
-			if(this.movementArray.length > 1 && this.movementArray[1] == currentIndex){
-				this.movementArray.shift();
-			} else {
-				this.movementArray.unshift(currentIndex);
+			if(this.keyHeld_East){
+				currentIndex = indexE(currentIndex);
+				if(this.movementArray.length > 1 && this.movementArray[1] == currentIndex){
+					this.movementArray.shift();
+				} else {
+					this.movementArray.unshift(currentIndex);
+				}
+				this.keyHeld_East = false;
 			}
-			this.keyHeld_East = false;
-		}
 
-		if(this.movementArray.length > 7){
-			this.movementArray.shift();
+			if(this.movementArray.length > 7){
+				this.movementArray.shift();
+			}
+		} else {
+			currentIndex = getTileIndexAtPixelCoord(this.x,this.y);
+			var tileN = indexN(currentIndex);
+			var tileS = indexS(currentIndex);
+			var tileW = indexW(currentIndex);
+			var tileE = indexE(currentIndex);
+			var lastNode = this.movementArray.length - 1;
+			console.log(this.movementArray[lastNode], currentIndex);
+			if(this.movementArray[lastNode] == currentIndex){
+				var col = currentIndex%ROOM_COLS;
+				var row = Math.floor(currentIndex/ROOM_COLS);
+				this.x = col * ROOM_W + ROOM_W * 0.5;
+				this.y = row * ROOM_H + ROOM_H * 0.5;
+				this.movementArray.pop();
+				if(this.movementArray.length == 1){
+					this.usingPath = false;
+				}
+			} else if (this.movementArray[lastNode] == tileN) {
+				this.y -= this.playerMovementSpeed;
+			} else if (this.movementArray[lastNode] == tileS) {
+				this.y += this.playerMovementSpeed;
+			} else if (this.movementArray[lastNode] == tileW) {
+				this.x -= this.playerMovementSpeed;
+			} else if (this.movementArray[lastNode] == tileE) {
+				this.x += this.playerMovementSpeed;
+			}
 		}
-
-
 
 		/*var nextX = this.x; 
 		var nextY = this.y; 
