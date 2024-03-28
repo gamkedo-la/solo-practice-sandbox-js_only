@@ -117,7 +117,13 @@ function drawTracks(){
 			if(drawTileIndicators){
 				canvasContext.drawImage(tileIndicatorPic, isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
 				if(showTileNumber){
-					colorText(tileIndex, isoDrawX-10, isoDrawY-20, "orange", "10px Arial Black" );
+					var textColor;
+					if(playerOne.movementArray.includes(tileIndex)){
+						textColor = "cyan";
+					}else {
+						textColor = "orange"
+					}
+					colorText(tileIndex, isoDrawX-10, isoDrawY-20, textColor, "10px Arial Black" );
 					//var playerTile = getTileIndexAtPixelCoord(playerOne.x,playerOne.y);
 				//	console.log(playerTile)
 				}

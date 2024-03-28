@@ -23,6 +23,7 @@ function warriorClass() {
 	this.maxHealth = 4;
 	this.trapCoolDownTimer = 0;
 	this.trapCoolDownCounter = 0;
+	this.movementArray = [67,87,88];
 
 	this.warriorPic = document.createElement("img");
 	
