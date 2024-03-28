@@ -23,7 +23,7 @@ function warriorClass() {
 	this.maxHealth = 4;
 	this.trapCoolDownTimer = 0;
 	this.trapCoolDownCounter = 0;
-	this.movementArray = [67,87,88];
+	this.movementArray = [67];
 
 	this.warriorPic = document.createElement("img");
 	
@@ -67,7 +67,52 @@ function warriorClass() {
 	 
 	this.movement = function() {
 		
-		var nextX = this.x; 
+		var currentIndex = this.movementArray[0];
+
+		if(this.keyHeld_North){
+			currentIndex = indexN(currentIndex);
+			if(this.movementArray.length > 1 && this.movementArray[1] == currentIndex){
+				this.movementArray.shift();
+			} else {
+				this.movementArray.unshift(currentIndex);
+			}
+			this.keyHeld_North = false;
+		}
+		if(this.keyHeld_South){
+			currentIndex = indexS(currentIndex);
+			if(this.movementArray.length > 1 && this.movementArray[1] == currentIndex){
+				this.movementArray.shift();
+			} else {
+				this.movementArray.unshift(currentIndex);
+			}
+			this.keyHeld_South = false;
+		}
+		if(this.keyHeld_West){
+			currentIndex = indexW(currentIndex);
+			if(this.movementArray.length > 1 && this.movementArray[1] == currentIndex){
+				this.movementArray.shift();
+			} else {
+				this.movementArray.unshift(currentIndex);
+			}
+			this.keyHeld_West = false;
+		}
+		if(this.keyHeld_East){
+			currentIndex = indexE(currentIndex);
+			if(this.movementArray.length > 1 && this.movementArray[1] == currentIndex){
+				this.movementArray.shift();
+			} else {
+				this.movementArray.unshift(currentIndex);
+			}
+			this.keyHeld_East = false;
+		}
+
+		if(this.movementArray.length > 7){
+			this.movementArray.shift();
+		}
+
+
+
+		/*var nextX = this.x; 
 		var nextY = this.y; 
 		var collisionX = nextX;
 		var collisionY = nextY;
@@ -126,7 +171,7 @@ function warriorClass() {
 				break;
 		} // END OF SWITCH CASE		
 		this.trapCoolDown();
-		
+		*/
 	}	// END OF THIS.MOVEMENT
 
 		

@@ -118,7 +118,9 @@ function drawTracks(){
 				canvasContext.drawImage(tileIndicatorPic, isoDrawX - ISO_GRID_W/2, isoDrawY - ISO_TILE_GROUND_Y);
 				if(showTileNumber){
 					var textColor;
-					if(playerOne.movementArray.includes(tileIndex)){
+					if(playerOne.movementArray[0]==tileIndex){
+						textColor = "white";
+					} else if(playerOne.movementArray.includes(tileIndex)){
 						textColor = "cyan";
 					}else {
 						textColor = "orange"
@@ -171,4 +173,19 @@ function getTileIndexAtPixelCoord(pixelX,pixelY){
 function roomTileToIndex(tileCol, tileRow) {
 	return(tileCol + ROOM_COLS*tileRow);
 }
-			
+
+function indexN (fromIndex){
+	return fromIndex - ROOM_COLS;
+}
+
+function indexS (fromIndex){
+	return fromIndex + ROOM_COLS;
+}
+
+function indexW(fromIndex){
+	return fromIndex - 1;
+}
+
+function indexE(fromIndex){
+	return fromIndex + 1;
+}
