@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+</head>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+
+    const TILE_W = 75;
+    const TILE_H = 75;
+    const TILE_GAP = 1;
+    const TILE_COLS = 8;
+    const TILE_ROWS = 8;
+    var tileGrid = 
+       [0, 0, 0, 0, 0, 0, 0, 0,
+        0, 1, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 3, 3, 3, 3, 0,
+        0, 0, 0, 3, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 2, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+    ];
+    var grid = []; // array of GridElement instances, gets initialized based on tileGrid
+    const NOTHING = 0;
+    const SOURCE = 1;
+    const DEST = 2;
+    const WALL = 3;
+    const VISITED = 4;
+    const PATH = 5;
+
+const INFINITY_START_DISTANCE = 999999;
+function arrayContains(arr, obj) {
+    var arrLen = arr.length;
+    for (var i = 0; i < arrLen; i++) {
+        if (arr[i] === obj) {
+            return true;
+        }
+    }
+    return false;
+}
+function arrayRemove(arr, obj) {
+    for (var i = arr.length-1; i >= 0; i--) {
+        if (arr[i] === obj) {
+            arr.splice(i,1);
+            return;
+        }
+    }
+}
+
+function GridElement() {
+  this.tilC;
+  this.tilR; // so each tile knows its own col and row position in overall grid
+  this.tilIdx;
+                  
+  this.elementType;
+  this.distance = INFINITY_START_DISTANCE;
+  this.cameFrom; // GridElement reference to which tile we left to reach this one
+  
+  this.setup = function(myC, myR, myIdx, myElement) {
+    this.reset();
+    this.tilC=myC;
+    this.tilR=myR;
+    this.tilIdx=myIdx;
+    this.elementType=myElement;
+    if(this.elementType == SOURCE) {
+        this.setDistIfLess(0,null);
+    }
+  }
+  
+  this.display = function() {
+    var pieceName = "";
+    var tileBGColor = '#FF0000';
+
+    switch (this.elementType) {
+        case NOTHING:
+            tileBGColor = '#aaaaaa'
+            break;
+        case SOURCE:
+            pieceName += "Source";
+            tileBGColor = '#55ff55';
+            break;
+        case DEST:
+            pieceName += "Dest";
+            tileBGColor = '#aaaaff';
+            break;
+        case WALL:
+            pieceName += "Wall";
+            tileBGColor = '#555555';
+            break;
+        case VISITED:
+            pieceName += "Visited (" + this.distance+")";
+            tileBGColor = '#bbbbbb';
+            break;
+        case PATH:
+            pieceName += "Path (" + this.distance+")";
+            tileBGColor = '#000000';
+            break;
+    }
+
+    var tileLeftEdgeX = this.tilC * TILE_W;
+    var tileTopEdgeY = this.tilR * TILE_H;
+
+    colorRect(tileLeftEdgeX, tileTopEdgeY,
+        TILE_W - TILE_GAP, TILE_H - TILE_GAP, tileBGColor);
+    canvasContext.fillStyle = 'white';
+    canvasContext.fillText(pieceName,
+        tileLeftEdgeX + TILE_W / 2, tileTopEdgeY + TILE_H / 2);
+
+    if (tileOverIdx == this.tilIdx) { // mouseover?
+        outlineRect(tileLeftEdgeX, tileTopEdgeY,
+            TILE_W - TILE_GAP, TILE_H - TILE_GAP, 'green');
+    }
+  }
+  
+  this.wallToggle = function () {
+    if(this.elementType == SOURCE || this.elementType == DEST) {
+        return; // do nothing, no support yet for placing source or dest in-game, use grid init
+    } else if (this.elementType == WALL) {
+        this.elementType = NOTHING;
+    } else {
+        this.elementType = WALL;
+    }
+  }
+  
+  this.setTile = function(toType) {
+    this.elementType=toType;
+  }
+
+  function GetGridAtCR(atC,atR) {
+    return grid[atC + atR * TILE_COLS];
+  }
+  
+  this.myUnvisitedNeighbors = function() {
+    var myNeighbors = [];
+    var consideredNeighbor;
+    
+    if(this.tilC > 0) {
+      consideredNeighbor = GetGridAtCR(this.tilC-1,this.tilR);
+      if(arrayContains(unvisitedList,consideredNeighbor)) {
+        myNeighbors.push( consideredNeighbor );
+      }
+    }
+    if(this.tilC < TILE_W-1) {
+      consideredNeighbor = GetGridAtCR(this.tilC+1,this.tilR);
+      if(arrayContains(unvisitedList,consideredNeighbor)) {
+        myNeighbors.push( consideredNeighbor );
+      }
+    }
+    if(this.tilR > 0) {
+      consideredNeighbor = GetGridAtCR(this.tilC,this.tilR-1);
+      if(arrayContains(unvisitedList,consideredNeighbor)) {
+        myNeighbors.push( consideredNeighbor );
+      }
+    }
+    if(this.tilR < TILE_H-1) {
+      consideredNeighbor = GetGridAtCR(this.tilC,this.tilR+1);
+      if(arrayContains(unvisitedList,consideredNeighbor)) {
+        myNeighbors.push( consideredNeighbor );
+      }
+    }
+    
+    return myNeighbors;
+  }
+
+  this.isTileType = function(matchType) {
+    return (this.elementType==matchType);
+  }
+  
+  // function to update distance, do so only if less than previously found best distance
+  this.setDistIfLess = function(newDistToConsider, comingFrom) {
+    // console.log("comparing " + newDistToConsider + " vs " + this.distance);
+    if(newDistToConsider < this.distance) {
+      this.distance = newDistToConsider;
+      this.cameFrom = comingFrom;
+    }
+  }
+    
+  this.reset = function() {
+    if (this.elementType==VISITED || this.elementType==PATH) {
+      this.elementType=NOTHING;
+    }
+    this.distance = INFINITY_START_DISTANCE;
+    this.cameFrom = null;
+  }
+
+}//end class declaration
+
+    var unvisitedList = [];
+    var endTile = null;
+    var pathfindingNow = false;
+
+    var mouseX = 0;
+    var mouseY = 0;
+    var tileOverIdx = -1;
+    var mouseOverSidebar = false;
+
+    function initInput() {
+        document.addEventListener("mousemove", mousemoved);
+        document.addEventListener("mousedown", mouseclicked);
+    }
+
+    function mouseclicked(evt) {
+        if(mouseOverSidebar) {
+            pathfindingNow = !pathfindingNow;
+            if(endTile != null) {
+                pathfindingNow = false;
+            }
+            if(pathfindingNow == false) {
+                SetupPathfindingGridData();
+            }
+            return;
+        }
+
+        if (tileOverIdx < 0 || tileOverIdx >= tileGrid.length) { // invalid or off board
+            return;
+        }
+
+        if (tileOverIdx != -1) {
+            grid[tileOverIdx].wallToggle();
+        }
+    }
+
+    function mousemoved(evt) {
+        var rect = canvas.getBoundingClientRect();
+        var root = document.documentElement;
+
+        // account for the margins, canvas position on page, scroll amount, etc.
+        mouseX = evt.clientX - rect.left - root.scrollLeft;
+        mouseY = evt.clientY - rect.top - root.scrollTop;
+
+        var tileOverCol = Math.floor(mouseX / TILE_W);
+        var tileOverRow = Math.floor(mouseY / TILE_H);
+
+        mouseOverSidebar = (tileOverCol >= TILE_COLS);
+        if(mouseOverSidebar) {
+            tileOverIdx = -1;
+        } else {
+            tileOverIdx = tileCoordToIndex(tileOverCol, tileOverRow);
+        }
+    }
+
+    var canvas, canvasContext;
+
+    function tileCoordToIndex(tileCol, tileRow) {
+        return (tileCol + TILE_COLS * tileRow);
+    }
+
+    function PathfindingNextStep() {
+        var tentativeDistance=0;
+  
+          if(unvisitedList.length > 0) { //// "while Q is not empty:"
+            //// "u := vertex in Q with min dist[u]"
+            var currentTile = unvisitedList[0];
+            // todo: instead of giving currentTile unvisitedList[0], set to null, then...
+
+            for (var i=0; i<unvisitedList.length; i++) {
+              // set currentTile to be the unvisitedList[i] with the shortest distance
+            }
+            
+            arrayRemove(unvisitedList,currentTile); // remove u from Q
+         
+            //// "for each neighbor v of u:           // where v has not yet been removed from Q"
+            var neighborsStillInUnvisitedList = currentTile.myUnvisitedNeighbors();
+            for (var i=0; i<neighborsStillInUnvisitedList.length; i++) {
+              var neighborTile = neighborsStillInUnvisitedList[i];
+              
+              if (neighborTile.isTileType(NOTHING)) {
+                tentativeDistance = currentTile.distance+1;
+                neighborTile.setDistIfLess(tentativeDistance, currentTile);
+                neighborTile.setTile(VISITED);
+              }
+              
+              else if (neighborTile.isTileType(DEST)) {
+                tentativeDistance = currentTile.distance+1;
+                neighborTile.setDistIfLess (tentativeDistance, currentTile);
+                //empty the unvisitedList since we've found the end
+                endTile=neighborTile;
+                unvisitedList = []; 
+              }
+            }
+          
+          } 
+          
+          else { //// all nodes have been accounted for, work backward from end's previous tiles for path
+            //// and terminate the algorithm from taking further steps:
+            if (endTile!=null) {
+              console.log("Best distance found: " + endTile.distance);
+             
+              //create the path
+              var previousTile = endTile.cameFrom;
+              
+              for (var pathIndex = endTile.distance; pathIndex>1; pathIndex--) {
+                previousTile.setTile(PATH);
+                previousTile = previousTile.cameFrom;  
+              }
+            }
+            pathfindingNow = false;
+          }
+    }
+
+    function SetupPathfindingGridData() {
+        unvisitedList = [];
+        endTile = null;
+        pathfindingNow = false;
+
+        if(grid.length > 0) { // non-zero, copy over player set walls into tileGrid for reset
+            for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
+                for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
+                    var idxHere = tileCoordToIndex(eachCol, eachRow);
+                    if(grid[idxHere].elementType == VISITED ||
+                        grid[idxHere].elementType == PATH) {
+                        tileGrid[idxHere] = NOTHING;
+                    } else {
+                        tileGrid[idxHere] = grid[idxHere].elementType;
+                    }
+                }
+            }
+        }
+
+        grid = [];
+
+        for (var eachCol = 0; eachCol < TILE_COLS; eachCol++) {
+            for (var eachRow = 0; eachRow < TILE_ROWS; eachRow++) {
+                var idxHere = tileCoordToIndex(eachCol, eachRow);
+
+                grid[idxHere] = new GridElement();
+                unvisitedList.push( grid[idxHere] );
+                grid[idxHere].setup(eachCol, eachRow, idxHere, tileGrid[idxHere]);
+            }
+        }
+    }
+
+    window.onload = function() {
+        canvas = document.getElementById('gameCanvas');
+        canvasContext = canvas.getContext('2d');
+
+        initInput();
+
+        SetupPathfindingGridData();
+
+        // these next few lines set up our game logic and render to happen 30 times per second
+        var framesPerSecond = 30;
+        setInterval(drawEverything, 1000 / framesPerSecond);
+
+        canvasContext.font = "12px Arial";
+    }
+
+    function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
+        canvasContext.fillStyle = fillColor;
+        canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight);
+    }
+
+    function outlineRect(topLeftX, topLeftY, boxWidth, boxHeight, lineColor) {
+        canvasContext.beginPath();
+        canvasContext.strokeStyle = lineColor;
+        canvasContext.lineWidth = "3";
+        canvasContext.rect(topLeftX, topLeftY, boxWidth, boxHeight);
+        canvasContext.stroke();
+    }
+
+    function drawTiles() {
+        var tileCount = TILE_COLS * TILE_ROWS;
+        for (var eachTil = 0; eachTil < tileCount; eachTil++) {
+            grid[eachTil].display();
+        } // end of for eachCol
+    } // end of drawTiles()
+
+    function drawEverything() {
+        if(pathfindingNow) {
+            PathfindingNextStep();
+        }
+
+        colorRect(0, 0, canvas.width, canvas.height, 'black');
+
+        canvasContext.textAlign = "center";
+        drawTiles();
+
+        canvasContext.textAlign = "left";
+        canvasContext.fillStyle = 'white';
+        var rightAreaX = TILE_W * TILE_COLS;
+        var lineSkip = 15;
+        var lineY = 20;
+        canvasContext.fillText("Click to toggle wall", rightAreaX, lineY);
+        lineY += lineSkip;
+        canvasContext.fillText("Click in this sidebar", rightAreaX, lineY);
+        lineY += lineSkip;
+        canvasContext.fillText("to start/end pathfinding", rightAreaX, lineY);
+        if(pathfindingNow) {
+            lineY += lineSkip;
+            canvasContext.fillText("DOING PATHFINDING...", rightAreaX, lineY);
+        }
+    }
+</script>
+
+</body>
+
+</html>
