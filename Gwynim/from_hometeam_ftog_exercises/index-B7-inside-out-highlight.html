@@ -1,0 +1,68 @@
+<script>
+// We're skipping HTML5 formal setup here. Browsers assume it. Focus is on the JS logic
+
+var canvas, canvasContext;
+var mouseX = -100, mouseY = -100; // default defined so not on screen corner like (0,0)
+
+var boxCornerX = 150, boxCornerY = 80;
+var boxWidth = 50, boxHeight = 20;
+
+function calculateMousePos(evt) {
+    var rect = canvas.getBoundingClientRect();
+
+    mouseX = evt.clientX - rect.left;
+    mouseY = evt.clientY - rect.top;
+}
+
+function handleClick() {
+    boxWidth = mouseX-boxCornerX;
+    boxHeight = mouseY-boxCornerY;
+}
+
+window.onload = function () {
+    canvas = document.createElement("canvas");
+    document.body.appendChild(canvas);
+    canvas.width = 800;
+    canvas.height = 600;
+    canvas.addEventListener('mousedown', handleClick);
+    canvas.addEventListener('mousemove', calculateMousePos);
+
+    canvasContext = canvas.getContext("2d");
+
+    setInterval(frameUpdate, 1000 / 30);
+}
+
+function frameUpdate() 
+{
+    canvasContext.fillStyle="black";
+    canvasContext.fillRect(0,0,canvas.width,canvas.height);
+
+    canvasContext.fillStyle="#EFBE00";
+    canvasContext.fillRect(mouseX-3,mouseY-3,7,7);
+    
+    var boxLeft, boxRight, boxTop, boxBottom;
+    
+    if(boxWidth>0) {
+        boxLeft = boxCornerX;
+        boxRight = boxCornerX + boxWidth;
+    } else {
+        boxRight = boxCornerX;
+        boxLeft = boxCornerX + boxWidth;
+    }
+    if(boxHeight>0) {
+        boxTop = boxCornerY;
+        boxBottom = boxCornerY + boxHeight;
+    } else {
+        boxBottom = boxCornerY;
+        boxTop = boxCornerY + boxHeight;
+    }
+
+    if(mouseX > boxLeft && mouseX < boxRight &&
+        mouseY > boxTop && mouseY < boxBottom) {
+        canvasContext.fillStyle="#FFFFFF";
+    }
+
+    canvasContext.fillRect(boxCornerX,boxCornerY,boxWidth,boxHeight);
+}
+
+</script>

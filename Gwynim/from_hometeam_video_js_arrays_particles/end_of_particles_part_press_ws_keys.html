@@ -1,0 +1,166 @@
+// code in this folder goes with our supplemental video here:
+// https://www.youtube.com/watch?v=chWRcWmxH28
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+</head>
+
+<body>
+<canvas id="gameCanvas" width="800" height="600"></canvas>
+
+<script>
+
+const KEY_LETTER_W = 87;
+const KEY_LETTER_S = 83;
+
+const START_BALLS = 700;
+
+const GRAVITY_PER_CYCLE = 0.1;
+
+var remX = 300, remY = 200;
+var remW = 300, remH = 200;
+
+function ballClass() {
+	this.x = 75;
+	this.y = 75;
+	this.velX = 5;
+	this.velY = 7;
+	this.readyToRemove = false;
+	this.cyclesLeft = 100;
+	this.myColor;
+
+	this.move = function() {
+		this.cyclesLeft--;
+
+		if(this.cyclesLeft < 0) {
+			this.readyToRemove = true;
+		}
+
+		this.velY += GRAVITY_PER_CYCLE;
+
+		this.x += this.velX;
+		this.y += this.velY;
+
+		if(this.x < 0) {
+			this.velX *= -1;
+		}
+		if(this.x > canvas.width) {
+			this.velX *= -1;
+		}
+		if(this.y < 0) {
+			this.velY *= -1;
+		}
+		if(this.y > canvas.height) {
+			this.y -= this.velY;
+			this.velY *= -0.3;
+		}
+	}
+
+	this.draw = function() {
+		colorCircle(this.x,this.y,
+			(20 * this.cyclesLeft/130.0),
+		 this.myColor); // draw ball
+	}
+} // end of ballClass def
+
+var ballList = [];
+
+var canvas, canvasContext;
+
+function addBall() {
+	var tempBall;
+
+	tempBall = new ballClass();
+	tempBall.x = 0.4*canvas.width;
+	tempBall.y = 0.25*canvas.height;
+	tempBall.velX = 5-Math.random()*10;
+	tempBall.velY = 5-Math.random()*10;
+	tempBall.cyclesLeft = 30 + Math.floor( Math.random() * 100 );
+
+	if(Math.random() < 0.5) {
+		tempBall.myColor = "red";
+	} else {
+		tempBall.myColor = "yellow";
+	}
+
+	ballList.push(tempBall);
+}
+
+function removeBall() {
+	for(var i=0; i<ballList.length; i++) {
+		if(ballList[i].x > remX && 
+			ballList[i].x < remX+remW && 
+			ballList[i].y > remY && 
+			ballList[i].y < remY+remH) {
+			
+			ballList[i].readyToRemove = true;
+		}
+	}
+}
+
+function keyPressed(evt) {
+	if(evt.keyCode == KEY_LETTER_W) {
+		for(var i=0; i < START_BALLS; i++) {
+			addBall();
+		}	
+	}
+	if(evt.keyCode == KEY_LETTER_S) {
+		removeBall();
+	}
+}
+
+window.onload = function() {
+	canvas = document.getElementById('gameCanvas');
+	canvasContext = canvas.getContext('2d');
+
+	document.addEventListener("keydown", keyPressed);
+
+	var framesPerSecond = 30;
+	setInterval(updateAll, 1000/framesPerSecond);
+}
+
+function updateAll() {
+	moveAll();
+	drawAll();
+}
+
+function moveAll() {
+	for(var i=0;i<ballList.length;i++) {
+		ballList[i].move();
+	}
+	for(var i=ballList.length-1; i>=0; i--) {
+		if(ballList[i].readyToRemove) {
+			ballList.splice(i,1);
+		}
+	}
+}
+
+function drawAll() {
+	colorRect(0,0, canvas.width,canvas.height, 'black'); // clear screen
+
+	// colorRect(remX,remY, remW, remH, 'red');
+
+	for(var i=0;i<ballList.length;i++) {
+		ballList[i].draw();
+	}
+}
+
+function colorRect(topLeftX,topLeftY, boxWidth,boxHeight, fillColor) {
+	canvasContext.fillStyle = fillColor;
+	canvasContext.fillRect(topLeftX,topLeftY, boxWidth,boxHeight);
+}
+
+function colorCircle(centerX,centerY, radius, fillColor) {
+	canvasContext.fillStyle = fillColor;
+	canvasContext.beginPath();
+	canvasContext.arc(centerX,centerY, radius, 0,Math.PI*2, true);
+	canvasContext.fill();
+}
+
+</script>
+
+</body>
+</html>
