@@ -300,27 +300,33 @@ class NodeOutput extends NodeBase {
 
 class DelayBuffer {
 	constructor(numberOfSamples) {
-		this._buffer = [0];
-		this._index = 0;
+		this._buffer = null;
+		this._index = -1;
 
-		this.SetBufferSampleLength(this.numberOfSamples);
+		this.SetBufferSampleLength(numberOfSamples);
 	}
 
 	SetBufferSampleLength(numberOfSamples) {
 		let newBuffer = [];
 		newBuffer.length = numberOfSamples;
-		newBuffer.fill(0);
 
-		for (let i = 0; i < this._buffer.length; i++) {
-			newBuffer[i] = this._buffer[this._index];
-			this._index++;
-			if (this._index >= this._buffer.length) {
-				this._index = 0;
+		if (this._buffer == null) {
+			newBuffer.fill(0);			
+		} else {
+			var index = this._index + 1;
+			if (index >= oldBufferLength) index -= oldBufferLength;
+			var oldBufferLength = this._buffer.length;
+			var stepsize = oldBufferLength / numberOfSamples;
+
+			for (let i = 0; i < newBuffer.length; i++) {
+				newBuffer[i] = this._buffer[Math.floor(index)];
+				index += stepsize;
+				if (index >= oldBufferLength) index -= oldBufferLength;
 			}
 		}
 
 		this._buffer = newBuffer;
-		this._index = 0;
+		this._index = -1;
 	}
 
 	ReadWriteSample(value) {
