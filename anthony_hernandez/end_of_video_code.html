@@ -144,9 +144,11 @@ function moveEverything() {
 	}
 	if(ballY < 0) {
 		ballSpeedY = -ballSpeedY;
+		ballColor = generateRandomColor();
 	}
 	if(ballY > canvas.height) {
 		ballSpeedY = -ballSpeedY;
+		ballColor = generateRandomColor();
 	}
 }
 
