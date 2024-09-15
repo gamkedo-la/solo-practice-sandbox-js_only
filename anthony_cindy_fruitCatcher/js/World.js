@@ -13,10 +13,10 @@ var tutorial =  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
     1, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 1,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 4, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1,
     1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1];
 
@@ -28,9 +28,10 @@ const WORLD_ROAD = 0;
 const WORLD_WALL = 1;
 const WORLD_PLAYERSTART = 2;
 const WORLD_TROPHY = 3;
-const WORLD_KEY = 4;
-const WORLD_DOOR = 5;
-const WORLD_DOOR_OPEN = 6;
+const WORLD_APPLE = 4;
+const WORLD_ORANGE = 5;
+const WORLD_WATERMELON = 6;
+const WORLD_BANANA = 7;
 
 function returnTileTypeAtColRow(col, row) {
     if(col >=0 && col < WORLD_COLS && 
@@ -59,8 +60,7 @@ function handleStoppingPlayer(whichPlayer){
 }
 
 function tileTypeMove(checkTileType){
-    return (checkTileType == WORLD_ROAD||
-            checkTileType == WORLD_DOOR_OPEN);
+    return (checkTileType == WORLD_ROAD);
 }
 
 function playerWorldHandling(whichPlayer) {
@@ -76,20 +76,12 @@ function playerWorldHandling(whichPlayer) {
             nextLevel();
             // alert(whichPlayer.name + " WINS!!"); // player keeps going after alert as if up key was still pressed
         } 
-        else if(tileHere == WORLD_KEY) {
+        else if(tileHere == WORLD_APPLE) {
             whichPlayer.fruitsHeld++;
             // console.log(whichPlayer.fruitsHeld);
             // console.log(playerWorldCol, ":", playerWorldRow, ":", worldGrid[playerWorldCol + WORLD_COLS*playerWorldRow]);
             // console.log(rowColtoArrayIndex(playerWorldCol, playerWorldRow));
             worldGrid[rowColtoArrayIndex(playerWorldCol, playerWorldRow)] = WORLD_ROAD;
-        }
-        else if(tileHere == WORLD_DOOR) {
-            if(whichPlayer.fruitsHeld > 0){
-                worldGrid[rowColtoArrayIndex(playerWorldCol, playerWorldRow)] = WORLD_DOOR_OPEN;
-                whichPlayer.fruitsHeld--;
-            } else {
-                handleStoppingPlayer(whichPlayer);
-            }
         }
         else if(!tileTypeMove(tileHere) || 
                 whichPlayer.x <= 3 || whichPlayer.x >= WORLD_TOTAL_WIDTH-(WORLD_W/3)
@@ -105,10 +97,13 @@ function rowColtoArrayIndex(col, row) {
 }
 
 function tileTypeHasTransparency(checkTileType){
-    return (checkTileType == WORLD_DOOR ||
-            checkTileType == WORLD_KEY ||
+    return (
             checkTileType == WORLD_TROPHY ||
-            checkTileType == WORLD_DOOR_OPEN);
+            checkTileType == WORLD_APPLE ||
+            checkTileType == WORLD_ORANGE ||
+            checkTileType == WORLD_WATERMELON ||
+            checkTileType == WORLD_BANANA 
+        );
 }
 
 function drawWorlds() {

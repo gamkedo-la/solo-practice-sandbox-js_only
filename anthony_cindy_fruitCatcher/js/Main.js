@@ -2,7 +2,7 @@
 var canvas, canvasContext;
 var framesPerSecond = 30;
 
-var bluePlayer = new playerClass(); //create a blue player using class definition
+var playerOne = new playerClass(); //create a blue player using class definition
 
 // ~~~~~~~~~~~~~~~~ Main Game Code ~~~~~~~~~~~~~~~~
 window.onload = function() {
@@ -33,7 +33,7 @@ function nextLevel() {
 
 function loadLevel(whichLevel) {
     worldGrid = whichLevel.slice(); // copy level array to worldGrid
-    bluePlayer.reset(playerPic, "Blue Storm");
+    playerOne.reset(playerPic, "Blue Storm");
 }
 
 function updateAll() {
@@ -42,7 +42,7 @@ function updateAll() {
 }
 
 function moveAll() {
-    bluePlayer.move();   
+    playerOne.move();   
 }
 
 function clearScreen() {
@@ -51,6 +51,6 @@ function clearScreen() {
 
 function drawAll() {
     drawWorlds();
-    bluePlayer.draw();
-    drawUserStats(bluePlayer);
+    playerOne.draw();
+    drawUserStats(playerOne);
 }

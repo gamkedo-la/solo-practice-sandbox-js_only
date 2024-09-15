@@ -27,9 +27,10 @@ function loadImages() {
       {worldType: WORLD_ROAD, theFile: "world_road.png"},
       {worldType: WORLD_WALL, theFile: "world_wall.png"},
       {worldType: WORLD_TROPHY, theFile: "world_trophy.png"},
-      {worldType: WORLD_KEY, theFile: "world_key.png"},
-      {worldType: WORLD_DOOR, theFile: "world_door.png"},
-      {worldType: WORLD_DOOR_OPEN, theFile: "world_door_open.png"},
+      {worldType: WORLD_APPLE, theFile: "apple.png"},
+      {worldType: WORLD_ORANGE, theFile: "orange.png"},
+      {worldType: WORLD_WATERMELON, theFile: "watermelon.png"},
+      {worldType: WORLD_BANANA, theFile: "banana.png"},
     ];
 
     picsToLoad = imageList.length;

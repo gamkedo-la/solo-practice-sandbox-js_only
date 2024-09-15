@@ -18,7 +18,7 @@ function setUpInput() {
     document.addEventListener('keydown', keyPressed);
     document.addEventListener('keyup', keyReleased);
 
-    bluePlayer.setupInput(KEY_UP_ARROW, KEY_RIGHT_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW);
+    playerOne.setupInput(KEY_UP_ARROW, KEY_RIGHT_ARROW, KEY_DOWN_ARROW, KEY_LEFT_ARROW);
 }
 
 // ~~~~~~~~~~~~~~~~ Mouse Movement ~~~~~~~~~~~~~~~~
@@ -56,10 +56,10 @@ function keySet(keyEvent, whichPlayer, setTo) {
 function keyPressed(evt) {
     // console.log("Key Pressed:" + evt.keyCode); 
     //w is 87, s is 83, a is 65, d is 68
-    keySet(evt, bluePlayer, true);
+    keySet(evt, playerOne, true);
 }
 
 function keyReleased(evt) {
     // console.log("Key Released:" + evt.keyCode);
-    keySet(evt, bluePlayer, false);
+    keySet(evt, playerOne, false);
 }
