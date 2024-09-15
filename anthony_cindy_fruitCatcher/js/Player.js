@@ -1,7 +1,4 @@
 const WALK_SPEED = 4;
-const REVERSE_POWER = 0.2;
-const TURN_RATE = 0.05;
-const MIN_SPEED_TO_TURN = 0.5;
 
 function playerClass() { //create a class to easily create new players
     this.x = 75;

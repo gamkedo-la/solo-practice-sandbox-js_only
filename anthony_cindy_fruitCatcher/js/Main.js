@@ -3,6 +3,7 @@ var canvas, canvasContext;
 var framesPerSecond = 30;
 
 var playerOne = new playerClass(); //create a blue player using class definition
+var fruitOne = new fruitClass(); //create a fruit using class definition temporarily - array for fruit to make it dynamic?
 
 // ~~~~~~~~~~~~~~~~ Main Game Code ~~~~~~~~~~~~~~~~
 window.onload = function() {
@@ -33,7 +34,8 @@ function nextLevel() {
 
 function loadLevel(whichLevel) {
     worldGrid = whichLevel.slice(); // copy level array to worldGrid
-    playerOne.reset(playerPic, "Blue Storm");
+    playerOne.reset(playerPic, "Addition Character");
+    fruitOne.reset(fruitPic, "Apple Fruit");
 }
 
 function updateAll() {
@@ -42,7 +44,8 @@ function updateAll() {
 }
 
 function moveAll() {
-    playerOne.move();   
+    playerOne.move(); 
+    fruitOne.move();  
 }
 
 function clearScreen() {
@@ -52,5 +55,6 @@ function clearScreen() {
 function drawAll() {
     drawWorlds();
     playerOne.draw();
+    fruitOne.draw();
     drawUserStats(playerOne);
 }

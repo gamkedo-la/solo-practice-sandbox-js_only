@@ -76,11 +76,9 @@ function playerWorldHandling(whichPlayer) {
             nextLevel();
             // alert(whichPlayer.name + " WINS!!"); // player keeps going after alert as if up key was still pressed
         } 
-        else if(tileHere == WORLD_APPLE) {
+        else if(tileHere == WORLD_APPLE || tileHere == WORLD_WATERMELON) {
             whichPlayer.fruitsHeld++;
-            // console.log(whichPlayer.fruitsHeld);
             // console.log(playerWorldCol, ":", playerWorldRow, ":", worldGrid[playerWorldCol + WORLD_COLS*playerWorldRow]);
-            // console.log(rowColtoArrayIndex(playerWorldCol, playerWorldRow));
             worldGrid[rowColtoArrayIndex(playerWorldCol, playerWorldRow)] = WORLD_ROAD;
         }
         else if(!tileTypeMove(tileHere) || 

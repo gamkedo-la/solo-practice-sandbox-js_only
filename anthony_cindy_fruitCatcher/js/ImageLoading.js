@@ -1,4 +1,5 @@
 var playerPic = document.createElement("img");
+var fruitPic = document.createElement("img");
 var worldPics = [];
 
 var picsToLoad = 0; // set automatically based on imageList in loadImages();
@@ -23,6 +24,7 @@ function loadImageForWorldCode(worldCode, fileName){
 function loadImages() {
     var imageList = [
       {varName: playerPic, theFile: "playerBasketDraft-Med.png"},
+      {varName: fruitPic, theFile: "watermelon.png"},
 
       {worldType: WORLD_ROAD, theFile: "world_road.png"},
       {worldType: WORLD_WALL, theFile: "world_wall.png"},
