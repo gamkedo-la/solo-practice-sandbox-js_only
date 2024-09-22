@@ -14,22 +14,46 @@ var canvas, canvasContext;
 var ballX = 75;
 var ballSpeedX = 5;
 var ballY = 75;
-var ballSpeedY = 5;
+var ballSpeedY = 7;
+
+const BRICK_W = 100;
+const BRICK_H = 50;
+const BRICK_COUNT = 8;
+var brickGrid = new Array(BRICK_COUNT); // Create a new array with BRICK_COUNT number of values
 
 const PADDLE_WIDTH = 100;
 const PADDLE_THICKNESS = 10;
 const PADDLE_DIST_FROM_EDGE = 60;
 var paddleX = 400;
 
+var mouseX;
+var mouseY;
+
 function updateMousePos(evt)
 {
     var rect = canvas.getBoundingClientRect();
     var root = document.documentElement;
 
-    var mouseX = evt.clientX - rect.left - root.scrollLeft;
+    mouseX = evt.clientX - rect.left - root.scrollLeft;
+    mouseY = evt.clientY - rect.top - root.scrollTop;
 
     paddleX = mouseX - (PADDLE_WIDTH/2);
 }
+
+function brickReset()
+{
+    for(var i = 0; i < BRICK_COUNT; i++)
+    {
+        if(Math.random() < 0.5)
+        {
+            brickGrid[i] = true;
+        }
+        else
+        {
+            brickGrid[i] = false;
+        } // end of rand check
+    } // end of for loop
+} // end of brickReset function
 
 window.onload = function()
 {
@@ -40,6 +64,8 @@ window.onload = function()
     setInterval(updateAll, 1000/framesPerSecond);
 
     canvas.addEventListener('mousemove', updateMousePos)
+
+    brickReset();
 }
 
 function updateAll()
@@ -92,6 +118,17 @@ function moveAll()
     }
 }
 
+function drawBricks()
+{
+    for(var i = 0; i < BRICK_COUNT; i++)
+    {
+        if(brickGrid[i])
+        {
+            colorRect(BRICK_W * i, 0, BRICK_W - 2, BRICK_H, "blue")
+        }
+    }
+}
+
 function drawAll()
 {
     // Draw black background
@@ -102,6 +139,10 @@ function drawAll()
 
     // Draw player paddle
     colorRect(paddleX, canvas.height - PADDLE_DIST_FROM_EDGE, PADDLE_WIDTH, PADDLE_THICKNESS, "white")
+
+    colorText( (mouseX + "," + mouseY) , mouseX, mouseY, "yellow")
+
+    drawBricks();
 }
 
 function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor)
@@ -116,6 +157,12 @@ function colorCircle(centerX, centerY, radius, fillColor)
     canvasContext.beginPath();
     canvasContext.arc(centerX, centerY, radius, 0, Math.PI*2, true);
     canvasContext.fill();
+}
+
+function colorText(showWords, textX, textY, fillColor)
+{
+    canvasContext.fillStyle = fillColor;
+    canvasContext.fillText(showWords, textX, textY)
 }
     
 </script>
