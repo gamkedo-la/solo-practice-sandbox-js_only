@@ -2,6 +2,25 @@ let height = 0;
 let width = 0;
 let tick = 0;
 let ctx;
+let mousePos;
+
+class Player {
+  x = 0;
+  y = 0;
+  constructor(_x, _y) {
+    x = _x;
+    y = _y;
+  }
+
+  update(pos) {
+    x = pos.x;
+    y = pos.y;
+  }
+
+  draw() {
+    drawRectangle(x, y, 10, 10, 'blue');
+  }
+}
 
 window.onload = function() {
     const canvas = document.querySelector("#c");
@@ -17,7 +36,7 @@ window.onload = function() {
       return;
     }
     canvas.addEventListener('mousemove', function(evt) {
-        const mousePos = calculateMousePos(evt);
+        mousePos = calculateMousePos(evt);
     });
     requestAnimationFrame(main);
 }
