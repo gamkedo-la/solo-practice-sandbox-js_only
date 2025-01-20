@@ -34,12 +34,9 @@ function drawBitmapCenteredAtLocationWithRotation(graphic, atX, atY,withAngle) {
 	canvasContext.restore(); // undo the translation movement and rotation since save()
 }
 
-function colorText(showWords, textX,textY, fillColor, font = "10px Arial", shadow = false) {
+function colorText(showWords, textX,textY, fillColor, font = "10px Arial", textAlignment = "left") {
 	canvasContext.font = font;
-    if (shadow) {
-        canvasContext.fillStyle = 'black';
-        canvasContext.fillText(showWords, textX+1, textY+1);    
-    }
+	canvasContext.textAlign = textAlignment;
 	canvasContext.fillStyle = fillColor;
     canvasContext.fillText(showWords, textX, textY);
 }

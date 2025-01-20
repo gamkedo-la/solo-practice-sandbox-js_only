@@ -53,9 +53,17 @@ window.onload = function() {
 	delNode = new NodeDelay(nodeMaster);
 	delNode.SetBufferSampleLength(60);
 	delNode = mainInterface.addPart(new UINode("Del Node", 500, 100, 100, 20, delNode));
-	lagNode = new NodeLag(nodeMaster);
-	lagNode.SetBufferSampleLength(90);
-	lagNode = mainInterface.addPart(new UINode("Lag Node", 500, 200, 100, 20, lagNode));
+	lagNode = new NodeLagAverage(nodeMaster);
+	lagNode.SetBufferSampleLength(60);
+	lagNode = mainInterface.addPart(new UINode("Ave Node", 500, 200, 100, 20, lagNode));
+	maxNode = new NodeLagMax(nodeMaster);
+	maxNode.SetBufferSampleLength(60);
+	maxNode = mainInterface.addPart(new UINode("Max Node", 500, 300, 100, 20, maxNode));
+
+	lfoNode = new NodeLFOGenerator(nodeMaster);
+	lfoNode = mainInterface.addPart(new UINode("LFO Node", 100, 300, 100, 20, lfoNode));
+	filterNode = new NodeFilter(nodeMaster);
+	filterNode = mainInterface.addPart(new UINode("Filter Node", 300, 300, 100, 20, filterNode));
 
 	constNode0 = new NodeInput(nodeMaster);
 	constNode0.value = 0;
@@ -89,14 +97,14 @@ window.onload = function() {
 	constNode9 = mainInterface.addPart(new UINode("9", 0, 528, 50, 30, constNode9));
 
 	viewNode = new NodeOutput(nodeMaster);
-	viewNode = mainInterface.addPart(new UINode("Out", canvas.width - 50, 285, 50, 30, viewNode));
+	viewNode = mainInterface.addPart(new UINode("Out", canvas.width - 70, 285, 70, 30, viewNode));
 
 
 	requestAnimationFrame(NextFrame);
 }
 
 function NextFrame() {
-	nodeMaster.Process();
+	nodeMaster.ProcessAll();
 	mainInterface.update();
 
 	colorRect(0, 0, canvas.width, canvas.height, 'lightgrey'); 

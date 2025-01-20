@@ -15,33 +15,39 @@ class UINode extends UIElement {
 		this.addPart(moveBar);
 		moveBar.addPart(new UITextLabel("title", 3, 12, 0, 0, name));
 
-		let nodeInlets = this.node.GetInletList();
+		let nodeInlets = GetInletList(this.node);
 		for (let i = 0; i < nodeInlets.length; i++) {
 			let newInlet = new UIInlet(nodeInlets[i], 5, i * 10 + 17, 10, 10, this.node[nodeInlets[i]]);
 			this.addPart(newInlet);
 			this.inlets.push(newInlet);
 		}
 
-		let nodeOutlets = this.node.GetOutletList();
+		let nodeOutlets = GetOutletList(this.node);
 		for (let i = 0; i < nodeOutlets.length; i++) {
 			let newOutlet = new UIOutlet(nodeOutlets[i], this.w - 15, i * 10 + 17, 10, 10, this.node[nodeOutlets[i]]);
 			this.addPart(newOutlet);
 			this.outlets.push(newOutlet);
 		}
 
-		if (this.h < nodeInlets.length * 10 + 20) this.h = nodeInlets.length * 10 + 20;
-		if (this.h < nodeOutlets.length * 10 + 20) this.h = nodeOutlets.length * 10 + 20;
+		let inletHeight = nodeInlets.length * 10 + 20;
+		let outletHeight = nodeOutlets.length * 10 + 20;
+		this.h = Math.max(inletHeight, outletHeight);
 
 		if (this.node.hasOwnProperty("value")) {
 			this.value = this.addPart(new UITextLabel("value", this.w/2, (this.h+24)/2, 0, 0));
-			this.value.textAlignment = "centered";
+			this.value.textAlignment = "center";
 			this.value.label = this.node["value"];
 		}
 	}
 
 	onUpdate() {
 		if (this.value) {
-			this.value.label = this.node["value"];
+			this.node.Process();
+			let value = this.node["value"];
+			if (typeof(value) == "number" && !Number.isInteger(value)) {
+				value = value.toFixed(2);
+			}
+			this.value.label = value;
 		}
 	}
 
@@ -50,50 +56,6 @@ class UINode extends UIElement {
 
 		activeNode = this;
 	}
-}
-
-function FindInletAt(x, y) {
-	let stack = [];
-	stack.push(mainInterface);
-	while (stack.length > 0) {
-		let node = stack.pop();
-
-		if (!isInElement(node, x, y)) {
-			continue;
-		}
-
-		if (node instanceof UIInlet) {
-			return node;
-		}
-
-		for (let i = node.active.length-1; i >= 0; i--) {
-			stack.push(node.active[i]);
-		}
-	}
-
-	return null;
-}
-
-function FindOutletAt(x, y) {
-	let stack = [];
-	stack.push(mainInterface);
-	while (stack.length > 0) {
-		let node = stack.pop();
-
-		if (!isInElement(node, x, y)) {
-			continue;
-		}
-
-		if (node instanceof UIOutlet) {
-			return node;
-		}
-
-		for (let i = node.active.length-1; i >= 0; i--) {
-			stack.push(node.active[i]);
-		}
-	}
-
-	return null;
 }
 
 class UIInlet extends UIElement {
@@ -131,6 +93,15 @@ class UIInlet extends UIElement {
 			colorLine(this.x + 5, this.y + 5, this.connection.x + 5, this.connection.y + 5, 2, "blue");
 		} else if (this.dragging) {
 			colorLine(this.x + 5, this.y + 5, mouseX, mouseY, 2, "blue");
+		}
+
+		if (isInElement(this, mouseX, mouseY)) {
+			let text = this.name.replace("inlet", "");
+			colorText(text, mouseX-1, mouseY-1, "white", "14px Arial", "end");
+			colorText(text, mouseX+1, mouseY-1, "white", "14px Arial", "end");
+			colorText(text, mouseX-1, mouseY+1, "white", "14px Arial", "end");
+			colorText(text, mouseX+1, mouseY+1, "white", "14px Arial", "end");
+			colorText(text, mouseX,   mouseY,   "black", "14px Arial", "end");
 		}
 	}
 
@@ -184,8 +155,22 @@ class UIOutlet extends UIElement {
 	onDraw() {
 		colorEmptyCircle(this.x + 5, this.y + 5, 3, "blue");
 
+		this.mi().lateDraw.push(this);
+	}
+
+	lateDraw() {
+
 		if (this.dragging) {
 			colorLine(this.x + 5, this.y + 5, mouseX, mouseY, 2, "blue");
+		}
+
+		if (isInElement(this, mouseX, mouseY)) {
+			let text = this.name.replace("outlet", "");
+			colorText(text, mouseX-1, mouseY-1, "white", "14px Arial", "end");
+			colorText(text, mouseX+1, mouseY-1, "white", "14px Arial", "end");
+			colorText(text, mouseX-1, mouseY+1, "white", "14px Arial", "end");
+			colorText(text, mouseX+1, mouseY+1, "white", "14px Arial", "end");
+			colorText(text, mouseX,   mouseY,   "black", "14px Arial", "end");
 		}
 	}
 
@@ -210,4 +195,68 @@ class UIOutlet extends UIElement {
 		activeOutlet = this;
 		this.dragging = true;
 	}
+}
+
+function FindInletAt(x, y) {
+	let stack = [];
+	stack.push(mainInterface);
+	while (stack.length > 0) {
+		let node = stack.pop();
+
+		if (!isInElement(node, x, y)) {
+			continue;
+		}
+
+		if (node instanceof UIInlet) {
+			return node;
+		}
+
+		for (let i = node.active.length-1; i >= 0; i--) {
+			stack.push(node.active[i]);
+		}
+	}
+
+	return null;
+}
+
+function FindOutletAt(x, y) {
+	let stack = [];
+	stack.push(mainInterface);
+	while (stack.length > 0) {
+		let node = stack.pop();
+
+		if (!isInElement(node, x, y)) {
+			continue;
+		}
+
+		if (node instanceof UIOutlet) {
+			return node;
+		}
+
+		for (let i = node.active.length-1; i >= 0; i--) {
+			stack.push(node.active[i]);
+		}
+	}
+
+	return null;
+}
+
+function GetInletList(node) {
+	let inletList = [];
+	for (let prop in node) {
+		if (prop.toLowerCase().includes("inlet")) {
+			inletList.push(prop)
+		}
+	}
+	return inletList;
+}
+
+function GetOutletList(node) {
+	let outletList = [];
+	for (let prop in node) {
+		if (prop.toLowerCase().includes("outlet")) {
+			outletList.push(prop)
+		}
+	}
+	return outletList;
 }
