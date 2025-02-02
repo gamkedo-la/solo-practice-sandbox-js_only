@@ -1,25 +1,21 @@
+const enemies = [];
 
+const player = new Player("Hero", 300, 500, 100, 10, 1, 50);
+console.log(player.name, "has", player.health, "HP and", player.gold, "gold.");
+player.levelUp();
+
+const goblin = new Monster("Goblin", 300, 200, 30, 5, 20);
+enemies.push(goblin);
+console.log(`${goblin.name} is lurking in the woods...`);
+goblin.attack(player);
+
+console.log(`${player.name} now has ${player.health} HP.`);
    
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
 // Game state
 const gameState = {
-    player: {
-        x: 300,
-        y: 400,
-        width: 32,
-        height: 32,
-        color: 'blue',
-        health: 100,
-        damage: 10,
-        level: 1,
-        gold: 0,
-        experience: 0
-    },
-    enemies: [
-        { x: 300, y: 150, width: 40, height: 40, color: 'red', health: 50, damage: 5 },
-    ],
     town: { x: 50, y: 50, width: 200, height: 200, color: 'green' }
 };
 
@@ -55,39 +51,39 @@ function gameLoop() {
 // Update game state
 function updateGameState() {
     // Move player
-    if (keys.up) gameState.player.y -= 5;
-    if (keys.down) gameState.player.y += 5;
-    if (keys.left) gameState.player.x -= 5;
-    if (keys.right) gameState.player.x += 5;
+    if (keys.up) player.y -= 5;
+    if (keys.down) player.y += 5;
+    if (keys.left) player.x -= 5;
+    if (keys.right) player.x += 5;
 
     // Collision with town
     if (
-        gameState.player.x < gameState.town.x + gameState.town.width &&
-        gameState.player.x + gameState.player.width > gameState.town.x &&
-        gameState.player.y < gameState.town.y + gameState.town.height &&
-        gameState.player.y + gameState.player.height > gameState.town.y
+        player.x < gameState.town.x + gameState.town.width &&
+        player.x + player.width > gameState.town.x &&
+        player.y < gameState.town.y + gameState.town.height &&
+        player.y + player.height > gameState.town.y
     ) {
-        alert("You're in town! You can interact with NPCs or buy items.");
+        console.log("You're in town! You can interact with NPCs or buy items.");
         // Add interaction logic here
     }
 
     // Basic enemy interaction (combat)
-    gameState.enemies.forEach((enemy) => {
+    enemies.forEach((enemy) => {
         if (
-            gameState.player.x < enemy.x + enemy.width &&
-            gameState.player.x + gameState.player.width > enemy.x &&
-            gameState.player.y < enemy.y + enemy.height &&
-            gameState.player.y + gameState.player.height > enemy.y
+            player.x < enemy.x + enemy.width &&
+            player.x + player.width > enemy.x &&
+            player.y < enemy.y + enemy.height &&
+            player.y + player.height > enemy.y
         ) {
             // Combat (just simple damage exchange for now)
-            gameState.player.health -= enemy.damage;
-            enemy.health -= gameState.player.damage;
+            player.health -= enemy.damage;
+            enemy.health -= player.damage;
             if (enemy.health <= 0) {
-                gameState.enemies.splice(gameState.enemies.indexOf(enemy), 1);
-                gameState.player.gold += 10; // Collect gold on kill
+                enemies.splice(enemies.indexOf(enemy), 1);
+                player.gold += 10; // Collect gold on kill
             }
-            if (gameState.player.health <= 0) {
-                alert("Game Over!");
+            if (player.health <= 0) {
+                console.log("Game Over!");
                 // Reset game state or show game over screen
             }
         }
@@ -99,11 +95,11 @@ function renderGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Render player
-    ctx.fillStyle = gameState.player.color;
-    ctx.fillRect(gameState.player.x, gameState.player.y, gameState.player.width, gameState.player.height);
+    ctx.fillStyle = player.color;
+    ctx.fillRect(player.x, player.y, player.width, player.height);
 
     // Render enemies
-    gameState.enemies.forEach((enemy) => {
+    enemies.forEach((enemy) => {
         ctx.fillStyle = enemy.color;
         ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
     });
@@ -115,8 +111,8 @@ function renderGame() {
     // Display player stats
     ctx.fillStyle = 'black';
     ctx.font = '16px Arial';
-    ctx.fillText(`Health: ${gameState.player.health}`, 10, 20);
-    ctx.fillText(`Gold: ${gameState.player.gold}`, 10, 40);
+    ctx.fillText(`Health: ${player.health}`, 10, 20);
+    ctx.fillText(`Gold: ${player.gold}`, 10, 40);
 }
 
 // Start the game
