@@ -6,13 +6,12 @@ player.levelUp();
 
 const goblin = new Monster("Goblin", 300, 200, 30, 5, 20);
 enemies.push(goblin);
+
 console.log(`${goblin.name} is lurking in the woods...`);
 goblin.attack(player);
 
 console.log(`${player.name} now has ${player.health} HP.`);
    
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
 
 // Game state
 const gameState = {
@@ -26,6 +25,13 @@ const keys = {
     left: false,
     right: false,
 };
+
+window.onload = function() {
+    canvas = document.getElementById('gameCanvas');
+    ctx = canvas.getContext('2d');
+    
+    loadImages();
+}
 
 document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowUp') keys.up = true;
