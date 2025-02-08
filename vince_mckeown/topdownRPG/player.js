@@ -4,8 +4,15 @@ class Player extends Entity {
         this._level = level;
         this._gold = gold;
         this.color = "blue";
+        this.image = wizardPic;
+        this.sX = 0; //sprite sheet X pos
+        this.sY = 33*2; //sprite sheet Y pos
+        this.sH = 32; //sprite sheet H
+        this.sW = 32; //sprite sheet W
+        this.x = 0;
+        this.y = 0;
         this.width = 32;
-        this.height = 32;
+        this.height = 33;
     }
 
     // Getters

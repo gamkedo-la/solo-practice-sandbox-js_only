@@ -1,3 +1,4 @@
+var canvas, ctx;
 const enemies = [];
 
 const player = new Player("Hero", 300, 500, 100, 10, 1, 50);
@@ -33,6 +34,14 @@ window.onload = function() {
     loadImages();
 }
 
+function imageLoadingDoneSoStartGame() {
+	var framesPerSecond = 60;
+	setInterval(function() {
+		moveEverything();
+		drawEverything();
+	}, 1000/framesPerSecond);
+}
+
 document.addEventListener('keydown', (event) => {
     if (event.key === 'ArrowUp') keys.up = true;
     if (event.key === 'ArrowDown') keys.down = true;
@@ -47,15 +56,8 @@ document.addEventListener('keyup', (event) => {
     if (event.key === 'ArrowRight') keys.right = false;
 });
 
-// Game loop
-function gameLoop() {
-    updateGameState();
-    renderGame();
-    requestAnimationFrame(gameLoop);
-}
-
-// Update game state
-function updateGameState() {
+// move all entities
+function moveEverything() {
     // Move player
     if (keys.up) player.y -= 5;
     if (keys.down) player.y += 5;
@@ -97,13 +99,11 @@ function updateGameState() {
 }
 
 // Render game
-function renderGame() {
+function drawEverything() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     // Render player
-    ctx.fillStyle = player.color;
-    ctx.fillRect(player.x, player.y, player.width, player.height);
-
+    ctx.drawImage(player.image, player.sX, player.sY, player.sW, player.sH, player.x, player.y, player.width, player.height);
     // Render enemies
     enemies.forEach((enemy) => {
         ctx.fillStyle = enemy.color;
@@ -121,5 +121,4 @@ function renderGame() {
     ctx.fillText(`Gold: ${player.gold}`, 10, 40);
 }
 
-// Start the game
-gameLoop();
+

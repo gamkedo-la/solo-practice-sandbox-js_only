@@ -1,6 +1,4 @@
-var spriteSheet1Pic = document.createElement("img");
-var spriteCharacterPic = document.createElement("img");
-var spriteEnemyPic = document.createElement("img");
+var wizardPic = document.createElement("img");
 
 //var titlepagePic = document.createElement("img");
 var tilePics = [];
@@ -29,16 +27,14 @@ function loadImageForRoomCode(tileCode, fileName)  {
 function loadImages() {
 	
 		var imageList = [
-			{varName: warriorPic, theFile: "spriteSheet1.png"},
-			{varName: spriteCharacterPic, theFile: "spritePlayer.png"},
-			{varName: spriteEnemyPic, theFile: "spriteEnemy.png"},
+			{varName: wizardPic, theFile: "wizard.png"},
 		];
 			
 	picsToLoad = imageList.length;
 
 	for(var i=0; i<imageList.length; i++) {
-		if(imageList[i].trackType != undefined){
-			loadImageForRoomCode(imageList[i].trackType, imageList[i].theFile);
+		if(imageList[i].tileType != undefined){
+			loadImageForRoomCode(imageList[i].tileType, imageList[i].theFile);
 		}
 		else {
 			beginLoadingImage(imageList[i].varName, imageList[i].theFile);
