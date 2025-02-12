@@ -16,7 +16,7 @@ console.log(`${player.name} now has ${player.health} HP.`);
 
 // Game state
 const gameState = {
-    town: { x: 50, y: 50, width: 200, height: 200, color: 'green' }
+    town: { x: 32, y: 32, width: 32, height: 32, color: 'green' }
 };
 
 // Key press handling
@@ -101,6 +101,9 @@ function moveEverything() {
 // Render game
 function drawEverything() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(townMapPic, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+
+
 
     // Render player
     ctx.drawImage(player.image, player.sX, player.sY, player.sW, player.sH, player.x, player.y, player.width, player.height);
