@@ -16,7 +16,7 @@ console.log(`${player.name} now has ${player.health} HP.`);
 
 // Game state
 const gameState = {
-    house: { x: 32, y: 64, sX: 0, sY: 0, sW: 32*6, sH: 32*6, width: 32*6, height: 32*6, color: "rgba(9, 0, 128, 0.5)", image: blacksmithShopPic},
+    house: { x: 32, y: 0, sX: 0, sY: 0, sW: 32*6, sH: 32*6, width: 32*6, height: 32*6, color: "rgba(9, 0, 128, 0.5)", image: blacksmithShopPic},
     house2: { x: 32*18, y: 192, sX: 0, sY: 0, sW: 32*6, sH: 32*6, width: 32*5, height: 32*5, color: "rgba(9, 0, 128, 0.5)", image: blacksmithShopPic}
 };
 
@@ -82,10 +82,11 @@ function checkCollision(character, building, message) {
         character._y + character.height > building.y
     ) {
         console.log(message);
-        building.color = "rgba(9, 0, 128, 0.05)"
+        building.sX = building.width;
+   
         // Add interaction logic here
     } else {
-        building.color = "rgba(21, 18, 50, 0.5)"
+        building.sX = 0;
     }
 }
 
@@ -148,10 +149,11 @@ function drawEverything() {
     // Render house
 
     ctx.drawImage(gameState.house.image, gameState.house.sX, gameState.house.sY, gameState.house.sW, gameState.house.sH, 
-        gameState.house.x, gameState.house.y-32*2, gameState.house.width, gameState.house.height);
+        gameState.house.x, gameState.house.y, gameState.house.width, gameState.house.height);
 
     ctx.drawImage(gameState.house2.image, gameState.house2.sX, gameState.house2.sY, gameState.house2.sW, gameState.house2.sH, 
         gameState.house2.x, gameState.house2.y, gameState.house2.width, gameState.house2.height);
+    
     // Draw collision box for house
     //drawCollisionBox(gameState.house.x, gameState.house.y, gameState.house.width, gameState.house.height);
     //drawCollisionBox(gameState.house2.x, gameState.house2.y, gameState.house2.width, gameState.house2.height);
