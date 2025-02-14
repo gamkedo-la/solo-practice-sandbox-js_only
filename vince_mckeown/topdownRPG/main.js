@@ -1,62 +1,95 @@
-var canvas, ctx;
+var canvas, ctx, collisionCanvas, collisionCtx;
 const enemies = [];
 
+// Player and enemy setup
 const player = new Player("Hero", 300, 500, 100, 10, 1, 50);
 console.log(player.name, "has", player.health, "HP and", player.gold, "gold.");
 player.levelUp();
 
-const goblin = new Monster("Goblin", 300, 200, 30, 5, 20);
+const goblin = new Monster("Goblin", 32*9, 32*4, 32, 5, 20);
 enemies.push(goblin);
 
 console.log(`${goblin.name} is lurking in the woods...`);
 goblin.attack(player);
 
 console.log(`${player.name} now has ${player.health} HP.`);
-   
 
 // Game state
 const gameState = {
-    town: { x: 32, y: 32, width: 32, height: 32, color: 'green' }
+    house: { x: 32, y: 64, sX: 0, sY: 0, sW: 32*6, sH: 32*6, width: 32*6, height: 32*6, color: "rgba(9, 0, 128, 0.5)", image: blacksmithShopPic},
+    house2: { x: 32*18, y: 192, sX: 0, sY: 0, sW: 32*6, sH: 32*6, width: 32*5, height: 32*5, color: "rgba(9, 0, 128, 0.5)", image: blacksmithShopPic}
 };
 
-// Key press handling
-const keys = {
-    up: false,
-    down: false,
-    left: false,
-    right: false,
-};
+// Collision Canvas Setup, ,
+function setupCollisionCanvas() {
+    collisionCanvas = document.createElement("canvas");
+    collisionCanvas.width = canvas.width;
+    collisionCanvas.height = canvas.height;
+    collisionCanvas.style.position = "absolute";
+    collisionCanvas.style.pointerEvents = "none";
+    collisionCanvas.style.opacity = 0.5;
+
+    const canvasRect = canvas.getBoundingClientRect();
+    collisionCanvas.style.top = `${canvasRect.top}px`;
+    collisionCanvas.style.left = `${canvasRect.left}px`;
+    collisionCanvas.style.width = `${canvasRect.width}px`;
+    collisionCanvas.style.height = `${canvasRect.height}px`;
+
+    collisionCanvas.style.zIndex = 10;
+    document.body.appendChild(collisionCanvas);
+
+    collisionCtx = collisionCanvas.getContext("2d");
+}
+
+// Utility: Clear collision canvas
+function clearCollisionCanvas() {
+    collisionCtx.clearRect(0, 0, collisionCanvas.width, collisionCanvas.height);
+}
+
+// Utility: Draw a collision box (for debugging)
+function drawCollisionBox(x, y, width, height) {
+    collisionCtx.fillStyle = "rgba(123, 0, 255, 0.8)"; // Red color
+    collisionCtx.fillRect(x, y, width, height);
+}
+
+// Utility: Check collision on the collision canvas
+function isCollisionAt(x, y) {
+    const pixel = collisionCtx.getImageData(x, y, 1, 1).data;
+    return pixel[0] === 255 && pixel[1] === 0 && pixel[2] === 0 && pixel[3] > 0; // Red detection
+}
 
 window.onload = function() {
     canvas = document.getElementById('gameCanvas');
     ctx = canvas.getContext('2d');
-    
+
+    setupCollisionCanvas();
     loadImages();
-}
+};
 
 function imageLoadingDoneSoStartGame() {
-	var framesPerSecond = 60;
-	setInterval(function() {
-		moveEverything();
-		drawEverything();
-	}, 1000/framesPerSecond);
+    var framesPerSecond = 60;
+    setInterval(function() {
+        moveEverything();
+        drawEverything();
+    }, 1000 / framesPerSecond);
 }
 
-document.addEventListener('keydown', (event) => {
-    if (event.key === 'ArrowUp') keys.up = true;
-    if (event.key === 'ArrowDown') keys.down = true;
-    if (event.key === 'ArrowLeft') keys.left = true;
-    if (event.key === 'ArrowRight') keys.right = true;
-});
+function checkCollision(character, building, message) {
+    if (
+        character._x < building.x + building.width &&
+        character._x + character.width > building.x &&
+        character._y < building.y + building.height &&
+        character._y + character.height > building.y
+    ) {
+        console.log(message);
+        building.color = "rgba(9, 0, 128, 0.05)"
+        // Add interaction logic here
+    } else {
+        building.color = "rgba(21, 18, 50, 0.5)"
+    }
+}
 
-document.addEventListener('keyup', (event) => {
-    if (event.key === 'ArrowUp') keys.up = false;
-    if (event.key === 'ArrowDown') keys.down = false;
-    if (event.key === 'ArrowLeft') keys.left = false;
-    if (event.key === 'ArrowRight') keys.right = false;
-});
-
-// move all entities
+// Move all entities
 function moveEverything() {
     // Move player
     if (keys.up) player.y -= 5;
@@ -64,17 +97,12 @@ function moveEverything() {
     if (keys.left) player.x -= 5;
     if (keys.right) player.x += 5;
 
-    // Collision with town
-    if (
-        player.x < gameState.town.x + gameState.town.width &&
-        player.x + player.width > gameState.town.x &&
-        player.y < gameState.town.y + gameState.town.height &&
-        player.y + player.height > gameState.town.y
-    ) {
-        console.log("You're in town! You can interact with NPCs or buy items.");
-        // Add interaction logic here
-    }
+    // Collision with house
+    checkCollision(player, gameState.house, "You're in the blacksmith shop! You can interact with NPCs or buy items.");
+    checkCollision(player, gameState.house2, "You're in the alchemist shop! You can interact with NPCs or buy items.");
 
+
+    
     // Basic enemy interaction (combat)
     enemies.forEach((enemy) => {
         if (
@@ -103,19 +131,30 @@ function drawEverything() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(townMapPic, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
 
-
+    clearCollisionCanvas(); // Clear the collision layer
 
     // Render player
     ctx.drawImage(player.image, player.sX, player.sY, player.sW, player.sH, player.x, player.y, player.width, player.height);
+
     // Render enemies
     enemies.forEach((enemy) => {
         ctx.fillStyle = enemy.color;
         ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+
+        // Draw collision boxes for debugging
+        drawCollisionBox(enemy.x, enemy.y, enemy.width, enemy.height);
     });
 
-    // Render town
-    ctx.fillStyle = gameState.town.color;
-    ctx.fillRect(gameState.town.x, gameState.town.y, gameState.town.width, gameState.town.height);
+    // Render house
+
+    ctx.drawImage(gameState.house.image, gameState.house.sX, gameState.house.sY, gameState.house.sW, gameState.house.sH, 
+        gameState.house.x, gameState.house.y-32*2, gameState.house.width, gameState.house.height);
+
+    ctx.drawImage(gameState.house2.image, gameState.house2.sX, gameState.house2.sY, gameState.house2.sW, gameState.house2.sH, 
+        gameState.house2.x, gameState.house2.y, gameState.house2.width, gameState.house2.height);
+    // Draw collision box for house
+    //drawCollisionBox(gameState.house.x, gameState.house.y, gameState.house.width, gameState.house.height);
+    //drawCollisionBox(gameState.house2.x, gameState.house2.y, gameState.house2.width, gameState.house2.height);
 
     // Display player stats
     ctx.fillStyle = 'black';
@@ -123,5 +162,3 @@ function drawEverything() {
     ctx.fillText(`Health: ${player.health}`, 10, 20);
     ctx.fillText(`Gold: ${player.gold}`, 10, 40);
 }
-
-

@@ -26,5 +26,10 @@ class Entity {
     move(dx, dy) {
         this._x += dx;
         this._y += dy;
+
+        if (isCollisionAt(this._x, this._y)) {
+            console.log("Collision detected at", this._x, this._y);
+        }
+    
     }
 }

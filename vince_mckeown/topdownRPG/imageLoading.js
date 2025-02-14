@@ -1,5 +1,6 @@
 var wizardPic = document.createElement("img");
 var townMapPic = document.createElement("img");
+var blacksmithShopPic = document.createElement("img");
 
 //var titlepagePic = document.createElement("img");
 var tilePics = [];
@@ -25,12 +26,12 @@ function loadImageForRoomCode(tileCode, fileName)  {
 	beginLoadingImage(tilePics[tileCode], fileName);	
 }
 
-function loadImages() {
-	
-		var imageList = [
-			{varName: townMapPic, theFile: "townMap.png"},
-			{varName: wizardPic, theFile: "wizard.png"},
-		];
+function loadImages() {	
+	var imageList = [
+		{varName: townMapPic, theFile: "townMap.png"},
+		{varName: wizardPic, theFile: "wizard.png"},
+		{varName: blacksmithShopPic, theFile: "BlackSmithShop.png"}
+	];
 			
 	picsToLoad = imageList.length;
 

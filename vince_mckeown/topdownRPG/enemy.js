@@ -8,13 +8,13 @@ class Monster extends Entity {
     }
 
     // Getter for loot
-    get loot() { return this._loot; }
+    get loot() { return this.loot; }
 
     // Monster attack method
     attack(target) {
         if (target instanceof Player) {
-            target.health -= this._damage;
-            console.log(`${this.name} attacks ${target.name} for ${this._damage} damage!`);
+            target.health -= this.damage;
+            console.log(`${this.name} attacks ${target.name} for ${this.damage} damage!`);
         }
     }
 }
