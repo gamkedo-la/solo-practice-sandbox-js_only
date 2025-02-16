@@ -14,10 +14,14 @@ goblin.attack(player);
 
 console.log(`${player.name} now has ${player.health} HP.`);
 
+var insidebuilding = false;
+
 // Game state
 const gameState = {
-    house: { x: 32, y: 0, sX: 0, sY: 0, sW: 32*6, sH: 32*6, width: 32*6, height: 32*6, color: "rgba(9, 0, 128, 0.5)", image: blacksmithShopPic},
-    house2: { x: 32*18, y: 192, sX: 0, sY: 0, sW: 32*6, sH: 32*6, width: 32*5, height: 32*5, color: "rgba(9, 0, 128, 0.5)", image: blacksmithShopPic}
+    house: { x: 32, y: 0, sX: 0, sY: 0, sW: 32*6, sH: 32*6, width: 32*6, height: 32*6, 
+        color: "rgba(9, 0, 128, 0.5)", image: blacksmithShopPic, insidebuilding: false},
+    house2: { x: 32*18, y: 192, sX: 0, sY: 0, sW: 32*6, sH: 32*6, width: 32*5, height: 32*5, 
+        color: "rgba(9, 0, 128, 0.5)", image: blacksmithShopPic, insidebuilding: false}
 };
 
 // Collision Canvas Setup, ,
@@ -83,20 +87,22 @@ function checkCollision(character, building, message) {
     ) {
         console.log(message);
         building.sX = building.width;
-   
-        // Add interaction logic here
+        building.insidebuilding = true;
     } else {
         building.sX = 0;
+        building.insidebuilding = false;
     }
 }
 
 // Move all entities
 function moveEverything() {
     // Move player
-    if (keys.up) player.y -= 5;
-    if (keys.down) player.y += 5;
-    if (keys.left) player.x -= 5;
-    if (keys.right) player.x += 5;
+    const SPEED = 4;
+    if (keys.up) movePlayer(0, -SPEED);
+    if (keys.down) movePlayer(0,SPEED);
+    if (keys.left) movePlayer(-SPEED,0);
+    if (keys.right) movePlayer(SPEED,0);
+    
 
     // Collision with house
     checkCollision(player, gameState.house, "You're in the blacksmith shop! You can interact with NPCs or buy items.");
@@ -132,7 +138,17 @@ function drawEverything() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(townMapPic, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
 
-    clearCollisionCanvas(); // Clear the collision layer
+    drawBackground();
+
+    // Render building if inside
+    if(gameState.house.insidebuilding){
+    ctx.drawImage(gameState.house.image, gameState.house.sX, gameState.house.sY, gameState.house.sW, gameState.house.sH, 
+        gameState.house.x, gameState.house.y, gameState.house.width, gameState.house.height);
+    }
+    if(gameState.house2.insidebuilding){
+    ctx.drawImage(gameState.house2.image, gameState.house2.sX, gameState.house2.sY, gameState.house2.sW, gameState.house2.sH, 
+        gameState.house2.x, gameState.house2.y, gameState.house2.width, gameState.house2.height);
+        }
 
     // Render player
     ctx.drawImage(player.image, player.sX, player.sY, player.sW, player.sH, player.x, player.y, player.width, player.height);
@@ -141,18 +157,18 @@ function drawEverything() {
     enemies.forEach((enemy) => {
         ctx.fillStyle = enemy.color;
         ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
-
-        // Draw collision boxes for debugging
-        drawCollisionBox(enemy.x, enemy.y, enemy.width, enemy.height);
     });
 
-    // Render house
+    // Render house if outside
 
-    ctx.drawImage(gameState.house.image, gameState.house.sX, gameState.house.sY, gameState.house.sW, gameState.house.sH, 
-        gameState.house.x, gameState.house.y, gameState.house.width, gameState.house.height);
-
-    ctx.drawImage(gameState.house2.image, gameState.house2.sX, gameState.house2.sY, gameState.house2.sW, gameState.house2.sH, 
-        gameState.house2.x, gameState.house2.y, gameState.house2.width, gameState.house2.height);
+    if(!gameState.house.insidebuilding){
+        ctx.drawImage(gameState.house.image, gameState.house.sX, gameState.house.sY, gameState.house.sW, gameState.house.sH, 
+            gameState.house.x, gameState.house.y, gameState.house.width, gameState.house.height);
+    }
+    if(!gameState.house2.insidebuilding){
+        ctx.drawImage(gameState.house2.image, gameState.house2.sX, gameState.house2.sY, gameState.house2.sW, gameState.house2.sH, 
+            gameState.house2.x, gameState.house2.y, gameState.house2.width, gameState.house2.height);
+    }
     
     // Draw collision box for house
     //drawCollisionBox(gameState.house.x, gameState.house.y, gameState.house.width, gameState.house.height);

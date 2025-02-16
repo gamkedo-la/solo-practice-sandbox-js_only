@@ -27,20 +27,21 @@ function loadImageForRoomCode(tileCode, fileName)  {
 }
 
 function loadImages() {	
-	var imageList = [
-		{varName: townMapPic, theFile: "townMap.png"},
-		{varName: wizardPic, theFile: "wizard.png"},
-		{varName: blacksmithShopPic, theFile: "BlackSmithShop.png"}
-	];
-			
-	picsToLoad = imageList.length;
+    var imageList = [
+        {varName: townMapPic, theFile: "townMap.png"},
+        {varName: wizardPic, theFile: "wizard.png"},
+        {varName: blacksmithShopPic, theFile: "BlackSmithShop.png"},
+        {tileType: TILE_GRASS, theFile: "grass.png"},
+        {tileType: TILE_WALL, theFile: "wall.png"},
+    ];
+    
+    picsToLoad = imageList.length;
 
-	for(var i=0; i<imageList.length; i++) {
-		if(imageList[i].tileType != undefined){
-			loadImageForRoomCode(imageList[i].tileType, imageList[i].theFile);
-		}
-		else {
-			beginLoadingImage(imageList[i].varName, imageList[i].theFile);
-		}
-	}
+    for(var i = 0; i < imageList.length; i++) {
+        if(imageList[i].tileType !== undefined) {
+            loadImageForRoomCode(imageList[i].tileType, imageList[i].theFile);
+        } else {
+            beginLoadingImage(imageList[i].varName, imageList[i].theFile);
+        }
+    }
 }
