@@ -1,25 +1,10 @@
-# Simple Phaser3 with TS Template
+Dino tutorial Phaser Typescript
+need package lock file so that pnpm will run
+sky image i recreated
 
 ## Setup
+This project uses pnpm. Please install it first:
+npm install -g pnpm
 
-1. If you don’t have Node.js installed, [install it from here](https://nodejs.org/en/) (Node.js version >= 14.6.0 required)
-
-2. Clone this repository or Download
-
-3. Navigate into the project directory
-
-```bash
-  $ cd phaser3-typescript-simple-template
-```
-
-4. Install the requirements
-
-```bash
-  $ npm install
-```
-
-5. Run the app
-
-```bash
-  $ npm run dev
-```
+Then install dependencies:
+pnpm install
