@@ -5,25 +5,25 @@ const TILE_ROWS = 19;
 
 // Background grid (visual representation)
 var backgroundGrid = [
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+[0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ];
 
 // Collision grid (1 = blocked, 0 = walkable)
@@ -38,7 +38,7 @@ var collisionGrid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -51,6 +51,9 @@ var collisionGrid = [
 
 const TILE_GRASS = 0;
 const TILE_WALL = 1;
+const TILE_ROAD = 2;
+const TILE_FLOOR = 3;
+const TILE_TREE = 4;
 
 // Function to check if a tile is walkable
 function isWalkable(x, y) {
@@ -77,27 +80,118 @@ function movePlayer(dx, dy) {
 }
 
 // Drawing 
-function drawBackground() {
+let cachedBackgroundGrid = []; // Store precomputed tile properties
+let backgroundNeedsUpdate = true; // Flag to track updates
+
+function precomputeBackground() {
+    cachedBackgroundGrid = []; // Reset cache
+
     for (let row = 0; row < TILE_ROWS; row++) {
+        cachedBackgroundGrid[row] = []; // Initialize row
+
         for (let col = 0; col < TILE_COLS; col++) {
             let tileType = backgroundGrid[row][col];
-            drawImageTile(row, col, tileType);
+
+            // Get tile properties based on connectors first
+            let result = checkTileTypeForConnectors(tileType, col, row);
+
+            // If no connector adjustments, check for randomization
+            if (!result) {
+                result = checkTileTypeForRandomization(tileType);
+            }
+
+            // Fallback to default if still undefined
+            let { sX = 0, sY = 0 } = result || {};
+
+            // Store computed data in the cache
+            cachedBackgroundGrid[row][col] = { sX, sY, tileType };
+        }
+    }
+
+    backgroundNeedsUpdate = false; // Reset update flag after computing
+}
+
+function drawBackground() {
+    if (backgroundNeedsUpdate) {
+        precomputeBackground(); // Only update if needed
+    }
+
+    for (let row = 0; row < TILE_ROWS; row++) {
+        for (let col = 0; col < TILE_COLS; col++) {
+            let { sX, sY, tileType } = cachedBackgroundGrid[row][col];
+            drawImageTile(row, col, sX, sY, tileType);
         }
     }
 }
 
-function drawImageTile(row, col, tileType) {   
-    console.log(tileType); // Debugging: check the tile type being used
+// Call this whenever backgroundGrid changes
+function updateBackground() {
+    backgroundNeedsUpdate = true;
+}
 
+
+function checkTileTypeForConnectors(tileType, x, y) {
+    if (tileType !== TILE_ROAD) return null;
+
+    const above = y > 0 && backgroundGrid[y - 1][x] === TILE_ROAD;
+    const below = y < backgroundGrid.length - 1 && backgroundGrid[y + 1][x] === TILE_ROAD;
+    const left = x > 0 && backgroundGrid[y][x - 1] === TILE_ROAD;
+    const right = x < backgroundGrid[0].length - 1 && backgroundGrid[y][x + 1] === TILE_ROAD;
+
+    if (above && below) return { sX: 32 * 1, sY: 32 * 1 }; // Vertical road
+    if (left && right) return { sX: 0, sY: 32 * 1 }; // Horizontal road
+    if (above && right) return { sX: 32 * 0, sY: 32 * 2 }; // Turn top-right
+    if (above && left) return { sX: 32 * 2, sY: 32 * 2 }; // Turn top-left
+    if (below && right) return { sX: 32 * 0, sY: 32 * 0 }; // Turn bottom-right
+    if (below && left) return { sX: 32 * 2, sY: 32 * 0 }; // Turn bottom-left
+
+    return { sX: 32 * 1, sY: 32 * 1 }; // Default road tile
+}
+
+function checkTileTypeForTrees(tileType, x, y) {
+    if (tileType !== TILE_TREE) return null;
+
+    // Ensure there's enough space for a 2x2 tree
+    if (
+        x < backgroundGrid[0].length - 1 && 
+        y < backgroundGrid.length - 1 &&
+        backgroundGrid[y][x] === TILE_TREE &&
+        backgroundGrid[y][x + 1] === TILE_TREE &&
+        backgroundGrid[y + 1][x] === TILE_TREE &&
+        backgroundGrid[y + 1][x + 1] === TILE_TREE
+    ) {
+        return { sX: 0, sY: 32*3 }; // Example sprite position for a tree
+    }
+
+    return null;
+}
+
+
+function checkTileTypeForRandomization(tileType) {
+    if (tileType === TILE_GRASS) {
+        let options = 9;
+        let randomNum = Math.floor(Math.random() * (options + 1));
+        return { sX: 32 * randomNum, sY: 0 };
+    }
+    if (tileType === TILE_FLOOR){
+        let options = 9;
+        let randomNum = Math.floor(Math.random() * (options + 1));
+        return { sX: 32 * randomNum, sY: 32*2 };
+    }
+    return null;
+}
+
+
+function drawImageTile(row, col, sX, sY, tileType) {   
     let tileImage = tilePics[tileType]; // Fetch the correct image from tilePics
 
     if (!tileImage) {
         console.error("Invalid tileType or missing image:", tileType);
         return;
     }
-
-    ctx.drawImage(tileImage, col * TILE_W, row * TILE_H, TILE_W, TILE_H);
+    ctx.drawImage(tileImage, sX, sY, 32, 32, col * TILE_W, row * TILE_H, TILE_W, TILE_H);
 }
+
 
 
 
