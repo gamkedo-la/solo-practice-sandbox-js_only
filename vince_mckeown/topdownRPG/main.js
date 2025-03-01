@@ -102,6 +102,9 @@ function moveEverything() {
     if (keys.down) movePlayer(0,SPEED);
     if (keys.left) movePlayer(-SPEED,0);
     if (keys.right) movePlayer(SPEED,0);
+    let endTile = pixCoordToIndex(400, 300);
+    let startTile = pixCoordToIndex(player.x, player.y);
+    startPath(startTile, endTile);
     
 
     // Collision with house
