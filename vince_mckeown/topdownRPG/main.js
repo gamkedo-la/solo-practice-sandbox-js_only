@@ -20,8 +20,8 @@ var insidebuilding = false;
 const gameState = {
     house: { x: 32, y: 0, sX: 0, sY: 0, sW: 32*6, sH: 32*6, width: 32*6, height: 32*6, 
         color: "rgba(9, 0, 128, 0.5)", image: blacksmithShopPic, insidebuilding: false},
-    house2: { x: 32*18, y: 6*32, sX: 0, sY: 0, sW: 32*6, sH: 32*6, width: 32*5, height: 32*5, 
-        color: "rgba(9, 0, 128, 0.5)", image: blacksmithShopPic, insidebuilding: false}
+    house2: { x: 32*18, y: 5*32, sX: 0, sY: 32*6, sW: 32*6, sH: 32*6, width: 32*6, height: 32*6, 
+        color: "rgba(9, 0, 128, 0.5)", image: alchemistShopPic, insidebuilding: false}
 };
 
 // Collision Canvas Setup, ,

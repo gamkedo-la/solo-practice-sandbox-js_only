@@ -1,6 +1,7 @@
 var wizardPic = document.createElement("img");
 var townMapPic = document.createElement("img");
 var blacksmithShopPic = document.createElement("img");
+var alchemistShopPic = document.createElement("img");
 
 //var titlepagePic = document.createElement("img");
 var tilePics = [];
@@ -31,6 +32,7 @@ function loadImages() {
         {varName: townMapPic, theFile: "townMap.png"},
         {varName: wizardPic, theFile: "wizard.png"},
         {varName: blacksmithShopPic, theFile: "BlackSmithShop.png"},
+        {varName: alchemistShopPic, theFile: "BlackSmithShop.png"},
         {tileType: TILE_GRASS, theFile: "grass.png", sX: "0", sY: "0", options: 4},
         {tileType: TILE_WALL, theFile: "wall.png", sX: "0", sY: "0",options: 0},
         {tileType: TILE_ROAD, theFile: "road.png", sX: "0", sY: "0",options: 0},
