@@ -19,11 +19,11 @@ function GridElement() {
       this.elementType = this.isNotPassible(elementTypeConsideration);
       var pathFinderX = whichPathFinder.x;
       var pathFinderY = whichPathFinder.y;
-      var playersLocation = pixelCoordToIndex(pathFinderX,pathFinderY);
-      if(this.tilIdx == playersLocation){
-        this.elementType = SOURCE;
-        this.setDistIfLess(0,null);
-      }
+      var playersLocation = pixCoordToIndex(pathFinderX,pathFinderY);
+        if(this.tilIdx == playersLocation){
+          this.elementType = SOURCE;
+          this.setDistIfLess(0,null);
+        }
     }
   
     this.reset = function() {
@@ -84,7 +84,7 @@ function GridElement() {
     this.isNotPassible = function(elementType){
       updatedElementType = elementType;
   
-      if(elementType == COLL_EMPTY){
+      if(elementType == 0){
         return NOTHING;
       } else {
         return WALL;
@@ -110,7 +110,7 @@ function GridElement() {
     }
   
     function GetGridAtCR(atC,atR) {
-      return grid[atC + atR * GRID_COLUMNS];
+      return grid[atC + atR * TILE_COLS];
     }
     
     this.myUnvisitedNeighbors = function() {
@@ -123,7 +123,7 @@ function GridElement() {
           myNeighbors.push( consideredNeighbor );
         }
       }
-      if(this.tilC < GRID_COLUMNS-1) {
+      if(this.tilC < TILE_COLS-1) {
         consideredNeighbor = GetGridAtCR(this.tilC+1,this.tilR);
         if(arrayContains(unvisitedList,consideredNeighbor)) {
           myNeighbors.push( consideredNeighbor );
@@ -135,7 +135,7 @@ function GridElement() {
           myNeighbors.push( consideredNeighbor );
         }
       }
-      if(this.tilR < GRID_ROWS-1) {
+      if(this.tilR < TILE_ROWS-1) {
         consideredNeighbor = GetGridAtCR(this.tilC,this.tilR+1);
         if(arrayContains(unvisitedList,consideredNeighbor)) {
           myNeighbors.push( consideredNeighbor );
