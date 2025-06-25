@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top-Down RPG</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+        }
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            position: relative; /* Ensure proper positioning for absolute elements */
+        }
+    </style>
+    
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <script src="imageLoading.js"></script>
+    <script src="entity.js"></script> 
+    <script src="world.js"></script>
+    <script src="player.js"></script>
+    <script src="enemy.js"></script>
+    <script src="npc.js"></script>
+    <script src="gridElement.js"></script>
+    <script src="pathfinding.js"></script>
+    <script src="input.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>

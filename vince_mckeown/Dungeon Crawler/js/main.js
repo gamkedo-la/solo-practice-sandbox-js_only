@@ -40,6 +40,7 @@ window.onload = function() {
 		canvasContext.fill();
 
 		canvasContext.restore();
+		
 	}	
 
 	canvas.addEventListener('mousemove', function(evt) {
