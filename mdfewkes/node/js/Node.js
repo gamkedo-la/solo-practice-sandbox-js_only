@@ -580,3 +580,25 @@ class NodeFilter extends NodeBase {
 		this._b2 = 2 * gamma;
 	}
 }
+
+// Broken
+class NodeRCFilter extends NodeBase {
+	constructor(nodeMaster) {
+		super(nodeMaster);
+
+		this.value = 0;
+		this.lastValue = 0;
+		this.maxStepSize = 0.5;
+
+		this.inlet = new Inlet(this);
+		this.outletC = new Outlet(this);
+		// this.outletRs = new Outlet(this);
+	}
+
+	OnProcess() {
+		this.lastValue = this.value;
+		this.value += Math.min(this.inlet.GetValue() - this.lastValue, this.maxStepSize);
+		this.outletC.SetValue(this.value);
+		// this.outletR.SetValue(this.inlet.GetValue() - this.value);
+	}
+}

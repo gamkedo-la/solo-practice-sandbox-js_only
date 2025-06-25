@@ -62,8 +62,8 @@ window.onload = function() {
 
 	lfoNode = new NodeLFOGenerator(nodeMaster);
 	lfoNode = mainInterface.addPart(new UINode("LFO Node", 100, 300, 100, 20, lfoNode));
-	filterNode = new NodeFilter(nodeMaster);
-	filterNode = mainInterface.addPart(new UINode("Filter Node", 300, 300, 100, 20, filterNode));
+	filterNode = new NodeRCFilter(nodeMaster);
+	filterNode = mainInterface.addPart(new UINode("RC Filter Node", 300, 300, 100, 20, filterNode));
 
 	constNode0 = new NodeInput(nodeMaster);
 	constNode0.value = 0;
